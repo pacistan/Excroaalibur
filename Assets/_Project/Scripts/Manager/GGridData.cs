@@ -13,14 +13,16 @@ public class GGridData : SerializedScriptableObject
 
     public void GenerateCellData(GCell[] _grid, Vector2Int gridSize)
     {
+        RowNum = gridSize.x;
+        ColumnNum = gridSize.y;
         CellData = new Dictionary<Vector2Int, GCellData>();
-        for (int z = 0, i = 0; z < gridSize.x; z++)
+        for (int row = 0, i = 0; row < gridSize.x; row++)
         {
-            for (int x = 0; x < gridSize.y; x++)
+            for (int column = 0; column < gridSize.y; column++)
             {
                 if (_grid[i]._data.IsCellChanged())
                 {
-                    CellData.Add(new Vector2Int(x, z), _grid[i]._data);
+                    CellData.Add(new Vector2Int(row, column), _grid[i]._data);
                 }
                 i++;
             }

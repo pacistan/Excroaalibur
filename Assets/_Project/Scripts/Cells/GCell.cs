@@ -1,5 +1,6 @@
 ﻿using Sirenix.OdinInspector;
 using System;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Serialization;
 
@@ -28,4 +29,27 @@ public class GCell : SerializedMonoBehaviour
         _neighbors[(int)direction] = cell;
         cell._neighbors[(int)direction.Opposite()] = this;
     }
+}
+
+public class GCommonData : GSingleton<GCommonData>
+{
+    [field : SerializeField]
+    public GCommonData_Cell _cellData { get; private set; }
+}
+
+[CreateAssetMenu(fileName = "Cell Data", menuName = "CommonData/Cell Data")]
+public class GCommonData_Cell : SerializedScriptableObject
+{
+    [System.Serializable]
+    public struct GFTileTypeData
+    {
+        [field: SerializeField]
+        Mesh mesh;
+
+        [field: SerializeField]
+        Material[] materials;
+    }
+
+    [SerializeField]
+    Dictionary<GCellData.ETileType, GFTileTypeData> TileTypeData;
 }
