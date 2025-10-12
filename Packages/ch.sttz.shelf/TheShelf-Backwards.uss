@@ -1,0 +1,73 @@
+/* Styles for backwards-compatibility features from ShelfBackwards.cs */
+/* Only applied on Unity version prior to 2023.2 */
+
+.unity-tab-view__header-container {
+    flex-direction: row;
+}
+
+.unity-tab {
+    display: none;
+}
+
+.unity-tab--selected {
+    display: flex;
+}
+
+.unity-tab__header {
+    align-items: center;
+    align-self: flex-start;
+    flex-direction: row;
+    padding-left: 20px;
+    padding-right: 20px;
+    color: var(--unity-colors-tab-text);
+    background-color: var(--unity-colors-tab-background-checked);
+}
+
+.unity-tab__header:hover {
+    background-color: var(--unity-colors-tab-background-hover);
+}
+
+.unity-tab__header--selected {
+    color: var(--unity-colors-toolbar_button-text-checked);
+}
+
+.unity-tab__header-image {
+    height: 16px;
+    width: 16px;
+    margin-right: 5px;
+}
+
+.unity-tab__header-image--standalone {
+    margin-right: 0;
+}
+
+.unity-tab__header-image--empty {
+    display: none;
+}
+
+.unity-tab__header-label {
+    margin: 4px 0 3px 0;
+    padding: 0;
+}
+
+.unity-tab__header-underline {
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    height: 2px;
+    right: 0;
+}
+
+.unity-tab__header--selected .unity-tab__header-underline {
+    background-color: var(--unity-colors-toolbar_button-text-checked);
+}
+
+.unity-button {
+    align-items: center;
+    flex-direction: row;
+    justify-content: center;
+}
+
+.unity-button__image {
+    --unity-image-size: scale-to-fit;
+}

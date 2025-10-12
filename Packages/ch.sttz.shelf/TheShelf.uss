@@ -1,0 +1,383 @@
+/* ---------- Remove Button ---------- */
+
+.remove-button {
+    background-color: transparent;
+    border-radius: 50%;
+    border-width: 0;
+    padding: 0;
+    width: 20px;
+    height: 20px;
+}
+
+.remove-button Image {
+    width: 50%;
+    --unity-image-tint-color: var(--unity-colors-button-text);
+}
+
+.remove-button TextElement {
+    display: none;
+}
+
+.remove-button:hover {
+    background-color: var(--unity-colors-button-background);
+}
+
+.remove-button:active {
+    background-color: var(--unity-colors-button-background-pressed);
+}
+
+/* ---------- Add Button ---------- */
+
+.add-button {
+    background-color: transparent;
+    border-radius: 50%;
+    border-width: 0;
+    padding: 0;
+    width: 20px;
+    height: 20px;
+}
+
+.add-button Image {
+    width: 50%;
+    --unity-image-tint-color: var(--unity-colors-button-text);
+}
+
+.add-button TextElement {
+    display: none;
+}
+
+.add-button:hover {
+    background-color: var(--unity-colors-button-background);
+}
+
+.add-button:active {
+    background-color: var(--unity-colors-button-background-pressed);
+}
+
+/* ---------- Rack View ---------- */
+
+/* Make TabView fill whole window */
+ShelfRackView, TabView, .unity-tab-view__content-container, Tab, .unity-tab__content-container, ShelfItemsView {
+    flex-grow: 1;
+}
+
+/* Styling when rack is shown in the Inspector */
+.rack-view-editor {
+    margin-left: -13px;
+    margin-right: -4px;
+}
+
+ShelfRackView .unity-scroll-view__content-container {
+    margin: 3px;
+}
+
+ShelfItemsView {
+    --unity-item-height: 40;
+}
+
+/* Undo Unity's default styling */
+.shelf-item:hover, .shelf-item:selected {
+    background-color: transparent;
+}
+
+.shelf-item Box {
+    margin: 5px;
+    padding: 3px;
+    flex-grow: 1;
+    flex-direction: row;
+    align-items: center;
+}
+
+.shelf-item:hover Box {
+    background-color: var(--unity-colors-button-border);
+}
+
+.shelf-item:selected Box {
+    background-color: var(--unity-colors-highlight-background);
+}
+
+.shelf-item .shelf-item-icon {
+    width: 22px;
+}
+
+.shelf-item .shelf-item-icon__selected {
+    display: none;
+}
+
+.shelf-item:selected .shelf-item-icon__normal {
+    display: none;
+}
+
+.shelf-item:selected .shelf-item-icon__selected {
+    display: flex;
+}
+
+.shelf-item .shelf-item-name {
+    margin-left: 3px;
+}
+
+.shelf-item:selected .remove-button Image {
+    --unity-image-tint-color: var(--unity-colors-highlight-text-inactive);
+}
+
+.shelf-item:selected .remove-button:hover Image {
+    --unity-image-tint-color: var(--unity-colors-default-text);
+}
+
+.shelf-item .shelf-item-accessory {
+    flex-grow: 1;
+    margin-left: 5px;
+}
+
+.shelf-item .shelf-wrapped-object {
+    flex-direction: row;
+    align-items: center;
+    margin-left: 10px;
+}
+
+.shelf-item .shelf-wrapped-object Image {
+    width: 12px;
+}
+
+.shelf-item .shelf-wrapped-object Label {
+    opacity: 0.65;
+    margin-left: 2px;
+}
+
+.shelf-tab-dragging:hover {
+    background-color: var(--unity-colors-highlight-background);
+}
+
+.shelf-tab-dragging:hover .unity-tab__header-label {
+    color: var(--unity-colors-highlight-text-inactive);
+}
+
+.shelf-tab-background-dragging .settings {
+    border-color: var(--unity-colors-highlight-background);
+    border-left-width: 2px;
+}
+
+.unity-tab-view__header-container > .settings {
+    padding-left: 5px;
+    padding-right: 5px;
+    margin-left: auto;
+}
+
+.unity-tab-view__header-container > .settings Image {
+    --unity-image-tint-color: var(--unity-colors-button-text);
+    width: 12px;
+}
+
+.unity-tab__header {
+    height: 100%;
+}
+
+.unity-tab__header Label {
+    flex-shrink: 1;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    min-width: 30px;
+}
+
+.shelf-tab-header-has-icon Image {
+    flex-shrink: 0;
+}
+
+.shelf-tab-header-has-icon Label {
+    flex-shrink: 0;
+    min-width: 0;
+}
+
+ShelfItemsView .empty {
+    flex-grow: 1;
+    align-items: center;
+    justify-content: center;
+    margin-top: 100px;
+    margin-bottom: 100px;
+    -unity-text-align: middle-center;
+}
+
+.shelf-dock-button {
+    padding-left: 5px;
+    padding-right: 5px;
+}
+
+.shelf-dock-button Image {
+    --unity-image-tint-color: var(--unity-colors-button-text);
+    width: 12px;
+    margin-right: 0;
+}
+
+.shelf-tab-empty-space {
+    flex-grow: 1000;
+    flex-shrink: 1;
+}
+
+/* ---------- Shelf Item Sizes ---------- */
+
+ShelfItemsView.item-size-tiny {
+    --unity-item-height: 25;
+}
+
+.item-size-tiny .shelf-item Box {
+    margin: 2px;
+    padding: 1px;
+}
+
+.item-size-tiny .shelf-item .shelf-item-icon {
+    width: 15px;
+    height: 15px;
+}
+
+/* ---------- */
+
+ShelfItemsView.item-size-small {
+    --unity-item-height: 30;
+}
+
+.item-size-small .shelf-item Box {
+    margin: 2px;
+    padding: 3px;
+}
+
+.item-size-small .shelf-item .shelf-item-icon {
+    width: 18px;
+}
+
+/* ---------- */
+
+ShelfItemsView.item-size-medium {
+    --unity-item-height: 35;
+}
+
+.item-size-medium .shelf-item Box {
+    margin: 3px;
+    padding: 3px;
+}
+
+.item-size-medium .shelf-item .shelf-item-icon {
+    width: 21px;
+}
+
+/* ---------- */
+
+ShelfItemsView.item-size-large {
+    --unity-item-height: 50;
+}
+
+.item-size-large .shelf-item Box {
+    margin: 3px;
+    padding: 3px;
+}
+
+.item-size-large .shelf-item .shelf-item-icon {
+    width: 36px;
+}
+
+.item-size-large .shelf-item .shelf-item-name {
+    margin-left: 6px;
+}
+
+/* ---------- */
+
+ShelfItemsView.item-size-huge {
+    --unity-item-height: 100;
+}
+
+.item-size-huge .shelf-item Box {
+    margin: 5px;
+    padding: 5px;
+}
+
+.item-size-huge .shelf-item .shelf-item-icon {
+    width: 78px;
+}
+
+.item-size-huge .shelf-item .shelf-item-name {
+    margin-left: 6px;
+}
+
+/* ---------- Rack Settings ---------- */
+
+ShelvesView {
+    --unity-item-height: 40;
+}
+
+ShelvesView .shelf-item:selected Box {
+    padding: 2px;
+    border-width: 2px;
+    border-color: var(--unity-colors-highlight-background);
+}
+
+ShelvesView .shelf-icon {
+    height: 16px;
+    width: 16px;
+    margin-right: 5px;
+}
+
+ShelvesView .shelf-icon-empty {
+    display: none;
+}
+
+.config-section {
+    margin-bottom: 20px;
+}
+
+.config-header {
+    -unity-font-style: bold;
+    font-size: 16px;
+    margin: 5px;
+}
+
+.shelves-header {
+    flex-direction: row;
+}
+
+.shelves-header .add-button {
+    align-self: flex-end;
+    margin: 4px;
+}
+
+ShelfConfigView {
+    margin: 2px;
+}
+
+.shelf-config-icon {
+    flex-direction: row;
+}
+
+.shelf-config-icon ObjectField {
+    flex-grow: 1;
+}
+
+.shelf-config-icon EnumField {
+    flex-direction: row;
+    width: 100px;
+}
+
+.shelf-config-header-color {
+    flex-direction: row;
+}
+
+.shelf-config-header-color ColorField {
+    flex-grow: 1;
+}
+
+.shelf-config-header-color Button {
+    flex-direction: row;
+    width: 100px;
+}
+
+.shelf-config-active-rack {
+    flex-direction: row;
+}
+
+.shelf-config-active-rack ObjectField {
+    flex-grow: 1;
+}
+
+.shelf-config-active-rack Button {
+    flex-direction: row;
+    padding-left: 15px;
+    padding-right: 15px;
+}

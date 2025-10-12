@@ -1,0 +1,24 @@
+{
+    "name": "The Shelf",
+    "rootNamespace": "",
+    "references": [
+        "GUID:807be9350277eff4182cd3600de41d3a"
+    ],
+    "includePlatforms": [
+        "Editor"
+    ],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [
+        {
+            "name": "com.unity.properties",
+            "expression": "[0,99]",
+            "define": "HAS_UNITY_PROPERTIES"
+        }
+    ],
+    "noEngineReferences": false
+}
