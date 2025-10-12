@@ -8,6 +8,8 @@ public class GPlayerController : GController
     [ReadOnly]
     public IGplayer SelectedPlayer {get; private set;}
 
+    public event Action<IGplayer> OnSelectedPlayerChanged;
+    
     private InputAction _selectInput;
 
     public void SetSelectedPlayer(IGplayer newSelected)
