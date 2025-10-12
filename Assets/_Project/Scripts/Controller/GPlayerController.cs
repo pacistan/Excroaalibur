@@ -5,16 +5,17 @@ using UnityEngine.InputSystem;
 
 public class GPlayerController : GController
 {
-    [ReadOnly]
-    public IGplayer SelectedPlayer {get; private set;}
-
-    public event Action<IGplayer> OnSelectedPlayerChanged;
+    public event Action<IGplayer> SelectedPlayerChanged;
     
-    private InputAction _selectInput;
+    [ReadOnly] IGplayer _selectedPlayer;
+    InputAction _selectInput;
 
     public void SetSelectedPlayer(IGplayer newSelected)
     {
-        SelectedPlayer = newSelected;
+        if (_selectedPlayer == newSelected) return;
+        
+        _selectedPlayer = newSelected;
+        SelectedPlayerChanged?.Invoke(newSelected);
     }
 
     private void Start()
@@ -26,14 +27,27 @@ public class GPlayerController : GController
     {
         if (_selectInput.IsPressed())
         {
-            if (SelectedPlayer == null)
+            if (_selectedPlayer == null)
             {
-                
+                //TODO Select player on cell
+                GetCellUnderMouse();
             }
             else
             {
-                
+                //If clicked on the same entity unselect
+                //If action selected, send request
             }
         }
+    }
+
+    private GCell GetCellUnderMouse()
+    {
+        Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+        if (Physics.Raycast(ray, out RaycastHit hit))
+        {
+            GCell cell = hit.transform.gameObject.GetComponent<GCell>();
+            return cell;
+        }
+        return null;
     }
 }
