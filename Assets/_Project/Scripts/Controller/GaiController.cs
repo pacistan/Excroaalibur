@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-public class GaiController : GController
+public class GaiController : MonoBehaviour, IGController
 {
         
 }

@@ -1,6 +1,7 @@
 using Sirenix.OdinInspector;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 public class GPion : MonoBehaviour
 {
@@ -8,6 +9,9 @@ public class GPion : MonoBehaviour
     public GHexCoordinate coordinate;
     [SerializeField] public int moveDistance = 1;
     [SerializeReference] public List<GAction> actions = new List<GAction>();
+    public bool isPlayer;
+
+    int _stunTurn = 0;
     
     public void RequestAction(GAction action)
     {

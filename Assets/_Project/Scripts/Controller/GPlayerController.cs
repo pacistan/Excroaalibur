@@ -2,20 +2,46 @@
 using System;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.Serialization;
 
-public class GPlayerController : GController
+public class GPlayerController : MonoBehaviour, IGController
 {
-    public event Action<IGplayer> SelectedPlayerChanged;
+    public event Action<GPion> SelectedPlayerChanged;
+    public int actionToken = 3;
     
-    [ReadOnly] IGplayer _selectedPlayer;
+    [ReadOnly] GPion _selectedPlayer;
     InputAction _selectInput;
+    int _remainingActionToken = 0;
 
-    public void SetSelectedPlayer(IGplayer newSelected)
+    public void SetSelectedPlayer(GPion newSelected)
     {
         if (_selectedPlayer == newSelected) return;
         
         _selectedPlayer = newSelected;
         SelectedPlayerChanged?.Invoke(newSelected);
+    }
+
+    public void SetPlayerTurn(bool isPlayerTurn)
+    {
+        if (isPlayerTurn)
+        {
+            _remainingActionToken = actionToken;
+        }
+        else
+        {
+            _remainingActionToken = 0;
+        }
+    }
+
+    private GCell GetCellUnderMouse()
+    {
+        Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+        if (Physics.Raycast(ray, out RaycastHit hit))
+        {
+            GCell cell = hit.transform.gameObject.GetComponent<GCell>();
+            return cell;
+        }
+        return null;
     }
 
     private void Start()
@@ -38,16 +64,5 @@ public class GPlayerController : GController
                 //If action selected, send request
             }
         }
-    }
-
-    private GCell GetCellUnderMouse()
-    {
-        Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-        if (Physics.Raycast(ray, out RaycastHit hit))
-        {
-            GCell cell = hit.transform.gameObject.GetComponent<GCell>();
-            return cell;
-        }
-        return null;
     }
 }

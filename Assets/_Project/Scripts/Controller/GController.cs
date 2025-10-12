@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-public class GController : MonoBehaviour
+public interface IGController
 {
         
 }
