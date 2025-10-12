@@ -31,6 +31,17 @@ public class GGridManager : GSingleton<GGridManager>
     [SerializeField, FoldoutGroup("Serialization")]
     string _gridDataFileName;
 
+    public GCell GetCell(GHexCoordinate coordinate)
+    {
+        int id = coordinate.X + coordinate.Y;
+        if (_grid.Length > id) return null;
+        return _grid[id];
+    }
+
+    public GCell GetCell(Vector3 position)
+    {
+        return GetCell(GHexCoordinate.FromPosition(position));
+    }
     #if UNITY_EDITOR
     [Tooltip("Makes the UI Cells not Selectable in the Scene view")]
     [SerializeField, OnValueChanged("EnablePickingUIGrid")]

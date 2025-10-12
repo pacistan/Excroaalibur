@@ -22,6 +22,9 @@ public class GCell : SerializedMonoBehaviour
     [field : SerializeField, ReadOnly, FoldoutGroup("PersistantData")]
     public GCell[] _neighbors{get; private set;}
 
+    [SerializeField, ReadOnly]
+    public GPion pion;
+
     public void Initialize()
     {
         _neighbors = new GCell[Enum.GetValues(typeof(HexDirection)).Length];
