@@ -1,7 +1,8 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 
 [System.Serializable]
-public struct GHexCoordinate
+public struct GHexCoordinate : IEquatable<GHexCoordinate>
 {
     [SerializeField] private int x, z;
 
@@ -90,5 +91,30 @@ public struct GHexCoordinate
     public string ToStringOnSeparateLines()
     {
         return X + "\n" + Y + "\n" + Z;
+    }
+
+    public bool Equals(GHexCoordinate other)
+    {
+        return x == other.x && z == other.z;
+    }
+
+    public override bool Equals(object obj)
+    {
+        return obj is GHexCoordinate other && Equals(other);
+    }
+
+    public override int GetHashCode()
+    {
+        return HashCode.Combine(x, z);
+    }
+
+    public static bool operator ==(GHexCoordinate left, GHexCoordinate right)
+    {
+        return left.Equals(right);
+    }
+
+    public static bool operator !=(GHexCoordinate left, GHexCoordinate right)
+    {
+        return !left.Equals(right);
     }
 }
