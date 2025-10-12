@@ -11,7 +11,12 @@ public class GGridData : SerializedScriptableObject
     [field : SerializeField] public Dictionary<Vector2Int, GCellData> CellData { get; set; }
 
 
-    public void GenerateCellData(GCell[] _grid, Vector2Int gridSize)
+    /// <summary>
+    /// Override the CellData of this GridData Scriptable Object with the CellData of the active grid
+    /// </summary>
+    /// <param name="grid">The active grid</param>
+    /// <param name="gridSize">The size in rows and columns of the active grid</param>
+    public void GenerateCellData(GCell[] grid, Vector2Int gridSize)
     {
         RowNum = gridSize.x;
         ColumnNum = gridSize.y;
@@ -20,9 +25,9 @@ public class GGridData : SerializedScriptableObject
         {
             for (int column = 0; column < gridSize.y; column++)
             {
-                if (_grid[i]._data.IsCellChanged())
+                if (grid[i]._data.IsCellChanged())
                 {
-                    CellData.Add(new Vector2Int(row, column), _grid[i]._data);
+                    CellData.Add(new Vector2Int(row, column), grid[i]._data);
                 }
                 i++;
             }

@@ -4,6 +4,8 @@ using System.Linq;
 using TMPro;
 using UnityEditor;
 using UnityEngine;
+using UnityEngine.SceneManagement;
+using UnityEngine.Serialization;
 
 public class GGridManager : GSingleton<GGridManager>
 {
@@ -27,8 +29,14 @@ public class GGridManager : GSingleton<GGridManager>
 
     [SerializeField, FoldoutGroup("Serialization")]
     string _gridDataFileName;
+
+    #if UNITY_EDITOR
+    [Tooltip("Makes the UI Cells not Selectable in the Scene view")]
+    [SerializeField, OnValueChanged("EnablePickingUIGrid")]
+    bool _isUIGridPickable = true;
     
-    [Button]
+    [HorizontalGroup("Split", 0.5f)]
+    [Button(ButtonSizes.Large), GUIColor(0.4f, 0.8f, 1)]
     public void InstantiateGrid()
     {
         if (!_gridData || !_cellPrefab || !_cellUiPrefab || !_cellsCanvas || !_cellsParent)
@@ -73,7 +81,8 @@ public class GGridManager : GSingleton<GGridManager>
         EditorUtility.SetDirty(_cellsCanvas);
     }
 
-    [Button]
+    [HorizontalGroup("Split", 0.5f)]
+    [Button(ButtonSizes.Large), GUIColor(.9f, 0.2f, .1f)]
     public void ClearCells()
     {
         if (_grid != null)
@@ -93,8 +102,8 @@ public class GGridManager : GSingleton<GGridManager>
     private void CreateCell(int row, int column, int i)
     {
         Vector3 position;
-        position.x = (row + column * .5f - column / 2) * (HexMetrics.innerRadius * 2f);
-        position.z = column * (HexMetrics.outerRadius * 1.5f);
+        position.x = (row + column * .5f - column / 2) * (GHexMetrics.innerRadius * 2f);
+        position.z = column * (GHexMetrics.outerRadius * 1.5f);
         position.y = 0;
      
         GCell cell = _grid[i] = PrefabUtility.InstantiatePrefab(_cellPrefab, _cellsParent) as GCell;
@@ -160,10 +169,11 @@ public class GGridManager : GSingleton<GGridManager>
                 cell._data = new GCellData(cellCoordinates);
             }
         }
-     
+        cell._cellVisualsController.UpdateCellVisuals();
         cell._hexCoordinates = GHexCoordinate.FrommOffsetCoordinate(row, column);
     }
 
+    // Creates a new ScriptableObject of type GGridData in the referenced Folder with the data of the active grid
     [Button, FoldoutGroup("Serialization")]
     private void SaveGridLayout()
     {
@@ -172,6 +182,13 @@ public class GGridManager : GSingleton<GGridManager>
         UnityEditor.AssetDatabase.CreateAsset(newAsset, $"{pathToGridLayoutFolders}/{_gridDataFileName}.asset");
         UnityEditor.AssetDatabase.SaveAssets();
     }
+
+    private void EnablePickingUIGrid()
+    {
+        SceneVisibilityManager manager = SceneVisibilityManager.instance;
+        manager.DisablePicking(_cellsCanvas.gameObject, true);
+    }
+#endif
 }
 
 public static class HexDirectionExtensions {
