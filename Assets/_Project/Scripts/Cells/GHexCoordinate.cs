@@ -25,9 +25,9 @@ public struct GHexCoordinate : IEquatable<GHexCoordinate>
 
     public static GHexCoordinate FromPosition(Vector3 position)
     {
-        float x = position.x / (HexMetrics.innerRadius * 2f);
+        float x = position.x / (GHexMetrics.innerRadius * 2f);
         float y = -x;
-        float offset = position.z / (HexMetrics.outerRadius * 3f);
+        float offset = position.z / (GHexMetrics.outerRadius * 3f);
         x -= offset;
         y -= offset;
         
