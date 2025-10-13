@@ -108,7 +108,6 @@ public class GGridManager : GSingleton<GGridManager>
 
     }
 
-
     public int GetStep(GCell targetCell)
     {
         if (_stepMap.ContainsKey(targetCell._data.gridCoordinates))
@@ -118,4 +117,5 @@ public class GGridManager : GSingleton<GGridManager>
         else return -1;
     }
 }
+
 

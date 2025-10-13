@@ -1,12 +1,14 @@
 ﻿using System;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 [RequireComponent(typeof(GPawn))]
 public class GAIController : GController
 {
     [SerializeField]
     private int _startingActionTokensNumber;
-    private GPawn _pawn;
+    [HideInInspector]
+    public  GPawn pawn;
 
     public int actionTokens { get; set; }
     
@@ -39,6 +41,7 @@ public class GAIController : GController
     
     void Start()
     {
-        _pawn = GetComponent<GPawn>();
+        pawn = GetComponent<GPawn>();
     }
 }
+
