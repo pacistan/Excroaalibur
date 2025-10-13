@@ -9,14 +9,14 @@ public class GMoveAction : GAction
     
     public override void PreProcess()
     {
-        _path = GGridManager.Instance.GetPath(linkedPion.currentCell ,targetCell, true);
+        _path = GGridManager.Instance.GetPath(linkedPawn.currentCell ,targetCell, true);
         if (_path == null || _path.Length == 0) return;
     }
 
     public override void Start_Action()
     {
         base.Start_Action();
-        linkedPion.SetCell(targetCell);
+        linkedPawn.SetCell(targetCell);
         _progress = 0;
     }
 
@@ -26,15 +26,16 @@ public class GMoveAction : GAction
         _progress += delta;
         if (_progress >= 1)
         {
-            //Switch state end action
+            End_Action();
+            return;
         }
-        linkedPion.transform.position = Vector3.Lerp(linkedPion.transform.position, targetCell.transform.position, _progress);
+        linkedPawn.transform.position = Vector3.Lerp(linkedPawn.transform.position, targetCell.transform.position, _progress);
     }
 
     public override void End_Action()
     {
         base.End_Action();
-        linkedPion.transform.position = targetCell.transform.position;
+        linkedPawn.transform.position = targetCell.transform.position;
     }
 
     public override bool IsValid()

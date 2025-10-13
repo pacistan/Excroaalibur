@@ -37,9 +37,12 @@ public class GPawn : MonoBehaviour
     public void RequestAction(GAction action)
     {
         if (action == null || !action.IsValid()) return;
-        
+        action.linkedPawn = this;
         print("Request " + action.ToString());
-        //TODO Request action to the turn manager
+        if (!GTurnBaseManager.Instance.TryPlayAction(action, false))
+        {
+            print("Action Failed");
+        }
     }
 
     public void TakeDamage(int damage = 1)

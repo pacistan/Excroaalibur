@@ -5,7 +5,7 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.Serialization;
 
-public class GPlayerController : MonoBehaviour, IGController
+public class GPlayerController : GController
 {
     public event Action<GPawn> SelectedPlayerChanged;
     public GAction[] availableActions = new GAction[] { };
@@ -16,6 +16,8 @@ public class GPlayerController : MonoBehaviour, IGController
     [ReadOnly] GAction _selectedAction;
     InputAction _selectInput;
     int _remainingActionToken = 0;
+    
+    private GCell _targetCell;
     
     public void SetSelectedPlayer(GPawn newSelected)
     {
@@ -80,15 +82,15 @@ public class GPlayerController : MonoBehaviour, IGController
     {
         if (_selectInput.WasPressedThisFrame())
         {
-            GCell cell = GetCellUnderMouse();
-            if (!cell) return;
-            GPawn player = cell.GetPion() && cell.GetPion().isPlayer ? cell.GetPion() : null;
+            _targetCell = GetCellUnderMouse();
+            if (!_targetCell) return;
+            GPawn player = _targetCell.GetPawn() && _targetCell.GetPawn().isPlayer ? _targetCell.GetPawn() : null;
 
             if (player)
             {
                 if (_selectedPlayer != player && !player.IsStunned)
                 {
-                    _selectedPlayer = cell.GetPion();
+                    _selectedPlayer = _targetCell.GetPawn();
                     SelectedPlayerChanged?.Invoke(_selectedPlayer);
                 }
                 else
@@ -103,26 +105,27 @@ public class GPlayerController : MonoBehaviour, IGController
             
             if (_selectedPlayer && _selectedAction != null)
             {
-                _selectedPlayer.RequestAction(_selectedAction);
+                StartAction();
             }
         }
     }
-    public void StartTurn()
+    public override void StartTurn()
     {
         throw new NotImplementedException();
     }
 
-    public void StartAction()
+    public override void StartAction()
+    {
+        _selectedAction.targetCell = _targetCell;
+        _selectedPlayer.RequestAction(_selectedAction);
+    }
+
+    public override void OnActionOver()
     {
         throw new NotImplementedException();
     }
 
-    public void OnActionOver()
-    {
-        throw new NotImplementedException();
-    }
-
-    public void EndTurn()
+    public override void EndTurn()
     {
         throw new NotImplementedException();
     }

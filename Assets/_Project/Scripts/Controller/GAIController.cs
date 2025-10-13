@@ -2,7 +2,7 @@
 using UnityEngine;
 
 [RequireComponent(typeof(GPawn))]
-public class GAIController : MonoBehaviour, IGController
+public class GAIController : GController
 {
     [SerializeField]
     private int _startingActionTokensNumber;

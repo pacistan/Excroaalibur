@@ -64,6 +64,7 @@ public class GCellVisualsController : SerializedMonoBehaviour
             {
                 _cell._ownedPawn = PrefabUtility.InstantiatePrefab(pawnPrefab, _pawnSpawnPoint) as GPawn;
                 _cell._ownedPawn.transform.localPosition = Vector3.zero;
+                _cell._ownedPawn.SetCell(_cell);
             }
             _previousPawnSpawnType = newPawnType;
         }

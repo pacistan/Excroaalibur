@@ -16,7 +16,7 @@ public enum ETurnState
 public class GTurnBaseManager : GSingleton<GTurnBaseManager>
 {
     /** Manager The Turn Order */
-    public IGController _currentTurnController { get; private set; }
+    public GController _currentTurnController { get; private set; }
 
     public bool isActionPlaying
     {
@@ -26,10 +26,10 @@ public class GTurnBaseManager : GSingleton<GTurnBaseManager>
     private List<GAction> _actionsInProgress = new List<GAction>();
     
     /** Queue Order of The Entity currently in fight */ 
-    private List<IGController> _turnOrderControllerQueue = new List<IGController>();
+    private List<GController> _turnOrderControllerQueue = new List<GController>();
     
     /** All the Entity in the Scene */
-    private List<IGController> _controllerList = new List<IGController>();
+    private List<GController> _controllerList = new List<GController>();
     
     [SerializeField, BoxGroup("Dev Settings"), Tooltip("Time to wait before forcing the end of the turn when action is playing")]
     private float _safeTimeHandle = 5f;
@@ -40,7 +40,7 @@ public class GTurnBaseManager : GSingleton<GTurnBaseManager>
     public ETurnState _currentTurnState { get; private set; }
 
     /** Register an Controller to the Turn Base Manager */
-    public void RegisterController(IGController Controller)
+    public void RegisterController(GController Controller)
     {
         if (enabled && !_turnOrderControllerQueue.Contains(Controller))
         {
@@ -53,7 +53,7 @@ public class GTurnBaseManager : GSingleton<GTurnBaseManager>
     }
     
     /** Unregister a Controller from the Turn Base Manager */
-    public void UnregisterController(IGController Controller)
+    public void UnregisterController(GController Controller)
     {
         if (!_turnOrderControllerQueue.Contains(Controller))
         {
@@ -66,7 +66,7 @@ public class GTurnBaseManager : GSingleton<GTurnBaseManager>
     }
     
     /** Request to End the Turn of the Current Controller, Force if Controller is null */
-    public void RequestEndTurn(IGController Controller = null)
+    public void RequestEndTurn(GController Controller = null)
     {
         Debug.Log("RequestEndTurn of " + _currentTurnController + " by " + Controller?.ToString());
         
@@ -81,15 +81,16 @@ public class GTurnBaseManager : GSingleton<GTurnBaseManager>
         StartCoroutine(ProcessEndTurn());
     }
     
-    public void TryPlayAction(GAction ActionToPlay, bool IsReaction) 
+    public bool TryPlayAction(GAction ActionToPlay, bool IsReaction) 
     { 
-        if (!IsReaction && isActionPlaying) return;
+        if (!IsReaction && isActionPlaying) return false;
         
         // TODO A check modifs en fonction du return ! 
         ActionToPlay.PreProcess();
         
         ActionToPlay.Start_Action();
         _actionsInProgress.Add(ActionToPlay);
+        return true;
     }
     
     private void StartFight() 
@@ -101,7 +102,7 @@ public class GTurnBaseManager : GSingleton<GTurnBaseManager>
     /** Create the Queue based on Rule (Actually : player is first, then IA) */
     private void CreateQueue()
     {
-        var orderedEntities = _controllerList.OrderBy(entity => entity is GIPlayerController ? 0 : 1).ToList();
+        var orderedEntities = _controllerList.OrderBy(entity => entity is GPlayerController ? 0 : 1).ToList();
         foreach (var entity in orderedEntities) 
         {
             _turnOrderControllerQueue.Add(entity);
@@ -151,6 +152,7 @@ public class GTurnBaseManager : GSingleton<GTurnBaseManager>
 
     private void OnEnable()
     {
+        _controllerList = FindObjectsByType<GController>(FindObjectsSortMode.None).ToList();
         if (_controllerList.Count > 0)
         {
             StartFight();

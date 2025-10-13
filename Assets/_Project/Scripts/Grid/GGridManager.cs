@@ -74,7 +74,7 @@ public class GGridManager : GSingleton<GGridManager>
     public void GenerateStepMap(GCell from)
     {
         _stepMap = new Dictionary<Vector2Int, int>();
-        if (!from || !from.IsWalkable())
+        if (!from || !from.IsWalkable(true))
         {
             return;
         }

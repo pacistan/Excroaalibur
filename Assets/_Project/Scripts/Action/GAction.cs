@@ -18,7 +18,7 @@ public abstract class GAction
     public event Action OnActionStarted; 
     public event Action OnActionFinished;
 
-    [ReadOnly] public GPawn linkedPion;
+    [ReadOnly] public GPawn linkedPawn;
     [ReadOnly] public GCell targetCell;
 
     [ReadOnly] public EActionState CurrentState { get; private set; } = EActionState.None;

@@ -32,16 +32,22 @@ public class GCell : SerializedMonoBehaviour
     {
         _neighbors = new GCell[Enum.GetValues(typeof(EHexDirection)).Length];
     }
-    
+
+    public void Start()
+    {
+        if (_ownedPawn)
+            _ownedPawn.SetCell(this);
+    }
+
     public void SetNeighbor (EHexDirection direction, GCell cell)
     {
         _neighbors[(int)direction] = cell;
         cell._neighbors[(int)direction.Opposite()] = this;
     }
 
-    public bool IsWalkable()
+    public bool IsWalkable(bool ignorePawn = false)
     {
-        return _data.tileType == GCellData.ETileType.Normal && _ownedPawn == null;
+        return _data.tileType == GCellData.ETileType.Normal && (_ownedPawn == null || ignorePawn);
     }
 
     public void SetPawn(GPawn pawn)
@@ -49,7 +55,7 @@ public class GCell : SerializedMonoBehaviour
         _ownedPawn = pawn;
     }
 
-    public GPawn GetPion()
+    public GPawn GetPawn()
     {
         return _ownedPawn;
     }
