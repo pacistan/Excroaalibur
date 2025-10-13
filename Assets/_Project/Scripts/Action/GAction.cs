@@ -9,7 +9,7 @@ public abstract class GAction
     public event Action OnActionStarted; 
     public event Action OnActionFinished;
 
-    [ReadOnly] public GPion linkedPion;
+    [ReadOnly] public GPawn linkedPion;
     [ReadOnly] public GCell targetCell;
     
     public abstract void PreProcess();
