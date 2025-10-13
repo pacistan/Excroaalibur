@@ -44,6 +44,11 @@ public class GCellVisualsController : SerializedMonoBehaviour
         EditorUtility.SetDirty(this);
     }
 
+    public void UpdateCellDebugNum(string newDebugText)
+    {
+        _text.text = newDebugText;
+    }
+
     private void HideInHierarchy()
     {
         if (_showVisualsInHierarchy)

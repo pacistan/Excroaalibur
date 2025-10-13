@@ -6,8 +6,8 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "GridData", menuName = "Grid Data", order = 1)]
 public class GGridData : SerializedScriptableObject
 {
-    [field : SerializeField] public int RowNum { get; private set; }
     [field : SerializeField] public int ColumnNum { get; private set; }
+    [field : SerializeField] public int RowNum { get; private set; }
     [field : SerializeField] public Dictionary<Vector2Int, GCellData> CellData { get; set; }
 
 
@@ -18,8 +18,8 @@ public class GGridData : SerializedScriptableObject
     /// <param name="gridSize">The size in rows and columns of the active grid</param>
     public void GenerateCellData(GCell[] grid, Vector2Int gridSize)
     {
-        RowNum = gridSize.x;
-        ColumnNum = gridSize.y;
+        ColumnNum = gridSize.x;
+        RowNum = gridSize.y;
         CellData = new Dictionary<Vector2Int, GCellData>();
         for (int row = 0, i = 0; row < gridSize.x; row++)
         {
