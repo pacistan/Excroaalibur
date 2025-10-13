@@ -1,42 +1,175 @@
 ﻿
-using Sirenix.Reflection.Editor;
+using Sirenix.OdinInspector;
+using System;
+using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
-public class GTurnBaseManager
+public enum ETurnState
+{
+    NotStarted,
+    InProgress,
+    Finished
+}
+
+public class GTurnBaseManager : GSingleton<GTurnBaseManager>
 {
     // Manager The Turn Order 
-    public GameObject _currentTurnEntity { get; private set; }
-    public bool isTurnActive { get; private set; }
-    public bool isActionAuthorized { get; private set; }
+    public IGController _currentTurnController { get; private set; }
+
+    public bool isActionPlaying
+    {
+        get => _actionsInProgress.Count > 0;
+    }
     
+    private List<GAction> _actionsInProgress = new List<GAction>();
     
-    // Queue Order of The Entity
-    private Queue<GameObject> _turnOrderEntityQueue = new Queue<GameObject>();
+    // Queue Order of The Entity currently in fight
+    private List<IGController> _turnOrderControllerQueue = new List<IGController>();
     
-    public void Start() 
+    // All the Entity in the Scene
+    private List<IGController> _controllerList = new List<IGController>();
+    
+    // Time to wait before forcing the end of the turn
+    [SerializeField, BoxGroup("Dev Settings")]
+    private float _safeTimeHandle = 5f;
+    
+    [SerializeField, BoxGroup("Dev Settings")]
+    private float _actionSpeed = 1f;
+
+    public ETurnState _currentTurnState { get; private set; }
+    
+    // Register an Controller to the Turn Base Manager
+    public void RegisterController(IGController Controller)
+    {
+        if (enabled && !_turnOrderControllerQueue.Contains(Controller))
+        {
+            _turnOrderControllerQueue.Add(Controller);
+        } 
+        else if (!_controllerList.Contains(Controller))
+        {
+            _controllerList.Add(Controller);
+        }
+    }
+    
+    // Unregister a Controller from the Turn Base Manager
+    public void UnregisterController(IGController Controller)
+    {
+        if (!_turnOrderControllerQueue.Contains(Controller))
+        {
+            Debug.LogWarning("Trying to Unregister a Controller that is not longer in the Turn Order Queue");
+            return;
+        }
+        
+        _turnOrderControllerQueue.Remove(Controller);
+        _controllerList.Remove(Controller);
+    }
+    
+    // Request to End the Turn of the Current Controller, Force if Controller is null
+    public void RequestEndTurn(IGController Controller = null)
+    {
+        Debug.Log("RequestEndTurn of " + _currentTurnController + " by " + Controller?.ToString());
+        
+        if (Controller != null && Controller != _currentTurnController)
+        {
+            Debug.LogWarning($" {Controller} Trying to End Turn of {_currentTurnController}, but it's not his turn.");
+            return;
+        }
+        
+        // isTurnActive = false;
+        _turnOrderControllerQueue.Add(_currentTurnController);
+        StartCoroutine(ProcessEndTurn());
+    }
+    
+    public void TryPlayAction(GAction ActionToPlay, bool IsReaction) 
     { 
-        _turnOrderEntityQueue.Clear();
-        // TODO : Initialize the Queue with the Entity in the Game
-        // TODO : Order the Queue based on the Param
+        if (!IsReaction && isActionPlaying) return;
+        
+        // TODO A check modifs en fonction du return ! 
+        ActionToPlay.PreProcess();
+        
+        ActionToPlay.Start_Action();
+        _actionsInProgress.Add(ActionToPlay);
+    }
+    
+    private void StartFight() 
+    {
+        CreateQueue();
+        StartTurn();
+    }
+    
+    // Create the Queue based on Rule (Actually : player is first, then IA)
+    private void CreateQueue()
+    {
+        var orderedEntities = _controllerList.OrderBy(entity => entity is GPlayerController ? 0 : 1).ToList();
+        foreach (var entity in orderedEntities) 
+        {
+            _turnOrderControllerQueue.Add(entity);
+        }
+    }
+    
+    // Start the Turn of the first Entity in the Queue
+    private void StartTurn()
+    {
+        if (_turnOrderControllerQueue.Count == 0)
+        {
+            Debug.LogWarning("Turn Order Queue is empty. Force Disable the Turn Base Manager.");
+            enabled = false;
+            return;
+        }
+        
+        _currentTurnController = _turnOrderControllerQueue.First();
+        _turnOrderControllerQueue.RemoveAt(0);
+        _currentTurnState = ETurnState.InProgress;
+    }
+    
+    protected override void Awake()
+    {
+        base.Awake();
+        enabled = false;
+        _currentTurnState = ETurnState.NotStarted;
     }
 
-    public void Update()
+    private void Update()
     {
-        if (!isTurnActive) return;
+        if (_currentTurnState != ETurnState.InProgress) return;
         
+        for (int i = _actionsInProgress.Count - 1; i >= 0; i--)
+        {
+            GAction action = _actionsInProgress[i];
+            if (action.CurrentState == EActionState.Finished)
+            {
+                _actionsInProgress.RemoveAt(i);
+                continue;
+            }
+            
+            action.Update_Action(Time.deltaTime * _actionSpeed);
+        }
+    }
+
+    private void OnEnable()
+    {
+        if (_controllerList.Count > 0)
+        {
+            StartFight();
+        } else Debug.LogWarning("No Entity to start the Turn Base Manager");
+    }
+
+    private void OnDisable()
+    {
+        _currentTurnState = ETurnState.NotStarted;
+        _turnOrderControllerQueue.Clear();
+        _actionsInProgress.Clear();
     }
     
-    public void End()
+    IEnumerator ProcessEndTurn()
     {
-        // TODO : Clean the Queue 
-        _turnOrderEntityQueue.Clear();
-    }
-    
-    public void RequestEndTurn()
-    {
-        isTurnActive = false;
-        // TODO : End the Turn of the Current Player and Start the Next Player Turn
+        float startTime = Time.time;
+        yield return new WaitUntil(() => !isActionPlaying || Time.time > startTime + _safeTimeHandle);
+        
+        _currentTurnState = ETurnState.Finished;
+        StartTurn();
     }
 }
 
