@@ -10,7 +10,7 @@ public class GGridData : SerializedScriptableObject
     [field : SerializeField] public int rowNum { get; private set; }
     [field : SerializeField] public Dictionary<Vector2Int, GCellData> cellData { get; set; }
 
-
+#if UNITY_EDITOR
     /// <summary>
     /// Override the CellData of this GridData Scriptable Object with the CellData of the active grid
     /// </summary>
@@ -34,4 +34,5 @@ public class GGridData : SerializedScriptableObject
         }
         EditorUtility.SetDirty(this);
     }
+#endif
 }
