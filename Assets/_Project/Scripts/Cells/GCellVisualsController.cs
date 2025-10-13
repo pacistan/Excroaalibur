@@ -33,8 +33,8 @@ public class GCellVisualsController : SerializedMonoBehaviour
 
     [SerializeField, HideInInspector]
     EPawnSpawnType _previousPawnSpawnType;
-
-    #if UNITY_EDITOR
+    
+#if UNITY_EDITOR
     public void UpdateCellVisuals()
     {
         if (_cell._ui == null) return;

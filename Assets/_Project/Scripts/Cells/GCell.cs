@@ -65,6 +65,7 @@ public class GCell : SerializedMonoBehaviour
         _ownedGridObject = Object;
     }
     
+#if UNITY_EDITOR
     void OnValidate()
     {
         if (!Application.isPlaying && _cellVisualsController != null)
@@ -72,4 +73,5 @@ public class GCell : SerializedMonoBehaviour
             _cellVisualsController.UpdateCellVisuals();
         }
     }
+#endif
 }

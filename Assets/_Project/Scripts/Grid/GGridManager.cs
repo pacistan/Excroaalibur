@@ -1,12 +1,7 @@
 using Sirenix.OdinInspector;
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using TMPro;
-using UnityEditor.Search;
 using UnityEngine;
-using UnityEngine.SceneManagement;
-using UnityEngine.Serialization;
+
 
 public class GGridManager : GSingleton<GGridManager>
 {

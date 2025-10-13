@@ -136,7 +136,7 @@ public class GTurnBaseManager : GSingleton<GTurnBaseManager>
         base.Awake();
         _turnOrderControllerQueue.Clear();
         _actionsInProgress.Clear();
-        enabled = false;
+        // enabled = false;
         _currentTurnState = ETurnState.NotStarted;
     }
 
