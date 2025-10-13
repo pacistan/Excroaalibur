@@ -67,20 +67,20 @@ public struct GHexCoordinate : IEquatable<GHexCoordinate>
         return X == other.X || Y == other.Y || Z == other.Z;
     }
 
-    public HexDirection GetLineDirection(GHexCoordinate other)
+    public EHexDirection GetLineDirection(GHexCoordinate other)
     {
         int dx = other.X - X;
         int dy = other.Y - Y;
         int dz = other.Z - Z;
 
-        if (dx > 0 && dy < 0 && dz == 0) return HexDirection.E;
-        if (dx > 0 && dy == 0 && dz < 0) return HexDirection.SE;
-        if (dx == 0 && dy > 0 && dz < 0) return HexDirection.SW;
-        if (dx < 0 && dy > 0 && dz == 0) return HexDirection.W;
-        if (dx < 0 && dy == 0 && dz > 0) return HexDirection.NW;
-        if (dx == 0 && dy < 0 && dz > 0) return HexDirection.NE;
+        if (dx > 0 && dy < 0 && dz == 0) return EHexDirection.E;
+        if (dx > 0 && dy == 0 && dz < 0) return EHexDirection.SE;
+        if (dx == 0 && dy > 0 && dz < 0) return EHexDirection.SW;
+        if (dx < 0 && dy > 0 && dz == 0) return EHexDirection.W;
+        if (dx < 0 && dy == 0 && dz > 0) return EHexDirection.NW;
+        if (dx == 0 && dy < 0 && dz > 0) return EHexDirection.NE;
         
-        return HexDirection.NE;
+        return EHexDirection.NE;
     }
     
     public override string ToString()

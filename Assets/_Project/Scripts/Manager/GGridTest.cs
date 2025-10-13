@@ -19,22 +19,24 @@ public class GGridTest : MonoBehaviour
     [Button]
     private void TestStepping()
     {
+        GGridManager gridManager = GGridManager.Instance ? GGridManager.Instance : GameObject.FindFirstObjectByType<GGridManager>();
         ClearDebug();
-        _stepMap = GPathfindingUtility.GetStepMap(_startCell);
+        gridManager.GenerateStepMap(_startCell);
     }
     
     [Button]
     private void TestPathFinding()
     {
-        if (_stepMap == null)
-        {
-            _stepMap = GPathfindingUtility.GetStepMap(_startCell);
-        }
-        var path = GPathfindingUtility.GetPath(_startCell, _endCell, _stepMap);
+        GGridManager gridManager = GGridManager.Instance ? GGridManager.Instance : GameObject.FindFirstObjectByType<GGridManager>();
+        var path =  gridManager.GetPath(_startCell, _endCell, true);
+        GCell currentCell = _startCell;
+        currentCell._cellVisualsController.UpdateCellDebugNum("O");
         foreach (var hexDirection in path)
         {
-            Debug.Log(hexDirection);
+            currentCell = currentCell._neighbors[(int)hexDirection];
+            currentCell._cellVisualsController.UpdateCellDebugNum("|||");
         }
+        currentCell._cellVisualsController.UpdateCellDebugNum("X");
     }
 
     [Button]

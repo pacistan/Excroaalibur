@@ -26,9 +26,9 @@ public class GCellVisualsController : SerializedMonoBehaviour
 
     public void UpdateCellVisuals()
     {
-        if (_cell._UI == null) return;
-        _text = _cell._UI.GetComponentInChildren<TextMeshProUGUI>();
-        _highlight = _cell._UI.GetComponentInChildren<Image>();
+        if (_cell._ui == null) return;
+        _text = _cell._ui.GetComponentInChildren<TextMeshProUGUI>();
+        _highlight = _cell._ui.GetComponentInChildren<Image>();
         
         var tileTypeData = _commonCellData.TileTypeData[_cell._data.tileType];
         Material[] materials = tileTypeData.materials;
