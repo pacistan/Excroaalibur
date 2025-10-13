@@ -76,7 +76,7 @@ public class GSentryBehavior : GAIBehavior
                         ChangeState(EBehaviorState.TryingToPunch);
                         GMoveAction moveAction = new GMoveAction();
                         moveAction.linkedPawn = _controller.pawn;
-                        moveAction.targetCell = crown.cell;
+                        moveAction.targetCell = GetTargetCell(_controller.pawn.currentCell, crown.cell, _controller.pawn.moveDistance);
                         return moveAction;
                     }
                 }
@@ -97,7 +97,7 @@ public class GSentryBehavior : GAIBehavior
                     {
                         GMoveAction moveAction = new GMoveAction();
                         moveAction.linkedPawn = _controller.pawn;
-                        moveAction.targetCell = receptacle.cell;
+                        moveAction.targetCell = GetTargetCell(_controller.pawn.currentCell, receptacle.cell, _controller.pawn.moveDistance);
                         ChangeState(EBehaviorState.TryingToPlaceCrown);
                         return moveAction;
                     }
@@ -185,5 +185,16 @@ public class GSentryBehavior : GAIBehavior
         }
         distance = shortestDistance;
         return targetReceptacle;
+    }
+
+    private GCell GetTargetCell(GCell startCell, GCell endCell, int distance)
+    {
+        var path = GGridManager.Instance.GetPath(startCell, endCell, false, _controller.pawn.moveDistance);
+        GCell cell = startCell;
+        foreach (EHexDirection direction in path)
+        {
+            cell = cell._neighbors[(int)direction];
+        }
+        return cell;
     }
 }

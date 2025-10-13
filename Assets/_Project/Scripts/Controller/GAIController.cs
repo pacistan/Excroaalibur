@@ -34,9 +34,8 @@ public class GAIController : GController
         }
         else
         {
-            
+            GTurnBaseManager.Instance.TryPlayAction(action, false);
         }
-        // TODO : Give Action to manager
     }
 
     public override void OnActionOver()
