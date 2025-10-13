@@ -1,5 +1,6 @@
 ﻿using Sirenix.OdinInspector;
 using System;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.Serialization;
@@ -8,6 +9,7 @@ public class GIPlayerController : MonoBehaviour/*, GIController*/
 {
     public event Action<GPawn> SelectedPlayerChanged;
     public int actionToken = 3;
+    public List<GAction> availableActions = new List<GAction>();
     
     [ReadOnly] GPawn _selectedPlayer;
     InputAction _selectInput;
@@ -18,27 +20,25 @@ public class GIPlayerController : MonoBehaviour/*, GIController*/
         if (_selectedPlayer == newSelected) return;
         
         _selectedPlayer = newSelected;
-        SelectedPlayerChanged?.Invoke(newSelected);
+        selectedPlayerChanged?.Invoke(newSelected);
     }
 
-    public void SetPlayerTurn(bool isPlayerTurn)
+    public void SetPlayerTurn()
     {
-        if (isPlayerTurn)
-        {
-            _remainingActionToken = actionToken;
-        }
-        else
-        {
-            _remainingActionToken = 0;
-        }
+        _remainingActionToken = actionToken;
     }
 
+    public void ForceEndTurn()
+    {
+        _remainingActionToken = 0;
+    }
+    
     private GCell GetCellUnderMouse()
     {
         Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
         if (Physics.Raycast(ray, out RaycastHit hit))
         {
-            GCell cell = hit.transform.gameObject.GetComponent<GCell>();
+            GCell cell = hit.transform.gameObject.GetComponentInParent<GCell>();
             return cell;
         }
         return null;
@@ -53,15 +53,20 @@ public class GIPlayerController : MonoBehaviour/*, GIController*/
     {
         if (_selectInput.IsPressed())
         {
-            if (_selectedPlayer == null)
+            GCell cell = GetCellUnderMouse();
+            if (!cell) return;
+            GPion player = cell.GetPion() && cell.GetPion().isPlayer ? cell.GetPion() : null;
+
+            if (player)
             {
-                //TODO Select player on cell
-                GetCellUnderMouse();
+                if (!_selectedPlayer || _selectedPlayer != player && player.IsStunned)
+                    _selectedPlayer = cell.GetPion();
+                else
+                    _selectedPlayer = null;
             }
             else
             {
-                //If clicked on the same entity unselect
-                //If action selected, send request
+                
             }
         }
     }
