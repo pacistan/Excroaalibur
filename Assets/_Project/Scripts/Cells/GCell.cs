@@ -10,8 +10,9 @@ public class GCell : SerializedMonoBehaviour
     [SerializeField]
     public GCellData _data;
 
+    [FormerlySerializedAs("_UI")]
     [field: SerializeField, FoldoutGroup("PersistantData/Components"), ReadOnly]
-    public RectTransform _UI;
+    public RectTransform _ui;
 
     [SerializeField, FoldoutGroup("PersistantData/Components")]
     public GCellVisualsController _cellVisualsController;
@@ -24,10 +25,10 @@ public class GCell : SerializedMonoBehaviour
 
     public void Initialize()
     {
-        _neighbors = new GCell[Enum.GetValues(typeof(HexDirection)).Length];
+        _neighbors = new GCell[Enum.GetValues(typeof(EHexDirection)).Length];
     }
     
-    public void SetNeighbor (HexDirection direction, GCell cell)
+    public void SetNeighbor (EHexDirection direction, GCell cell)
     {
         _neighbors[(int)direction] = cell;
         cell._neighbors[(int)direction.Opposite()] = this;

@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-public interface GIController
+public interface IGController
 {
     public int actionTokens { get; set; }
     
