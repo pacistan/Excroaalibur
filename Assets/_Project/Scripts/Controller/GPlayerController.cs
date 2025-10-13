@@ -10,11 +10,12 @@ public class GPlayerController : GController
     public event Action<GPawn> SelectedPlayerChanged;
     public GAction[] availableActions = new GAction[] { };
     public ActionList actionList;
-    public int actionTokens { get; set; }
 
     [ReadOnly] GPawn _selectedPlayer;
     [ReadOnly] GAction _selectedAction;
     InputAction _selectInput;
+    
+    [SerializeField, ReadOnly]
     int _remainingActionToken = 0;
     
     private GCell _targetCell;
@@ -111,13 +112,20 @@ public class GPlayerController : GController
     }
     public override void StartTurn()
     {
-        throw new NotImplementedException();
+        SetPlayerTurn();
     }
 
     public override void StartAction()
     {
         _selectedAction.targetCell = _targetCell;
-        _selectedPlayer.RequestAction(_selectedAction);
+        if (_selectedPlayer.RequestAction(_selectedAction))
+        {
+            _remainingActionToken--;
+            if (_remainingActionToken <= 0) 
+            {
+                GTurnBaseManager.Instance.RequestEndTurn(this);
+            }
+        }
     }
 
     public override void OnActionOver()

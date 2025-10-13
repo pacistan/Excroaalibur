@@ -34,15 +34,18 @@ public class GPawn : MonoBehaviour
         currentCell.SetPawn(this);
     }
     
-    public void RequestAction(GAction action)
+    public bool RequestAction(GAction action)
     {
-        if (action == null || !action.IsValid()) return;
+        if (action == null || !action.IsValid()) return false;
         action.linkedPawn = this;
         print("Request " + action.ToString());
         if (!GTurnBaseManager.Instance.TryPlayAction(action, false))
         {
             print("Action Failed");
+            return false;
         }
+        
+        return true;
     }
 
     public void TakeDamage(int damage = 1)

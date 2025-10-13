@@ -23,6 +23,14 @@ public abstract class GAction
 
     [ReadOnly] public EActionState CurrentState { get; private set; } = EActionState.None;
     
+    public GAction Duplicate()
+    {
+        GAction copy = (GAction)Activator.CreateInstance(this.GetType());
+        copy.linkedPawn = linkedPawn;
+        copy.targetCell = targetCell;
+        copy.CurrentState = CurrentState;
+        return copy;
+    }
     
     public virtual void PreProcess()
     {

@@ -65,8 +65,10 @@ public class GTurnBaseManager : GSingleton<GTurnBaseManager>
         _controllerList.Remove(Controller);
     }
     
-    /** Request to End the Turn of the Current Controller, Force if Controller is null */
-    public void RequestEndTurn(GController Controller = null)
+    /** Request to End the Turn of the Current Controller,
+     *  Set controller to null to Force
+     */
+    public void RequestEndTurn(GController Controller)
     {
         Debug.Log("RequestEndTurn of " + _currentTurnController + " by " + Controller?.ToString());
         
@@ -85,11 +87,14 @@ public class GTurnBaseManager : GSingleton<GTurnBaseManager>
     { 
         if (!IsReaction && isActionPlaying) return false;
         
-        // TODO A check modifs en fonction du return ! 
-        ActionToPlay.PreProcess();
+        // TODO : Check if it's the good Method ! 
+        GAction ActionInstance = ActionToPlay.Duplicate();
         
-        ActionToPlay.Start_Action();
-        _actionsInProgress.Add(ActionToPlay);
+        // TODO A check modifs en fonction du return ! 
+        ActionInstance.PreProcess();
+        
+        ActionInstance.Start_Action();
+        _actionsInProgress.Add(ActionInstance);
         return true;
     }
     
@@ -121,6 +126,8 @@ public class GTurnBaseManager : GSingleton<GTurnBaseManager>
         
         _currentTurnController = _turnOrderControllerQueue.First();
         _turnOrderControllerQueue.RemoveAt(0);
+        
+        _currentTurnController.StartTurn();
         _currentTurnState = ETurnState.InProgress;
     }
     
