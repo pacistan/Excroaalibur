@@ -34,7 +34,7 @@ public class GGridEditor : MonoBehaviour
             Debug.LogError("Can't instantiate grid");
             return;
         }
-        GGridManager gridManager = GGridManager.Instance ? GGridManager.Instance : FindObjectOfType<GGridManager>();      
+        GGridManager gridManager = GGridManager.Instance ? GGridManager.Instance : GameObject.FindFirstObjectByType<GGridManager>();      
         ClearCells();
         
         int rows = _gridData.rowNum;
@@ -75,7 +75,7 @@ public class GGridEditor : MonoBehaviour
     [Button(ButtonSizes.Large), GUIColor(.9f, 0.2f, .1f)]
     public void ClearCells()
     {
-        GGridManager gridManager = GGridManager.Instance ? GGridManager.Instance : FindObjectOfType<GGridManager>();
+        GGridManager gridManager = GGridManager.Instance ? GGridManager.Instance : GameObject.FindFirstObjectByType<GGridManager>();
         GCell[] grid = gridManager._grid;
         if (grid != null)
         {
@@ -174,7 +174,7 @@ public class GGridEditor : MonoBehaviour
     [Button, FoldoutGroup("Serialization")]
     private void SaveGridLayout()
     {
-        GGridManager gridManager = GGridManager.Instance ? GGridManager.Instance : FindObjectOfType<GGridManager>();
+        GGridManager gridManager = GGridManager.Instance ? GGridManager.Instance : GameObject.FindFirstObjectByType<GGridManager>();
         GGridData newAsset = ScriptableObject.CreateInstance<GGridData>();
         newAsset.GenerateCellData(gridManager._grid, gridManager._currentGridSize);
         UnityEditor.AssetDatabase.CreateAsset(newAsset, $"{pathToGridLayoutFolders}/{_gridDataFileName}.asset");

@@ -10,7 +10,6 @@ public class GCell : SerializedMonoBehaviour
     [SerializeField]
     public GCellData _data;
 
-    [FormerlySerializedAs("_UI")]
     [field: SerializeField, FoldoutGroup("PersistantData/Components"), ReadOnly]
     public RectTransform _ui;
 
@@ -22,6 +21,9 @@ public class GCell : SerializedMonoBehaviour
 
     [field : SerializeField, ReadOnly, FoldoutGroup("PersistantData")]
     public GCell[] _neighbors{get; private set;}
+
+    [field: SerializeField, ReadOnly, FoldoutGroup("PersistantData")]
+    public GPion _ownedPawn;
 
     public void Initialize()
     {
@@ -36,17 +38,17 @@ public class GCell : SerializedMonoBehaviour
 
     public bool IsWalkable()
     {
-        return _data.tileType == GCellData.ETileType.Normal && _data.pion == null;
+        return _data.tileType == GCellData.ETileType.Normal && _ownedPawn == null;
     }
 
     public void SetPion(GPion pion)
     {
-        _data.pion = pion;
+        _ownedPawn = pion;
     }
     
     void OnValidate()
     {
-        if (Application.isEditor && !Application.isPlaying && _cellVisualsController != null)
+        if (!Application.isPlaying && _cellVisualsController != null)
         {
             _cellVisualsController.UpdateCellVisuals();
         }

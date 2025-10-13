@@ -8,6 +8,9 @@ using UnityEngine.UI;
 [RequireComponent(typeof(GCell))]
 public class GCellVisualsController : SerializedMonoBehaviour
 {
+    public enum EPawnSpawnType {None, Sentry, PlayerPawn}
+
+    
     [FormerlySerializedAs("_commonCellData")]
     [SerializeField]
     GCellCommonData cellCommonData;
@@ -25,6 +28,10 @@ public class GCellVisualsController : SerializedMonoBehaviour
     TextMeshProUGUI _text;
     [SerializeField, FoldoutGroup("Components")]
     Image _highlight;
+    [SerializeField, FoldoutGroup("Components")]
+    Transform _pawnSpawnPoint;
+
+    EPawnSpawnType _previousPawnSpawnType;
 
     #if UNITY_EDITOR
     public void UpdateCellVisuals()
@@ -32,18 +39,41 @@ public class GCellVisualsController : SerializedMonoBehaviour
         if (_cell._ui == null) return;
         _text = _cell._ui.GetComponentInChildren<TextMeshProUGUI>();
         _highlight = _cell._ui.GetComponentInChildren<Image>();
-        
         var tileTypeData = cellCommonData.tileTypeData[_cell._data.tileType];
-        Material[] materials = tileTypeData.materials;
-        Mesh mesh = tileTypeData.mesh;
-        
-        _meshRenderer.sharedMaterials = materials;
-        _meshFilter.sharedMesh = mesh;
 
-        _text.color = tileTypeData.textColor;
-        _highlight.color = tileTypeData.highlightColor;
-        HideInHierarchy();
+        // Tile Type
+        {
+            Material[] materials = tileTypeData.materials;
+            Mesh mesh = tileTypeData.mesh;
+
+            _meshRenderer.sharedMaterials = materials;
+            _meshFilter.sharedMesh = mesh;
+        }
         
+        // Pawn Type
+        EPawnSpawnType newPawnType = _cell._data.pawnType;
+        if(_previousPawnSpawnType != newPawnType)
+        {
+            if (_cell._ownedPawn)
+            {
+                DestroyImmediate(_cell._ownedPawn.gameObject);
+            }
+            GPion pawnPrefab = cellCommonData.pawnTypeData[newPawnType];
+            if (pawnPrefab)
+            {
+                _cell._ownedPawn = PrefabUtility.InstantiatePrefab(pawnPrefab, _pawnSpawnPoint) as GPion;
+                _cell._ownedPawn.transform.localPosition = Vector3.zero;
+            }
+            _previousPawnSpawnType = newPawnType;
+        }
+        
+        // UI
+        {
+            _text.color = tileTypeData.textColor;
+            _highlight.color = tileTypeData.highlightColor;
+        }
+        
+        HideInHierarchy();
         EditorUtility.SetDirty(this);
     }
 #endif
