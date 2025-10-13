@@ -15,7 +15,7 @@ public enum ETurnState
 
 public class GTurnBaseManager : GSingleton<GTurnBaseManager>
 {
-    // Manager The Turn Order 
+    /** Manager The Turn Order */
     public IGController _currentTurnController { get; private set; }
 
     public bool isActionPlaying
@@ -25,22 +25,21 @@ public class GTurnBaseManager : GSingleton<GTurnBaseManager>
     
     private List<GAction> _actionsInProgress = new List<GAction>();
     
-    // Queue Order of The Entity currently in fight
+    /** Queue Order of The Entity currently in fight */ 
     private List<IGController> _turnOrderControllerQueue = new List<IGController>();
     
-    // All the Entity in the Scene
+    /** All the Entity in the Scene */
     private List<IGController> _controllerList = new List<IGController>();
     
-    // Time to wait before forcing the end of the turn
-    [SerializeField, BoxGroup("Dev Settings")]
+    [SerializeField, BoxGroup("Dev Settings"), Tooltip("Time to wait before forcing the end of the turn when action is playing")]
     private float _safeTimeHandle = 5f;
-    
-    [SerializeField, BoxGroup("Dev Settings")]
+
+    [SerializeField, BoxGroup("Dev Settings"), Tooltip("Speed Multiplier of the Action")]
     private float _actionSpeed = 1f;
 
     public ETurnState _currentTurnState { get; private set; }
-    
-    // Register an Controller to the Turn Base Manager
+
+    /** Register an Controller to the Turn Base Manager */
     public void RegisterController(IGController Controller)
     {
         if (enabled && !_turnOrderControllerQueue.Contains(Controller))
@@ -53,7 +52,7 @@ public class GTurnBaseManager : GSingleton<GTurnBaseManager>
         }
     }
     
-    // Unregister a Controller from the Turn Base Manager
+    /** Unregister a Controller from the Turn Base Manager */
     public void UnregisterController(IGController Controller)
     {
         if (!_turnOrderControllerQueue.Contains(Controller))
@@ -66,7 +65,7 @@ public class GTurnBaseManager : GSingleton<GTurnBaseManager>
         _controllerList.Remove(Controller);
     }
     
-    // Request to End the Turn of the Current Controller, Force if Controller is null
+    /** Request to End the Turn of the Current Controller, Force if Controller is null */
     public void RequestEndTurn(IGController Controller = null)
     {
         Debug.Log("RequestEndTurn of " + _currentTurnController + " by " + Controller?.ToString());
@@ -99,7 +98,7 @@ public class GTurnBaseManager : GSingleton<GTurnBaseManager>
         StartTurn();
     }
     
-    // Create the Queue based on Rule (Actually : player is first, then IA)
+    /** Create the Queue based on Rule (Actually : player is first, then IA) */
     private void CreateQueue()
     {
         var orderedEntities = _controllerList.OrderBy(entity => entity is GPlayerController ? 0 : 1).ToList();
@@ -109,7 +108,7 @@ public class GTurnBaseManager : GSingleton<GTurnBaseManager>
         }
     }
     
-    // Start the Turn of the first Entity in the Queue
+    /** Start the Turn of the first Entity in the Queue */
     private void StartTurn()
     {
         if (_turnOrderControllerQueue.Count == 0)
@@ -127,6 +126,8 @@ public class GTurnBaseManager : GSingleton<GTurnBaseManager>
     protected override void Awake()
     {
         base.Awake();
+        _turnOrderControllerQueue.Clear();
+        _actionsInProgress.Clear();
         enabled = false;
         _currentTurnState = ETurnState.NotStarted;
     }
@@ -153,7 +154,7 @@ public class GTurnBaseManager : GSingleton<GTurnBaseManager>
         if (_controllerList.Count > 0)
         {
             StartFight();
-        } else Debug.LogWarning("No Entity to start the Turn Base Manager");
+        } else Debug.LogWarning("No Controller to start the Turn Base Manager");
     }
 
     private void OnDisable()
