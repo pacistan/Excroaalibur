@@ -31,6 +31,7 @@ public class GCellVisualsController : SerializedMonoBehaviour
     [SerializeField, FoldoutGroup("Components")]
     Transform _pawnSpawnPoint;
 
+    [SerializeField, HideInInspector]
     EPawnSpawnType _previousPawnSpawnType;
 
     #if UNITY_EDITOR
@@ -75,6 +76,7 @@ public class GCellVisualsController : SerializedMonoBehaviour
         
         HideInHierarchy();
         EditorUtility.SetDirty(this);
+        EditorUtility.SetDirty(_cell);
     }
 #endif
     public void UpdateCellDebugNum(string newDebugText)
