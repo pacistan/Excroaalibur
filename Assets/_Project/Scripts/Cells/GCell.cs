@@ -19,8 +19,8 @@ public class GCell : SerializedMonoBehaviour
     [SerializeField, ReadOnly, FoldoutGroup("PersistantData")]
     public GHexCoordinate _hexCoordinates;
 
-    [SerializeField, ReadOnly, FoldoutGroup("PersistantData")]
-    GCell[] _neighbors = new GCell[6];
+    [field : SerializeField, ReadOnly, FoldoutGroup("PersistantData")]
+    public GCell[] _neighbors{get; private set;}
 
     public void Initialize()
     {
@@ -33,9 +33,14 @@ public class GCell : SerializedMonoBehaviour
         cell._neighbors[(int)direction.Opposite()] = this;
     }
 
+    public bool IsWalkable()
+    {
+        return _data.tileType == GCellData.ETileType.Normal;
+    }
+    
     void OnValidate()
     {
-        if (Application.isEditor && !Application.isPlaying)
+        if (Application.isEditor && !Application.isPlaying && _cellVisualsController != null)
         {
             _cellVisualsController.UpdateCellVisuals();
         }

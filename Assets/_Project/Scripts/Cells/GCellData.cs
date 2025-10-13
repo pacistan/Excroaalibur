@@ -18,6 +18,12 @@ public struct GCellData
         tileType = ETileType.Normal;
     }
 
+    public GCellData(GCellData inCellData,Vector2Int inGridCoordinates)
+    {
+        gridCoordinates = inGridCoordinates;
+        tileType = inCellData.tileType;
+    }
+
     public bool IsCellChanged()
     {
         return tileType != ETileType.Normal;

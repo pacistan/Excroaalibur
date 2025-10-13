@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using TMPro;
 using UnityEditor;
+using UnityEditor.Search;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.Serialization;
@@ -49,22 +50,22 @@ public class GGridManager : GSingleton<GGridManager>
         
         int rows = _gridData.RowNum;
         int columns = _gridData.ColumnNum;
-        _currentGridSize = new Vector2Int(rows, columns);
-        int size = columns * rows;
+        _currentGridSize = new Vector2Int(columns, rows);
+        int size = rows * columns;
         _grid = new GCell[size];
         
         try
         {
-            for (int row = 0, i = 0; row < rows; row++)
+            for (int column = 0, i = 0; column < columns; column++)
             {
                 // Update progress bar
                 EditorUtility.DisplayProgressBar(
                     "Creating Grid", 
-                    $"Row {row + 1}/{rows}", 
-                    (float)row / rows
+                    $"Row {column + 1}/{columns}", 
+                    (float)column / columns
                 );
             
-                for (int column = 0; column < columns; column++)
+                for (int row = 0; row < rows; row++)
                 {
                     CreateCell(row, column, i++);
                 }
@@ -118,26 +119,31 @@ public class GGridManager : GSingleton<GGridManager>
             cell.transform.localPosition = position;
             cell.gameObject.name = $"Cell {row}, {column}";
             cell.Initialize();
-            if (column > 0)
-            {
-                cell.SetNeighbor(HexDirection.W, _grid[i - 1]);
-            }
             if (row > 0)
             {
-                if ((row & 1) == 0)
+                GCell neighbor = _grid[i - 1];
+                cell.SetNeighbor(HexDirection.W, neighbor);
+            }
+            if (column > 0)
+            {
+                if ((column & 1) == 0)
                 {
-                    cell.SetNeighbor(HexDirection.SE, _grid[i - _gridData.ColumnNum]);
-                    if (column > 0)
+                    GCell neighbor = _grid[i - _gridData.RowNum];
+                    cell.SetNeighbor(HexDirection.SE, neighbor);
+                    if (row > 0)
                     {
-                        cell.SetNeighbor(HexDirection.SW, _grid[i - _gridData.ColumnNum - 1]);
+                        neighbor = _grid[i - _gridData.RowNum - 1];
+                        cell.SetNeighbor(HexDirection.SW, neighbor);
                     }
                 }
                 else
                 {
-                    cell.SetNeighbor(HexDirection.SW, _grid[i - _gridData.ColumnNum]);
+                    GCell neighbor = _grid[i - _gridData.RowNum];
+                    cell.SetNeighbor(HexDirection.SW, neighbor);
                     if (row < _gridData.RowNum - 1)
                     {
-                        cell.SetNeighbor(HexDirection.SE, _grid[i - _gridData.ColumnNum + 1]);
+                        neighbor = _grid[i - _gridData.RowNum + 1];
+                        cell.SetNeighbor(HexDirection.SE, neighbor);
                     }
                 }
             }
@@ -162,7 +168,7 @@ public class GGridManager : GSingleton<GGridManager>
             Vector2Int cellCoordinates = new Vector2Int(row, column);
             if (_gridData.CellData != null && _gridData.CellData.ContainsKey(cellCoordinates))
             {
-                cell._data = _gridData.CellData[cellCoordinates];
+                cell._data = new GCellData(_gridData.CellData[cellCoordinates], cellCoordinates);
             }
             else
             {
@@ -205,6 +211,82 @@ public static class HexDirectionExtensions {
     {
         return (HexDirection)(((int)direction - 1) % 6);
     }
+
+}
+
+public static class GPathfindingUtility
+{
+    public static HexDirection[] GetPath(GCell from, GCell to,  Dictionary<Vector2Int, int> stepMap)
+    {
+        if (!stepMap.ContainsKey(to._data.gridCoordinates)) return null;
+        
+        GCell currentCell = to;
+        int currentCellStep = stepMap[to._data.gridCoordinates];
+        HexDirection[] path = new HexDirection[currentCellStep];
+
+        int i = 0;
+        while (currentCellStep != 0 && i < 4000)
+        {
+            foreach (var cell in currentCell._neighbors)
+            {
+                if (!cell)
+                {
+                    continue;
+                }
+                Vector2Int gridCoordinates = cell._data.gridCoordinates;
+                if (stepMap.ContainsKey(gridCoordinates) && stepMap[gridCoordinates] < currentCellStep)
+                {
+                    HexDirection direction = cell._hexCoordinates.GetLineDirection(currentCell._hexCoordinates);
+                    currentCell = cell;
+                    currentCellStep = stepMap[gridCoordinates];
+                    path[currentCellStep] = direction;
+                    cell._cellVisualsController.UpdateCellDebugNum($"|||");
+                    i++;
+                    break;
+                }
+            }
+            i++;
+        }
+        return path;
+    }
+
+    public static Dictionary<Vector2Int, int> GetStepMap(GCell from)
+    {
+        Dictionary<Vector2Int, int> stepMap = new Dictionary<Vector2Int, int>();
+        int stepNum = 0;
+        
+        stepMap.Add(from._data.gridCoordinates, stepNum);
+        from._cellVisualsController.UpdateCellDebugNum($"{stepNum}");
+        StepRecursion(from, ref stepMap, stepNum + 1);
+        
+        return stepMap;
+    }
+
+    private static void StepRecursion(GCell from, ref Dictionary<Vector2Int, int> stepMap, int stepNum)
+    {
+        foreach (GCell cell in from._neighbors)
+        {
+            if (cell && cell.IsWalkable())
+            {
+                var coordinates = cell._data.gridCoordinates;
+                if(!stepMap.ContainsKey(coordinates))
+                {
+                    stepMap.Add(cell._data.gridCoordinates, stepNum);
+                    cell._cellVisualsController.UpdateCellDebugNum(stepNum.ToString());
+                    StepRecursion(cell, ref stepMap, stepNum + 1);
+                }
+                else if(stepMap[coordinates] >= stepNum)
+                {
+                    stepMap[coordinates] = stepNum;
+                    cell._cellVisualsController.UpdateCellDebugNum(stepNum.ToString());
+                    StepRecursion(cell, ref stepMap, stepNum + 1);
+                }
+
+            }
+        }
+
+    }
+    
 }
 
 public enum HexDirection {
