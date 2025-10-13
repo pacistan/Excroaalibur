@@ -20,14 +20,16 @@ MonoBehaviour:
     - {fileID: 2100000, guid: ee0facce3cc58ce4c90a60ca00ae5868, type: 2}
     - {fileID: 2100000, guid: 1e11fd0e0df95954f86b66ebd97a5bbd, type: 2}
     - {fileID: 2100000, guid: c62f97b24de6adc46a09d669fc4bb411, type: 2}
+    - {fileID: 20667597376880823, guid: 4cd3115111bbaaa4d9f56415aae1450d, type: 3}
+    - {fileID: 20667597376880823, guid: 48d2615fd829feb4a9c7bfb377fa75cc, type: 3}
     SerializedBytesString: 
     Prefab: {fileID: 0}
     PrefabModificationsReferencedUnityObjects: []
     PrefabModifications: []
     SerializationNodes:
-    - Name: TileTypeData
+    - Name: tileTypeData
       Entry: 7
-      Data: 0|System.Collections.Generic.Dictionary`2[[GCellData+ETileType, Assembly-CSharp],[GCommonData_Cell+GFTileTypeData,
+      Data: 0|System.Collections.Generic.Dictionary`2[[GCellData+ETileType, Assembly-CSharp],[GCellCommonData+FTileTypeData,
         Assembly-CSharp]], mscorlib
     - Name: comparer
       Entry: 7
@@ -53,7 +55,7 @@ MonoBehaviour:
       Data: 0
     - Name: $v
       Entry: 7
-      Data: GCommonData_Cell+GFTileTypeData, Assembly-CSharp
+      Data: GCellCommonData+FTileTypeData, Assembly-CSharp
     - Name: <mesh>k__BackingField
       Entry: 10
       Data: 0
@@ -122,7 +124,7 @@ MonoBehaviour:
       Data: 1
     - Name: $v
       Entry: 7
-      Data: GCommonData_Cell+GFTileTypeData, Assembly-CSharp
+      Data: GCellCommonData+FTileTypeData, Assembly-CSharp
     - Name: <mesh>k__BackingField
       Entry: 10
       Data: 0
@@ -191,7 +193,7 @@ MonoBehaviour:
       Data: 2
     - Name: $v
       Entry: 7
-      Data: GCommonData_Cell+GFTileTypeData, Assembly-CSharp
+      Data: GCellCommonData+FTileTypeData, Assembly-CSharp
     - Name: <mesh>k__BackingField
       Entry: 10
       Data: 0
@@ -249,6 +251,68 @@ MonoBehaviour:
     - Name: 
       Entry: 8
       Data: 
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 13
+      Data: 
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: pawnTypeData
+      Entry: 7
+      Data: 5|System.Collections.Generic.Dictionary`2[[GCellVisualsController+EPawnSpawnType,
+        Assembly-CSharp],[GPion, Assembly-CSharp]], mscorlib
+    - Name: comparer
+      Entry: 7
+      Data: 6|System.Collections.Generic.EnumEqualityComparer`1[[GCellVisualsController+EPawnSpawnType,
+        Assembly-CSharp]], mscorlib
+    - Name: 
+      Entry: 12
+      Data: 0
+    - Name: 
+      Entry: 13
+      Data: 
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 12
+      Data: 3
+    - Name: 
+      Entry: 7
+      Data: 
+    - Name: $k
+      Entry: 3
+      Data: 0
+    - Name: $v
+      Entry: 6
+      Data: 
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 7
+      Data: 
+    - Name: $k
+      Entry: 3
+      Data: 1
+    - Name: $v
+      Entry: 10
+      Data: 4
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 7
+      Data: 
+    - Name: $k
+      Entry: 3
+      Data: 2
+    - Name: $v
+      Entry: 10
+      Data: 5
     - Name: 
       Entry: 8
       Data: 

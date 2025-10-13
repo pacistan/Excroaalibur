@@ -1,6 +1,44 @@
 ﻿using System;
 using UnityEngine;
 
+public enum EHexDirection {
+    NE, E, SE, SW, W, NW
+}
+
+public static class HexDirectionExtensions {
+    public static EHexDirection Opposite (this EHexDirection direction) {
+        return (int)direction < 3 ? (direction + 3) : (direction - 3);
+    }
+
+    public static EHexDirection ToRight(this EHexDirection direction)
+    {
+        return (EHexDirection)(((int)direction + 1) % 6);
+    }
+
+    public static EHexDirection ToLeft(this EHexDirection direction)
+    {
+        return (EHexDirection)(((int)direction - 1) % 6);
+    }
+
+}
+
+public static class GHexMetrix {
+
+    public const float outerRadius = 4f;
+
+    public const float innerRadius = outerRadius * 0.866025404f;
+
+    public readonly static Vector3[] corners = {
+        new Vector3(0f, 0f, outerRadius),
+        new Vector3(innerRadius, 0f, 0.5f * outerRadius),
+        new Vector3(innerRadius, 0f, -0.5f * outerRadius),
+        new Vector3(0f, 0f, -outerRadius),
+        new Vector3(-innerRadius, 0f, -0.5f * outerRadius),
+        new Vector3(-innerRadius, 0f, 0.5f * outerRadius),
+        new Vector3(0f, 0f, outerRadius)
+    };
+}
+
 [System.Serializable]
 public struct GHexCoordinate : IEquatable<GHexCoordinate>
 {
@@ -25,9 +63,9 @@ public struct GHexCoordinate : IEquatable<GHexCoordinate>
 
     public static GHexCoordinate FromPosition(Vector3 position)
     {
-        float x = position.x / (GHexMetrics.innerRadius * 2f);
+        float x = position.x / (GHexMetrix.innerRadius * 2f);
         float y = -x;
-        float offset = position.z / (GHexMetrics.outerRadius * 3f);
+        float offset = position.z / (GHexMetrix.outerRadius * 3f);
         x -= offset;
         y -= offset;
         
@@ -67,20 +105,20 @@ public struct GHexCoordinate : IEquatable<GHexCoordinate>
         return X == other.X || Y == other.Y || Z == other.Z;
     }
 
-    public HexDirection GetLineDirection(GHexCoordinate other)
+    public EHexDirection GetLineDirection(GHexCoordinate other)
     {
         int dx = other.X - X;
         int dy = other.Y - Y;
         int dz = other.Z - Z;
 
-        if (dx > 0 && dy < 0 && dz == 0) return HexDirection.E;
-        if (dx > 0 && dy == 0 && dz < 0) return HexDirection.SE;
-        if (dx == 0 && dy > 0 && dz < 0) return HexDirection.SW;
-        if (dx < 0 && dy > 0 && dz == 0) return HexDirection.W;
-        if (dx < 0 && dy == 0 && dz > 0) return HexDirection.NW;
-        if (dx == 0 && dy < 0 && dz > 0) return HexDirection.NE;
+        if (dx > 0 && dy < 0 && dz == 0) return EHexDirection.E;
+        if (dx > 0 && dy == 0 && dz < 0) return EHexDirection.SE;
+        if (dx == 0 && dy > 0 && dz < 0) return EHexDirection.SW;
+        if (dx < 0 && dy > 0 && dz == 0) return EHexDirection.W;
+        if (dx < 0 && dy == 0 && dz > 0) return EHexDirection.NW;
+        if (dx == 0 && dy < 0 && dz > 0) return EHexDirection.NE;
         
-        return HexDirection.NE;
+        return EHexDirection.NE;
     }
     
     public override string ToString()
@@ -118,3 +156,4 @@ public struct GHexCoordinate : IEquatable<GHexCoordinate>
         return !left.Equals(right);
     }
 }
+

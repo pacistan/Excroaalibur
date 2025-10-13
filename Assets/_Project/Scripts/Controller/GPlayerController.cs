@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.Serialization;
 
-public class GPlayerController : MonoBehaviour, IGController
+public class GIPlayerController : MonoBehaviour/*, GIController*/
 {
     public event Action<GPion> SelectedPlayerChanged;
     public int actionToken = 3;

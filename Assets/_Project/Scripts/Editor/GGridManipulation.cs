@@ -15,9 +15,18 @@ public class GGridManipulation
     private static void OnSceneGUI(SceneView sv)
     {
         var e = Event.current;
-        if (e.type != EventType.KeyDown || e.keyCode != KeyCode.Keypad1)
-            return;
+        if (e.type == EventType.KeyDown && e.keyCode == KeyCode.Keypad1)
+        {
+            OnChangeTileType();
+            e.Use();
+            SceneView.RepaintAll();
+        }
+        
 
+    }
+
+    private static void OnChangeTileType()
+    {
         var selectedObjs = Selection.gameObjects;
         foreach (var obj in selectedObjs)
         {
@@ -38,8 +47,5 @@ public class GGridManipulation
             cell._cellVisualsController.UpdateCellVisuals();
             EditorUtility.SetDirty(cell);
         }
-
-        e.Use();
-        SceneView.RepaintAll();
     }
 }

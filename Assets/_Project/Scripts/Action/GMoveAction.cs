@@ -3,11 +3,11 @@ using UnityEngine;
 
 public class GMoveAction : GAction
 {
-    private HexDirection[] _path = new HexDirection[] { };
+    private EHexDirection[] _path = new EHexDirection[] { };
     
     public override void PreProcess()
     {
-        _path = GPathfindingUtility.GetPath(linkedPion.currentCell ,targetCell, GPathfindingUtility.GetStepMap(linkedPion.currentCell));
+        _path = GGridManager.Instance.GetPath(linkedPion.currentCell ,targetCell, true);
         if (_path == null || _path.Length == 0) return;
     }
 

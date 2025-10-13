@@ -1,5 +1,7 @@
 ﻿using Sirenix.OdinInspector;
 using UnityEngine;
+using UnityEngine.Serialization;
+using static GCellVisualsController;
 
 [System.Serializable]
 public struct GCellData
@@ -12,25 +14,27 @@ public struct GCellData
     [SerializeField]
     public ETileType tileType;
 
-    [SerializeField, ReadOnly]
-    public GPion pion;
+    [FormerlySerializedAs("pion")]
+    [SerializeField]
+    public EPawnSpawnType pawnType;
 
+    
     public GCellData(Vector2Int inGridCoordinates)
     {
         gridCoordinates = inGridCoordinates;
         tileType = ETileType.Normal;
-        pion = null;
+        pawnType = EPawnSpawnType.None;
     }
 
-    public GCellData(GCellData inCellData,Vector2Int inGridCoordinates, GPion inPion = null)
+    public GCellData(GCellData inCellData,Vector2Int inGridCoordinates)
     {
         gridCoordinates = inGridCoordinates;
         tileType = inCellData.tileType;
-        pion = inPion;
+        pawnType = inCellData.pawnType;
     }
 
     public bool IsCellChanged()
     {
-        return tileType != ETileType.Normal;
+        return tileType != ETileType.Normal || pawnType != EPawnSpawnType.None;
     }
 }
