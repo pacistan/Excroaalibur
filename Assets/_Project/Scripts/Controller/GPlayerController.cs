@@ -6,14 +6,14 @@ using UnityEngine.Serialization;
 
 public class GIPlayerController : MonoBehaviour/*, GIController*/
 {
-    public event Action<GPion> SelectedPlayerChanged;
+    public event Action<GPawn> SelectedPlayerChanged;
     public int actionToken = 3;
     
-    [ReadOnly] GPion _selectedPlayer;
+    [ReadOnly] GPawn _selectedPlayer;
     InputAction _selectInput;
     int _remainingActionToken = 0;
 
-    public void SetSelectedPlayer(GPion newSelected)
+    public void SetSelectedPlayer(GPawn newSelected)
     {
         if (_selectedPlayer == newSelected) return;
         

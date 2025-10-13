@@ -1,12 +1,12 @@
 ﻿using System;
 using UnityEngine;
 
-[RequireComponent(typeof(GPion))]
+[RequireComponent(typeof(GPawn))]
 public class GAIController : MonoBehaviour, IGController
 {
     [SerializeField]
     private int _startingActionTokensNumber;
-    private GPion _pawn;
+    private GPawn _pawn;
 
     public int actionTokens { get; set; }
     
@@ -39,6 +39,6 @@ public class GAIController : MonoBehaviour, IGController
     
     void Start()
     {
-        _pawn = GetComponent<GPion>();
+        _pawn = GetComponent<GPawn>();
     }
 }
