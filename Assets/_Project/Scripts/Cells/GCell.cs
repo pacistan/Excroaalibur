@@ -45,6 +45,11 @@ public class GCell : SerializedMonoBehaviour
     {
         _ownedPawn = pawn;
     }
+
+    public GPawn GetPion()
+    {
+        return _ownedPawn;
+    }
     
     void OnValidate()
     {
