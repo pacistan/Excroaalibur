@@ -1,4 +1,5 @@
 using Sirenix.OdinInspector;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using TMPro;
@@ -36,11 +37,14 @@ public class GGridManager : GSingleton<GGridManager>
         {
             GenerateStepMap(from);
         }
-        else
+        else if(_stepMap == null)
         {
-            if (!_stepMap.ContainsKey(to._data.gridCoordinates) ||
-                !_stepMap.ContainsKey(from._data.gridCoordinates)) return null;
+            Debug.LogError("Not Step Data Available or Generated");
+            return null;
         }
+        
+        if (!_stepMap.ContainsKey(to._data.gridCoordinates) ||
+            !_stepMap.ContainsKey(from._data.gridCoordinates)) return null;
         
         GCell currentCell = to;
         int currentCellStep = _stepMap[to._data.gridCoordinates];
@@ -109,4 +113,15 @@ public class GGridManager : GSingleton<GGridManager>
         }
 
     }
+
+
+    public int GetStep(GCell targetCell)
+    {
+        if (_stepMap.ContainsKey(targetCell._data.gridCoordinates))
+        {
+            return _stepMap[targetCell._data.gridCoordinates];
+        }
+        else return -1;
+    }
 }
+
