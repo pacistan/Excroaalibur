@@ -18,6 +18,18 @@ public class GGridManager : GSingleton<GGridManager>
     [HideInInspector]
     public Dictionary<Vector2Int, int> _stepMap;
 
+    public GCell GetCell(GHexCoordinate coordinate)
+    {
+        int id = coordinate.X + coordinate.Y;
+        if (_grid.Length > id) return null;
+        return _grid[id];
+    }
+
+    public GCell GetCell(Vector3 position)
+    {
+        return GetCell(GHexCoordinate.FromPosition(position));
+    }
+    
     public EHexDirection[] GetPath(GCell from, GCell to, bool reloadStepMap = false)
     {
         if (reloadStepMap)
