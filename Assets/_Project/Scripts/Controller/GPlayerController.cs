@@ -28,7 +28,7 @@ public class GPlayerController : GController
         if (_selectedPlayer == newSelected) return;
         
         _selectedPlayer = newSelected;
-        SelectedPlayerChanged?.Invoke(newSelected);
+        selectedPlayerChanged?.Invoke(newSelected);
     }
 
     public void SetPlayerTurn()
