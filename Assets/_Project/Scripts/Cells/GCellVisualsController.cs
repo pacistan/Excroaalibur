@@ -2,13 +2,15 @@
 using TMPro;
 using UnityEditor;
 using UnityEngine;
+using UnityEngine.Serialization;
 using UnityEngine.UI;
 
 [RequireComponent(typeof(GCell))]
 public class GCellVisualsController : SerializedMonoBehaviour
 {
+    [FormerlySerializedAs("_commonCellData")]
     [SerializeField]
-    GCommonData_Cell _commonCellData;
+    GCellCommonData cellCommonData;
 
     [SerializeField, OnValueChanged("HideInHierarchy")]
     bool _showVisualsInHierarchy;
@@ -24,13 +26,14 @@ public class GCellVisualsController : SerializedMonoBehaviour
     [SerializeField, FoldoutGroup("Components")]
     Image _highlight;
 
+    #if UNITY_EDITOR
     public void UpdateCellVisuals()
     {
         if (_cell._ui == null) return;
         _text = _cell._ui.GetComponentInChildren<TextMeshProUGUI>();
         _highlight = _cell._ui.GetComponentInChildren<Image>();
         
-        var tileTypeData = _commonCellData.TileTypeData[_cell._data.tileType];
+        var tileTypeData = cellCommonData.tileTypeData[_cell._data.tileType];
         Material[] materials = tileTypeData.materials;
         Mesh mesh = tileTypeData.mesh;
         
@@ -43,12 +46,13 @@ public class GCellVisualsController : SerializedMonoBehaviour
         
         EditorUtility.SetDirty(this);
     }
-
+#endif
     public void UpdateCellDebugNum(string newDebugText)
     {
         _text.text = newDebugText;
     }
 
+    #if UNITY_EDITOR
     private void HideInHierarchy()
     {
         if (_showVisualsInHierarchy)
@@ -60,4 +64,5 @@ public class GCellVisualsController : SerializedMonoBehaviour
             _meshRenderer.transform.parent.gameObject.hideFlags = HideFlags.HideAndDontSave;
         }
     }
+    #endif
 }

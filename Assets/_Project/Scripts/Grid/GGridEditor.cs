@@ -94,8 +94,8 @@ public class GGridEditor : MonoBehaviour
     private void CreateCell(int row, int column, int i, ref GCell[] grid)
     {
         Vector3 position;
-        position.x = (row + column * .5f - column / 2) * (GHexMetrics.innerRadius * 2f);
-        position.z = column * (GHexMetrics.outerRadius * 1.5f);
+        position.x = (row + column * .5f - column / 2) * (GHexMetrix.innerRadius * 2f);
+        position.z = column * (GHexMetrix.outerRadius * 1.5f);
         position.y = 0;
      
         GCell cell = grid[i] = PrefabUtility.InstantiatePrefab(_cellPrefab, _cellsParent) as GCell;

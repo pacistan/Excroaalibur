@@ -1,6 +1,44 @@
 ﻿using System;
 using UnityEngine;
 
+public enum EHexDirection {
+    NE, E, SE, SW, W, NW
+}
+
+public static class HexDirectionExtensions {
+    public static EHexDirection Opposite (this EHexDirection direction) {
+        return (int)direction < 3 ? (direction + 3) : (direction - 3);
+    }
+
+    public static EHexDirection ToRight(this EHexDirection direction)
+    {
+        return (EHexDirection)(((int)direction + 1) % 6);
+    }
+
+    public static EHexDirection ToLeft(this EHexDirection direction)
+    {
+        return (EHexDirection)(((int)direction - 1) % 6);
+    }
+
+}
+
+public static class GHexMetrix {
+
+    public const float outerRadius = 10f;
+
+    public const float innerRadius = outerRadius * 0.866025404f;
+
+    public readonly static Vector3[] corners = {
+        new Vector3(0f, 0f, outerRadius),
+        new Vector3(innerRadius, 0f, 0.5f * outerRadius),
+        new Vector3(innerRadius, 0f, -0.5f * outerRadius),
+        new Vector3(0f, 0f, -outerRadius),
+        new Vector3(-innerRadius, 0f, -0.5f * outerRadius),
+        new Vector3(-innerRadius, 0f, 0.5f * outerRadius),
+        new Vector3(0f, 0f, outerRadius)
+    };
+}
+
 [System.Serializable]
 public struct GHexCoordinate : IEquatable<GHexCoordinate>
 {
@@ -25,9 +63,9 @@ public struct GHexCoordinate : IEquatable<GHexCoordinate>
 
     public static GHexCoordinate FromPosition(Vector3 position)
     {
-        float x = position.x / (GHexMetrics.innerRadius * 2f);
+        float x = position.x / (GHexMetrix.innerRadius * 2f);
         float y = -x;
-        float offset = position.z / (GHexMetrics.outerRadius * 3f);
+        float offset = position.z / (GHexMetrix.outerRadius * 3f);
         x -= offset;
         y -= offset;
         
@@ -118,3 +156,4 @@ public struct GHexCoordinate : IEquatable<GHexCoordinate>
         return !left.Equals(right);
     }
 }
+
