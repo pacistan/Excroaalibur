@@ -43,4 +43,10 @@ public class GMoveAction : GAction
         //TODO Check valid path
         return true;
     }
+
+    public override bool IsValid()
+    {
+        //TODO Check valid path
+        return true;
+    }
 }
