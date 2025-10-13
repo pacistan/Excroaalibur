@@ -36,4 +36,10 @@ public class GMoveAction : GAction
         base.End_Action();
         linkedPion.transform.position = targetCell.transform.position;
     }
+
+    public override bool IsValid()
+    {
+        //TODO Check valid path
+        return true;
+    }
 }

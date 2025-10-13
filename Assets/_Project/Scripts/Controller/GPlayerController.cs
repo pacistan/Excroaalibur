@@ -5,13 +5,13 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.Serialization;
 
-public class GIPlayerController : MonoBehaviour/*, GIController*/
+public class GPlayerController : MonoBehaviour, IGController
 {
     public event Action<GPawn> SelectedPlayerChanged;
-    public int actionToken = 3;
     public GAction[] availableActions = new GAction[] { };
     public ActionList actionList;
-    
+    public int actionTokens { get; set; }
+
     [ReadOnly] GPawn _selectedPlayer;
     [ReadOnly] GAction _selectedAction;
     InputAction _selectInput;
@@ -22,12 +22,12 @@ public class GIPlayerController : MonoBehaviour/*, GIController*/
         if (_selectedPlayer == newSelected) return;
         
         _selectedPlayer = newSelected;
-        selectedPlayerChanged?.Invoke(newSelected);
+        SelectedPlayerChanged?.Invoke(newSelected);
     }
 
     public void SetPlayerTurn()
     {
-        _remainingActionToken = actionToken;
+        _remainingActionToken = actionTokens;
     }
 
     public void ForceEndTurn()
@@ -42,7 +42,7 @@ public class GIPlayerController : MonoBehaviour/*, GIController*/
     
     public void SelectAction(int id)
     {
-        if (availableActions.Length > id) return;
+        if (availableActions.Length <= id) return;
         SelectAction(availableActions[id]);
     }
     
@@ -78,7 +78,7 @@ public class GIPlayerController : MonoBehaviour/*, GIController*/
 
     private void Update()
     {
-        if (_selectInput.IsPressed())
+        if (_selectInput.WasPressedThisFrame())
         {
             GCell cell = GetCellUnderMouse();
             if (!cell) return;
@@ -86,18 +86,44 @@ public class GIPlayerController : MonoBehaviour/*, GIController*/
 
             if (player)
             {
-                if (!_selectedPlayer || _selectedPlayer != player && player.IsStunned)
+                if (_selectedPlayer != player && !player.IsStunned)
+                {
                     _selectedPlayer = cell.GetPion();
+                    SelectedPlayerChanged?.Invoke(_selectedPlayer);
+                }
                 else
+                {
                     _selectedPlayer = null;
+                    SelectedPlayerChanged?.Invoke(_selectedPlayer);
+                }
 
                 availableActions = GetAvailableActions();
                 if (actionList) actionList.UpdateButtons(availableActions);
             }
-            else if (_selectedAction != null)
+            
+            if (_selectedPlayer && _selectedAction != null)
             {
                 _selectedPlayer.RequestAction(_selectedAction);
             }
         }
+    }
+    public void StartTurn()
+    {
+        throw new NotImplementedException();
+    }
+
+    public void StartAction()
+    {
+        throw new NotImplementedException();
+    }
+
+    public void OnActionOver()
+    {
+        throw new NotImplementedException();
+    }
+
+    public void EndTurn()
+    {
+        throw new NotImplementedException();
     }
 }

@@ -1,4 +1,5 @@
 using Sirenix.OdinInspector;
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Serialization;
@@ -17,8 +18,8 @@ public class GPawn : MonoBehaviour
     
     [SerializeField] private int _hp = 3;
     [ReadOnly] int _stunTurn = 0;
-    
-    
+
+
     public void SetCell(GHexCoordinate newCoordinate)
     {
         SetCell(GGridManager.Instance.GetCell(newCoordinate));
