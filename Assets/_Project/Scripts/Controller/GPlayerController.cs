@@ -9,12 +9,14 @@ public class GIPlayerController : MonoBehaviour/*, GIController*/
 {
     public event Action<GPawn> SelectedPlayerChanged;
     public int actionToken = 3;
-    public List<GAction> availableActions = new List<GAction>();
+    public GAction[] availableActions = new GAction[] { };
+    public ActionList actionList;
     
     [ReadOnly] GPawn _selectedPlayer;
+    [ReadOnly] GAction _selectedAction;
     InputAction _selectInput;
     int _remainingActionToken = 0;
-
+    
     public void SetSelectedPlayer(GPawn newSelected)
     {
         if (_selectedPlayer == newSelected) return;
@@ -32,6 +34,17 @@ public class GIPlayerController : MonoBehaviour/*, GIController*/
     {
         _remainingActionToken = 0;
     }
+
+    public void SelectAction(GAction action)
+    {
+        _selectedAction = action;
+    }
+    
+    public void SelectAction(int id)
+    {
+        if (availableActions.Length > id) return;
+        SelectAction(availableActions[id]);
+    }
     
     private GCell GetCellUnderMouse()
     {
@@ -44,9 +57,23 @@ public class GIPlayerController : MonoBehaviour/*, GIController*/
         return null;
     }
 
+    private GAction[] GetAvailableActions()
+    {
+        if (!_selectedPlayer) return new GAction[]{};
+
+        List<GAction> newAvailableActions = new List<GAction>();
+        
+        foreach (GAction newAction in _selectedPlayer.actions)
+        {
+            newAvailableActions.Add(newAction);
+        }
+        return newAvailableActions.ToArray();
+    }
+
     private void Start()
     {
         _selectInput = InputSystem.actions.FindAction("Select");
+        if (actionList) actionList.OnActionSelected += SelectAction;
     }
 
     private void Update()
@@ -55,7 +82,7 @@ public class GIPlayerController : MonoBehaviour/*, GIController*/
         {
             GCell cell = GetCellUnderMouse();
             if (!cell) return;
-            GPion player = cell.GetPion() && cell.GetPion().isPlayer ? cell.GetPion() : null;
+            GPawn player = cell.GetPion() && cell.GetPion().isPlayer ? cell.GetPion() : null;
 
             if (player)
             {
@@ -63,10 +90,13 @@ public class GIPlayerController : MonoBehaviour/*, GIController*/
                     _selectedPlayer = cell.GetPion();
                 else
                     _selectedPlayer = null;
+
+                availableActions = GetAvailableActions();
+                if (actionList) actionList.UpdateButtons(availableActions);
             }
-            else
+            else if (_selectedAction != null)
             {
-                
+                _selectedPlayer.RequestAction(_selectedAction);
             }
         }
     }

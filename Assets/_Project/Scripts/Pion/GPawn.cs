@@ -37,6 +37,7 @@ public class GPawn : MonoBehaviour
     {
         if (action == null || !action.IsValid()) return;
         
+        print("Request " + action.ToString());
         //TODO Request action to the turn manager
     }
 

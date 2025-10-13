@@ -46,7 +46,7 @@ public class GCell : SerializedMonoBehaviour
         _ownedPawn = pawn;
     }
 
-    public GPion GetPion()
+    public GPawn GetPion()
     {
         return _ownedPawn;
     }
