@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.Serialization;
 
 
-public class GPion : MonoBehaviour
+public class GPawn : MonoBehaviour
 {
     [ReadOnly]
     public GHexCoordinate coordinate;

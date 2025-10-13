@@ -58,10 +58,10 @@ public class GCellVisualsController : SerializedMonoBehaviour
             {
                 DestroyImmediate(_cell._ownedPawn.gameObject);
             }
-            GPion pawnPrefab = cellCommonData.pawnTypeData[newPawnType];
+            GPawn pawnPrefab = cellCommonData.pawnTypeData[newPawnType];
             if (pawnPrefab)
             {
-                _cell._ownedPawn = PrefabUtility.InstantiatePrefab(pawnPrefab, _pawnSpawnPoint) as GPion;
+                _cell._ownedPawn = PrefabUtility.InstantiatePrefab(pawnPrefab, _pawnSpawnPoint) as GPawn;
                 _cell._ownedPawn.transform.localPosition = Vector3.zero;
             }
             _previousPawnSpawnType = newPawnType;

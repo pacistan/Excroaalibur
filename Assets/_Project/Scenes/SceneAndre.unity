@@ -16322,6 +16322,14 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 1464786862}
     - target: {fileID: 8962405803899580738, guid: ea08067a6a7f16e46a2a7007c2355b2e, type: 3}
+      propertyPath: _ownedPawn
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 8962405803899580738, guid: ea08067a6a7f16e46a2a7007c2355b2e, type: 3}
+      propertyPath: _data.pawnType
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8962405803899580738, guid: ea08067a6a7f16e46a2a7007c2355b2e, type: 3}
       propertyPath: _hexCoordinates.x
       value: 3
       objectReference: {fileID: 0}

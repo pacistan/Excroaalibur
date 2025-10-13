@@ -23,7 +23,7 @@ public class GCell : SerializedMonoBehaviour
     public GCell[] _neighbors{get; private set;}
 
     [field: SerializeField, ReadOnly, FoldoutGroup("PersistantData")]
-    public GPion _ownedPawn;
+    public GPawn _ownedPawn;
 
     public void Initialize()
     {
@@ -41,9 +41,9 @@ public class GCell : SerializedMonoBehaviour
         return _data.tileType == GCellData.ETileType.Normal && _ownedPawn == null;
     }
 
-    public void SetPion(GPion pion)
+    public void SetPion(GPawn pawn)
     {
-        _ownedPawn = pion;
+        _ownedPawn = pawn;
     }
     
     void OnValidate()
