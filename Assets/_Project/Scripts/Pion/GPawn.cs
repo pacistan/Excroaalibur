@@ -28,10 +28,10 @@ public class GPawn : MonoBehaviour
     public void SetCell(GCell newCell)
     {
         if (!newCell) return;
-        if (currentCell) currentCell.SetPion(null); 
+        if (currentCell) currentCell.SetPawn(null); 
         currentCell = newCell;
         coordinate = newCell._hexCoordinates;
-        currentCell.SetPion(this);
+        currentCell.SetPawn(this);
     }
     
     public void RequestAction(GAction action)

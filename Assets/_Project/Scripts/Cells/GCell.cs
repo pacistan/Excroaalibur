@@ -20,10 +20,13 @@ public class GCell : SerializedMonoBehaviour
     public GHexCoordinate _hexCoordinates;
 
     [field : SerializeField, ReadOnly, FoldoutGroup("PersistantData")]
-    public GCell[] _neighbors{get; private set;}
+    public GCell[] _neighbors {get; private set;}
 
     [field: SerializeField, ReadOnly, FoldoutGroup("PersistantData")]
     public GPawn _ownedPawn;
+    
+    [field: SerializeField, ReadOnly]
+    public GGridObject _ownedGridObject {get; private set; }
 
     public void Initialize()
     {
@@ -41,7 +44,7 @@ public class GCell : SerializedMonoBehaviour
         return _data.tileType == GCellData.ETileType.Normal && _ownedPawn == null;
     }
 
-    public void SetPion(GPawn pawn)
+    public void SetPawn(GPawn pawn)
     {
         _ownedPawn = pawn;
     }
@@ -49,6 +52,11 @@ public class GCell : SerializedMonoBehaviour
     public GPawn GetPion()
     {
         return _ownedPawn;
+    }
+    
+    public void SetGridObject(GGridObject Object)
+    {
+        _ownedGridObject = Object;
     }
     
     void OnValidate()
