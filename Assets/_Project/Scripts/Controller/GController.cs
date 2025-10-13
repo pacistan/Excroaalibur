@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class GController : MonoBehaviour
+public abstract class GController : MonoBehaviour
 {
     [field : SerializeField, Min(1)]
     public int actionTokens { get; set; }

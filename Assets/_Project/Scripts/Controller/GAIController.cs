@@ -18,20 +18,28 @@ public class GAIController : GController
     
     public int actionTokens { get; set; }
     
-    public void StartTurn()
+    public override void StartTurn()
     {
         actionTokens = _startingActionTokensNumber;
         StartAction();
     }
 
-    public void StartAction()
+    public override void StartAction()
     {
         actionTokens--;
         var action = _aiBehavior.GetAction();
+        if (action == null)
+        {
+            EndTurn();
+        }
+        else
+        {
+            
+        }
         // TODO : Give Action to manager
     }
 
-    public void OnActionOver()
+    public override void OnActionOver()
     {
         if (actionTokens == 0)
         {
@@ -43,7 +51,7 @@ public class GAIController : GController
         }
     }
 
-    public void EndTurn()
+    public override void EndTurn()
     {
     }
     

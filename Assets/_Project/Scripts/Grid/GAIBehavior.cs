@@ -75,7 +75,7 @@ public class GSentryBehavior : GAIBehavior
                     {
                         ChangeState(EBehaviorState.TryingToPunch);
                         GMoveAction moveAction = new GMoveAction();
-                        moveAction.linkedPion = _controller.pawn;
+                        moveAction.linkedPawn = _controller.pawn;
                         moveAction.targetCell = crown.cell;
                         return moveAction;
                     }
@@ -96,7 +96,7 @@ public class GSentryBehavior : GAIBehavior
                     else
                     {
                         GMoveAction moveAction = new GMoveAction();
-                        moveAction.linkedPion = _controller.pawn;
+                        moveAction.linkedPawn = _controller.pawn;
                         moveAction.targetCell = receptacle.cell;
                         ChangeState(EBehaviorState.TryingToPlaceCrown);
                         return moveAction;

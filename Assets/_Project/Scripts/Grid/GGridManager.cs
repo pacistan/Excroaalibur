@@ -25,7 +25,7 @@ public class GGridManager : GSingleton<GGridManager>
         return GetCell(GHexCoordinate.FromPosition(position));
     }
     
-    public EHexDirection[] GetPath(GCell from, GCell to, bool reloadStepMap = false)
+    public EHexDirection[] GetPath(GCell from, GCell to, bool reloadStepMap = false, int maxNumberOfSteps = -1)
     {
         if (reloadStepMap)
         {
@@ -65,6 +65,10 @@ public class GGridManager : GSingleton<GGridManager>
                 }
             }
             i++;
+        }
+        if (maxNumberOfSteps != -1 && maxNumberOfSteps < path.Length)
+        {
+            Array.Resize(ref path, maxNumberOfSteps);
         }
         return path;
     }
