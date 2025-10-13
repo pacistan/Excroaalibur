@@ -12,16 +12,21 @@ public struct GCellData
     [SerializeField]
     public ETileType tileType;
 
+    [SerializeField, ReadOnly]
+    public GPion pion;
+
     public GCellData(Vector2Int inGridCoordinates)
     {
         gridCoordinates = inGridCoordinates;
         tileType = ETileType.Normal;
+        pion = null;
     }
 
-    public GCellData(GCellData inCellData,Vector2Int inGridCoordinates)
+    public GCellData(GCellData inCellData,Vector2Int inGridCoordinates, GPion inPion = null)
     {
         gridCoordinates = inGridCoordinates;
         tileType = inCellData.tileType;
+        pion = inPion;
     }
 
     public bool IsCellChanged()

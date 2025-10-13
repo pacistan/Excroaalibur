@@ -35,7 +35,12 @@ public class GCell : SerializedMonoBehaviour
 
     public bool IsWalkable()
     {
-        return _data.tileType == GCellData.ETileType.Normal;
+        return _data.tileType == GCellData.ETileType.Normal && _data.pion == null;
+    }
+
+    public void SetPion(GPion pion)
+    {
+        _data.pion = pion;
     }
     
     void OnValidate()
