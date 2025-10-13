@@ -5,7 +5,6 @@ using UnityEngine;
 /// <summary>
 /// Makes Readable Only the Transform Component of GameObjects that have the Component <see cref="GNoTransformEdit"/>
 /// </summary>
-#if UNITY_EDITOR
 [CanEditMultipleObjects]
 [CustomEditor(typeof(Transform))]
 public class GLockableTransformEditor : Editor
@@ -52,4 +51,3 @@ public class GLockableTransformEditor : Editor
         }
     }
 }
-#endif

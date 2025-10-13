@@ -3,10 +3,10 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [CreateAssetMenu(fileName = "Cell Data", menuName = "CommonData/Cell Data")]
-public class GCommonData_Cell : SerializedScriptableObject
+public class GCellCommonData : SerializedScriptableObject
 {
     [System.Serializable]
-    public struct GFTileTypeData
+    public struct FTileTypeData
     {
         [field: SerializeField, BoxGroup("Mesh")]
         public Mesh mesh { get; private set; }
@@ -22,5 +22,5 @@ public class GCommonData_Cell : SerializedScriptableObject
     }
 
     [SerializeField]
-    public Dictionary<GCellData.ETileType, GFTileTypeData> TileTypeData;
+    public Dictionary<GCellData.ETileType, FTileTypeData> tileTypeData;
 }
