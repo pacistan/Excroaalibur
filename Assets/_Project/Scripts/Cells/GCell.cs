@@ -20,35 +20,49 @@ public class GCell : SerializedMonoBehaviour
     public GHexCoordinate _hexCoordinates;
 
     [field : SerializeField, ReadOnly, FoldoutGroup("PersistantData")]
-    public GCell[] _neighbors{get; private set;}
+    public GCell[] _neighbors {get; private set;}
 
     [field: SerializeField, ReadOnly, FoldoutGroup("PersistantData")]
     public GPawn _ownedPawn;
+    
+    [field: SerializeField, ReadOnly]
+    public GGridObject _ownedGridObject {get; private set; }
 
     public void Initialize()
     {
         _neighbors = new GCell[Enum.GetValues(typeof(EHexDirection)).Length];
     }
-    
+
+    public void Start()
+    {
+        if (_ownedPawn)
+            _ownedPawn.SetCell(this);
+    }
+
     public void SetNeighbor (EHexDirection direction, GCell cell)
     {
         _neighbors[(int)direction] = cell;
         cell._neighbors[(int)direction.Opposite()] = this;
     }
 
-    public bool IsWalkable()
+    public bool IsWalkable(bool ignorePawn = false)
     {
-        return _data.tileType == GCellData.ETileType.Normal && _ownedPawn == null;
+        return _data.tileType == GCellData.ETileType.Normal && (_ownedPawn == null || ignorePawn);
     }
 
-    public void SetPion(GPawn pawn)
+    public void SetPawn(GPawn pawn)
     {
         _ownedPawn = pawn;
     }
 
-    public GPawn GetPion()
+    public GPawn GetPawn()
     {
         return _ownedPawn;
+    }
+    
+    public void SetGridObject(GGridObject Object)
+    {
+        _ownedGridObject = Object;
     }
     
     void OnValidate()

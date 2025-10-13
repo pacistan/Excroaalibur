@@ -28,18 +28,21 @@ public class GPawn : MonoBehaviour
     public void SetCell(GCell newCell)
     {
         if (!newCell) return;
-        if (currentCell) currentCell.SetPion(null); 
+        if (currentCell) currentCell.SetPawn(null); 
         currentCell = newCell;
         coordinate = newCell._hexCoordinates;
-        currentCell.SetPion(this);
+        currentCell.SetPawn(this);
     }
     
     public void RequestAction(GAction action)
     {
         if (action == null || !action.IsValid()) return;
-        
+        action.linkedPawn = this;
         print("Request " + action.ToString());
-        //TODO Request action to the turn manager
+        if (!GTurnBaseManager.Instance.TryPlayAction(action, false))
+        {
+            print("Action Failed");
+        }
     }
 
     public void TakeDamage(int damage = 1)
