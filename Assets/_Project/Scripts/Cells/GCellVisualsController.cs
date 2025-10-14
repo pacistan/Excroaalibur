@@ -8,7 +8,6 @@ using UnityEngine.UI;
 [RequireComponent(typeof(GCell))]
 public class GCellVisualsController : SerializedMonoBehaviour
 {
-    public enum EPawnSpawnType {None, Sentry, PlayerPawn}
 
     
     [FormerlySerializedAs("_commonCellData")]
@@ -32,7 +31,7 @@ public class GCellVisualsController : SerializedMonoBehaviour
     Transform _pawnSpawnPoint;
 
     [SerializeField, HideInInspector]
-    EPawnSpawnType _previousPawnSpawnType;
+    GCellData.EPawnSpawnType _previousPawnSpawnType;
     
 #if UNITY_EDITOR
     public void UpdateCellVisuals()
@@ -52,7 +51,7 @@ public class GCellVisualsController : SerializedMonoBehaviour
         }
         
         // Pawn Type
-        EPawnSpawnType newPawnType = _cell._data.pawnType;
+        GCellData.EPawnSpawnType newPawnType = _cell._data.pawnType;
         if(_previousPawnSpawnType != newPawnType)
         {
             if (_cell._ownedPawn)
@@ -99,13 +98,13 @@ public class GCellVisualsController : SerializedMonoBehaviour
     #if UNITY_EDITOR
     private void HideInHierarchy()
     {
+            _meshRenderer.transform.parent.gameObject.hideFlags = HideFlags.None;
         if (_showVisualsInHierarchy)
         {
-            _meshRenderer.transform.parent.gameObject.hideFlags = HideFlags.None;
         }
         else
         {
-            _meshRenderer.transform.parent.gameObject.hideFlags = HideFlags.HideAndDontSave;
+            //_meshRenderer.transform.parent.gameObject.hideFlags = HideFlags.HideAndDontSave;
         }
     }
     #endif

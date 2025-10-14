@@ -26,7 +26,7 @@ public class GCell : SerializedMonoBehaviour
     public GPawn _ownedPawn;
     
     [field: SerializeField, ReadOnly]
-    public GGridObject _ownedGridObject {get; private set; }
+    public GEquipment _equipment {get; private set; }
 
     public void Initialize()
     {
@@ -60,10 +60,11 @@ public class GCell : SerializedMonoBehaviour
         return _ownedPawn;
     }
     
-    public void SetGridObject(GGridObject Object)
+    public void SetEquipment(GEquipment equipment)
     {
-        _ownedGridObject = Object;
+        _equipment = equipment;
     }
+    
     
 #if UNITY_EDITOR
     void OnValidate()

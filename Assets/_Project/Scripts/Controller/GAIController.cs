@@ -1,44 +1,72 @@
 ﻿using System;
+using System.Collections;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 [RequireComponent(typeof(GPawn))]
 public class GAIController : GController
 {
+    public enum EAIBehaviorType {Sentry}
+    
     [SerializeField]
     private int _startingActionTokensNumber;
-    private GPawn _pawn;
-
-    public int actionTokens { get; set; }
+    [HideInInspector]
+    public  GPawn pawn;
+    [SerializeReference]
+    GAIBehavior _aiBehavior;
     
-    public void StartTurn()
+    public override void StartTurn()
     {
         actionTokens = _startingActionTokensNumber;
         StartAction();
     }
 
-    public void StartAction()
+    public override void StartAction()
     {
         actionTokens--;
-    }
-
-    public void OnActionOver()
-    {
-        if (actionTokens == 0)
+        var action = _aiBehavior.GetAction();
+        if (action == null)
         {
             EndTurn();
         }
         else
         {
-            StartAction();
+            action.OnActionFinished += OnActionOver;
+            bool isValid = GTurnBaseManager.Instance.TryPlayAction(action, false);
+            if (isValid)
+            {
+            }
         }
     }
 
-    public void EndTurn()
+    public override void OnActionOver()
+    {
+        if (actionTokens == 0)
+        {
+            StopTurn();
+        }
+        else
+        {
+            StartCoroutine(RestartAction());
+        }
+    }
+
+    IEnumerator RestartAction()
+    {
+        yield return null;
+        StartAction();
+    }
+
+    public override void EndTurn()
     {
     }
     
     void Start()
     {
-        _pawn = GetComponent<GPawn>();
+        pawn = GetComponent<GPawn>();
+        _aiBehavior = ScriptableObject.Instantiate(_aiBehavior);
+        _aiBehavior.Init(this);
+        pawn.actions = _aiBehavior.actions;
     }
 }
+

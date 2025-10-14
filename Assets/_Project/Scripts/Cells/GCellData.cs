@@ -7,6 +7,7 @@ using static GCellVisualsController;
 public struct GCellData
 {
     public enum ETileType { Normal, Wall, Hole }
+    public enum EPawnSpawnType {None, Sentry, PlayerPawn}
 
     [SerializeField, ReadOnly]
     public Vector2Int gridCoordinates;
@@ -14,7 +15,6 @@ public struct GCellData
     [SerializeField]
     public ETileType tileType;
 
-    [FormerlySerializedAs("pion")]
     [SerializeField]
     public EPawnSpawnType pawnType;
 

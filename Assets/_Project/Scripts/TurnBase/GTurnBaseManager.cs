@@ -16,6 +16,7 @@ public enum ETurnState
 public class GTurnBaseManager : GSingleton<GTurnBaseManager>
 {
     /** Manager The Turn Order */
+    [SerializeField, ReadOnly, HideInEditorMode]
     public GController _currentTurnController { get; private set; }
 
     public bool isActionPlaying
@@ -23,9 +24,11 @@ public class GTurnBaseManager : GSingleton<GTurnBaseManager>
         get => _actionsInProgress.Count > 0;
     }
     
+    [SerializeField, ReadOnly, HideInEditorMode]
     private List<GAction> _actionsInProgress = new List<GAction>();
     
     /** Queue Order of The Entity currently in fight */ 
+    [SerializeField, ReadOnly, HideInEditorMode]
     private List<GController> _turnOrderControllerQueue = new List<GController>();
     
     /** All the Entity in the Scene */

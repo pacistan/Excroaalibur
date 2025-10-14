@@ -101,5 +101,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c29c045b769546f8a95ca7f04d51a0f5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  <actionTokens>k__BackingField: 0
-  _startingActionTokensNumber: 0
+  actionTokens: 0
+  _startingActionTokensNumber: 2
+  pawn: {fileID: 0}
+  _aiBehavior: {fileID: 11400000, guid: e7ad50db75dede540b185bf6a2831dee, type: 2}

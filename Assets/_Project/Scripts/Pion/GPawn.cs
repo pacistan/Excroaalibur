@@ -1,22 +1,27 @@
 using Sirenix.OdinInspector;
+using Sirenix.Utilities;
 using System;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Serialization;
 
 
-public class GPawn : MonoBehaviour
+public class GPawn : GGridObject
 {
-    [ReadOnly]
-    public GHexCoordinate coordinate;
-    [ReadOnly]
-    public GCell currentCell;
-    [SerializeReference] public List<GAction> actions = new List<GAction>();
+    [SerializeField]
     public bool isPlayer;
+    [SerializeReference]
+    public List<GAction> actions = new List<GAction>();
     public bool IsStunned => _stunTurn > 0;
     
-    [SerializeField] private int _hp = 3;
-    [SerializeField, ReadOnly] int _stunTurn = 0;
+    [SerializeField] 
+    private int _hp = 3;
+    
+    [ReadOnly] 
+    int _stunTurn = 0;
+
+    [SerializeField, ReadOnly]
+    List<GEquipment> _equipments = new List<GEquipment>();
 
     void Start()
     {
@@ -26,17 +31,35 @@ public class GPawn : MonoBehaviour
             controller.RegisterPawn(this);
     }
 
-    public void SetCell(GHexCoordinate newCoordinate)
+    public void Posess(GEquipment equipment)
     {
-        SetCell(GGridManager.Instance.GetCell(newCoordinate));
+        _equipments.Add(equipment);
+    }
+
+    public void Release(GEquipment equipment)
+    {
+        if (!_equipments.Contains(equipment))
+        {
+            Debug.LogWarning("Release not owned Equipment", this);
+        }
+        equipment.OnReleased();
+        _equipments.Remove(equipment);
     }
     
-    public void SetCell(GCell newCell)
+    public void ForceRelease()
     {
-        if (!newCell) return;
-        if (currentCell) currentCell.SetPawn(null); 
-        currentCell = newCell;
-        coordinate = newCell._hexCoordinates;
+        _equipments.ForEach(a => Release(a));
+        _equipments.Clear();
+    }
+
+    public override void SetCell(GHexCoordinate newCoordinate)
+    {
+        base.SetCell(GGridManager.Instance.GetCell(newCoordinate));
+    }
+    
+    public override void SetCell(GCell newCell)
+    {
+        base.SetCell(newCell);
         currentCell.SetPawn(this);
     }
     

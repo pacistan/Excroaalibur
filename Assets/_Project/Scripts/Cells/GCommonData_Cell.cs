@@ -25,5 +25,5 @@ public class GCellCommonData : SerializedScriptableObject
     public Dictionary<GCellData.ETileType, FTileTypeData> tileTypeData;
 
     [SerializeField]
-    public Dictionary<GCellVisualsController.EPawnSpawnType, GPawn> pawnTypeData;
+    public Dictionary<GCellData.EPawnSpawnType, GPawn> pawnTypeData;
 }

@@ -1,4 +1,5 @@
 using Sirenix.OdinInspector;
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -25,7 +26,7 @@ public class GGridManager : GSingleton<GGridManager>
         return GetCell(GHexCoordinate.FromPosition(position));
     }
     
-    public EHexDirection[] GetPath(GCell from, GCell to, bool reloadStepMap = false)
+    public EHexDirection[] GetPath(GCell from, GCell to, bool reloadStepMap = false, int maxNumberOfSteps = -1)
     {
         if (reloadStepMap)
         {
@@ -65,6 +66,10 @@ public class GGridManager : GSingleton<GGridManager>
                 }
             }
             i++;
+        }
+        if (maxNumberOfSteps != -1 && maxNumberOfSteps < path.Length)
+        {
+            Array.Resize(ref path, maxNumberOfSteps);
         }
         return path;
     }
@@ -108,14 +113,46 @@ public class GGridManager : GSingleton<GGridManager>
 
     }
 
-
-    public int GetStep(GCell targetCell)
+    public int GetStep(GCell targetCell, bool forceSearch = false)
     {
         if (_stepMap.ContainsKey(targetCell._data.gridCoordinates))
         {
             return _stepMap[targetCell._data.gridCoordinates];
         }
+        else if (forceSearch)
+        {
+            int lowestStep = -1;
+            foreach (GCell neighbor in targetCell._neighbors)
+            {
+                if (_stepMap.ContainsKey(neighbor._data.gridCoordinates))
+                {
+                    int step = _stepMap[neighbor._data.gridCoordinates];
+                    if (step < lowestStep || lowestStep == -1)
+                    {
+                        lowestStep = step;
+                    }
+                }
+            }
+            return lowestStep == -1 ? -1 : lowestStep + 1;
+        }
         else return -1;
     }
+
+    public GCell GetLowestAdjacentCell(GCell ogCell)
+    {
+        GCell outCell = null;
+        int lowestStep = int.MaxValue;
+        foreach (GCell cell in ogCell._neighbors)
+        {
+            Vector2Int coordinates = cell._data.gridCoordinates;
+            if (_stepMap.ContainsKey(coordinates) && _stepMap[coordinates] < lowestStep)
+            {
+                lowestStep = _stepMap[coordinates];
+                outCell = cell;
+            }
+        }
+        return outCell;
+    }
 }
+
 
