@@ -53,7 +53,6 @@ public abstract class GAction
     
     public virtual GHexCoordinate[] GetValidCells() { return Array.Empty<GHexCoordinate>(); }
     
-    public virtual bool IsValid() { return false; }
     public bool IsValidCell(GHexCoordinate cell) { return GetValidCells().Contains(cell); }
     
 }

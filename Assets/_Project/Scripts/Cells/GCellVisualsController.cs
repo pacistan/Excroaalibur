@@ -85,6 +85,17 @@ public class GCellVisualsController : SerializedMonoBehaviour
         _text.text = newDebugText;
     }
 
+    public void ChangeCellHighlightColor(Color color)
+    {
+        _highlight.color = color;
+    }
+
+    public void ResetCellHighlightColor()
+    {
+        var tileTypeData = cellCommonData.tileTypeData[_cell._data.tileType];
+        _highlight.color = tileTypeData.highlightColor;
+    }
+
     #if UNITY_EDITOR
     private void HideInHierarchy()
     {

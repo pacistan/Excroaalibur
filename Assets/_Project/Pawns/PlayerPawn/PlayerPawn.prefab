@@ -12,6 +12,38 @@ PrefabInstance:
       propertyPath: isPlayer
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 20667597376880823, guid: 48d2615fd829feb4a9c7bfb377fa75cc, type: 3}
+      propertyPath: coordinate.x
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 20667597376880823, guid: 48d2615fd829feb4a9c7bfb377fa75cc, type: 3}
+      propertyPath: coordinate.z
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 20667597376880823, guid: 48d2615fd829feb4a9c7bfb377fa75cc, type: 3}
+      propertyPath: actions.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 20667597376880823, guid: 48d2615fd829feb4a9c7bfb377fa75cc, type: 3}
+      propertyPath: 'actions.Array.data[0]'
+      value: 828711018523525234
+      objectReference: {fileID: 0}
+    - target: {fileID: 20667597376880823, guid: 48d2615fd829feb4a9c7bfb377fa75cc, type: 3}
+      propertyPath: 'managedReferences[828711018523525234]'
+      value: Assembly-CSharp GMoveAction
+      objectReference: {fileID: 0}
+    - target: {fileID: 20667597376880823, guid: 48d2615fd829feb4a9c7bfb377fa75cc, type: 3}
+      propertyPath: managedReferences[828711018523525234].linkedPawn
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 20667597376880823, guid: 48d2615fd829feb4a9c7bfb377fa75cc, type: 3}
+      propertyPath: managedReferences[828711018523525234].targetCell
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 20667597376880823, guid: 48d2615fd829feb4a9c7bfb377fa75cc, type: 3}
+      propertyPath: managedReferences[828711018523525234].MaxMoveDistance
+      value: 2
+      objectReference: {fileID: 0}
     - target: {fileID: 1388886239460140924, guid: 48d2615fd829feb4a9c7bfb377fa75cc, type: 3}
       propertyPath: m_Layer
       value: 7

@@ -30,10 +30,9 @@ public class ActionList : MonoBehaviour
             button.onClick.AddListener(() => SelectAction(index));
             _buttons.Add(button);
 
-            if (button.TryGetComponent<TextMeshProUGUI>(out TextMeshProUGUI text))
-            {
-                text.text = actions[i].ToString();
-            }
+            TextMeshProUGUI tmp = button.GetComponentInChildren<TextMeshProUGUI>();
+            if (tmp)
+                tmp.text = actions[i].ToString();
         }
     }
 

@@ -1,17 +1,23 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using Unity.VisualScripting.FullSerializer;
 using UnityEngine;
 
+
 public class GMoveAction : GAction
 {
+    [SerializeField]
+    private int maxMoveDistance = 2;
+    
     private EHexDirection[] _path = new EHexDirection[] { };
     private Vector3[] _wayPoints = new Vector3[] { };
+    GHexCoordinate[] _validCells;
     float _progress = 0;
     
     public override void PreProcess()
     {
         _path = GGridManager.Instance.GetPath(linkedPawn.currentCell ,targetCell, true);
-        if (_path == null || _path.Length == 0) return;
+        if (_path == null || _path.Length == 0 || _path.Length > maxMoveDistance) return;
 
         GCell cell = linkedPawn.currentCell;
         List<Vector3> wayPoints = new List<Vector3>();
@@ -51,9 +57,22 @@ public class GMoveAction : GAction
         linkedPawn.transform.position = targetCell.transform.position;
     }
 
-    public override bool IsValid()
+    public override GHexCoordinate[] GetValidCells()
     {
-        //TODO Check valid path
-        return true;
+        GGridManager.Instance.GenerateStepMap(linkedPawn.currentCell);
+        Dictionary<Vector2Int, int> stepMap = GGridManager.Instance._stepMap;
+        List<GHexCoordinate> validCells = new List<GHexCoordinate>();
+
+        foreach (var step in stepMap)
+        {
+            GHexCoordinate coordinate = GHexCoordinate.FrommOffsetCoordinate(step.Key.x, step.Key.y);
+            GCell cell = GGridManager.Instance.GetCell(coordinate);
+            
+            if (!cell || !cell.IsWalkable() || step.Value > maxMoveDistance) continue;
+            
+            validCells.Add(coordinate);
+        }
+        
+        return validCells.ToArray();
     }
 }
