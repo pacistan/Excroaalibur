@@ -10,6 +10,7 @@ public class GPlayerController : GController
 {
     public event Action<GPawn> SelectedPlayerChanged;
     public GAction[] availableActions = new GAction[] { };
+    [SerializeField, ReadOnly, HideInEditorMode]
     public ActionList actionList;
 
     [ReadOnly] GPawn _selectedPlayer;
@@ -20,7 +21,7 @@ public class GPlayerController : GController
     [SerializeField, Tooltip("Layer Mask for the Cell Raycast")]
     private LayerMask _CelllayerMask;
     
-    [SerializeField, ReadOnly]
+    [SerializeField, ReadOnly, HideInEditorMode]
     int _remainingActionToken = 0;
     
     private GCell _targetCell;
