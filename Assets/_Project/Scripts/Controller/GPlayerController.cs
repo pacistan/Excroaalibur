@@ -10,8 +10,9 @@ public class GPlayerController : GController
 {
     public event Action<GPawn> SelectedPlayerChanged;
     public GAction[] availableActions = new GAction[] { };
+    [FormerlySerializedAs("actionList")]
     [SerializeField]
-    public ActionList actionList;
+    public GActionList actionList;
 
     [ReadOnly] GPawn _selectedPlayer;
     [ReadOnly] GAction _selectedAction;
@@ -23,8 +24,6 @@ public class GPlayerController : GController
     [SerializeField, Tooltip("Layer Mask for the Cell Raycast")]
     private LayerMask _cellLayerMask;
     
-    [SerializeField, ReadOnly, HideInEditorMode]
-    int _remainingActionToken = 0;
     
     private GCell _targetCell;
     
@@ -41,7 +40,7 @@ public class GPlayerController : GController
 
     public void ForceEndTurn()
     {
-        _remainingActionToken = 0;
+        remainingActionToken = 0;
     }
 
     public void SelectAction(GAction action)
@@ -56,7 +55,7 @@ public class GPlayerController : GController
         ShowHighlight();
     }
     
-    public void SelectAction(int id)
+    public void SelectGAction(int id)
     {
         if (availableActions.Length <= id) return;
         SelectAction(availableActions[id]);
@@ -107,7 +106,7 @@ public class GPlayerController : GController
     private void Start()
     {
         _selectInput = InputSystem.actions.FindAction("Select");
-        if (actionList) actionList.OnActionSelected += SelectAction;
+        if (actionList) actionList.OnActionSelected += SelectGAction;
     }
 
     private void Update()
@@ -142,7 +141,7 @@ public class GPlayerController : GController
     
     public override void StartTurn()
     {
-        _remainingActionToken = actionTokens;
+        remainingActionToken = actionTokens;
 
         base.StartTurn();
     }
@@ -154,8 +153,8 @@ public class GPlayerController : GController
         if (_selectedPlayer.RequestAction(_selectedAction))
         {
             SetSelectedPlayer(null);
-            _remainingActionToken--;
-            if (_remainingActionToken <= 0) 
+            remainingActionToken--;
+            if (remainingActionToken <= 0) 
             {
                 GTurnBaseManager.Instance.RequestEndTurn(this);
             }

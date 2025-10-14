@@ -12,7 +12,7 @@ public class GMoveAction : GAction
     
     private EHexDirection[] _path = new EHexDirection[] { };
     private Vector3[] _wayPoints = new Vector3[] { };
-    Dictionary<int, GCell> _wayPointsCells;
+    Dictionary<int, GCell> _wayPointsCells = new Dictionary<int, GCell>();
     float _progress = 0;
     int _currentWayPoint = 0;
 

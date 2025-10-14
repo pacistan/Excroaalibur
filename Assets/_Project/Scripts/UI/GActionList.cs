@@ -4,7 +4,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class ActionList : MonoBehaviour
+public class GActionList : MonoBehaviour
 {
     public event Action<int> OnActionSelected;
     

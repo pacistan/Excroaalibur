@@ -12,6 +12,14 @@ PrefabInstance:
       propertyPath: isPlayer
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 20667597376880823, guid: 48d2615fd829feb4a9c7bfb377fa75cc, type: 3}
+      propertyPath: coordinate.x
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 20667597376880823, guid: 48d2615fd829feb4a9c7bfb377fa75cc, type: 3}
+      propertyPath: coordinate.z
+      value: 2
+      objectReference: {fileID: 0}
     - target: {fileID: 1388886239460140924, guid: 48d2615fd829feb4a9c7bfb377fa75cc, type: 3}
       propertyPath: m_Layer
       value: 7
@@ -101,7 +109,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c29c045b769546f8a95ca7f04d51a0f5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  actionTokens: 0
-  _startingActionTokensNumber: 2
+  <actionTokens>k__BackingField: 2
   pawn: {fileID: 0}
   _aiBehavior: {fileID: 11400000, guid: e7ad50db75dede540b185bf6a2831dee, type: 2}

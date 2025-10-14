@@ -145,6 +145,7 @@ public class GGridManager : GSingleton<GGridManager>
         int lowestStep = int.MaxValue;
         foreach (GCell cell in ogCell._neighbors)
         {
+            if (!cell) continue;
             Vector2Int coordinates = cell._data.gridCoordinates;
             if (_stepMap.ContainsKey(coordinates) && _stepMap[coordinates] < lowestStep)
             {
