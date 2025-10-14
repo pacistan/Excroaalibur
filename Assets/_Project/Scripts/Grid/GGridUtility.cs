@@ -50,6 +50,12 @@ public struct GHexCoordinate : IEquatable<GHexCoordinate>
 
     public int Z => z;
 
+    public GHexCoordinate(Vector2Int coord)
+    {
+        this.x = coord.x;
+        this.z = coord.y;
+    }
+    
     public GHexCoordinate(int x, int z)
     {
         this.x = x;

@@ -1,6 +1,7 @@
 ﻿using Sirenix.OdinInspector;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.Serialization;
@@ -13,6 +14,7 @@ public class GPlayerController : GController
 
     [ReadOnly] GPawn _selectedPlayer;
     [ReadOnly] GAction _selectedAction;
+    [ReadOnly] GHexCoordinate[] _validCells = new GHexCoordinate[]{};
     InputAction _selectInput;
     
     [SerializeField, Tooltip("Layer Mask for the Cell Raycast")]
@@ -26,7 +28,7 @@ public class GPlayerController : GController
     public void SetSelectedPlayer(GPawn newSelected)
     {
         if (_selectedPlayer == newSelected) return;
-        
+        if (newSelected == null) SelectAction(null);
         _selectedPlayer = newSelected;
         SelectedPlayerChanged?.Invoke(newSelected);
     }
@@ -43,13 +45,38 @@ public class GPlayerController : GController
 
     public void SelectAction(GAction action)
     {
+        if (_selectedAction == action) return;
         _selectedAction = action;
+        ResetHighlight();
+        _validCells = new GHexCoordinate[]{};
+        if (_selectedAction == null) return;
+        _selectedAction.linkedPawn = _selectedPlayer;
+        _validCells =  _selectedAction.GetValidCells();
+        ShowHighlight();
     }
     
     public void SelectAction(int id)
     {
         if (availableActions.Length <= id) return;
         SelectAction(availableActions[id]);
+    }
+
+    private void ShowHighlight()
+    {
+        foreach (var coordinate in _validCells)
+        {
+            GCell cell = GGridManager.Instance.GetCell(coordinate);
+            cell._cellVisualsController.ChangeCellHighlightColor(Color.blue);
+        }
+    }
+
+    private void ResetHighlight()
+    {
+        foreach (var coordinate in _validCells)
+        {
+            GCell cell = GGridManager.Instance.GetCell(coordinate);
+            cell._cellVisualsController.ResetCellHighlightColor();
+        }
     }
     
     private GCell GetCellUnderMouse()
@@ -94,13 +121,11 @@ public class GPlayerController : GController
             {
                 if (_selectedPlayer != player && !player.IsStunned)
                 {
-                    _selectedPlayer = _targetCell.GetPawn();
-                    SelectedPlayerChanged?.Invoke(_selectedPlayer);
+                    SetSelectedPlayer(_targetCell.GetPawn());
                 }
                 else
                 {
-                    _selectedPlayer = null;
-                    SelectedPlayerChanged?.Invoke(_selectedPlayer);
+                    SetSelectedPlayer(null);
                 }
 
                 availableActions = GetAvailableActions();
@@ -120,9 +145,12 @@ public class GPlayerController : GController
 
     public override void StartAction()
     {
+        if (!_validCells.Contains(_targetCell._hexCoordinates)) return;
         _selectedAction.targetCell = _targetCell;
         if (_selectedPlayer.RequestAction(_selectedAction))
         {
+        _selectedPlayer.RequestAction(_selectedAction);
+        SetSelectedPlayer(null);
             _remainingActionToken--;
             if (_remainingActionToken <= 0) 
             {

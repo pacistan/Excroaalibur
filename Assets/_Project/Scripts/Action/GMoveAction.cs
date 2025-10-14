@@ -4,8 +4,12 @@ using UnityEngine;
 
 public class GMoveAction : GAction
 {
+    [SerializeField]
+    public int MaxMoveDistance = 2;
+    
     private EHexDirection[] _path = new EHexDirection[] { };
     private Vector3[] _wayPoints = new Vector3[] { };
+    GHexCoordinate[] _validCells;
     float _progress = 0;
     
     public override void PreProcess()
@@ -51,9 +55,22 @@ public class GMoveAction : GAction
         linkedPawn.transform.position = targetCell.transform.position;
     }
 
-    public override bool IsValid()
+    public override GHexCoordinate[] GetValidCells()
     {
-        //TODO Check valid path
-        return true;
+        GGridManager.Instance.GenerateStepMap(linkedPawn.currentCell);
+        Dictionary<Vector2Int, int> stepMap = GGridManager.Instance._stepMap;
+        List<GHexCoordinate> validCells = new List<GHexCoordinate>();
+
+        foreach (var step in stepMap)
+        {
+            GHexCoordinate coordinate = new GHexCoordinate(step.Key);
+            GCell cell = GGridManager.Instance.GetCell(coordinate);
+            
+            if (!cell || !cell.IsWalkable() || step.Value > MaxMoveDistance) continue;
+            
+            validCells.Add(coordinate);
+        }
+        
+        return validCells.ToArray();
     }
 }

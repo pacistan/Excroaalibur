@@ -36,7 +36,7 @@ public class GPawn : MonoBehaviour
     
     public bool RequestAction(GAction action)
     {
-        if (action == null || !action.IsValid()) return false;
+        if (action == null) return;
         action.linkedPawn = this;
         print("Request " + action.ToString());
         if (!GTurnBaseManager.Instance.TryPlayAction(action, false))
