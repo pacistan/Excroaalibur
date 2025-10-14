@@ -1,11 +1,13 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using Unity.VisualScripting.FullSerializer;
 using UnityEngine;
+
 
 public class GMoveAction : GAction
 {
     [SerializeField]
-    public int MaxMoveDistance = 2;
+    private int maxMoveDistance = 2;
     
     private EHexDirection[] _path = new EHexDirection[] { };
     private Vector3[] _wayPoints = new Vector3[] { };
@@ -15,7 +17,7 @@ public class GMoveAction : GAction
     public override void PreProcess()
     {
         _path = GGridManager.Instance.GetPath(linkedPawn.currentCell ,targetCell, true);
-        if (_path == null || _path.Length == 0) return;
+        if (_path == null || _path.Length == 0 || _path.Length > maxMoveDistance) return;
 
         GCell cell = linkedPawn.currentCell;
         List<Vector3> wayPoints = new List<Vector3>();
@@ -63,10 +65,10 @@ public class GMoveAction : GAction
 
         foreach (var step in stepMap)
         {
-            GHexCoordinate coordinate = new GHexCoordinate(step.Key);
+            GHexCoordinate coordinate = GHexCoordinate.FrommOffsetCoordinate(step.Key.x, step.Key.y);
             GCell cell = GGridManager.Instance.GetCell(coordinate);
             
-            if (!cell || !cell.IsWalkable() || step.Value > MaxMoveDistance) continue;
+            if (!cell || !cell.IsWalkable() || step.Value > maxMoveDistance) continue;
             
             validCells.Add(coordinate);
         }

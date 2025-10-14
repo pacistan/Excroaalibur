@@ -31,6 +31,9 @@ public class GPlayerController : GController
         if (newSelected == null) SelectAction(null);
         _selectedPlayer = newSelected;
         SelectedPlayerChanged?.Invoke(newSelected);
+
+        availableActions = GetAvailableActions();
+        if (actionList) actionList.UpdateButtons(availableActions);
     }
 
     public void SetPlayerTurn()
@@ -127,13 +130,11 @@ public class GPlayerController : GController
                 {
                     SetSelectedPlayer(null);
                 }
-
-                availableActions = GetAvailableActions();
-                if (actionList) actionList.UpdateButtons(availableActions);
             }
             
             if (_selectedPlayer && _selectedAction != null)
             {
+                
                 StartAction();
             }
         }
@@ -149,8 +150,7 @@ public class GPlayerController : GController
         _selectedAction.targetCell = _targetCell;
         if (_selectedPlayer.RequestAction(_selectedAction))
         {
-        _selectedPlayer.RequestAction(_selectedAction);
-        SetSelectedPlayer(null);
+            SetSelectedPlayer(null);
             _remainingActionToken--;
             if (_remainingActionToken <= 0) 
             {

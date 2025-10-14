@@ -16,7 +16,7 @@ public class GGridManager : GSingleton<GGridManager>
 
     public GCell GetCell(GHexCoordinate coordinate)
     {
-        int id = coordinate.X + (coordinate.Z * _currentGridSize.y);
+        int id = coordinate.X + coordinate.Z *  _currentGridSize.y + coordinate.Z / 2;
         return _grid.Length <= id ? null : _grid[id];
     }
 

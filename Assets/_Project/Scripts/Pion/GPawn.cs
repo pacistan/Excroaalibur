@@ -19,6 +19,9 @@ public class GPawn : MonoBehaviour
     [SerializeField] private int _hp = 3;
     [ReadOnly] int _stunTurn = 0;
 
+    void Start()
+    {
+    }
 
     public void SetCell(GHexCoordinate newCoordinate)
     {
@@ -36,7 +39,7 @@ public class GPawn : MonoBehaviour
     
     public bool RequestAction(GAction action)
     {
-        if (action == null) return;
+        if (action == null) return false;
         action.linkedPawn = this;
         print("Request " + action.ToString());
         if (!GTurnBaseManager.Instance.TryPlayAction(action, false))
