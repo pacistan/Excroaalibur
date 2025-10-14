@@ -8,6 +8,7 @@ public struct GCellData
 {
     public enum ETileType { Normal, Wall, Hole }
     public enum EPawnSpawnType {None, Sentry, PlayerPawn}
+    public enum EEquipmentType {None, Crown}
 
     [SerializeField, ReadOnly]
     public Vector2Int gridCoordinates;
@@ -15,8 +16,11 @@ public struct GCellData
     [SerializeField]
     public ETileType tileType;
 
-    [SerializeField]
+    [SerializeField, EnableIf("equipmentType", EEquipmentType.None)]
     public EPawnSpawnType pawnType;
+    
+    [SerializeField, EnableIf("pawnType", EPawnSpawnType.None)]
+    public EEquipmentType equipmentType;
 
     
     public GCellData(Vector2Int inGridCoordinates)
@@ -24,6 +28,7 @@ public struct GCellData
         gridCoordinates = inGridCoordinates;
         tileType = ETileType.Normal;
         pawnType = EPawnSpawnType.None;
+        equipmentType = EEquipmentType.None;
     }
 
     public GCellData(GCellData inCellData,Vector2Int inGridCoordinates)
@@ -31,10 +36,11 @@ public struct GCellData
         gridCoordinates = inGridCoordinates;
         tileType = inCellData.tileType;
         pawnType = inCellData.pawnType;
+        equipmentType = inCellData.equipmentType;
     }
 
     public bool IsCellChanged()
     {
-        return tileType != ETileType.Normal || pawnType != EPawnSpawnType.None;
+        return tileType != ETileType.Normal || pawnType != EPawnSpawnType.None || equipmentType != EEquipmentType.None;
     }
 }

@@ -1,5 +1,7 @@
 using System.Collections.Generic;
 using System;
+using System.Collections;
+using System.Linq;
 using UnityEngine;
 
 
@@ -10,7 +12,9 @@ public class GMoveAction : GAction
     
     private EHexDirection[] _path = new EHexDirection[] { };
     private Vector3[] _wayPoints = new Vector3[] { };
+    Dictionary<int, GCell> _wayPointsCells;
     float _progress = 0;
+    int _currentWayPoint = 0;
 
     public GMoveAction(){}
     
@@ -22,17 +26,21 @@ public class GMoveAction : GAction
     {
         _path = GGridManager.Instance.GetPath(linkedPawn.currentCell ,targetCell, true);
         if (_path == null || _path.Length == 0 || _path.Length > _maxMoveDistance) return;
+        
+        _wayPointsCells = new Dictionary<int, GCell>();
 
         GCell cell = linkedPawn.currentCell;
         List<Vector3> wayPoints = new List<Vector3>();
         wayPoints.Add(cell.transform.position);
-        foreach (var direction in _path)
+        for(int i = 0; i < _path.Length; i++)
         {
-            cell = cell._neighbors[(int)direction];
+            cell = cell._neighbors[(int)_path[i]];
             if (cell == null) break;
+            _wayPointsCells.Add(i, cell);
             wayPoints.Add(cell.transform.position);
         }
         _wayPoints = wayPoints.ToArray();
+        
     }
 
     public override void Start_Action()
@@ -40,12 +48,29 @@ public class GMoveAction : GAction
         base.Start_Action();
         linkedPawn.SetCell(targetCell);
         _progress = 0;
+        _currentWayPoint = 0;
     }
 
     public override void Update_Action(float delta)
     {
         base.Update_Action(delta);
         _progress += delta;
+
+        if (_progress > _currentWayPoint)
+        {
+            if (_wayPointsCells.ContainsKey(_currentWayPoint))
+            {
+                GCell cell = _wayPointsCells[_currentWayPoint];
+                GEquipment equipment = cell._equipment;
+                if (equipment)
+                {
+                    cell.ReleaseEquipement();
+                    linkedPawn.Posess(equipment);
+                }
+            }
+            _currentWayPoint++;
+        }
+
         if (_progress >= _wayPoints.Length - 1) 
         {
             End_Action();
@@ -85,5 +110,10 @@ public class GMoveAction : GAction
         GAction action = base.CloneAction();
         ((GMoveAction)action)._maxMoveDistance = _maxMoveDistance;
         return action;
+    }
+
+    private void LootEquipment(GEquipment equipment)
+    {
+        
     }
 }
