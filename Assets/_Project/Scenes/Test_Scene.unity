@@ -30292,6 +30292,10 @@ PrefabInstance:
       propertyPath: actionList
       value: 
       objectReference: {fileID: 1039552981}
+    - target: {fileID: 3785481871748928525, guid: e73b6e0fe6dd06448902b5f85162c3e2, type: 3}
+      propertyPath: _cellLayerMask.m_Bits
+      value: 64
+      objectReference: {fileID: 0}
     - target: {fileID: 5700232459467181782, guid: e73b6e0fe6dd06448902b5f85162c3e2, type: 3}
       propertyPath: m_Name
       value: Player_Controller
