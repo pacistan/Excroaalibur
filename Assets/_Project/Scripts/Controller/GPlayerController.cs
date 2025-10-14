@@ -10,8 +10,9 @@ public class GPlayerController : GController
 {
     public event Action<GPawn> SelectedPlayerChanged;
     public GAction[] availableActions = new GAction[] { };
+    [FormerlySerializedAs("actionList")]
     [SerializeField]
-    public ActionList actionList;
+    public GActionList gActionList;
 
     [ReadOnly] GPawn _selectedPlayer;
     [ReadOnly] GAction _selectedAction;
@@ -23,8 +24,6 @@ public class GPlayerController : GController
     [SerializeField, Tooltip("Layer Mask for the Cell Raycast")]
     private LayerMask _cellLayerMask;
     
-    [SerializeField, ReadOnly, HideInEditorMode]
-    int _remainingActionToken = 0;
     
     private GCell _targetCell;
     
@@ -36,7 +35,7 @@ public class GPlayerController : GController
         SelectedPlayerChanged?.Invoke(newSelected);
 
         availableActions = GetAvailableActions();
-        if (actionList) actionList.UpdateButtons(availableActions);
+        if (gActionList) gActionList.UpdateButtons(availableActions);
     }
 
     public void ForceEndTurn()
@@ -56,7 +55,7 @@ public class GPlayerController : GController
         ShowHighlight();
     }
     
-    public void SelectAction(int id)
+    public void SelectGAction(int id)
     {
         if (availableActions.Length <= id) return;
         SelectAction(availableActions[id]);
@@ -107,7 +106,7 @@ public class GPlayerController : GController
     private void Start()
     {
         _selectInput = InputSystem.actions.FindAction("Select");
-        if (actionList) actionList.OnActionSelected += SelectAction;
+        if (gActionList) gActionList.OnActionSelected += SelectGAction;
     }
 
     private void Update()

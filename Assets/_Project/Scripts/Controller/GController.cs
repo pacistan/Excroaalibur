@@ -7,6 +7,8 @@ public abstract class GController : MonoBehaviour
 {
     [field : SerializeField, Min(1)]
     public int actionTokens { get; set; }
+    [SerializeField, ReadOnly]
+    public int _remainingActionToken { get; protected set;  }
 
     public event Action OnStartTurn;
     public event Action OnEndTurn;

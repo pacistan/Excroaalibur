@@ -15,6 +15,9 @@ public enum ETurnState
 
 public class GTurnBaseManager : GSingleton<GTurnBaseManager>
 {
+    public event Action<GAction, GController> actionPlayed; 
+    public event Action<GController> startControllerTurn; 
+    
     /** Manager The Turn Order */
     [field: SerializeField, ReadOnly]
     public GController _currentTurnController { get; private set; }
@@ -98,6 +101,7 @@ public class GTurnBaseManager : GSingleton<GTurnBaseManager>
         ActionInstance.PreProcess();
         
         ActionInstance.Start_Action();
+        actionPlayed?.Invoke(ActionInstance, _currentTurnController);
         _actionsInProgress.Add(ActionInstance);
         return true;
     }
@@ -133,6 +137,7 @@ public class GTurnBaseManager : GSingleton<GTurnBaseManager>
         
         _currentTurnController.StartTurn();
         _currentTurnState = ETurnState.InProgress;
+        startControllerTurn?.Invoke(_currentTurnController);
     }
     
     protected override void Awake()

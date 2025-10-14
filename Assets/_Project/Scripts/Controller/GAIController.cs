@@ -7,9 +7,6 @@ using UnityEngine.Serialization;
 public class GAIController : GController
 {
     public enum EAIBehaviorType {Sentry}
-    
-    [SerializeField]
-    private int _startingActionTokensNumber;
     [HideInInspector]
     public  GPawn pawn;
     [SerializeReference]
@@ -17,13 +14,13 @@ public class GAIController : GController
     
     public override void StartTurn()
     {
-        actionTokens = _startingActionTokensNumber;
+        _remainingActionToken = actionTokens;
         StartAction();
     }
 
     public override void StartAction()
     {
-        actionTokens--;
+        _remainingActionToken--;
         var action = _aiBehavior.GetAction();
         if (action == null)
         {
@@ -41,7 +38,7 @@ public class GAIController : GController
 
     public override void OnActionOver()
     {
-        if (actionTokens == 0)
+        if (_remainingActionToken == 0)
         {
             StopTurn();
         }
