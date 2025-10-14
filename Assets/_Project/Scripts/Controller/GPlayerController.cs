@@ -36,11 +36,6 @@ public class GPlayerController : GController
         if (actionList) actionList.UpdateButtons(availableActions);
     }
 
-    public void SetPlayerTurn()
-    {
-        _remainingActionToken = actionTokens;
-    }
-
     public void ForceEndTurn()
     {
         _remainingActionToken = 0;
@@ -141,7 +136,9 @@ public class GPlayerController : GController
     }
     public override void StartTurn()
     {
-        SetPlayerTurn();
+        _remainingActionToken = actionTokens;
+
+        base.StartTurn();
     }
 
     public override void StartAction()
@@ -166,6 +163,6 @@ public class GPlayerController : GController
 
     public override void EndTurn()
     {
-        throw new NotImplementedException();
+        base.EndTurn();
     }
 }

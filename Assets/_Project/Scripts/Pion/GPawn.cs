@@ -21,6 +21,10 @@ public class GPawn : MonoBehaviour
 
     void Start()
     {
+        if (!isPlayer) return;
+        GPlayerController controller = FindFirstObjectByType<GPlayerController>();
+        if (controller)
+            controller.RegisterPawn(this);
     }
 
     public void SetCell(GHexCoordinate newCoordinate)
@@ -57,9 +61,14 @@ public class GPawn : MonoBehaviour
         _hp--;
     }
 
-    public void EndTurn()
+    public void OnStartTurn()
     {
         if (_stunTurn > 0)
             _stunTurn--;
+    }
+
+    public void OnEndTurn()
+    {
+        
     }
 }
