@@ -65,6 +65,7 @@ public class GCell : SerializedMonoBehaviour
         _equipment = equipment;
     }
     
+    
 #if UNITY_EDITOR
     void OnValidate()
     {

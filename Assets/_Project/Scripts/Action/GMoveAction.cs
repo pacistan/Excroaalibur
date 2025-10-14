@@ -6,7 +6,7 @@ using UnityEngine;
 public class GMoveAction : GAction
 {
     [SerializeField]
-    private int _maxMoveDistance = 2;
+    public int _maxMoveDistance = 2;
     
     private EHexDirection[] _path = new EHexDirection[] { };
     private Vector3[] _wayPoints = new Vector3[] { };

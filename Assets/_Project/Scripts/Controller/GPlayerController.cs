@@ -10,7 +10,7 @@ public class GPlayerController : GController
 {
     public event Action<GPawn> SelectedPlayerChanged;
     public GAction[] availableActions = new GAction[] { };
-    [SerializeField, ReadOnly, HideInEditorMode]
+    [SerializeField]
     public ActionList actionList;
 
     [ReadOnly] GPawn _selectedPlayer;
@@ -18,8 +18,10 @@ public class GPlayerController : GController
     [ReadOnly] GHexCoordinate[] _validCells = new GHexCoordinate[]{};
     InputAction _selectInput;
     
+    [FormerlySerializedAs("_CellLayerMask")]
+    [FormerlySerializedAs("_CelllayerMask")]
     [SerializeField, Tooltip("Layer Mask for the Cell Raycast")]
-    private LayerMask _CelllayerMask;
+    private LayerMask _cellLayerMask;
     
     [SerializeField, ReadOnly, HideInEditorMode]
     int _remainingActionToken = 0;
@@ -81,7 +83,7 @@ public class GPlayerController : GController
     private GCell GetCellUnderMouse()
     {
         Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-        if (Physics.Raycast(ray, out RaycastHit hit, _CelllayerMask))
+        if (Physics.Raycast(ray, out RaycastHit hit, _cellLayerMask))
         {
             GCell cell = hit.transform.gameObject.GetComponentInParent<GCell>();
             return cell;

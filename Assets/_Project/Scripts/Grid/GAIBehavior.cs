@@ -55,7 +55,7 @@ public abstract class GAIBehavior : ScriptableObject
     {
         GMoveAction moveAction = new GMoveAction();
         moveAction.linkedPawn = _controller.pawn;
-        moveAction.targetCell = GetTargetCell(_controller.pawn.currentCell, targetCell, _controller.pawn.moveDistance);
+        moveAction.targetCell = GetTargetCell(_controller.pawn.currentCell, targetCell, moveAction._maxMoveDistance);
         moveAction.OnActionFinished += OnActionOver;
         moveAction.OnActionFinished += inOnActionFinished;
         return moveAction;
@@ -64,8 +64,7 @@ public abstract class GAIBehavior : ScriptableObject
     
     protected GCell GetTargetCell(GCell startCell, GCell endCell, int distance)
     {
-        
-        var path = GGridManager.Instance.GetPath(startCell, GGridManager.Instance.GetLowestAdjacentCell(endCell), false, _controller.pawn.moveDistance);
+        var path = GGridManager.Instance.GetPath(startCell, GGridManager.Instance.GetLowestAdjacentCell(endCell), false, distance);
         GCell cell = startCell;
         foreach (EHexDirection direction in path)
         {

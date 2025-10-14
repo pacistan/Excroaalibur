@@ -65,7 +65,7 @@ public class GPlayerChaserBehavior : GAIBehavior
         GMoveAction moveAction = (GMoveAction)_moveAction.Duplicate();
         moveAction.linkedPawn = _controller.pawn;
         //TODO : Replace moveDistance by the field in the action
-        moveAction.targetCell = GetTargetCell(_controller.pawn.currentCell, targetCell, _controller.pawn.moveDistance);
+        moveAction.targetCell = GetTargetCell(_controller.pawn.currentCell, targetCell, moveAction._maxMoveDistance);
         moveAction.OnActionFinished += OnActionOver;
         moveAction.OnActionFinished += inOnActionFinished;
         return moveAction;
