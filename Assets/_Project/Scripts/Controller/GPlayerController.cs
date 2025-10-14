@@ -15,6 +15,9 @@ public class GPlayerController : GController
     [ReadOnly] GAction _selectedAction;
     InputAction _selectInput;
     
+    [SerializeField, Tooltip("Layer Mask for the Cell Raycast")]
+    private LayerMask _CelllayerMask;
+    
     [SerializeField, ReadOnly]
     int _remainingActionToken = 0;
     
@@ -52,7 +55,7 @@ public class GPlayerController : GController
     private GCell GetCellUnderMouse()
     {
         Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-        if (Physics.Raycast(ray, out RaycastHit hit))
+        if (Physics.Raycast(ray, out RaycastHit hit, _CelllayerMask))
         {
             GCell cell = hit.transform.gameObject.GetComponentInParent<GCell>();
             return cell;
