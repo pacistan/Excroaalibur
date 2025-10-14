@@ -83,7 +83,7 @@ public class GPlayerController : GController
     private GCell GetCellUnderMouse()
     {
         Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-        if (Physics.Raycast(ray, out RaycastHit hit, _cellLayerMask))
+        if (Physics.Raycast(ray, out RaycastHit hit, Mathf.Infinity ,_cellLayerMask))
         {
             GCell cell = hit.transform.gameObject.GetComponentInParent<GCell>();
             return cell;
@@ -112,12 +112,20 @@ public class GPlayerController : GController
 
     private void Update()
     {
+        if (GTurnBaseManager.Instance._currentTurnController != this) return;
+        
         if (_selectInput.WasPressedThisFrame())
         {
             _targetCell = GetCellUnderMouse();
             if (!_targetCell) return;
+            
+            if (_selectedPlayer && _selectedAction != null)
+            {
+                StartAction();
+                return;
+            }
+            
             GPawn player = _targetCell.GetPawn() && _targetCell.GetPawn().isPlayer ? _targetCell.GetPawn() : null;
-
             if (player)
             {
                 if (_selectedPlayer != player && !player.IsStunned)
@@ -128,12 +136,6 @@ public class GPlayerController : GController
                 {
                     SetSelectedPlayer(null);
                 }
-            }
-            
-            if (_selectedPlayer && _selectedAction != null)
-            {
-                
-                StartAction();
             }
         }
     }

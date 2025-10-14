@@ -83,6 +83,7 @@ public class GMoveAction : GAction
     public override GAction CloneAction()
     {
         GAction action = base.CloneAction();
+        ((GMoveAction)action)._maxMoveDistance = _maxMoveDistance;
         return action;
     }
 }

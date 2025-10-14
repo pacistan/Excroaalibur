@@ -82,6 +82,10 @@ public class GPawn : GGridObject
         if (_hp <= 0) return;
         _stunTurn += stun;
         _hp--;
+        if (_hp < 0)
+        {
+            Kill();
+        }
     }
 
     public void OnStartTurn()
@@ -93,5 +97,11 @@ public class GPawn : GGridObject
     public void OnEndTurn()
     {
         
+    }
+
+    public void Kill()
+    {
+        gameObject.SetActive(false);
+        Destroy(gameObject);
     }
 }

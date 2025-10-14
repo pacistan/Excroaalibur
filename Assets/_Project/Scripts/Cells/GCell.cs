@@ -28,6 +28,8 @@ public class GCell : SerializedMonoBehaviour
     [field: SerializeField, ReadOnly]
     public GEquipment _equipment {get; private set; }
 
+    public GCellData.ETileType GetTileType => _data.tileType;
+    
     public void Initialize()
     {
         _neighbors = new GCell[Enum.GetValues(typeof(EHexDirection)).Length];
@@ -43,6 +45,11 @@ public class GCell : SerializedMonoBehaviour
     {
         _neighbors[(int)direction] = cell;
         cell._neighbors[(int)direction.Opposite()] = this;
+    }
+
+    public GCell GetNeighbor(EHexDirection direction)
+    {
+        return _neighbors[(int)direction];
     }
 
     public bool IsWalkable(bool ignorePawn = false)
