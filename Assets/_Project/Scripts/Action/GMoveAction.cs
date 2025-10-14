@@ -80,9 +80,9 @@ public class GMoveAction : GAction
         return validCells.ToArray();
     }
     
-    public override GAction Duplicate()
+    public override GAction CloneAction()
     {
-        GAction action = base.Duplicate();
+        GAction action = base.CloneAction();
         return action;
     }
 }

@@ -9,8 +9,6 @@ public class GCameraController : MonoBehaviour
     private float _rotationTime;
     [SerializeField] 
     private AnimationCurve _rotationCurve; 
-    [SerializeField] 
-    private Slider _rotationSlider;
     
     private float _inputRotationOffset;
     private IEnumerator _rotationEnum;
