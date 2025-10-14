@@ -16,7 +16,7 @@ public enum ETurnState
 public class GTurnBaseManager : GSingleton<GTurnBaseManager>
 {
     /** Manager The Turn Order */
-    [SerializeField, ReadOnly, HideInEditorMode]
+    [field: SerializeField, ReadOnly]
     public GController _currentTurnController { get; private set; }
 
     public bool isActionPlaying
@@ -24,11 +24,12 @@ public class GTurnBaseManager : GSingleton<GTurnBaseManager>
         get => _actionsInProgress.Count > 0;
     }
     
+    /** Queue Order of The Entity currently in fight */ 
     [SerializeField, ReadOnly, HideInEditorMode]
     private List<GAction> _actionsInProgress = new List<GAction>();
     
     /** Queue Order of The Entity currently in fight */ 
-    [SerializeField, ReadOnly, HideInEditorMode]
+    [SerializeField, ReadOnly]
     private List<GController> _turnOrderControllerQueue = new List<GController>();
     
     /** All the Entity in the Scene */
@@ -91,7 +92,7 @@ public class GTurnBaseManager : GSingleton<GTurnBaseManager>
         if (!IsReaction && isActionPlaying) return false;
         
         // TODO : Check if it's the good Method ! 
-        GAction ActionInstance = ActionToPlay.Duplicate();
+        GAction ActionInstance = ActionToPlay.CloneAction();
         
         // TODO A check modifs en fonction du return ! 
         ActionInstance.PreProcess();
