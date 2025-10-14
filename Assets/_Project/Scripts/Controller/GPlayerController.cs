@@ -112,12 +112,20 @@ public class GPlayerController : GController
 
     private void Update()
     {
+        if (!GTurnBaseManager.Instance._currentTurnController != this) return;
+        
         if (_selectInput.WasPressedThisFrame())
         {
             _targetCell = GetCellUnderMouse();
             if (!_targetCell) return;
+            
+            if (_selectedPlayer && _selectedAction != null)
+            {
+                StartAction();
+                return;
+            }
+            
             GPawn player = _targetCell.GetPawn() && _targetCell.GetPawn().isPlayer ? _targetCell.GetPawn() : null;
-
             if (player)
             {
                 if (_selectedPlayer != player && !player.IsStunned)
@@ -128,12 +136,6 @@ public class GPlayerController : GController
                 {
                     SetSelectedPlayer(null);
                 }
-            }
-            
-            if (_selectedPlayer && _selectedAction != null)
-            {
-                
-                StartAction();
             }
         }
     }
