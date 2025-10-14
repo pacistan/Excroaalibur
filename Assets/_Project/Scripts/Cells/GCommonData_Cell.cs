@@ -26,4 +26,7 @@ public class GCellCommonData : SerializedScriptableObject
 
     [SerializeField]
     public Dictionary<GCellData.EPawnSpawnType, GPawn> pawnTypeData;
+    
+    [SerializeField]
+    public Dictionary<GCellData.EEquipmentType, GEquipment> equipmentTypeData;
 }

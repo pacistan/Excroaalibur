@@ -33,6 +33,9 @@ public class GCellVisualsController : SerializedMonoBehaviour
     [SerializeField, HideInInspector]
     GCellData.EPawnSpawnType _previousPawnSpawnType;
     
+    [SerializeField, HideInInspector]
+    GCellData.EEquipmentType _previousEquipmentType;
+    
 #if UNITY_EDITOR
     public void UpdateCellVisuals()
     {
@@ -54,18 +57,52 @@ public class GCellVisualsController : SerializedMonoBehaviour
         GCellData.EPawnSpawnType newPawnType = _cell._data.pawnType;
         if(_previousPawnSpawnType != newPawnType)
         {
+            if (_cell._equipment)
+            {
+                _cell._data.pawnType = _previousPawnSpawnType;
+                Debug.LogWarning("Can't Change Pawn when there is an equipment");
+            }
+            else
+            {
+                if (_cell._ownedPawn)
+                {
+                    DestroyImmediate(_cell._ownedPawn.gameObject);
+                }
+                GPawn pawnPrefab = cellCommonData.pawnTypeData[newPawnType];
+                if (pawnPrefab)
+                {
+                    _cell._ownedPawn = PrefabUtility.InstantiatePrefab(pawnPrefab, _pawnSpawnPoint) as GPawn;
+                    _cell._ownedPawn.transform.localPosition = Vector3.zero;
+                    _cell._ownedPawn.SetCell(_cell);
+                }
+                _previousPawnSpawnType = newPawnType;
+            }
+        }
+        
+        // Equipment Type
+        GCellData.EEquipmentType newEquipmentType = _cell._data.equipmentType;
+        if(_previousEquipmentType != _cell._data.equipmentType)
+        {
             if (_cell._ownedPawn)
             {
-                DestroyImmediate(_cell._ownedPawn.gameObject);
+                _cell._data.equipmentType = _previousEquipmentType;
+                Debug.LogWarning("Can't Change equipment when there is a pawn");
             }
-            GPawn pawnPrefab = cellCommonData.pawnTypeData[newPawnType];
-            if (pawnPrefab)
+            else
             {
-                _cell._ownedPawn = PrefabUtility.InstantiatePrefab(pawnPrefab, _pawnSpawnPoint) as GPawn;
-                _cell._ownedPawn.transform.localPosition = Vector3.zero;
-                _cell._ownedPawn.SetCell(_cell);
+                if (_cell._equipment)
+                {
+                    DestroyImmediate(_cell._equipment.gameObject);
+                }
+                GEquipment equipmentPrefab = cellCommonData.equipmentTypeData[newEquipmentType];
+                if (equipmentPrefab)
+                {
+                    _cell._equipment = PrefabUtility.InstantiatePrefab(equipmentPrefab, _pawnSpawnPoint) as GEquipment;
+                    _cell._equipment.transform.localPosition = Vector3.zero;
+                    _cell._equipment.SetCell(_cell);
+                }
+                _previousEquipmentType = newEquipmentType;
             }
-            _previousPawnSpawnType = newPawnType;
         }
         
         // UI

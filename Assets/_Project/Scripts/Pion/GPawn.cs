@@ -8,6 +8,9 @@ using UnityEngine.Serialization;
 
 public class GPawn : GGridObject
 {
+    public event Action<GEquipment> OnEquip;
+    public event Action<GEquipment> OnUnequip;
+    
     [SerializeField]
     public bool isPlayer;
     [SerializeReference]
@@ -20,8 +23,12 @@ public class GPawn : GGridObject
     [ReadOnly] 
     int _stunTurn = 0;
 
+    [FormerlySerializedAs("_equipments")]
     [SerializeField, ReadOnly]
-    List<GEquipment> _equipments = new List<GEquipment>();
+    GEquipment _equipment;
+
+    [SerializeField, FoldoutGroup("Components")]
+    Transform _equipmentParentTr;
 
     void Start()
     {
@@ -33,25 +40,19 @@ public class GPawn : GGridObject
 
     public void Posess(GEquipment equipment)
     {
-        _equipments.Add(equipment);
+        _equipment = equipment;
+        OnEquip?.Invoke(equipment);
+        _equipment.transform.parent = _equipmentParentTr;
+        _equipment.transform.localPosition = Vector3.zero; 
     }
 
-    public void Release(GEquipment equipment)
+    public void Release()
     {
-        if (!_equipments.Contains(equipment))
-        {
-            Debug.LogWarning("Release not owned Equipment", this);
-        }
-        equipment.OnReleased();
-        _equipments.Remove(equipment);
+        _equipment.OnReleased();
+        OnUnequip?.Invoke(_equipment);
+        _equipment = null;
     }
     
-    public void ForceRelease()
-    {
-        _equipments.ForEach(a => Release(a));
-        _equipments.Clear();
-    }
-
     public override void SetCell(GHexCoordinate newCoordinate)
     {
         base.SetCell(GGridManager.Instance.GetCell(newCoordinate));

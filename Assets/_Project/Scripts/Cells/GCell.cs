@@ -24,11 +24,17 @@ public class GCell : SerializedMonoBehaviour
 
     [field: SerializeField, ReadOnly, FoldoutGroup("PersistantData")]
     public GPawn _ownedPawn;
-    
-    [field: SerializeField, ReadOnly]
-    public GEquipment _equipment {get; private set; }
 
     public GCellData.ETileType GetTileType => _data.tileType;
+    
+    [field: SerializeField, ReadOnly, FoldoutGroup("PersistantData")]
+    public GEquipment _equipment;
+
+    public void ReleaseEquipement()
+    {
+        _equipment.OnReleased();
+        _equipment = null;
+    }
     
     public void Initialize()
     {
