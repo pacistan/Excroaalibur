@@ -83,7 +83,7 @@ public class GPlayerController : GController
     private GCell GetCellUnderMouse()
     {
         Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-        if (Physics.Raycast(ray, out RaycastHit hit, _cellLayerMask))
+        if (Physics.Raycast(ray, out RaycastHit hit, Mathf.Infinity ,_cellLayerMask))
         {
             GCell cell = hit.transform.gameObject.GetComponentInParent<GCell>();
             return cell;
