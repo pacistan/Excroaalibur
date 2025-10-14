@@ -1,10 +1,11 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
+using Sirenix.OdinInspector;
 using UnityEngine;
 
 public abstract class GController : MonoBehaviour
 {
-    [field: SerializeField, Min(1)]
+    [field: SerializeField, Min(1), ReadOnly, HideInEditorMode]
     public int actionTokens;
 
     public event Action OnStartTurn;

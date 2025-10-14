@@ -107,7 +107,7 @@ public class GTurnBaseManager : GSingleton<GTurnBaseManager>
     /** Create the Queue based on Rule (Actually : player is first, then IA) */
     private void CreateQueue()
     {
-        var orderedEntities = _controllerList.OrderBy(entity => entity is GPlayerController ? 0 : 1).ToList();
+        var orderedEntities = _controllerList.OrderBy(entity => entity is GPlayerController ? 1 : 0).ToList();
         foreach (var entity in orderedEntities) 
         {
             _turnOrderControllerQueue.Add(entity);

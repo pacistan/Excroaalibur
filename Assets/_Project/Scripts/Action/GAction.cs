@@ -34,12 +34,14 @@ public abstract class GAction
     
     public GAction(){}
     
-    public GAction Duplicate()
+    public virtual GAction Duplicate()
     {
         GAction copy = (GAction)Activator.CreateInstance(this.GetType());
         copy.linkedPawn = linkedPawn;
         copy.targetCell = targetCell;
         copy.CurrentState = CurrentState;
+        copy.OnActionStarted = OnActionStarted;
+        copy.OnActionFinished = OnActionFinished;
         return copy;
     }
     

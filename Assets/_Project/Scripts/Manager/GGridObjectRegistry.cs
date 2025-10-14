@@ -43,6 +43,12 @@ public class GGridObjectRegistry : GSingleton<GGridObjectRegistry>
         }
     }
 
+    /// <summary>
+    /// Doesn't work needs work
+    /// </summary>
+    /// <param name="predicate">Condition Lambda to filter the result</param>
+    /// <typeparam name="T">The Type of GridObject Quieried</typeparam>
+    /// <returns></returns>
     public IEnumerable<T> GetItemsByPredicate<T>(Func<T, bool> predicate) where T : GGridObject
     {
         Type type = typeof(T);

@@ -79,4 +79,10 @@ public class GMoveAction : GAction
         
         return validCells.ToArray();
     }
+    
+    public override GAction Duplicate()
+    {
+        GAction action = base.Duplicate();
+        return action;
+    }
 }
