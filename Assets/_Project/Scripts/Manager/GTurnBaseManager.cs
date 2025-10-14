@@ -101,8 +101,8 @@ public class GTurnBaseManager : GSingleton<GTurnBaseManager>
         ActionInstance.PreProcess();
         
         ActionInstance.Start_Action();
-        actionPlayed?.Invoke(ActionInstance, _currentTurnController);
         _actionsInProgress.Add(ActionInstance);
+        actionPlayed?.Invoke(ActionInstance, _currentTurnController);
         return true;
     }
     

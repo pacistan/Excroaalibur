@@ -40,7 +40,7 @@ public class GPlayerController : GController
 
     public void ForceEndTurn()
     {
-        _remainingActionToken = 0;
+        remainingActionToken = 0;
     }
 
     public void SelectAction(GAction action)
@@ -141,7 +141,7 @@ public class GPlayerController : GController
     
     public override void StartTurn()
     {
-        _remainingActionToken = actionTokens;
+        remainingActionToken = actionTokens;
 
         base.StartTurn();
     }
@@ -153,8 +153,8 @@ public class GPlayerController : GController
         if (_selectedPlayer.RequestAction(_selectedAction))
         {
             SetSelectedPlayer(null);
-            _remainingActionToken--;
-            if (_remainingActionToken <= 0) 
+            remainingActionToken--;
+            if (remainingActionToken <= 0) 
             {
                 GTurnBaseManager.Instance.RequestEndTurn(this);
             }

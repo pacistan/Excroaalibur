@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using TMPro;
 using UnityEngine;
 
@@ -9,19 +10,26 @@ public class GDebugUI : MonoBehaviour
     [SerializeField]
     TextMeshProUGUI turnControllerText;
 
-    void Start()
+    void Awake()
     {
-        GTurnBaseManager.Instance.actionPlayed += SetActNum;
+        GTurnBaseManager.Instance.actionPlayed += OnAct;
         GTurnBaseManager.Instance.startControllerTurn += SetTurnController;
     }
 
-    public void SetActNum(GAction action, GController controller)
+    public void OnAct(GAction action, GController controller)
     {
-        actNumText.text = controller._remainingActionToken.ToString();
+        SetTurnController(controller);
+    }
+
+    public IEnumerator SetActNum(GController controller)
+    {
+        yield return new WaitForSecondsRealtime(.1f);
+        actNumText.text = controller.remainingActionToken.ToString();
     }
 
     public void SetTurnController(GController controller)
     {
         turnControllerText.text = controller.ToString();
+        StartCoroutine(SetActNum(controller));
     }
 }

@@ -14,13 +14,13 @@ public class GAIController : GController
     
     public override void StartTurn()
     {
-        _remainingActionToken = actionTokens;
+        remainingActionToken = actionTokens;
         StartAction();
     }
 
     public override void StartAction()
     {
-        _remainingActionToken--;
+        remainingActionToken--;
         var action = _aiBehavior.GetAction();
         if (action == null)
         {
@@ -38,7 +38,7 @@ public class GAIController : GController
 
     public override void OnActionOver()
     {
-        if (_remainingActionToken == 0)
+        if (remainingActionToken == 0)
         {
             StopTurn();
         }
