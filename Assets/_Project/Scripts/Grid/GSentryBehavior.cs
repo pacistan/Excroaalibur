@@ -145,7 +145,7 @@ public class GSentryBehavior : GAIBehavior
 
     protected override GMoveAction CreateMoveAction(GCell targetCell, Action inOnActionFinished = null)
     {
-        GMoveAction moveAction = (GMoveAction)_moveAction.Duplicate();
+        GMoveAction moveAction = (GMoveAction)_moveAction.CloneAction();
         moveAction.linkedPawn = _controller.pawn;
         //TODO : Replace moveDistance by the field in the action
         moveAction.targetCell = GetTargetCell(_controller.pawn.currentCell, targetCell, moveAction._maxMoveDistance);
@@ -153,6 +153,4 @@ public class GSentryBehavior : GAIBehavior
         moveAction.OnActionFinished += inOnActionFinished;
         return moveAction;
     }
-
-
 }

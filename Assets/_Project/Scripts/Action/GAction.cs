@@ -23,6 +23,7 @@ public abstract class GAction
 
     [ReadOnly] public EActionState CurrentState { get; private set; } = EActionState.None;
 
+    public GAction(){}
     public GAction(GPawn inLinkedPawn, GCell inTargetCell, Action inOnActionStarted = null,
         Action inOnActionFinished = null)
     {
@@ -32,17 +33,16 @@ public abstract class GAction
         OnActionFinished += inOnActionFinished;
     }
     
-    public GAction(){}
-    
-    public virtual GAction Duplicate()
+    /* Create a new instance of the action with the same parameters, Override this for Add Params */
+    public virtual GAction CloneAction()
     {
-        GAction copy = (GAction)Activator.CreateInstance(this.GetType());
-        copy.linkedPawn = linkedPawn;
-        copy.targetCell = targetCell;
-        copy.CurrentState = CurrentState;
-        copy.OnActionStarted = OnActionStarted;
-        copy.OnActionFinished = OnActionFinished;
-        return copy;
+        GAction clone = (GAction)Activator.CreateInstance(this.GetType());
+        clone.linkedPawn = linkedPawn;
+        clone.targetCell = targetCell;
+        clone.CurrentState = CurrentState;
+        clone.OnActionStarted = OnActionStarted;
+        clone.OnActionFinished = OnActionFinished;
+        return clone;
     }
     
     public virtual void PreProcess()
