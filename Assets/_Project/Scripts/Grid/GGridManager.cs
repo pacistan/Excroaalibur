@@ -124,6 +124,7 @@ public class GGridManager : GSingleton<GGridManager>
             int lowestStep = -1;
             foreach (GCell neighbor in targetCell._neighbors)
             {
+                if (!neighbor) continue;
                 if (_stepMap.ContainsKey(neighbor._data.gridCoordinates))
                 {
                     int step = _stepMap[neighbor._data.gridCoordinates];

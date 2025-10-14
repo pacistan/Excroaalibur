@@ -112,7 +112,7 @@ public class GPlayerController : GController
 
     private void Update()
     {
-        if (!GTurnBaseManager.Instance._currentTurnController != this) return;
+        if (GTurnBaseManager.Instance._currentTurnController != this) return;
         
         if (_selectInput.WasPressedThisFrame())
         {
