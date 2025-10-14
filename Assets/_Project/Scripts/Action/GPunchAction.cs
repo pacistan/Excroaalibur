@@ -19,7 +19,8 @@ public class GPunchAction : GAction
     public override void Start_Action()
     {
         base.Start_Action();
-        targetCell.GetPawn().TakeDamage(_damage, _stun);
+        targetCell.GetPawn().TakeDamage(_damage);
+        targetCell.GetPawn().Stun(_stun);
         _progress = 0;
     }
 

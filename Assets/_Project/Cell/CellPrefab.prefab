@@ -234,14 +234,16 @@ MonoBehaviour:
     gridCoordinates: {x: 0, y: 0}
     tileType: 0
     pawnType: 0
+    equipmentType: 0
   _ui: {fileID: 0}
   _cellVisualsController: {fileID: 3577346378785680272}
+  _pawnSpawnPoint: {fileID: 2896100592653209241}
   _hexCoordinates:
     x: 0
     z: 0
   <_neighbors>k__BackingField: []
   _ownedPawn: {fileID: 0}
-  <_ownedGridObject>k__BackingField: {fileID: 0}
+  _equipment: {fileID: 0}
 --- !u!114 &3577346378785680272
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -270,8 +272,8 @@ MonoBehaviour:
   _cell: {fileID: 8962405803899580738}
   _text: {fileID: 0}
   _highlight: {fileID: 0}
-  _pawnSpawnPoint: {fileID: 2896100592653209241}
   _previousPawnSpawnType: 0
+  _previousEquipmentType: 0
 --- !u!114 &6044818382770711880
 MonoBehaviour:
   m_ObjectHideFlags: 0

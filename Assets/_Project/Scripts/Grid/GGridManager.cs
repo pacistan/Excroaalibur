@@ -141,6 +141,10 @@ public class GGridManager : GSingleton<GGridManager>
 
     public GCell GetLowestAdjacentCell(GCell ogCell)
     {
+        if (_stepMap.ContainsKey(ogCell._data.gridCoordinates))
+        {
+            return ogCell;
+        }
         GCell outCell = null;
         int lowestStep = int.MaxValue;
         foreach (GCell cell in ogCell._neighbors)

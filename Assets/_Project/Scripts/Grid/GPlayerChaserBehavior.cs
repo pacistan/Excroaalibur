@@ -21,6 +21,7 @@ public class GPlayerChaserBehavior : GAIBehavior
     {
         GGridManager.Instance.GenerateStepMap(_controller.pawn.currentCell);
         GPawn player = GetPotentialTargetPlayer(out int distance);
+        if (distance == 1) return null;
         GCell cell = player.currentCell;
         GAction currentAction = CreateMoveAction(cell);
         return currentAction;
@@ -65,7 +66,7 @@ public class GPlayerChaserBehavior : GAIBehavior
         GMoveAction moveAction = (GMoveAction)_moveAction.CloneAction();
         moveAction.linkedPawn = _controller.pawn;
         //TODO : Replace moveDistance by the field in the action
-        moveAction.targetCell = GetTargetCell(_controller.pawn.currentCell, targetCell, moveAction._maxMoveDistance);
+        moveAction.targetCell = GetClosestCellToTargetCell(_controller.pawn.currentCell, targetCell, moveAction._maxMoveDistance);
         moveAction.OnActionFinished += OnActionOver;
         moveAction.OnActionFinished += inOnActionFinished;
         return moveAction;

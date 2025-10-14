@@ -7,7 +7,7 @@ using static GCellVisualsController;
 public struct GCellData
 {
     public enum ETileType { Normal, Wall, Hole }
-    public enum EPawnSpawnType {None, Sentry, PlayerPawn}
+    public enum EPawnSpawnType {None, Sentry, PlayerPawn, Altar}
     public enum EEquipmentType {None, Crown}
 
     [SerializeField, ReadOnly]

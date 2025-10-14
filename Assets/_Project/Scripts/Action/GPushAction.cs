@@ -2,7 +2,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class GPushAction : GAction
+public class 
+    GPushAction : GAction
 {
     [SerializeField, Min(0)]
     private int _pushDistance = 2;
@@ -23,6 +24,7 @@ public class GPushAction : GAction
     
     bool _inflictDamage = false;
     bool _kill = false;
+
     
     public override void PreProcess()
     {
@@ -33,15 +35,19 @@ public class GPushAction : GAction
         GCell pathCell = _targetPawn.currentCell;
         List<GCell> pathCells = new List<GCell>();
         
-        //TODO drop the crown
+        
         for (int i = 0; i < _pushDistance; i++)
         {
+            if (_targetPawn is GAltar) break;
+            
             GCell neighbor = pathCell.GetNeighbor(_direction);
+            
             if (!neighbor || neighbor.GetTileType == GCellData.ETileType.Wall || neighbor.GetPawn())
             {
                 _inflictDamage = true;
                 break;
             }
+
             pathCells.Add(pathCell);
             pathCell = neighbor;
             if (neighbor.GetTileType == GCellData.ETileType.Hole)
@@ -62,10 +68,38 @@ public class GPushAction : GAction
     public override void Start_Action()
     {
         base.Start_Action();
+        
+        if (_linkedEndCell != linkedPawn.currentCell && _targetPawn && _targetPawn.GetEquipment() && !(_targetPawn is GAltar))
+        {
+            GEquipment equipment = _targetPawn.GetEquipment();
+            _targetPawn.Release();
+            _targetPawn.currentCell.SetEquipment(equipment);
+        }
+        else if (_linkedEndCell == linkedPawn.currentCell && _targetPawn && _targetPawn.GetEquipment() &&
+                 !(_targetPawn is GAltar))
+        {
+            GEquipment equipment = _targetPawn.GetEquipment();
+            _targetPawn.Release();
+            linkedPawn.Posess(equipment);
+        }
+        
+        if (_inflictDamage)
+        {
+            _targetPawn.TakeDamage(_damage);
+            _targetPawn.Stun(_stun);
+        }
+        
+        
+        if (_targetPawn is GAltar && _targetPawn.GetEquipment() && _targetPawn.GetEquipment() is GCrown)
+        {
+            GEquipment equipment = _targetPawn.GetEquipment();
+            _targetPawn.Release(); 
+            linkedPawn.Posess(equipment);
+        }
+        
         _targetPawn.SetCell(_targetEndCell);
         linkedPawn.SetCell(_linkedEndCell);
-        if(_inflictDamage)
-            _targetPawn.TakeDamage(_damage, _stun);
+
         _progress = 0;
     }
 
@@ -87,16 +121,29 @@ public class GPushAction : GAction
         base.End_Action();
         linkedPawn.transform.position = _linkedEndCell.transform.position;
         _targetPawn.transform.position = _targetEndCell.transform.position;
+        
+        GEquipment equipment = _linkedEndCell._equipment;
+        if (equipment &&  !(_targetPawn is GAltar))
+        {
+            _linkedEndCell.ReleaseEquipement();
+            linkedPawn.Posess(equipment);
+        }
+        
         if (_kill && !_targetPawn.isPlayer)
             _targetPawn.Kill();
         else if (_kill && _targetPawn.isPlayer)
-            _targetPawn.TakeDamage(0, 1);
+        {
+            _targetPawn.Stun(1);
+            
+        }
     }
 
     public override GHexCoordinate[] GetValidCells()
     {
         List<GHexCoordinate> validCells = new List<GHexCoordinate>();
 
+        
+        
         foreach (GCell cell in linkedPawn.currentCell._neighbors)
         {
             if (!cell || !cell.GetPawn() || cell.GetPawn() == linkedPawn) continue;
