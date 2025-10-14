@@ -2,7 +2,7 @@
 using UnityEngine;
 using UnityEngine.Serialization;
 
-public class GCrown : MonoBehaviour
+public class GCrown : GGridObject
 {
     [SerializeField, ReadOnly]
     public GPawn owner;

@@ -1,4 +1,5 @@
 using Sirenix.OdinInspector;
+using System;
 using UnityEngine;
 
 public class GGridObject : MonoBehaviour
@@ -24,5 +25,15 @@ public class GGridObject : MonoBehaviour
         currentCell = newCell;
         coordinate = newCell._hexCoordinates;
         currentCell.SetGridObject(this);
+    }
+
+    void OnEnable()
+    {
+        GGridObjectRegistry.Instance.Register(this);
+    }
+
+    void OnDisable()
+    {
+        GGridObjectRegistry.Instance.Unregister(this);
     }
 }

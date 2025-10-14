@@ -16,8 +16,6 @@ public class GAIController : GController
 
     GAIBehavior _aiBehavior;
     
-    public int actionTokens { get; set; }
-    
     public override void StartTurn()
     {
         actionTokens = _startingActionTokensNumber;

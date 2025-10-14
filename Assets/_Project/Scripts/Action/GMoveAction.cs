@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
+using System;
 using UnityEngine;
 
 
@@ -10,7 +11,13 @@ public class GMoveAction : GAction
     private EHexDirection[] _path = new EHexDirection[] { };
     private Vector3[] _wayPoints = new Vector3[] { };
     float _progress = 0;
+
+    public GMoveAction(){}
     
+    public GMoveAction(GPawn inLinkedPawn, GCell inTargetCell, Action inOnActionStarted = null, Action inOnActionFinished = null) : base(inLinkedPawn, inTargetCell, inOnActionStarted, inOnActionFinished)
+    {
+    }
+
     public override void PreProcess()
     {
         _path = GGridManager.Instance.GetPath(linkedPawn.currentCell ,targetCell, true);

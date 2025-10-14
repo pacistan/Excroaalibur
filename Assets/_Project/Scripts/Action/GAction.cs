@@ -22,6 +22,17 @@ public abstract class GAction
     [ReadOnly] public GCell targetCell;
 
     [ReadOnly] public EActionState CurrentState { get; private set; } = EActionState.None;
+
+    public GAction(GPawn inLinkedPawn, GCell inTargetCell, Action inOnActionStarted = null,
+        Action inOnActionFinished = null)
+    {
+        linkedPawn = inLinkedPawn;
+        targetCell = inTargetCell;
+        OnActionStarted += inOnActionStarted;
+        OnActionFinished += inOnActionFinished;
+    }
+    
+    public GAction(){}
     
     public GAction Duplicate()
     {

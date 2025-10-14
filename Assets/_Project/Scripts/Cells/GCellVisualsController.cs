@@ -99,13 +99,13 @@ public class GCellVisualsController : SerializedMonoBehaviour
     #if UNITY_EDITOR
     private void HideInHierarchy()
     {
+            _meshRenderer.transform.parent.gameObject.hideFlags = HideFlags.None;
         if (_showVisualsInHierarchy)
         {
-            _meshRenderer.transform.parent.gameObject.hideFlags = HideFlags.None;
         }
         else
         {
-            _meshRenderer.transform.parent.gameObject.hideFlags = HideFlags.HideAndDontSave;
+            //_meshRenderer.transform.parent.gameObject.hideFlags = HideFlags.HideAndDontSave;
         }
     }
     #endif

@@ -1,6 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
-using UnityEngine;
 
 public abstract class GAIBehavior
 {
@@ -27,6 +27,8 @@ public abstract class GAIBehavior
         OnStateEnter();
     }
 
+    public abstract void OnActionOver();
+    
     public void OnReceivedCrown()
     {
         ChangeState(EBehaviorState.LookingForCrown);
@@ -47,6 +49,28 @@ public abstract class GAIBehavior
         
     }
 
+    protected GMoveAction CreateMoveAction(GCell targetCell, Action inOnActionFinished = null)
+    {
+        GMoveAction moveAction = new GMoveAction();
+        moveAction.linkedPawn = _controller.pawn;
+        moveAction.targetCell = GetTargetCell(_controller.pawn.currentCell, targetCell, _controller.pawn.moveDistance);
+        moveAction.OnActionFinished += OnActionOver;
+        moveAction.OnActionFinished += inOnActionFinished;
+        return moveAction;
+    }
+    
+    
+    protected GCell GetTargetCell(GCell startCell, GCell endCell, int distance)
+    {
+        var path = GGridManager.Instance.GetPath(startCell, endCell, false, _controller.pawn.moveDistance);
+        GCell cell = startCell;
+        foreach (EHexDirection direction in path)
+        {
+            cell = cell._neighbors[(int)direction];
+        }
+        return cell;
+    }
+
 }
 
 public class GSentryBehavior : GAIBehavior
@@ -63,21 +87,17 @@ public class GSentryBehavior : GAIBehavior
             case EBehaviorState.LookingForCrown:
             {
                 GCrown crown = GetPotentialTargetCrown(out int distance);
-                if (crown != null)
+                if (!crown)
                 {
                     if (distance == 1 && crown.owner.isPlayer)
                     {
                         ChangeState(EBehaviorState.LookingForCrown);
-                        // TODO : Return PunchAction
+                        // TODO : Return PunchAction with ChangeState LookingForCrown
                         return null;
                     }
                     else
                     {
-                        ChangeState(EBehaviorState.TryingToPunch);
-                        GMoveAction moveAction = new GMoveAction();
-                        moveAction.linkedPawn = _controller.pawn;
-                        moveAction.targetCell = GetTargetCell(_controller.pawn.currentCell, crown.cell, _controller.pawn.moveDistance);
-                        return moveAction;
+                        return CreateMoveAction(crown.cell, ()=>ChangeState(EBehaviorState.TryingToPunch));
                     }
                 }
                 
@@ -89,17 +109,12 @@ public class GSentryBehavior : GAIBehavior
                 {
                     if (distance == 1)
                     {
-                        ChangeState(EBehaviorState.LookingForCrown);
-                        // TODO : Return Place Crown
+                        // TODO : Return Place Crown with ChangeState LookingForCrown
                         return null;
                     }
                     else
                     {
-                        GMoveAction moveAction = new GMoveAction();
-                        moveAction.linkedPawn = _controller.pawn;
-                        moveAction.targetCell = GetTargetCell(_controller.pawn.currentCell, receptacle.cell, _controller.pawn.moveDistance);
-                        ChangeState(EBehaviorState.TryingToPlaceCrown);
-                        return moveAction;
+                        return  CreateMoveAction(receptacle.cell, ()=>ChangeState(EBehaviorState.TryingToPlaceCrown));
                     }
                 }
             } break;
@@ -108,8 +123,7 @@ public class GSentryBehavior : GAIBehavior
                 GCrown crown = GetPotentialTargetCrown(out int distance);
                 if (distance == 1 && crown.owner.isPlayer)
                 {
-                    ChangeState(EBehaviorState.LookingForCrown);
-                    // TODO : Return PunchAction
+                    // TODO : Return PunchAction with Change State t LookingForCrown
                     return null;
                 }
             } break;
@@ -118,13 +132,12 @@ public class GSentryBehavior : GAIBehavior
                 GReceptacle crown = GetPotentialTargetAltar(out int distance);
                 if (distance == 1)
                 {
-                    ChangeState(EBehaviorState.LookingForCrown);
-                    // TODO : Return PlaceCrownAction
+                    // TODO : Return PlaceCrownAction with Change State Looking for Crown
                     return null;
                 }
             } break;
         }
-        throw new Exception();
+        return null;
     }
 
     public override void OnTurnEnd()
@@ -139,12 +152,16 @@ public class GSentryBehavior : GAIBehavior
         }
     }
 
+    public override void OnActionOver()
+    {
+    }
+
     private GCrown GetPotentialTargetCrown(out int distance)
     {
         distance = -1;
-        GCrown[] crowns = GameObject.FindObjectsOfType<GCrown>().Where(crown => crown.owner == null || crown.owner.isPlayer).ToArray();
+        IEnumerable<GCrown> crowns = GGridObjectRegistry.Instance.GetItemsByPredicate<GCrown>(crown => crown.owner == null || crown.owner.isPlayer);
 
-        if (crowns == null || crowns.Length == 0) return null;
+        if (crowns == null || crowns.Count() == 0) return null;
         
         GGridManager.Instance.GenerateStepMap(_controller.pawn.currentCell);
         
@@ -165,10 +182,11 @@ public class GSentryBehavior : GAIBehavior
     
     private GReceptacle GetPotentialTargetAltar(out int distance)
     {
+        //TODO : Create a Manager that has all altars reference in order to reduce overhead of FindObjects all the time
         distance = -1;
-        GReceptacle[] receptacles = GameObject.FindObjectsOfType<GReceptacle>();
+        List<GReceptacle> receptacles = GGridObjectRegistry.Instance.GetItems<GReceptacle>();
 
-        if (receptacles == null || receptacles.Length == 0) return null;
+        if (receptacles == null || receptacles.Count() == 0) return null;
         
         GGridManager.Instance.GenerateStepMap(_controller.pawn.currentCell);
         
@@ -187,14 +205,4 @@ public class GSentryBehavior : GAIBehavior
         return targetReceptacle;
     }
 
-    private GCell GetTargetCell(GCell startCell, GCell endCell, int distance)
-    {
-        var path = GGridManager.Instance.GetPath(startCell, endCell, false, _controller.pawn.moveDistance);
-        GCell cell = startCell;
-        foreach (EHexDirection direction in path)
-        {
-            cell = cell._neighbors[(int)direction];
-        }
-        return cell;
-    }
 }

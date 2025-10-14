@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using UnityEngine.Serialization;
 
-public class GReceptacle : MonoBehaviour
+public class GReceptacle : GGridObject
 {
     [FormerlySerializedAs("_currentCell")]
     [SerializeField]

@@ -26,6 +26,7 @@ public abstract class GController : MonoBehaviour
     public virtual void OnActionOver() {}
     
     public virtual void EndTurn() { OnEndTurn?.Invoke(); }
+
     
     protected void StopTurn()
     {
