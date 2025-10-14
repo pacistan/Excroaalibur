@@ -2,6 +2,7 @@ using Sirenix.OdinInspector;
 using System;
 using UnityEngine;
 
+[SelectionBase]
 public class GGridObject : MonoBehaviour
 {
     [ReadOnly]

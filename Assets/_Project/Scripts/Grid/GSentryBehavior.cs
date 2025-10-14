@@ -9,15 +9,22 @@ public class GSentryBehavior : GAIBehavior
     [SerializeReference]
     GMoveAction _moveAction;
 
+    [SerializeReference]
+    GPushAction _pushAction;
+    
+    [SerializeReference]
+    GPlaceOnAltarAction _placeOnAltarAction;
+    
     public override void Init(GAIController controller)
     {
         base.Init(controller);
-        // TODO : Replace nulls by Push Action and Place Crown Action
         actions = new List<GAction>()        {
             _moveAction,
-            null,
-            null
+            _pushAction,
+            _placeOnAltarAction
         };
+
+        controller.pawn.OnEquip += OnReceivedEquipment;
     }
     
     public override GAction GetAction()
@@ -27,33 +34,32 @@ public class GSentryBehavior : GAIBehavior
             case EBehaviorState.LookingForTarget:
             {
                 GCrown crown = GetPotentialTargetCrown(out int distance);
-                if (!crown)
+                if (crown)
                 {
-                    if (distance == 1 && crown.owner.isPlayer)
+                    if (distance == 1 && crown.owner && crown.owner.isPlayer)
                     {
-                        // TODO : Return PunchAction with ChangeState LookingForCrown
-                        return null;
+                        return CreatePushAction(crown.GetCell(), () => ChangeState(EBehaviorState.LookingForTarget));
                     }
                     else
                     {
-                        return CreateMoveAction(crown.currentCell, ()=>ChangeState(EBehaviorState.TryingToPush));
+                        ChangeState(EBehaviorState.TryingToPush);
+                        return CreateMoveAction(crown.GetCell());
                     }
                 }
                 
             } break;
             case EBehaviorState.RunningToAltar:
             {
-                GReceptacle receptacle = GetPotentialTargetAltar(out int distance);
-                if (receptacle != null)
+                GAltar altar = GetPotentialTargetAltar(out int distance);
+                if (altar != null)
                 {
                     if (distance == 1)
                     {
-                        // TODO : Return Place Crown with ChangeState LookingForCrown
-                        return null;
+                        return CreatePlaceOnAltarAction(altar.currentCell, () => ChangeState(EBehaviorState.LookingForTarget));
                     }
                     else
                     {
-                        return  CreateMoveAction(receptacle.cell, ()=>ChangeState(EBehaviorState.TryingToPlaceCrown));
+                        return  CreateMoveAction(altar.currentCell, ()=>ChangeState(EBehaviorState.TryingToPlaceCrown));
                     }
                 }
             } break;
@@ -62,17 +68,15 @@ public class GSentryBehavior : GAIBehavior
                 GCrown crown = GetPotentialTargetCrown(out int distance);
                 if (distance == 1 && crown.owner.isPlayer)
                 {
-                    // TODO : Return PunchAction with Change State t LookingForCrown
-                    return null;
+                    return CreatePushAction(crown.GetCell(), () => ChangeState(EBehaviorState.LookingForTarget));
                 }
             } break;
             case EBehaviorState.TryingToPlaceCrown:
             {
-                GReceptacle crown = GetPotentialTargetAltar(out int distance);
+                GAltar altar = GetPotentialTargetAltar(out int distance);
                 if (distance == 1)
                 {
-                    // TODO : Return PlaceCrownAction with Change State Looking for Crown
-                    return null;
+                    return CreatePlaceOnAltarAction(altar.currentCell, () => ChangeState(EBehaviorState.LookingForTarget));
                 }
             } break;
         }
@@ -108,7 +112,8 @@ public class GSentryBehavior : GAIBehavior
         GCrown targetCrown = null;
         foreach (var crown in crowns)
         {
-            int crownStep = GGridManager.Instance.GetStep(crown.currentCell);
+            GCell crownCell = crown.owner ? crown.owner.currentCell : crown.currentCell;
+            int crownStep =  GGridManager.Instance.GetStep(crownCell, true);
             if (crownStep != -1 && crownStep < shortestDistance) 
             {
                 shortestDistance = crownStep;
@@ -119,38 +124,58 @@ public class GSentryBehavior : GAIBehavior
         return targetCrown;
     }
     
-    private GReceptacle GetPotentialTargetAltar(out int distance)
+    private GAltar GetPotentialTargetAltar(out int distance)
     {
         distance = -1;
-        List<GReceptacle> receptacles = GGridObjectRegistry.Instance.GetItems<GReceptacle>();
+        List<GAltar> receptacles = GGridObjectRegistry.Instance.GetItems<GAltar>();
 
         if (receptacles == null || receptacles.Count() == 0) return null;
         
         GGridManager.Instance.GenerateStepMap(_controller.pawn.currentCell);
         
         int shortestDistance = int.MaxValue;
-        GReceptacle targetReceptacle = null;
+        GAltar targetAltar = null;
         foreach (var receptacle in receptacles)
         {
-            int crownStep = GGridManager.Instance.GetStep(receptacle.cell);
+            int crownStep = GGridManager.Instance.GetStep(receptacle.currentCell, true);
             if (crownStep != -1 && crownStep < shortestDistance) 
             {
                 shortestDistance = crownStep;
-                targetReceptacle = receptacle;
+                targetAltar = receptacle;
             }
         }
         distance = shortestDistance;
-        return targetReceptacle;
+        return targetAltar;
     }
 
     protected override GMoveAction CreateMoveAction(GCell targetCell, Action inOnActionFinished = null)
     {
         GMoveAction moveAction = (GMoveAction)_moveAction.CloneAction();
         moveAction.linkedPawn = _controller.pawn;
-        //TODO : Replace moveDistance by the field in the action
-        moveAction.targetCell = GetTargetCell(_controller.pawn.currentCell, targetCell, moveAction._maxMoveDistance);
+        moveAction.targetCell = GetClosestCellToTargetCell(_controller.pawn.currentCell, targetCell, moveAction._maxMoveDistance);
         moveAction.OnActionFinished += OnActionOver;
         moveAction.OnActionFinished += inOnActionFinished;
         return moveAction;
     }
+
+    protected override GPushAction CreatePushAction(GCell targetCell, Action inOnActionFinished = null)
+    {
+        GPushAction pushAction = (GPushAction)_pushAction.CloneAction();
+        pushAction.linkedPawn = _controller.pawn;
+        pushAction.targetCell = targetCell;
+        pushAction.OnActionFinished += OnActionOver;
+        pushAction.OnActionFinished += inOnActionFinished;
+        return pushAction;
+    }
+    
+    protected override GPlaceOnAltarAction CreatePlaceOnAltarAction(GCell targetCell, Action inOnActionFinished = null)
+    {
+        GPlaceOnAltarAction placeOnAltarAction = (GPlaceOnAltarAction)_placeOnAltarAction.CloneAction();
+        placeOnAltarAction.linkedPawn = _controller.pawn;
+        placeOnAltarAction.targetCell = targetCell;
+        placeOnAltarAction.OnActionFinished += OnActionOver;
+        placeOnAltarAction.OnActionFinished += inOnActionFinished;
+        return placeOnAltarAction;
+    }
+
 }

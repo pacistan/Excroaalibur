@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Sirenix.OdinInspector;
+using System;
 using System.Collections;
 using UnityEngine;
 using UnityEngine.Serialization;
@@ -10,6 +11,7 @@ public class GAIController : GController
     [HideInInspector]
     public  GPawn pawn;
     [SerializeReference]
+    [InlineEditor(InlineEditorObjectFieldModes.Boxed)]
     GAIBehavior _aiBehavior;
     
     public override void StartTurn()
@@ -24,15 +26,12 @@ public class GAIController : GController
         var action = _aiBehavior.GetAction();
         if (action == null)
         {
-            EndTurn();
+            StopTurn();
         }
         else
         {
             action.OnActionFinished += OnActionOver;
-            bool isValid = GTurnBaseManager.Instance.TryPlayAction(action, false);
-            if (isValid)
-            {
-            }
+            bool isValid = pawn.RequestAction(action);
         }
     }
 

@@ -27,8 +27,7 @@ public class GCellVisualsController : SerializedMonoBehaviour
     TextMeshProUGUI _text;
     [SerializeField, FoldoutGroup("Components")]
     Image _highlight;
-    [SerializeField, FoldoutGroup("Components")]
-    Transform _pawnSpawnPoint;
+
 
     [SerializeField, HideInInspector]
     GCellData.EPawnSpawnType _previousPawnSpawnType;
@@ -71,7 +70,7 @@ public class GCellVisualsController : SerializedMonoBehaviour
                 GPawn pawnPrefab = cellCommonData.pawnTypeData[newPawnType];
                 if (pawnPrefab)
                 {
-                    _cell._ownedPawn = PrefabUtility.InstantiatePrefab(pawnPrefab, _pawnSpawnPoint) as GPawn;
+                    _cell._ownedPawn = PrefabUtility.InstantiatePrefab(pawnPrefab, _cell._pawnSpawnPoint) as GPawn;
                     _cell._ownedPawn.transform.localPosition = Vector3.zero;
                     _cell._ownedPawn.SetCell(_cell);
                 }
@@ -97,7 +96,8 @@ public class GCellVisualsController : SerializedMonoBehaviour
                 GEquipment equipmentPrefab = cellCommonData.equipmentTypeData[newEquipmentType];
                 if (equipmentPrefab)
                 {
-                    _cell._equipment = PrefabUtility.InstantiatePrefab(equipmentPrefab, _pawnSpawnPoint) as GEquipment;
+                    _cell._equipment = PrefabUtility.InstantiatePrefab(equipmentPrefab) as GEquipment;
+                    _cell._equipment.transform.parent = _cell._pawnSpawnPoint;
                     _cell._equipment.transform.localPosition = Vector3.zero;
                     _cell._equipment.SetCell(_cell);
                 }

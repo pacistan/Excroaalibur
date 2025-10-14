@@ -4,6 +4,7 @@ using UnityEditor;
 using UnityEngine;
 using UnityEngine.Serialization;
 
+[SelectionBase]
 public class GCell : SerializedMonoBehaviour
 {
     // Data of the Cell
@@ -12,9 +13,13 @@ public class GCell : SerializedMonoBehaviour
 
     [field: SerializeField, FoldoutGroup("PersistantData/Components"), ReadOnly]
     public RectTransform _ui;
+    
 
     [SerializeField, FoldoutGroup("PersistantData/Components")]
     public GCellVisualsController _cellVisualsController;
+    
+    [SerializeField, FoldoutGroup("PersistantData/Components")]
+    public Transform _pawnSpawnPoint;
     
     [SerializeField, ReadOnly, FoldoutGroup("PersistantData")]
     public GHexCoordinate _hexCoordinates;
@@ -30,6 +35,8 @@ public class GCell : SerializedMonoBehaviour
     [field: SerializeField, ReadOnly, FoldoutGroup("PersistantData")]
     public GEquipment _equipment;
 
+
+    
     public void ReleaseEquipement()
     {
         _equipment.OnReleased();
@@ -76,6 +83,8 @@ public class GCell : SerializedMonoBehaviour
     public void SetEquipment(GEquipment equipment)
     {
         _equipment = equipment;
+        _equipment.transform.parent = _pawnSpawnPoint;
+        _equipment.transform.localPosition = Vector3.zero;
     }
     
     
