@@ -11,13 +11,12 @@ public class GPawn : MonoBehaviour
     public GHexCoordinate coordinate;
     [ReadOnly]
     public GCell currentCell;
-    [SerializeField] public int moveDistance = 1;
     [SerializeReference] public List<GAction> actions = new List<GAction>();
     public bool isPlayer;
     public bool IsStunned => _stunTurn > 0;
     
     [SerializeField] private int _hp = 3;
-    [ReadOnly] int _stunTurn = 0;
+    [SerializeField, ReadOnly] int _stunTurn = 0;
 
     void Start()
     {
@@ -55,9 +54,10 @@ public class GPawn : MonoBehaviour
         return true;
     }
 
-    public void TakeDamage(int damage = 1)
+    public void TakeDamage(int damage = 1, int stun = 0)
     {
         if (_hp <= 0) return;
+        _stunTurn += stun;
         _hp--;
     }
 
