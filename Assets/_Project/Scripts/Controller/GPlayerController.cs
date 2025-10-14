@@ -12,7 +12,7 @@ public class GPlayerController : GController
     public GAction[] availableActions = new GAction[] { };
     [FormerlySerializedAs("actionList")]
     [SerializeField]
-    public GActionList gActionList;
+    public GActionList actionList;
 
     [ReadOnly] GPawn _selectedPlayer;
     [ReadOnly] GAction _selectedAction;
@@ -35,7 +35,7 @@ public class GPlayerController : GController
         SelectedPlayerChanged?.Invoke(newSelected);
 
         availableActions = GetAvailableActions();
-        if (gActionList) gActionList.UpdateButtons(availableActions);
+        if (actionList) actionList.UpdateButtons(availableActions);
     }
 
     public void ForceEndTurn()
@@ -106,7 +106,7 @@ public class GPlayerController : GController
     private void Start()
     {
         _selectInput = InputSystem.actions.FindAction("Select");
-        if (gActionList) gActionList.OnActionSelected += SelectGAction;
+        if (actionList) actionList.OnActionSelected += SelectGAction;
     }
 
     private void Update()
