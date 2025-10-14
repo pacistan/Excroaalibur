@@ -5,8 +5,8 @@ using UnityEngine;
 
 public abstract class GController : MonoBehaviour
 {
-    [field: SerializeField, Min(1), ReadOnly, HideInEditorMode]
-    public int actionTokens;
+    [field : SerializeField, Min(1)]
+    public int actionTokens { get; set; }
 
     public event Action OnStartTurn;
     public event Action OnEndTurn;
@@ -27,7 +27,6 @@ public abstract class GController : MonoBehaviour
     public virtual void OnActionOver() {}
     
     public virtual void EndTurn() { OnEndTurn?.Invoke(); }
-
     
     protected void StopTurn()
     {
