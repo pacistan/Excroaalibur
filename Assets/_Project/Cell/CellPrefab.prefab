@@ -9,7 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3405757221322417798}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Visuals
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -43,7 +43,7 @@ GameObject:
   - component: {fileID: 2974611297427677808}
   - component: {fileID: 2773145366231783339}
   - component: {fileID: 6697371883044350570}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Cylindre
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -128,7 +128,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7288542463033057940}
   - component: {fileID: 374797681568009448}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Collider
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -184,7 +184,7 @@ GameObject:
   - component: {fileID: 8962405803899580738}
   - component: {fileID: 3577346378785680272}
   - component: {fileID: 6044818382770711880}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: CellPrefab
   m_TagString: Untagged
   m_Icon: {fileID: -964228994112308473, guid: 0000000000000000d000000000000000, type: 0}
@@ -241,6 +241,7 @@ MonoBehaviour:
     z: 0
   <_neighbors>k__BackingField: []
   _ownedPawn: {fileID: 0}
+  <_ownedGridObject>k__BackingField: {fileID: 0}
 --- !u!114 &3577346378785680272
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -270,6 +271,7 @@ MonoBehaviour:
   _text: {fileID: 0}
   _highlight: {fileID: 0}
   _pawnSpawnPoint: {fileID: 2896100592653209241}
+  _previousPawnSpawnType: 0
 --- !u!114 &6044818382770711880
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -291,7 +293,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2896100592653209241}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: SpawnPoint
   m_TagString: Untagged
   m_Icon: {fileID: 0}
