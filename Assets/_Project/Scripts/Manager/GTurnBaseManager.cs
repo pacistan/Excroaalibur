@@ -28,11 +28,11 @@ public class GTurnBaseManager : GSingleton<GTurnBaseManager>
     }
     
     /** Queue Order of The Entity currently in fight */ 
-    [SerializeField, ReadOnly, HideInEditorMode]
+    [SerializeField, ReadOnly, HideInEditorMode, BoxGroup("Actions")]
     private List<GAction> _actionsInProgress = new List<GAction>();
     
     /** Queue Order of The Entity currently in fight */ 
-    [SerializeField, ReadOnly]
+    [SerializeField, ReadOnly, BoxGroup("Turn")]
     private List<GController> _turnOrderControllerQueue = new List<GController>();
     
     /** All the Entity in the Scene */
