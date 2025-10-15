@@ -12,6 +12,8 @@ public class GPawn : GGridObject
     public event Action<GEquipment> OnEquip;
     public event Action<GEquipment> OnUnequip;
 
+    public event Action OnKill;
+
     public event Action OnStunned;
     public event Action OnUnstunned;
     
@@ -136,6 +138,7 @@ public class GPawn : GGridObject
     public void Kill()
     {
         gameObject.SetActive(false);
+        OnKill?.Invoke();
         Destroy(gameObject);
     }
     

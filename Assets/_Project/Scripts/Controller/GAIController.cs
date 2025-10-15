@@ -66,6 +66,12 @@ public class GAIController : GController
         base.EndTurn();
         _aiBehavior.OnTurnEnd();
     }
+
+    public void OnKilled()
+    {
+        GTurnBaseManager.Instance.UnregisterController(this);
+        GTurnBaseManager.Instance.RequestEndTurn(this, false);
+    }
     
     void Start()
     {
@@ -73,6 +79,7 @@ public class GAIController : GController
         _aiBehavior = ScriptableObject.Instantiate(_aiBehavior);
         _aiBehavior.Init(this);
         pawn.actions = _aiBehavior.actions;
+        pawn.OnKill += OnKilled;
     }
 }
 
