@@ -16,6 +16,7 @@ public class GPawn : GGridObject
 
     public event Action OnStunned;
     public event Action OnUnstunned;
+    public event Action<int> OnHealthChanged;
     
     
     [SerializeField]
@@ -25,19 +26,19 @@ public class GPawn : GGridObject
     public bool isPlayer;
     [SerializeReference, ShowIf("isPlayer")]
     public List<GAction> actions = new List<GAction>();
+    [SerializeField, ReadOnly, FoldoutGroup("Components")]
+    public GEquipment equipment;
     
-    [SerializeField] 
-    private int _hp = 3;
-    
+    [FormerlySerializedAs("_stunTurn")]
     [SerializeField, ReadOnly, HideInEditorMode] 
-    int _stunTurn = 0;
-    public bool IsStunned => _stunTurn > 0;
+    int stunTurn = 0;
+    public bool IsStunned => stunTurn > 0;
+
+    [field: SerializeField]
+    public int hp { get; protected set; } = 3;
     
     [SerializeField, FoldoutGroup("Components") ]
     private GCellCommonData _commonData;
-
-    [SerializeField, ReadOnly, FoldoutGroup("Components")]
-    public GEquipment equipment;
 
     [SerializeField, FoldoutGroup("Components")]
     Transform _equipmentParentTr;
@@ -47,11 +48,11 @@ public class GPawn : GGridObject
 
     public void Stun(int stunTurnNumber)
     {
-        if (_stunTurn == 0)
+        if (stunTurn == 0)
         {
             OnStunned?.Invoke();
         }
-        _stunTurn += stunTurnNumber;
+        stunTurn += stunTurnNumber;
     }
     
     void Start()
@@ -109,9 +110,10 @@ public class GPawn : GGridObject
 
     public void TakeDamage(int damage = 1)
     {
-        if (_hp <= 0) return;
-        _hp--;
-        if (_hp < 0)
+        if (hp <= 0) return;
+        hp--;
+        OnHealthChanged?.Invoke(hp);
+        if (hp < 0)
         {
             Kill();
         }
@@ -124,9 +126,9 @@ public class GPawn : GGridObject
     
     public void OnStartTurn()
     {
-        if (_stunTurn > 0)
-            _stunTurn--;
-        if (_stunTurn == 0)
+        if (stunTurn > 0)
+            stunTurn--;
+        if (stunTurn == 0)
         {
             OnUnstunned?.Invoke();
         }

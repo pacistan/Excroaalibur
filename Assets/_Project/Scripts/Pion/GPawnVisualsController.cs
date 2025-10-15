@@ -10,20 +10,41 @@ public class GPawnVisualsController : SerializedMonoBehaviour
     GPawn _pawn;
     [SerializeField, FoldoutGroup("Components")]
     TextMeshProUGUI _debugTxt;
-
+    int _health = 0;
+    bool _isStunned = false;
+    
     void Start()
     {
         _pawn.OnStunned += OnStunned;
         _pawn.OnUnstunned += OnUnstunned;
+        _pawn.OnHealthChanged += HealthChange;
+        HealthChange(_pawn.hp);
     }
 
+    public void HealthChange(int health)
+    {
+        _health = health;
+        UpdateText();
+    }
+    
     public void OnStunned()
     {
-        _debugTxt.text = "STUNNED";
+        _isStunned = true;
+        UpdateText();
     }
 
     public void OnUnstunned()
     {
-        _debugTxt.text = "";
+        _isStunned = false;
+        UpdateText();
+    }
+
+    private void UpdateText()
+    {
+        String text = "";
+
+        if (_isStunned) text += "STUNNED\n";
+        text += $"HP: {_health}";
+        _debugTxt.text = text;
     }
 }
