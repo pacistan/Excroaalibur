@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4748550418197267300}
   - component: {fileID: 3048069158300259024}
+  - component: {fileID: 7304654020356424047}
   m_Layer: 0
   m_Name: Manager
   m_TagString: Untagged
@@ -48,3 +49,15 @@ MonoBehaviour:
   _turnOrderControllerQueue: []
   _safeTimeHandle: 5
   _actionSpeed: 1
+--- !u!114 &7304654020356424047
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7048197546018214810}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8c8c6b8b69b64571b9b0b803a5cd6ad4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
