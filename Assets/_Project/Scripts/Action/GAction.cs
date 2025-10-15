@@ -20,7 +20,8 @@ public abstract class GAction
 
     [ReadOnly] public GPawn linkedPawn;
     [ReadOnly] public GCell targetCell;
-
+    [ReadOnly] public GHexCoordinate[] validCells = Array.Empty<GHexCoordinate>();
+    
     [ReadOnly] public EActionState CurrentState { get; private set; } = EActionState.None;
 
     public GAction(){}
@@ -64,7 +65,7 @@ public abstract class GAction
         OnActionFinished?.Invoke();
     }
     
-    public virtual GHexCoordinate[] GetValidCells() { return Array.Empty<GHexCoordinate>(); }
+    public virtual GHexCoordinate[] GetValidCells() { return validCells; }
     
     public bool IsValidCell(GHexCoordinate cell) { return GetValidCells().Contains(cell); }
     

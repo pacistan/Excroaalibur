@@ -22,6 +22,7 @@ MonoBehaviour:
     - {fileID: 2100000, guid: c62f97b24de6adc46a09d669fc4bb411, type: 2}
     - {fileID: 8963703425807656487, guid: 05d949de3c2a4aa4eb1df7f5d5a2e8ac, type: 3}
     - {fileID: 6513531931879083242, guid: 4151a7ed24221ff4f8f5f9c8d5cc51bc, type: 3}
+    - {fileID: 6256318796334292864, guid: 0815a3426a8b9794d8a8c03db7f47ef3, type: 3}
     SerializedBytesString: 
     Prefab: {fileID: 0}
     PrefabModificationsReferencedUnityObjects: []
@@ -29,12 +30,12 @@ MonoBehaviour:
     SerializationNodes:
     - Name: tileTypeData
       Entry: 7
-      Data: 0|System.Collections.Generic.Dictionary`2[[GCellData+ETileType, Assembly-CSharp],[GCellCommonData+FTileTypeData,
+      Data: 0|System.Collections.Generic.Dictionary`2[[ETileType, Assembly-CSharp],[GCellCommonData+FTileTypeData,
         Assembly-CSharp]], mscorlib
     - Name: comparer
       Entry: 7
-      Data: 1|System.Collections.Generic.EnumEqualityComparer`1[[GCellData+ETileType,
-        Assembly-CSharp]], mscorlib
+      Data: 1|System.Collections.Generic.EnumEqualityComparer`1[[ETileType, Assembly-CSharp]],
+        mscorlib
     - Name: 
       Entry: 12
       Data: 0
@@ -262,11 +263,11 @@ MonoBehaviour:
       Data: 
     - Name: pawnTypeData
       Entry: 7
-      Data: 5|System.Collections.Generic.Dictionary`2[[GCellData+EPawnSpawnType,
-        Assembly-CSharp],[GPawn, Assembly-CSharp]], mscorlib
+      Data: 5|System.Collections.Generic.Dictionary`2[[EPawnSpawnType, Assembly-CSharp],[GPawn,
+        Assembly-CSharp]], mscorlib
     - Name: comparer
       Entry: 7
-      Data: 6|System.Collections.Generic.EnumEqualityComparer`1[[GCellData+EPawnSpawnType,
+      Data: 6|System.Collections.Generic.EnumEqualityComparer`1[[EPawnSpawnType,
         Assembly-CSharp]], mscorlib
     - Name: 
       Entry: 12
@@ -335,5 +336,52 @@ MonoBehaviour:
       Entry: 8
       Data: 
     - Name: equipmentTypeData
+      Entry: 7
+      Data: 7|System.Collections.Generic.Dictionary`2[[EEquipmentType, Assembly-CSharp],[GEquipment,
+        Assembly-CSharp]], mscorlib
+    - Name: comparer
+      Entry: 7
+      Data: 8|System.Collections.Generic.EnumEqualityComparer`1[[EEquipmentType,
+        Assembly-CSharp]], mscorlib
+    - Name: 
+      Entry: 12
+      Data: 0
+    - Name: 
+      Entry: 13
+      Data: 
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 12
+      Data: 2
+    - Name: 
+      Entry: 7
+      Data: 
+    - Name: $k
+      Entry: 3
+      Data: 0
+    - Name: $v
       Entry: 6
+      Data: 
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 7
+      Data: 
+    - Name: $k
+      Entry: 3
+      Data: 1
+    - Name: $v
+      Entry: 10
+      Data: 6
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 13
+      Data: 
+    - Name: 
+      Entry: 8
       Data: 

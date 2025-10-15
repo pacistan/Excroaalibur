@@ -16,7 +16,7 @@ public class GPlayerController : GController
 
     [ReadOnly] GPawn _selectedPlayer;
     [ReadOnly] GAction _selectedAction;
-    [ReadOnly] GHexCoordinate[] _validCells = new GHexCoordinate[]{};
+    [ReadOnly] GHexCoordinate[] _validCells => _selectedAction != null ? _selectedAction.validCells : Array.Empty<GHexCoordinate>();
     InputAction _selectInput;
     
     [FormerlySerializedAs("_CellLayerMask")]
@@ -35,6 +35,10 @@ public class GPlayerController : GController
         SelectedPlayerChanged?.Invoke(newSelected);
 
         availableActions = GetAvailableActions();
+
+        foreach (var action in availableActions)
+            action.GetValidCells();
+        
         if (actionList) actionList.UpdateButtons(availableActions);
     }
 
@@ -46,12 +50,10 @@ public class GPlayerController : GController
     public void SelectAction(GAction action)
     {
         if (_selectedAction == action) return;
-        _selectedAction = action;
         ResetHighlight();
-        _validCells = new GHexCoordinate[]{};
+        _selectedAction = action;
         if (_selectedAction == null) return;
         _selectedAction.linkedPawn = _selectedPlayer;
-        _validCells =  _selectedAction.GetValidCells();
         ShowHighlight();
     }
     
