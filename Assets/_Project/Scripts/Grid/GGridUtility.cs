@@ -22,11 +22,14 @@ public static class HexDirectionExtensions {
 
 }
 
-public static class GHexMetrix {
 
-    public const float outerRadius = 4f;
+public class GHexMetrix {
 
-    public const float innerRadius = outerRadius * 0.866025404f;
+    public static float outerRadius => GGridManager.Instance ? 
+        GGridManager.Instance._hexSize : 
+        GameObject.FindFirstObjectByType<GGridManager>()._hexSize;
+
+    public static float innerRadius => outerRadius * 0.866025404f;
 
     public readonly static Vector3[] corners = {
         new Vector3(0f, 0f, outerRadius),

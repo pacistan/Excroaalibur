@@ -26,8 +26,8 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
+  m_LocalScale: {x: 4, y: 4, z: 4}
+  m_ConstrainProportionsScale: 1
   m_Children:
   - {fileID: 2974611297427677808}
   m_Father: {fileID: 1637061997344567758}
@@ -59,9 +59,9 @@ Transform:
   m_GameObject: {fileID: 3086293128133115218}
   serializedVersion: 2
   m_LocalRotation: {x: -0.7071068, y: 0, z: 0, w: 0.7071068}
-  m_LocalPosition: {x: 0, y: -1.51, z: 0}
-  m_LocalScale: {x: 400, y: 400, z: 150}
-  m_ConstrainProportionsScale: 0
+  m_LocalPosition: {x: 0, y: -0.3775, z: 0}
+  m_LocalScale: {x: 100, y: 100, z: 37.5}
+  m_ConstrainProportionsScale: 1
   m_Children: []
   m_Father: {fileID: 3405757221322417798}
   m_LocalEulerAnglesHint: {x: -90, y: 0, z: 0}
@@ -118,6 +118,38 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!1 &3153471778235187155
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 5859894880692463213}
+  m_Layer: 6
+  m_Name: ColliderFolder
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &5859894880692463213
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3153471778235187155}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 4, y: 4, z: 4}
+  m_ConstrainProportionsScale: 1
+  m_Children:
+  - {fileID: 7288542463033057940}
+  m_Father: {fileID: 1637061997344567758}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &4591987417141527935
 GameObject:
   m_ObjectHideFlags: 0
@@ -143,12 +175,12 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4591987417141527935}
   serializedVersion: 2
-  m_LocalRotation: {x: -0.7071068, y: 0, z: 0, w: 0.7071068}
-  m_LocalPosition: {x: 0, y: -1.51, z: 0}
-  m_LocalScale: {x: 400, y: 400, z: 150}
-  m_ConstrainProportionsScale: 0
+  m_LocalRotation: {x: -0.7071068, y: -0, z: -0, w: 0.7071068}
+  m_LocalPosition: {x: 0, y: -0.3775, z: 0}
+  m_LocalScale: {x: 100, y: 100, z: 37.5}
+  m_ConstrainProportionsScale: 1
   m_Children: []
-  m_Father: {fileID: 1637061997344567758}
+  m_Father: {fileID: 5859894880692463213}
   m_LocalEulerAnglesHint: {x: -90, y: 0, z: 0}
 --- !u!64 &374797681568009448
 MeshCollider:
@@ -205,7 +237,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 3405757221322417798}
-  - {fileID: 7288542463033057940}
+  - {fileID: 5859894880692463213}
   - {fileID: 2896100592653209241}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -266,12 +298,14 @@ MonoBehaviour:
     PrefabModifications: []
     SerializationNodes: []
   cellCommonData: {fileID: 11400000, guid: 6b3ac300fab008a42b3df5d92c030bf0, type: 2}
-  _showVisualsInHierarchy: 0
+  instantiationCommonData: {fileID: 11400000, guid: 4b4fcf36089c3bb4eba6e330bdef62cf, type: 2}
   _meshRenderer: {fileID: 6697371883044350570}
   _meshFilter: {fileID: 2773145366231783339}
   _cell: {fileID: 8962405803899580738}
   _text: {fileID: 0}
   _highlight: {fileID: 0}
+  _visualsParent: {fileID: 3405757221322417798}
+  _collidersParent: {fileID: 5859894880692463213}
   _previousPawnSpawnType: 0
   _previousEquipmentType: 0
 --- !u!114 &6044818382770711880

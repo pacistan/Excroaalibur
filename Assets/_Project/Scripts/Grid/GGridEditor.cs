@@ -7,7 +7,9 @@ public class GGridEditor : MonoBehaviour
 {
     const string pathToGridLayoutFolders = "Assets/_Project/Grid/GridPresets";
     
-    [SerializeField] GGridData _gridData;
+    [SerializeField] 
+    [InlineEditor(InlineEditorObjectFieldModes.Boxed)]
+    GGridData _gridData;
     
     [SerializeField, FoldoutGroup("Components")]
     Transform _cellsParent;
@@ -40,9 +42,10 @@ public class GGridEditor : MonoBehaviour
         int rows = _gridData.rowNum;
         int columns = _gridData.columnNum;
         gridManager._currentGridSize = new Vector2Int(columns, rows);
+        gridManager._hexSize = _gridData.hexSize;
         int size = rows * columns;
         gridManager._grid = new GCell[size];
-        
+
         try
         {
             for (int column = 0, i = 0; column < columns; column++)
@@ -90,14 +93,15 @@ public class GGridEditor : MonoBehaviour
             grid = null;
         }
     }
-    
+
     private void CreateCell(int row, int column, int i, ref GCell[] grid)
     {
         Vector3 position;
-        position.x = (row + column * .5f - column / 2) * (GHexMetrix.innerRadius * 2f);
-        position.z = column * (GHexMetrix.outerRadius * 1.5f);
+        int pairOffset = _gridData.isOffsetOnPairs ? 0 : 1;
+        position.x = (row + column * .5f - (column + pairOffset) / 2) * (GHexMetrix.innerRadius * 2f);
+        position.z = column * (_gridData.hexSize * 1.5f);
         position.y = 0;
-     
+        
         GCell cell = grid[i] = PrefabUtility.InstantiatePrefab(_cellPrefab, _cellsParent) as GCell;
         if (cell == null)
         {
@@ -167,6 +171,7 @@ public class GGridEditor : MonoBehaviour
             }
         }
         cell._cellVisualsController.UpdateCellVisuals();
+        cell._cellVisualsController.UpdateScaling(_gridData.hexSize);
         cell._hexCoordinates = GHexCoordinate.FrommOffsetCoordinate(row, column);
     }
 
@@ -176,7 +181,7 @@ public class GGridEditor : MonoBehaviour
     {
         GGridManager gridManager = GGridManager.Instance ? GGridManager.Instance : GameObject.FindFirstObjectByType<GGridManager>();
         GGridData newAsset = ScriptableObject.CreateInstance<GGridData>();
-        newAsset.GenerateCellData(gridManager._grid, gridManager._currentGridSize);
+        newAsset.GenerateCellData(gridManager._grid, gridManager._currentGridSize, gridManager._hexSize);
         UnityEditor.AssetDatabase.CreateAsset(newAsset, $"{pathToGridLayoutFolders}/{_gridDataFileName}.asset");
         UnityEditor.AssetDatabase.SaveAssets();
     }

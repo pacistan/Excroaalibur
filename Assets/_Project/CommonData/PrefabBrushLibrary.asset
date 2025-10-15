@@ -9,10 +9,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 02e845967d16945b389aa1c4c08ab417, type: 3}
-  m_Name: FMODOpen
+  m_Script: {fileID: 11500000, guid: 75b0e129f5ac427c954910efb2e8aef3, type: 3}
+  m_Name: PrefabBrushLibrary
   m_EditorClassIdentifier: 
-  type: 1
-  shortcut: Tools/FMOD/Open FMOD Project
-  macShortcut: 
-  linuxShortcut: 
+  brushes: []
+  defaultBrushSize: 1
+  snapToGrid: 0
+  gridSize: 1

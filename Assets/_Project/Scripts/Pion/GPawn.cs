@@ -37,8 +37,9 @@ public class GPawn : GGridObject
     [field: SerializeField]
     public int hp { get; protected set; } = 3;
     
+    [FormerlySerializedAs("_commonData")]
     [SerializeField, FoldoutGroup("Components") ]
-    private GCellCommonData _commonData;
+    private GCommonInstantiationData _instantiationData;
 
     [SerializeField, FoldoutGroup("Components")]
     Transform _equipmentParentTr;
@@ -159,7 +160,7 @@ public class GPawn : GGridObject
                 {
                     DestroyImmediate(equipment.gameObject);
                 }
-                GEquipment equipmentPrefab = _commonData.equipmentTypeData[_equipmentType];
+                GEquipment equipmentPrefab = _instantiationData.equipmentTypeData[_equipmentType];
                 if (equipmentPrefab)
                 {
                     equipment = PrefabUtility.InstantiatePrefab(equipmentPrefab) as GEquipment;
