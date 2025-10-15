@@ -13,6 +13,7 @@ public abstract class GController : MonoBehaviour
 
     public event Action OnStartTurn;
     public event Action OnEndTurn;
+    public event Action OnStartAction;
     
     protected List<GPawn> pawns = new List<GPawn>();
     
@@ -21,11 +22,12 @@ public abstract class GController : MonoBehaviour
         pawns.Add(pawn);
         OnStartTurn += pawn.OnStartTurn;
         OnEndTurn += pawn.OnEndTurn;
+        OnStartAction += pawn.OnStartAction;
     }
     
-    public virtual void StartTurn() {}
+    public virtual void StartTurn() { OnStartTurn?.Invoke();}
 
-    public virtual void StartAction() { OnStartTurn?.Invoke(); }
+    public virtual void StartAction() { OnStartAction?.Invoke(); }
     
     public virtual void OnActionOver() {}
     

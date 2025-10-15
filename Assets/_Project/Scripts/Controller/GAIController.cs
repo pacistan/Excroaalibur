@@ -16,12 +16,19 @@ public class GAIController : GController
     
     public override void StartTurn()
     {
+        base.StartTurn();
+        if (pawn.IsStunned)
+        {
+            StopTurn();
+            return;
+        }
         remainingActionToken = actionTokens;
         StartAction();
     }
 
     public override void StartAction()
     {
+        base.StartAction();
         remainingActionToken--;
         var action = _aiBehavior.GetAction();
         if (action == null)
@@ -37,6 +44,7 @@ public class GAIController : GController
 
     public override void OnActionOver()
     {
+        base.OnActionOver();
         if (remainingActionToken == 0)
         {
             StopTurn();
@@ -55,6 +63,8 @@ public class GAIController : GController
 
     public override void EndTurn()
     {
+        base.EndTurn();
+        _aiBehavior.OnTurnEnd();
     }
     
     void Start()

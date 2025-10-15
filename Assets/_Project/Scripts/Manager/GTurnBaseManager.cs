@@ -84,7 +84,8 @@ public class GTurnBaseManager : GSingleton<GTurnBaseManager>
             Debug.LogWarning($" {Controller} Trying to End Turn of {_currentTurnController}, but it's not his turn.");
             return;
         }
-        
+
+        Controller.EndTurn();
         // isTurnActive = false;
         _turnOrderControllerQueue.Add(_currentTurnController);
         StartCoroutine(ProcessEndTurn());

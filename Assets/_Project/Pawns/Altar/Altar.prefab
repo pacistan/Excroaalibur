@@ -28,6 +28,10 @@ PrefabInstance:
       propertyPath: m_ConstrainProportionsScale
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 1121485079055703402, guid: 48d2615fd829feb4a9c7bfb377fa75cc, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 4.27
+      objectReference: {fileID: 0}
     - target: {fileID: 1490171005181427712, guid: 48d2615fd829feb4a9c7bfb377fa75cc, type: 3}
       propertyPath: m_Height
       value: 2
@@ -159,7 +163,7 @@ MonoBehaviour:
   actions: []
   _hp: 3
   _equipmentType: 0
-  _equipment: {fileID: 0}
+  equipment: {fileID: 0}
   _equipmentParentTr: {fileID: 6677674562615435608}
   _previousEquipmentType: 0
   references:
