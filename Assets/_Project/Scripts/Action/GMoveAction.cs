@@ -90,7 +90,7 @@ public class GMoveAction : GAction
     {
         GGridManager.Instance.GenerateStepMap(linkedPawn.currentCell);
         Dictionary<Vector2Int, int> stepMap = GGridManager.Instance._stepMap;
-        List<GHexCoordinate> validCells = new List<GHexCoordinate>();
+        List<GHexCoordinate> newValidCells = new List<GHexCoordinate>();
 
         foreach (var step in stepMap)
         {
@@ -99,10 +99,10 @@ public class GMoveAction : GAction
             
             if (!cell || !cell.IsWalkable() || step.Value > _maxMoveDistance) continue;
             
-            validCells.Add(coordinate);
+            newValidCells.Add(coordinate);
         }
         
-        return validCells.ToArray();
+        return validCells = newValidCells.ToArray();
     }
     
     public override GAction CloneAction()

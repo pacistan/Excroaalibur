@@ -60,6 +60,8 @@ public class GPawn : GGridObject
         GPlayerController controller = FindFirstObjectByType<GPlayerController>();
         if (controller)
             controller.RegisterPawn(this);
+        foreach (var action in actions)
+            action.linkedPawn = this;
     }
     
     

@@ -142,7 +142,7 @@ public class
 
     public override GHexCoordinate[] GetValidCells()
     {
-        List<GHexCoordinate> validCells = new List<GHexCoordinate>();
+        List<GHexCoordinate> newValidCells = new List<GHexCoordinate>();
 
         
         
@@ -150,9 +150,9 @@ public class
         {
             if (!cell || !cell.GetPawn() || cell.GetPawn() == linkedPawn) continue;
             
-            validCells.Add(cell._hexCoordinates);
+            newValidCells.Add(cell._hexCoordinates);
         }
         
-        return validCells.ToArray();
+        return validCells = newValidCells.ToArray();
     }
 }
