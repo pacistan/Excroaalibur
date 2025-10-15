@@ -12,6 +12,9 @@ public class GGridManager : GSingleton<GGridManager>
     [field: SerializeReference, ReadOnly, FoldoutGroup("Grid Data")]
     public Vector2Int _currentGridSize;
 
+    [field: SerializeReference, ReadOnly, FoldoutGroup("Grid Data")]
+    public float _hexSize;
+    
     [HideInInspector]
     public Dictionary<Vector2Int, int> _stepMap;
 

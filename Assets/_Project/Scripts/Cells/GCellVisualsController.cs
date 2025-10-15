@@ -14,6 +14,9 @@ public class GCellVisualsController : SerializedMonoBehaviour
     [SerializeField]
     GCellCommonData cellCommonData;
     
+    [SerializeField]
+    GCommonInstantiationData instantiationCommonData;
+    
     [SerializeField, FoldoutGroup("Components")]
     MeshRenderer _meshRenderer;
     [SerializeField, FoldoutGroup("Components")]
@@ -24,6 +27,13 @@ public class GCellVisualsController : SerializedMonoBehaviour
     TextMeshProUGUI _text;
     [SerializeField, FoldoutGroup("Components")]
     Image _highlight;
+    [SerializeField, FoldoutGroup("Components")]
+    Transform _visualsParent;
+    [SerializeField, FoldoutGroup("Components")]
+    Transform _collidersParent;
+
+    [SerializeField, ReadOnly, FoldoutGroup("Components")]
+    GameObject _visualPreset;
 
 
     [SerializeField, HideInInspector]
@@ -64,7 +74,7 @@ public class GCellVisualsController : SerializedMonoBehaviour
                 {
                     DestroyImmediate(_cell._ownedPawn.gameObject);
                 }
-                GPawn pawnPrefab = cellCommonData.pawnTypeData[newPawnType];
+                GPawn pawnPrefab = instantiationCommonData.pawnTypeData[newPawnType];
                 if (pawnPrefab)
                 {
                     _cell._ownedPawn = PrefabUtility.InstantiatePrefab(pawnPrefab, _cell._pawnSpawnPoint) as GPawn;
@@ -90,7 +100,7 @@ public class GCellVisualsController : SerializedMonoBehaviour
                 {
                     DestroyImmediate(_cell._equipment.gameObject);
                 }
-                GEquipment equipmentPrefab = cellCommonData.equipmentTypeData[newEquipmentType];
+                GEquipment equipmentPrefab = instantiationCommonData.equipmentTypeData[newEquipmentType];
                 if (equipmentPrefab)
                 {
                     _cell._equipment = PrefabUtility.InstantiatePrefab(equipmentPrefab) as GEquipment;
@@ -110,6 +120,30 @@ public class GCellVisualsController : SerializedMonoBehaviour
         EditorUtility.SetDirty(this);
         EditorUtility.SetDirty(_cell);
     }
+
+    public void OnCreateVisualPreset(GameObject preset, Quaternion rotation = new Quaternion(), bool useRandomRotation = false)
+    {
+        if (_visualPreset)
+        {
+            DestroyImmediate(_visualPreset);
+        }
+        _visualPreset = preset;
+
+        if (preset)
+        {
+            preset.transform.parent = _visualsParent;
+            preset.transform.localPosition = Vector3.zero;
+            if (useRandomRotation)
+            {
+                preset.transform.localRotation = rotation;
+            }
+            else
+            {
+                preset.transform.Rotate(rotation * Vector3.up);
+            }
+        }
+        
+    }
 #endif
     public void UpdateCellDebugNum(string newDebugText)
     {
@@ -125,5 +159,12 @@ public class GCellVisualsController : SerializedMonoBehaviour
     {
         var tileTypeData = cellCommonData.tileTypeData[_cell._data.tileType];
         _highlight.color = tileTypeData.highlightColor;
+    }
+
+    public void UpdateScaling(float scale)
+    {
+        _visualsParent.localScale = new Vector3(scale, scale, scale);
+        _collidersParent.localScale = new Vector3(scale, scale, scale);
+        _highlight.rectTransform.localScale = new Vector3(scale, scale, scale);
     }
 }

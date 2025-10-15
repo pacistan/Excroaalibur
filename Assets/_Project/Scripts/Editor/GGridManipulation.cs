@@ -21,7 +21,6 @@ public class GGridManipulation
             e.Use();
             SceneView.RepaintAll();
         }
-        
 
     }
 
