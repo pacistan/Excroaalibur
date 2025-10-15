@@ -27,7 +27,7 @@ public class GPawn : GGridObject
     [SerializeField] 
     private int _hp = 3;
     
-    [ReadOnly] 
+    [SerializeField, ReadOnly] 
     int _stunTurn = 0;
     
     [SerializeField]
@@ -111,6 +111,11 @@ public class GPawn : GGridObject
         {
             Kill();
         }
+    }
+
+    public void OnStartAction()
+    {
+        
     }
     
     public void OnStartTurn()
