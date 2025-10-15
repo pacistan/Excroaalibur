@@ -17,26 +17,26 @@ public class GPawn : GGridObject
     public event Action OnStunned;
     public event Action OnUnstunned;
     
+    
     [SerializeField]
-    private GCellCommonData _commonData;
+    public EEquipmentType _equipmentType = EEquipmentType.None;
     
     [SerializeField]
     public bool isPlayer;
-    [SerializeReference]
+    [SerializeReference, ShowIf("isPlayer")]
     public List<GAction> actions = new List<GAction>();
-    public bool IsStunned => _stunTurn > 0;
     
     [SerializeField] 
     private int _hp = 3;
     
-    [SerializeField, ReadOnly] 
+    [SerializeField, ReadOnly, HideInEditorMode] 
     int _stunTurn = 0;
+    public bool IsStunned => _stunTurn > 0;
     
-    [SerializeField]
-    public EEquipmentType _equipmentType = EEquipmentType.None;
+    [SerializeField, FoldoutGroup("Components") ]
+    private GCellCommonData _commonData;
 
-    [FormerlySerializedAs("_equipment")]
-    [SerializeField, ReadOnly]
+    [SerializeField, ReadOnly, FoldoutGroup("Components")]
     public GEquipment equipment;
 
     [SerializeField, FoldoutGroup("Components")]

@@ -5,10 +5,10 @@ using UnityEngine;
 [SelectionBase]
 public class GGridObject : MonoBehaviour
 {
-    [ReadOnly]
+    [ReadOnly, FoldoutGroup("Persistant Data")]
     public GHexCoordinate coordinate;
     
-    [ReadOnly]
+    [ReadOnly, FoldoutGroup("Persistant Data")]
     public GCell currentCell;
     
     public virtual void SetCell(GHexCoordinate newCoordinate)

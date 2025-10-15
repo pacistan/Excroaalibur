@@ -13,9 +13,6 @@ public class GCellVisualsController : SerializedMonoBehaviour
     [FormerlySerializedAs("_commonCellData")]
     [SerializeField]
     GCellCommonData cellCommonData;
-
-    [SerializeField, OnValueChanged("HideInHierarchy")]
-    bool _showVisualsInHierarchy;
     
     [SerializeField, FoldoutGroup("Components")]
     MeshRenderer _meshRenderer;
@@ -110,8 +107,6 @@ public class GCellVisualsController : SerializedMonoBehaviour
             _text.color = tileTypeData.textColor;
             _highlight.color = tileTypeData.highlightColor;
         }
-        
-        HideInHierarchy();
         EditorUtility.SetDirty(this);
         EditorUtility.SetDirty(_cell);
     }
@@ -131,18 +126,4 @@ public class GCellVisualsController : SerializedMonoBehaviour
         var tileTypeData = cellCommonData.tileTypeData[_cell._data.tileType];
         _highlight.color = tileTypeData.highlightColor;
     }
-
-    #if UNITY_EDITOR
-    private void HideInHierarchy()
-    {
-            _meshRenderer.transform.parent.gameObject.hideFlags = HideFlags.None;
-        if (_showVisualsInHierarchy)
-        {
-        }
-        else
-        {
-            //_meshRenderer.transform.parent.gameObject.hideFlags = HideFlags.HideAndDontSave;
-        }
-    }
-    #endif
 }

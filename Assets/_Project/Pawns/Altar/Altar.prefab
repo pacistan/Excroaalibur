@@ -124,6 +124,14 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: 5.13
       objectReference: {fileID: 0}
+    - target: {fileID: 5047510769810583256, guid: 48d2615fd829feb4a9c7bfb377fa75cc, type: 3}
+      propertyPath: _pawn
+      value: 
+      objectReference: {fileID: 1741723611902861267}
+    - target: {fileID: 5047510769810583256, guid: 48d2615fd829feb4a9c7bfb377fa75cc, type: 3}
+      propertyPath: serializationData.Prefab
+      value: 
+      objectReference: {fileID: 5047510769810583256, guid: 48d2615fd829feb4a9c7bfb377fa75cc, type: 3}
     - target: {fileID: 5180675197840913930, guid: 48d2615fd829feb4a9c7bfb377fa75cc, type: 3}
       propertyPath: m_Name
       value: Altar
@@ -158,11 +166,12 @@ MonoBehaviour:
     x: 0
     z: 0
   currentCell: {fileID: 0}
-  _commonData: {fileID: 11400000, guid: 6b3ac300fab008a42b3df5d92c030bf0, type: 2}
+  _equipmentType: 0
   isPlayer: 0
   actions: []
   _hp: 3
-  _equipmentType: 0
+  _stunTurn: 0
+  _commonData: {fileID: 11400000, guid: 6b3ac300fab008a42b3df5d92c030bf0, type: 2}
   equipment: {fileID: 0}
   _equipmentParentTr: {fileID: 6677674562615435608}
   _previousEquipmentType: 0
