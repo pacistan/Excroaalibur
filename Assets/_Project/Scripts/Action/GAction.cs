@@ -1,20 +1,19 @@
 ﻿using Sirenix.OdinInspector;
 using System;
 using System.Linq;
-using Unity.VisualScripting;
-using UnityEngine.Serialization;
 
-public enum EActionState
-{
-    None,
-    PreProcessing,
-    InProgress,
-    Finished
-}
 
 [Serializable]
 public abstract class GAction
 {
+    public enum EActionState
+    {
+        None,
+        PreProcessing,
+        InProgress,
+        Finished
+    }
+    
     public event Action OnActionStarted; 
     public event Action OnActionFinished;
 
