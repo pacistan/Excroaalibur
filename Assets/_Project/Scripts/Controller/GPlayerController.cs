@@ -120,7 +120,7 @@ public class GPlayerController : GController
             _targetCell = GetCellUnderMouse();
             if (!_targetCell) return;
             
-            if (_selectedPlayer && _selectedAction != null)
+            if (_selectedPlayer && _selectedAction != null && _selectedAction.IsValidCell(_targetCell._hexCoordinates))
             {
                 StartAction();
                 return;
