@@ -42,7 +42,7 @@ public class
             
             GCell neighbor = pathCell.GetNeighbor(_direction);
             
-            if (!neighbor || neighbor.GetTileType == GCellData.ETileType.Wall || neighbor.GetPawn())
+            if (!neighbor || neighbor.GetTileType == ETileType.Wall || neighbor.GetPawn())
             {
                 _inflictDamage = true;
                 break;
@@ -50,7 +50,7 @@ public class
 
             pathCells.Add(pathCell);
             pathCell = neighbor;
-            if (neighbor.GetTileType == GCellData.ETileType.Hole)
+            if (neighbor.GetTileType == ETileType.Hole)
             {
                 _kill = true;
                 break;
@@ -69,19 +69,21 @@ public class
     {
         base.Start_Action();
         
-        if (_linkedEndCell != linkedPawn.currentCell && _targetPawn && _targetPawn.GetEquipment() && !(_targetPawn is GAltar))
+        // Release Equipment held onto cell if the pawn is leaving the cell
+        if (_linkedEndCell != linkedPawn.currentCell && _targetPawn && _targetPawn.equipment && !(_targetPawn is GAltar))
         {
-            GEquipment equipment = _targetPawn.GetEquipment();
+            GEquipment equipment = _targetPawn.equipment;
             _targetPawn.Release();
-            _targetPawn.currentCell.SetEquipment(equipment);
+            _targetPawn.currentCell.Posess(equipment);
         }
-        else if (_linkedEndCell == linkedPawn.currentCell && _targetPawn && _targetPawn.GetEquipment() &&
+        // Give Item to the unit that is pushing if there is a wall behind pawn that is pushed.
+        /*else if (_linkedEndCell == linkedPawn.currentCell && _targetPawn && _targetPawn.GetEquipment() &&
                  !(_targetPawn is GAltar))
         {
-            GEquipment equipment = _targetPawn.GetEquipment();
+            GEquipment equipment = _targetPawn.equipment;
             _targetPawn.Release();
             linkedPawn.Posess(equipment);
-        }
+        }*/
         
         if (_inflictDamage)
         {
@@ -90,9 +92,9 @@ public class
         }
         
         
-        if (_targetPawn is GAltar && _targetPawn.GetEquipment() && _targetPawn.GetEquipment() is GCrown)
+        if (_targetPawn is GAltar && _targetPawn.equipment && _targetPawn.equipment is GCrown)
         {
-            GEquipment equipment = _targetPawn.GetEquipment();
+            GEquipment equipment = _targetPawn.equipment;
             _targetPawn.Release(); 
             linkedPawn.Posess(equipment);
         }

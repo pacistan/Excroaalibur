@@ -15,11 +15,30 @@ MonoBehaviour:
   behaviorState: 0
   _moveAction:
     rid: 3108424149014413392
+  _pushAction:
+    rid: 3108424154922877060
+  _placeOnAltarAction:
+    rid: 3108424154922877075
   references:
     version: 2
     RefIds:
     - rid: 3108424149014413392
       type: {class: GMoveAction, ns: , asm: Assembly-CSharp}
+      data:
+        linkedPawn: {fileID: 0}
+        targetCell: {fileID: 0}
+        _maxMoveDistance: 2
+    - rid: 3108424154922877060
+      type: {class: GPushAction, ns: , asm: Assembly-CSharp}
+      data:
+        linkedPawn: {fileID: 0}
+        targetCell: {fileID: 0}
+        _pushDistance: 2
+        _followDistance: 1
+        _stun: 2
+        _damage: 1
+    - rid: 3108424154922877075
+      type: {class: GPlaceOnAltarAction, ns: , asm: Assembly-CSharp}
       data:
         linkedPawn: {fileID: 0}
         targetCell: {fileID: 0}
