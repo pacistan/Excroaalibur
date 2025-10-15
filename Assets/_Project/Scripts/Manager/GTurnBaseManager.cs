@@ -1,25 +1,24 @@
-﻿
-using Sirenix.OdinInspector;
+﻿using Sirenix.OdinInspector;
 using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
-public enum ETurnState
-{
-    NotStarted,
-    InProgress,
-    Finished
-}
-
 public class GTurnBaseManager : GSingleton<GTurnBaseManager>
 {
+    public enum ETurnState
+    {
+        NotStarted,
+        InProgress,
+        Finished
+    }
+    
     public event Action<GAction, GController> actionPlayed; 
     public event Action<GController> startControllerTurn; 
     
     /** Manager The Turn Order */
-    [field: SerializeField, ReadOnly]
+    [field: SerializeField, ReadOnly, HideInEditorMode, BoxGroup("Turn")]
     public GController _currentTurnController { get; private set; }
 
     public bool isActionPlaying
@@ -32,7 +31,7 @@ public class GTurnBaseManager : GSingleton<GTurnBaseManager>
     private List<GAction> _actionsInProgress = new List<GAction>();
     
     /** Queue Order of The Entity currently in fight */ 
-    [SerializeField, ReadOnly, BoxGroup("Turn")]
+    [SerializeField, ReadOnly, HideInEditorMode, BoxGroup("Turn")]
     private List<GController> _turnOrderControllerQueue = new List<GController>();
     
     /** All the Entity in the Scene */
@@ -160,7 +159,7 @@ public class GTurnBaseManager : GSingleton<GTurnBaseManager>
         for (int i = _actionsInProgress.Count - 1; i >= 0; i--)
         {
             GAction action = _actionsInProgress[i];
-            if (action.CurrentState == EActionState.Finished)
+            if (action.CurrentState == GAction.EActionState.Finished)
             {
                 _actionsInProgress.RemoveAt(i);
                 continue;

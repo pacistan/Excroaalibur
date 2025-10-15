@@ -1,48 +1,54 @@
 using System;
 using System.Collections;
 using UnityEngine;
+using UnityEngine.InputSystem;
 using UnityEngine.UI;
 
-public class GCameraController : MonoBehaviour
+public class GCameraController : MonoBehaviour 
 {
     [SerializeField]
     private float _rotationTime;
     [SerializeField] 
     private AnimationCurve _rotationCurve; 
     
-    private float _inputRotationOffset;
+    private float _horizontalRotationOffset;
     private IEnumerator _rotationEnum;
+    
+    [SerializeField]
+    private InputAction _horizontalQuartRotationAction;
 
     private void Update()
     {
-        transform.rotation = Quaternion.Euler(0f, _inputRotationOffset, 0f);
+        transform.rotation = Quaternion.Euler(0f, _horizontalRotationOffset, 0f);
+    }
+    
+    public void AddHorizontalQuartRotation(InputAction.CallbackContext context)
+    {
+        float Axis = context.ReadValue<float>();
+        _horizontalRotationOffset += Axis;
+    }
+    
+    public void StartHorizontalQuartRotation(bool turnRight)
+    {
+        if (_rotationEnum != null) 
+            StopCoroutine(_rotationEnum);
         
-        if (_rotationEnum != null) return;
-        if (Input.GetKeyDown(KeyCode.LeftArrow))
-        {
-            _rotationEnum = RotationEnum(false);
-            StartCoroutine(_rotationEnum);
-        }
-
-        if (Input.GetKeyDown(KeyCode.RightArrow))
-        {
-            _rotationEnum = RotationEnum(true);
-            StartCoroutine(_rotationEnum);
-        }
+        _rotationEnum = HorizontalQuartRotation(turnRight);
+        StartCoroutine(_rotationEnum);
     }
 
-    IEnumerator RotationEnum(bool turnRight)
+    IEnumerator HorizontalQuartRotation(bool turnRight)
     {
         float progress = 0;
-        float startRotation = _inputRotationOffset;
+        float startRotation = _horizontalRotationOffset;
         float targetRotation = turnRight ? startRotation - 90 : startRotation + 90;
         while (progress < 1)
         {
             progress += Time.deltaTime / _rotationTime;
-            _inputRotationOffset = Mathf.Lerp(startRotation, targetRotation, _rotationCurve.Evaluate(progress));
+            _horizontalRotationOffset = Mathf.Lerp(startRotation, targetRotation, progress/*_rotationCurve.Evaluate(progress)*/);
             yield return null;
         }
-        _inputRotationOffset = targetRotation;
+        _horizontalRotationOffset = targetRotation;
         _rotationEnum = null;
     }
 }
