@@ -98,7 +98,7 @@ public class GMoveAction : GAction
             GCell cell = GGridManager.Instance.GetCell(coordinate);
             
             if (!cell || !cell.IsWalkable() || step.Value > _maxMoveDistance) continue;
-            
+            if (GGridManager.Instance.GetPath(linkedPawn.currentCell, cell).Length <= 0) continue;
             newValidCells.Add(coordinate);
         }
         
