@@ -22,11 +22,11 @@ public class GCellCommonData : SerializedScriptableObject
     }
 
     [SerializeField]
-    public Dictionary<GCellData.ETileType, FTileTypeData> tileTypeData;
+    public Dictionary<ETileType, FTileTypeData> tileTypeData;
 
     [SerializeField]
-    public Dictionary<GCellData.EPawnSpawnType, GPawn> pawnTypeData;
+    public Dictionary<EPawnSpawnType, GPawn> pawnTypeData;
     
     [SerializeField]
-    public Dictionary<GCellData.EEquipmentType, GEquipment> equipmentTypeData;
+    public Dictionary<EEquipmentType, GEquipment> equipmentTypeData;
 }

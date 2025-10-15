@@ -30,10 +30,10 @@ public class GCellVisualsController : SerializedMonoBehaviour
 
 
     [SerializeField, HideInInspector]
-    GCellData.EPawnSpawnType _previousPawnSpawnType;
+    EPawnSpawnType _previousPawnSpawnType;
     
     [SerializeField, HideInInspector]
-    GCellData.EEquipmentType _previousEquipmentType;
+    EEquipmentType _previousEquipmentType;
     
 #if UNITY_EDITOR
     public void UpdateCellVisuals()
@@ -53,7 +53,7 @@ public class GCellVisualsController : SerializedMonoBehaviour
         }
         
         // Pawn Type
-        GCellData.EPawnSpawnType newPawnType = _cell._data.pawnType;
+        EPawnSpawnType newPawnType = _cell._data.pawnType;
         if(_previousPawnSpawnType != newPawnType)
         {
             if (_cell._equipment)
@@ -79,7 +79,7 @@ public class GCellVisualsController : SerializedMonoBehaviour
         }
         
         // Equipment Type
-        GCellData.EEquipmentType newEquipmentType = _cell._data.equipmentType;
+        EEquipmentType newEquipmentType = _cell._data.equipmentType;
         if(_previousEquipmentType != _cell._data.equipmentType)
         {
             if (_cell._ownedPawn)

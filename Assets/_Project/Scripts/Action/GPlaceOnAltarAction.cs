@@ -7,9 +7,9 @@
     {
         _crown = null;
         _altar = null;
-        if (linkedPawn.GetEquipment() && linkedPawn.GetEquipment() is GCrown)
+        if (linkedPawn.equipment && linkedPawn.equipment is GCrown)
         {
-            _crown = (GCrown)linkedPawn.GetEquipment();
+            _crown = (GCrown)linkedPawn.equipment;
         }
 
         if (targetCell._ownedPawn && targetCell._ownedPawn is GAltar)

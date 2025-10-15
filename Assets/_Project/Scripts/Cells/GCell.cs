@@ -30,7 +30,7 @@ public class GCell : SerializedMonoBehaviour
     [field: SerializeField, ReadOnly, FoldoutGroup("PersistantData")]
     public GPawn _ownedPawn;
 
-    public GCellData.ETileType GetTileType => _data.tileType;
+    public ETileType GetTileType => _data.tileType;
     
     [field: SerializeField, ReadOnly, FoldoutGroup("PersistantData")]
     public GEquipment _equipment;
@@ -67,7 +67,7 @@ public class GCell : SerializedMonoBehaviour
 
     public bool IsWalkable(bool ignorePawn = false)
     {
-        return _data.tileType == GCellData.ETileType.Normal && (_ownedPawn == null || ignorePawn);
+        return _data.tileType == ETileType.Normal && (_ownedPawn == null || ignorePawn);
     }
 
     public void SetPawn(GPawn pawn)
@@ -80,7 +80,7 @@ public class GCell : SerializedMonoBehaviour
         return _ownedPawn;
     }
     
-    public void SetEquipment(GEquipment equipment)
+    public void Posess(GEquipment equipment)
     {
         _equipment = equipment;
         _equipment.transform.parent = _pawnSpawnPoint;

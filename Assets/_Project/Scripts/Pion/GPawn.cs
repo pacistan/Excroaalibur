@@ -31,17 +31,17 @@ public class GPawn : GGridObject
     int _stunTurn = 0;
     
     [SerializeField]
-    public GCellData.EEquipmentType _equipmentType = GCellData.EEquipmentType.None;
+    public EEquipmentType _equipmentType = EEquipmentType.None;
 
-    [FormerlySerializedAs("_equipments")]
+    [FormerlySerializedAs("_equipment")]
     [SerializeField, ReadOnly]
-    GEquipment _equipment;
+    public GEquipment equipment;
 
     [SerializeField, FoldoutGroup("Components")]
     Transform _equipmentParentTr;
 
     [SerializeField, HideInInspector]
-    private GCellData.EEquipmentType _previousEquipmentType;
+    private EEquipmentType _previousEquipmentType;
 
     public void Stun(int stunTurnNumber)
     {
@@ -60,24 +60,22 @@ public class GPawn : GGridObject
             controller.RegisterPawn(this);
     }
     
-    public GEquipment GetEquipment() => _equipment;
-    
     
     public void Posess(GEquipment equipment)
     {
-        _equipment = equipment;
+        this.equipment = equipment;
         OnEquip?.Invoke(equipment);
         equipment.SetOwner(this);
-        _equipment.transform.parent = _equipmentParentTr;
-        _equipment.transform.localPosition = Vector3.zero; 
+        this.equipment.transform.parent = _equipmentParentTr;
+        this.equipment.transform.localPosition = Vector3.zero; 
     }
 
     public void Release()
     {
-        if (_equipment == null) return;
-        _equipment.OnReleased();
-        OnUnequip?.Invoke(_equipment);
-        _equipment = null;
+        if (equipment == null) return;
+        equipment.OnReleased();
+        OnUnequip?.Invoke(equipment);
+        equipment = null;
     }
     
     public override void SetCell(GHexCoordinate newCoordinate)
@@ -145,18 +143,18 @@ public class GPawn : GGridObject
             // Equipment Type
             if(_previousEquipmentType != _equipmentType)
             {
-                if (_equipment)
+                if (equipment)
                 {
-                    DestroyImmediate(_equipment.gameObject);
+                    DestroyImmediate(equipment.gameObject);
                 }
                 GEquipment equipmentPrefab = _commonData.equipmentTypeData[_equipmentType];
                 if (equipmentPrefab)
                 {
-                    _equipment = PrefabUtility.InstantiatePrefab(equipmentPrefab) as GEquipment;
-                    _equipment.transform.parent = _equipmentParentTr;
-                    _equipment.transform.localPosition = Vector3.zero;
-                    _equipment.SetOwner(this);
-                    EditorUtility.SetDirty(_equipment);
+                    equipment = PrefabUtility.InstantiatePrefab(equipmentPrefab) as GEquipment;
+                    equipment.transform.parent = _equipmentParentTr;
+                    equipment.transform.localPosition = Vector3.zero;
+                    equipment.SetOwner(this);
+                    EditorUtility.SetDirty(equipment);
                 }
                 _previousEquipmentType = _equipmentType;
             }

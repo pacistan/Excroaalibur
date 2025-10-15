@@ -35,7 +35,7 @@ public class GGridManipulation
 
             Undo.RecordObject(cell, "Cycle Tile Type");
 
-            var values = (GCellData.ETileType[])Enum.GetValues(typeof(GCellData.ETileType));
+            var values = (ETileType[])Enum.GetValues(typeof(ETileType));
             int len = values.Length;
             int cur = (int)cell._data.tileType;
             int next = (cur + 1) % len;
