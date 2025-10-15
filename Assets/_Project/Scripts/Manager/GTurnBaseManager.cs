@@ -75,7 +75,7 @@ public class GTurnBaseManager : GSingleton<GTurnBaseManager>
     /** Request to End the Turn of the Current Controller,
      *  Set controller to null to Force
      */
-    public void RequestEndTurn(GController Controller)
+    public void RequestEndTurn(GController Controller, bool reenterQueue = true)
     {
         Debug.Log("RequestEndTurn of " + _currentTurnController + " by " + Controller?.ToString());
         
@@ -87,7 +87,10 @@ public class GTurnBaseManager : GSingleton<GTurnBaseManager>
 
         Controller.EndTurn();
         // isTurnActive = false;
-        _turnOrderControllerQueue.Add(_currentTurnController);
+        if (reenterQueue)
+        {
+            _turnOrderControllerQueue.Add(_currentTurnController);
+        }
         StartCoroutine(ProcessEndTurn());
     }
     
