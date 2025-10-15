@@ -1,4 +1,5 @@
 ﻿using Sirenix.OdinInspector;
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -21,12 +22,45 @@ public class GCellCommonData : SerializedScriptableObject
         public Color highlightColor { get; private set; }
     }
 
-    [SerializeField]
+    [DictionaryDrawerSettings(DisplayMode = DictionaryDisplayOptions.Foldout)]
     public Dictionary<ETileType, FTileTypeData> tileTypeData;
 
-    [SerializeField]
+    [DictionaryDrawerSettings(DisplayMode = DictionaryDisplayOptions.OneLine)]
     public Dictionary<EPawnSpawnType, GPawn> pawnTypeData;
     
-    [SerializeField]
+    [DictionaryDrawerSettings(DisplayMode = DictionaryDisplayOptions.OneLine)]
     public Dictionary<EEquipmentType, GEquipment> equipmentTypeData;
+    
+    #if UNITY_EDITOR
+    [OnInspectorInit]
+    public void CreateData()
+    {
+        if (tileTypeData == null)
+        {
+            tileTypeData = new Dictionary<ETileType, FTileTypeData>();
+            foreach (var tileType in Enum.GetValues(typeof(ETileType)) as ETileType[])
+            {
+                tileTypeData.Add(tileType, new FTileTypeData());
+            }
+        }
+
+        if (pawnTypeData == null)
+        {
+            pawnTypeData = new Dictionary<EPawnSpawnType, GPawn>();
+            foreach (var pawnSpawnType in Enum.GetValues(typeof(EPawnSpawnType)) as EPawnSpawnType[])
+            {
+                pawnTypeData.Add(pawnSpawnType, null);
+            }
+        }
+
+        if (equipmentTypeData == null)
+        {
+            equipmentTypeData = new Dictionary<EEquipmentType, GEquipment>();
+            foreach (var equipmentType in Enum.GetValues(typeof(EEquipmentType)) as EEquipmentType[])
+            {
+                equipmentTypeData.Add(equipmentType, null);
+            }
+        }
+    }
+    #endif
 }
