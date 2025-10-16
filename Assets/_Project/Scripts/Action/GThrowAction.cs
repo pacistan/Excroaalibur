@@ -20,7 +20,7 @@ public class GThrowAction : GAction
 
     public override void PreProcess()
     {
-        if (!linkedPawn.equipment || linkedPawn._equipmentType != EEquipmentType.Crown) return;
+        if (!linkedPawn.equipment || linkedPawn.equipment is not GCrown) return;
         _crown = (GCrown)linkedPawn.equipment;
         
         EHexDirection direction = linkedPawn.coordinate.GetLineDirection(base.targetCell._hexCoordinates);
@@ -82,7 +82,7 @@ public class GThrowAction : GAction
 
     public override GHexCoordinate[] GetValidCells()
     {
-        if (!linkedPawn.equipment || linkedPawn._equipmentType != EEquipmentType.Crown)
+        if (!linkedPawn.equipment || linkedPawn.equipment is not GCrown)
             return validCells = new GHexCoordinate[]{};
         
         List<GHexCoordinate> newValidCells = new List<GHexCoordinate>();

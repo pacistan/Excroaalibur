@@ -24471,11 +24471,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6513531931879083242, guid: 4151a7ed24221ff4f8f5f9c8d5cc51bc, type: 3}
       propertyPath: actions.Array.size
-      value: 4
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 6513531931879083242, guid: 4151a7ed24221ff4f8f5f9c8d5cc51bc, type: 3}
       propertyPath: 'actions.Array.data[3]'
       value: 828711057728733285
+      objectReference: {fileID: 0}
+    - target: {fileID: 6513531931879083242, guid: 4151a7ed24221ff4f8f5f9c8d5cc51bc, type: 3}
+      propertyPath: 'actions.Array.data[4]'
+      value: 828711080176386153
       objectReference: {fileID: 0}
     - target: {fileID: 6513531931879083242, guid: 4151a7ed24221ff4f8f5f9c8d5cc51bc, type: 3}
       propertyPath: _previousEquipmentType
@@ -24484,6 +24488,10 @@ PrefabInstance:
     - target: {fileID: 6513531931879083242, guid: 4151a7ed24221ff4f8f5f9c8d5cc51bc, type: 3}
       propertyPath: 'managedReferences[828711057728733285]'
       value: Assembly-CSharp GThrowAction
+      objectReference: {fileID: 0}
+    - target: {fileID: 6513531931879083242, guid: 4151a7ed24221ff4f8f5f9c8d5cc51bc, type: 3}
+      propertyPath: 'managedReferences[828711080176386153]'
+      value: Assembly-CSharp GMoveOutOfHoleAction
       objectReference: {fileID: 0}
     - target: {fileID: 6513531931879083242, guid: 4151a7ed24221ff4f8f5f9c8d5cc51bc, type: 3}
       propertyPath: managedReferences[828711057728733285]._damage
@@ -24498,11 +24506,23 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 0}
     - target: {fileID: 6513531931879083242, guid: 4151a7ed24221ff4f8f5f9c8d5cc51bc, type: 3}
+      propertyPath: managedReferences[828711080176386153].linkedPawn
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 6513531931879083242, guid: 4151a7ed24221ff4f8f5f9c8d5cc51bc, type: 3}
+      propertyPath: managedReferences[828711080176386153].targetCell
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 6513531931879083242, guid: 4151a7ed24221ff4f8f5f9c8d5cc51bc, type: 3}
       propertyPath: managedReferences[828711057728733285]._maxThrowDistance
       value: 10
       objectReference: {fileID: 0}
     - target: {fileID: 6513531931879083242, guid: 4151a7ed24221ff4f8f5f9c8d5cc51bc, type: 3}
       propertyPath: managedReferences[828711057728733285].validCells.Array.size
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6513531931879083242, guid: 4151a7ed24221ff4f8f5f9c8d5cc51bc, type: 3}
+      propertyPath: managedReferences[828711080176386153].validCells.Array.size
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8449888012555708451, guid: 4151a7ed24221ff4f8f5f9c8d5cc51bc, type: 3}
