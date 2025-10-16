@@ -29,7 +29,8 @@ public class GActionList : MonoBehaviour
             Button button = Instantiate(_buttonPrefab, _listLayout.transform);
             button.onClick.AddListener(() => SelectAction(index));
             _buttons.Add(button);
-
+            button.interactable = actions[i].validCells.Length > 0;
+            
             TextMeshProUGUI tmp = button.GetComponentInChildren<TextMeshProUGUI>();
             if (tmp)
                 tmp.text = actions[i].ToString();

@@ -16,6 +16,7 @@ public class GThrowAction : GAction
     GPawn _toPush;
     GCell _pushTarget;
     int _distance;
+    float _progress;
 
     public override void PreProcess()
     {
@@ -55,18 +56,18 @@ public class GThrowAction : GAction
         
         Vector3 targetPos = _crown.transform.position;
         _crown.transform.DOMove(targetPos, 0.5f).From(linkedPawn.currentCell.transform.position).SetEase(Ease.OutQuint);
+        DOTween.To(() => _progress, x => _progress = x, _distance, 0.5f).SetEase(Ease.OutQuint).onComplete = End_Action;
     }
 
     public override void Update_Action(float delta)
     {
         base.Update_Action(delta);
-        int id = GHexCoordinate.FromPosition(_crown.transform.position).DistanceTo(targetCell._hexCoordinates);
+        int id = Mathf.FloorToInt(_progress);
         if (_toDamage.ContainsKey(id))
         {
             _toDamage[id].TakeDamage(_damage);
             _toDamage.Remove(id);
         }
-        if (id <= 0) End_Action();
     }
 
     public override void End_Action()
