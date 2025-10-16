@@ -23,7 +23,7 @@ public class
     Vector3 _targetStartPosition;
     
     bool _inflictDamage = false;
-    bool _kill = false;
+    bool _fall = false;
 
     
     public override void PreProcess()
@@ -52,7 +52,7 @@ public class
             pathCell = neighbor;
             if (neighbor.GetTileType == ETileType.Hole)
             {
-                _kill = true;
+                _fall = true;
                 break;
             }
         }
@@ -131,20 +131,12 @@ public class
             linkedPawn.Possess(equipment);
         }
         
-        if (_kill && !_targetPawn.isPlayer)
-            _targetPawn.Kill();
-        else if (_kill && _targetPawn.isPlayer)
-        {
-            _targetPawn.Stun(1);
-            
-        }
+        if (_fall) _targetPawn.Fall();
     }
 
     public override GHexCoordinate[] GetValidCells()
     {
         List<GHexCoordinate> newValidCells = new List<GHexCoordinate>();
-
-        
         
         foreach (GCell cell in linkedPawn.currentCell._neighbors)
         {

@@ -76,7 +76,7 @@ public class GThrowAction : GAction
             pair.Value.TakeDamage(_damage);
         
         if (_toPush && _pushTarget)
-            _toPush.transform.DOMove(_pushTarget.transform.position, 0.25f).SetEase(Ease.OutQuint).onComplete = () => {if (_pushTarget.GetTileType == ETileType.Hole) _toPush.Kill();};
+            _toPush.transform.DOMove(_pushTarget.transform.position, 0.25f).SetEase(Ease.OutQuint).onComplete = () => {if (_pushTarget.GetTileType == ETileType.Hole) _toPush.Fall();};
     }
 
     public override GHexCoordinate[] GetValidCells()
