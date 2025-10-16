@@ -67,13 +67,13 @@ public class GPawn : GGridObject
     }
     
     
-    public void Posess(GEquipment equipment)
+    public void Possess(GEquipment _equipment)
     {
-        this.equipment = equipment;
+        equipment = _equipment;
         OnEquip?.Invoke(equipment);
         equipment.SetOwner(this);
-        this.equipment.transform.parent = _equipmentParentTr;
-        this.equipment.transform.localPosition = Vector3.zero; 
+        equipment.transform.parent = _equipmentParentTr;
+        equipment.transform.localPosition = Vector3.zero; 
     }
 
     public void Release()

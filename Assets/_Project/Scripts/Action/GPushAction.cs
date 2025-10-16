@@ -96,7 +96,7 @@ public class
         {
             GEquipment equipment = _targetPawn.equipment;
             _targetPawn.Release(); 
-            linkedPawn.Posess(equipment);
+            linkedPawn.Possess(equipment);
         }
         
         _targetPawn.SetCell(_targetEndCell);
@@ -128,7 +128,7 @@ public class
         if (equipment &&  !(_targetPawn is GAltar))
         {
             _linkedEndCell.ReleaseEquipement();
-            linkedPawn.Posess(equipment);
+            linkedPawn.Possess(equipment);
         }
         
         if (_kill && !_targetPawn.isPlayer)

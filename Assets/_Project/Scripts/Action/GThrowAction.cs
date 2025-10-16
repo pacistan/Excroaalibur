@@ -51,7 +51,7 @@ public class GThrowAction : GAction
         linkedPawn.Release();
         if (_toPush && _pushTarget) _toPush.SetCell(_pushTarget);
         _crown.SetCell(targetCell);
-        if (_crown.currentCell.GetPawn()) _crown.currentCell.GetPawn().Posess(_crown);
+        if (_crown.currentCell.GetPawn()) _crown.currentCell.GetPawn().Possess(_crown);
         
         Vector3 targetPos = _crown.transform.position;
         _crown.transform.DOMove(targetPos, 0.5f).From(linkedPawn.currentCell.transform.position).SetEase(Ease.OutQuint);
