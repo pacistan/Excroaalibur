@@ -16,6 +16,7 @@ public class GThrowAction : GAction
     GPawn _toPush;
     GCell _pushTarget;
     int _distance;
+    float _progress;
 
     public override void PreProcess()
     {
@@ -51,22 +52,22 @@ public class GThrowAction : GAction
         linkedPawn.Release();
         if (_toPush && _pushTarget) _toPush.SetCell(_pushTarget);
         _crown.SetCell(targetCell);
-        if (_crown.currentCell.GetPawn()) _crown.currentCell.GetPawn().Posess(_crown);
+        if (_crown.currentCell.GetPawn()) _crown.currentCell.GetPawn().Possess(_crown);
         
         Vector3 targetPos = _crown.transform.position;
         _crown.transform.DOMove(targetPos, 0.5f).From(linkedPawn.currentCell.transform.position).SetEase(Ease.OutQuint);
+        DOTween.To(() => _progress, x => _progress = x, _distance, 0.5f).SetEase(Ease.OutQuint).onComplete = End_Action;
     }
 
     public override void Update_Action(float delta)
     {
         base.Update_Action(delta);
-        int id = GHexCoordinate.FromPosition(_crown.transform.position).DistanceTo(targetCell._hexCoordinates);
+        int id = Mathf.FloorToInt(_progress);
         if (_toDamage.ContainsKey(id))
         {
             _toDamage[id].TakeDamage(_damage);
             _toDamage.Remove(id);
         }
-        if (id <= 0) End_Action();
     }
 
     public override void End_Action()
@@ -76,7 +77,7 @@ public class GThrowAction : GAction
             pair.Value.TakeDamage(_damage);
         
         if (_toPush && _pushTarget)
-            _toPush.transform.DOMove(_pushTarget.transform.position, 0.25f).SetEase(Ease.OutQuint).onComplete = () => {if (_pushTarget.GetTileType == ETileType.Hole) _toPush.Kill();};
+            _toPush.transform.DOMove(_pushTarget.transform.position, 0.25f).SetEase(Ease.OutQuint).onComplete = () => {if (_pushTarget.GetTileType == ETileType.Hole) _toPush.Fall();};
     }
 
     public override GHexCoordinate[] GetValidCells()

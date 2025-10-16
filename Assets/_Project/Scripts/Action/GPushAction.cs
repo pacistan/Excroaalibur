@@ -23,11 +23,12 @@ public class
     Vector3 _targetStartPosition;
     
     bool _inflictDamage = false;
-    bool _kill = false;
+    bool _fall = false;
 
     
     public override void PreProcess()
     {
+        if (linkedPawn.equipment || linkedPawn._equipmentType == EEquipmentType.Crown) return;
         _direction = linkedPawn.coordinate.GetLineDirection(targetCell._hexCoordinates);
         _targetPawn = targetCell.GetPawn();
         if (!_targetPawn) return;
@@ -52,7 +53,7 @@ public class
             pathCell = neighbor;
             if (neighbor.GetTileType == ETileType.Hole)
             {
-                _kill = true;
+                _fall = true;
                 break;
             }
         }
@@ -96,7 +97,7 @@ public class
         {
             GEquipment equipment = _targetPawn.equipment;
             _targetPawn.Release(); 
-            linkedPawn.Posess(equipment);
+            linkedPawn.Possess(equipment);
         }
         
         _targetPawn.SetCell(_targetEndCell);
@@ -128,23 +129,18 @@ public class
         if (equipment &&  !(_targetPawn is GAltar))
         {
             _linkedEndCell.ReleaseEquipement();
-            linkedPawn.Posess(equipment);
+            linkedPawn.Possess(equipment);
         }
         
-        if (_kill && !_targetPawn.isPlayer)
-            _targetPawn.Kill();
-        else if (_kill && _targetPawn.isPlayer)
-        {
-            _targetPawn.Stun(1);
-            
-        }
+        if (_fall) _targetPawn.Fall();
     }
 
     public override GHexCoordinate[] GetValidCells()
     {
-        List<GHexCoordinate> newValidCells = new List<GHexCoordinate>();
-
+        if (linkedPawn.equipment || linkedPawn._equipmentType == EEquipmentType.Crown)
+            return validCells = new GHexCoordinate[]{};
         
+        List<GHexCoordinate> newValidCells = new List<GHexCoordinate>();
         
         foreach (GCell cell in linkedPawn.currentCell._neighbors)
         {

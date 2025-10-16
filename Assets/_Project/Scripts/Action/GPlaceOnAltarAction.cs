@@ -25,7 +25,7 @@
         if (_crown && _altar)
         {
             _crown.ForceRelease();
-            _altar.Posess(_crown);
+            _altar.Possess(_crown);
         }
         End_Action();
     }

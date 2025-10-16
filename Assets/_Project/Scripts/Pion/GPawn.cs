@@ -46,15 +46,6 @@ public class GPawn : GGridObject
 
     [SerializeField, HideInInspector]
     private EEquipmentType _previousEquipmentType;
-
-    public void Stun(int stunTurnNumber)
-    {
-        if (stunTurn == 0)
-        {
-            OnStunned?.Invoke();
-        }
-        stunTurn += stunTurnNumber;
-    }
     
     void Start()
     {
@@ -67,13 +58,13 @@ public class GPawn : GGridObject
     }
     
     
-    public void Posess(GEquipment equipment)
+    public void Possess(GEquipment _equipment)
     {
-        this.equipment = equipment;
+        equipment = _equipment;
         OnEquip?.Invoke(equipment);
         equipment.SetOwner(this);
-        this.equipment.transform.parent = _equipmentParentTr;
-        this.equipment.transform.localPosition = Vector3.zero; 
+        equipment.transform.parent = _equipmentParentTr;
+        equipment.transform.localPosition = Vector3.zero; 
     }
 
     public void Release()
@@ -119,6 +110,34 @@ public class GPawn : GGridObject
             Kill();
         }
     }
+    
+    public void Stun(int stunTurnNumber)
+    {
+        if (stunTurn == 0)
+        {
+            OnStunned?.Invoke();
+        }
+        stunTurn += stunTurnNumber;
+    }
+
+    public void Fall()
+    {
+        if (isPlayer)
+        {
+            Stun(1);
+        }
+        else
+        {
+            Kill();
+        }
+    }
+
+    public void Kill()
+    {
+        gameObject.SetActive(false);
+        OnKill?.Invoke();
+        Destroy(gameObject);
+    }
 
     public void OnStartAction()
     {
@@ -138,13 +157,6 @@ public class GPawn : GGridObject
     public void OnEndTurn()
     {
         
-    }
-
-    public void Kill()
-    {
-        gameObject.SetActive(false);
-        OnKill?.Invoke();
-        Destroy(gameObject);
     }
     
     
