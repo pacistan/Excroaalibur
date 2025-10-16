@@ -28,6 +28,7 @@ public class
     
     public override void PreProcess()
     {
+        if (linkedPawn.equipment || linkedPawn._equipmentType == EEquipmentType.Crown) return;
         _direction = linkedPawn.coordinate.GetLineDirection(targetCell._hexCoordinates);
         _targetPawn = targetCell.GetPawn();
         if (!_targetPawn) return;
@@ -136,6 +137,9 @@ public class
 
     public override GHexCoordinate[] GetValidCells()
     {
+        if (linkedPawn.equipment || linkedPawn._equipmentType == EEquipmentType.Crown)
+            return validCells = new GHexCoordinate[]{};
+        
         List<GHexCoordinate> newValidCells = new List<GHexCoordinate>();
         
         foreach (GCell cell in linkedPawn.currentCell._neighbors)

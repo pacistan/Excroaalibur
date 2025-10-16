@@ -12,6 +12,7 @@ public class GPunchAction : GAction
     
     public override void PreProcess()
     {
+        if (linkedPawn.equipment || linkedPawn._equipmentType == EEquipmentType.Crown) return;
         if (!targetCell || targetCell.GetPawn() || targetCell.GetPawn() == linkedPawn) return;
         //validate
     }
@@ -42,6 +43,9 @@ public class GPunchAction : GAction
 
     public override GHexCoordinate[] GetValidCells()
     {
+        if (linkedPawn.equipment || linkedPawn._equipmentType == EEquipmentType.Crown)
+            return validCells = new GHexCoordinate[]{};
+        
         List<GHexCoordinate> newValidCells = new List<GHexCoordinate>();
 
         foreach (var cell in linkedPawn.currentCell._neighbors)
