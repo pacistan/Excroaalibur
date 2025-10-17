@@ -109,6 +109,8 @@ public class GTurnBaseManager : GSingleton<GTurnBaseManager>
         return true;
     }
 
+    /// Preprocess a reaction without starting it with the associated context
+    /// <param name="ActionContext">collection of parameters of generic type to pass to the reaction from the action</param>
     public bool TryPlayReaction(GReaction ReactionToPlay, GActionContext ActionContext)
     {
         ReactionToPlay.PreProcess(ActionContext);
@@ -117,6 +119,10 @@ public class GTurnBaseManager : GSingleton<GTurnBaseManager>
         return true;
     }
 
+    /// <summary>
+    /// Start the reaction if it's preprocess is over, to use only for visuals synced with the corresponding instigator action
+    /// </summary>
+    /// <remarks>all reaction should be played at the end of the action. If reaction are still in queue after action end, these should be played and emptied</remarks>
     public void TryStartReaction(GReaction ReactionToStart)
     {
         if (ReactionToStart == null) return;

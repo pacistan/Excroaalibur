@@ -69,31 +69,7 @@ public class
     {
         base.Start_Action();
         
-        //TODO Request start of reaction to turn manager
-        
-        // Release Equipment held onto cell if the pawn is leaving the cell
-        // if (_linkedEndCell != linkedPawn.currentCell && _targetPawn && _targetPawn.equipment && !(_targetPawn is GAltar))
-        // {
-        //     GEquipment equipment = _targetPawn.equipment;
-        //     _targetPawn.Release();
-        //     _targetPawn.currentCell.Posess(equipment);
-        // }
-        // Give Item to the unit that is pushing if there is a wall behind pawn that is pushed.
-        /*else if (_linkedEndCell == linkedPawn.currentCell && _targetPawn && _targetPawn.GetEquipment() &&
-                 !(_targetPawn is GAltar))
-        {
-            GEquipment equipment = _targetPawn.equipment;
-            _targetPawn.Release();
-            linkedPawn.Posess(equipment);
-        }*/
-        
-        
-        // if (_targetPawn is GAltar && _targetPawn.equipment && _targetPawn.equipment is GCrown)
-        // {
-        //     GEquipment equipment = _targetPawn.equipment;
-        //     _targetPawn.Release(); 
-        //     linkedPawn.Possess(equipment);
-        // }
+        //TODO Check the need to replace the tryStartReaction with an event queue for all preprocessed callbacks
         GTurnBaseManager.Instance.TryStartReaction(_reaction);
         _progress = 0;
     }

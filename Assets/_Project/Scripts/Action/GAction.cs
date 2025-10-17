@@ -10,6 +10,7 @@ public class GActionContext
 {
     private Dictionary<string, object> _data = new Dictionary<string, object>();
     
+    // Set a property with a generic type value
     public void Set<T>(string key, T value) => _data[key] = value;
     
     public T Get<T>(string key, T defaultValue = default)
@@ -63,7 +64,10 @@ public abstract class GAction
         OnActionFinished += inOnActionFinished;
     }
     
-    /* Create a new instance of the action with the same parameters, Override this for Add Params */
+    /// <summary>
+    /// Create a new instance of the action with the same parameters, Override this for Add Params
+    /// </summary>
+    /// <returns>Cloned action</returns>
     public virtual GAction CloneAction()
     {
         GAction clone = (GAction)Activator.CreateInstance(this.GetType());
@@ -75,27 +79,50 @@ public abstract class GAction
         return clone;
     }
     
+    /// <summary>
+    /// pre-process all the logic of the action. This will update the grid before any visuals. This will also trigger the pre-process of any reaction if any are needed.
+    /// </summary>
+    /// <param name="context">Collection of parameters of generic type. Useful for reaction but not used for actions</param>
     public virtual void PreProcess(GActionContext context = null)
     {
         CurrentState = EActionState.PreProcessing;
     }
     
+    /// <summary>
+    /// Visual impact of the action. May trigger reactions start.
+    /// </summary>
     public virtual void Start_Action()
     {
         CurrentState = EActionState.InProgress;
         OnActionStarted?.Invoke();
     }
 
+    /// <summary>
+    /// Visual impact of the action. May trigger reactions start.
+    /// </summary>
+    /// <param name="delta"></param>
     public virtual void Update_Action(float delta) {}
 
+    /// <summary>
+    /// Visual impact of the action. May trigger reactions start.
+    /// </summary>
     public virtual void End_Action()
     {
         CurrentState = EActionState.Finished;
         OnActionFinished?.Invoke();
     }
     
+    /// <summary>
+    /// Get all cells onto which this action can be played.
+    /// </summary>
+    /// <returns>Array of <c>Gcell</c> of all valid cells</returns>
     public virtual GHexCoordinate[] GetValidCells() { return validCells; }
     
+    /// <summary>
+    /// Check if a given cell is part of the valid cells of this action (Valid cells must be cached beforehand for any grid changes with <see cref="GetValidCells"/>)
+    /// </summary>
+    /// <param name="cell">Cell to check the validity of</param>
+    /// <returns>True if cell is valid for this action</returns>
     public bool IsValidCell(GHexCoordinate cell) { return GetValidCells().Contains(cell); }
     
 }
