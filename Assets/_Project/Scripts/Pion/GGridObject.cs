@@ -18,8 +18,8 @@ public class GGridObject : MonoBehaviour
     
     public virtual void SetCell(GCell newCell)
     {
-        if (!newCell) return;
         if (currentCell) currentCell.SetPawn(null); 
+        if (!newCell) return;
         currentCell = newCell;
         coordinate = newCell._hexCoordinates;
     }

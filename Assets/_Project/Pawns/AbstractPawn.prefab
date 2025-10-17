@@ -119,6 +119,8 @@ MonoBehaviour:
   _equipmentType: 0
   isPlayer: 0
   actions: []
+  BaseReactionData: {fileID: 11400000, guid: 3d2f439763d27cc4488c148c9d11360b, type: 2}
+  OverrideReactionData: {fileID: 0}
   equipment: {fileID: 0}
   stunTurn: 0
   <hp>k__BackingField: 0
@@ -141,7 +143,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   serializationData:
-    SerializedFormat: 0
+    SerializedFormat: 2
     SerializedBytes: 
     ReferencedUnityObjects: []
     SerializedBytesString: 

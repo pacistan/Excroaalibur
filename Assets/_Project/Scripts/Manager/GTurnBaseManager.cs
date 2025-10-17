@@ -93,20 +93,43 @@ public class GTurnBaseManager : GSingleton<GTurnBaseManager>
         StartCoroutine(ProcessEndTurn());
     }
     
-    public bool TryPlayAction(GAction ActionToPlay, bool IsReaction) 
+    public bool TryPlayAction(GAction ActionToPlay) 
     { 
-        if (!IsReaction && isActionPlaying) return false;
+        if (isActionPlaying) return false;
         
         // TODO : Check if it's the good Method ! 
         GAction ActionInstance = ActionToPlay.CloneAction();
         
-        // TODO A check modifs en fonction du return ! 
         ActionInstance.PreProcess();
-        
+
         ActionInstance.Start_Action();
-        _actionsInProgress.Add(ActionInstance);
         actionPlayed?.Invoke(ActionInstance, _currentTurnController);
+        
+        _actionsInProgress.Add(ActionInstance);
         return true;
+    }
+
+    /// Preprocess a reaction without starting it with the associated context
+    /// <param name="ActionContext">collection of parameters of generic type to pass to the reaction from the action</param>
+    public bool TryPlayReaction(GReaction ReactionToPlay, GActionContext ActionContext)
+    {
+        ReactionToPlay.PreProcess(ActionContext);
+        
+        _actionsInProgress.Add(ReactionToPlay);
+        return true;
+    }
+
+    /// <summary>
+    /// Start the reaction if it's preprocess is over, to use only for visuals synced with the corresponding instigator action
+    /// </summary>
+    /// <remarks>all reaction should be played at the end of the action. If reaction are still in queue after action end, these should be played and emptied</remarks>
+    public void TryStartReaction(GReaction ReactionToStart)
+    {
+        if (ReactionToStart == null) return;
+        if (!_actionsInProgress.Contains(ReactionToStart)) return;
+        if (ReactionToStart.CurrentState != GAction.EActionState.PreProcessing) return;
+        ReactionToStart.Start_Action();
+        actionPlayed?.Invoke(ReactionToStart, _currentTurnController);
     }
     
     private void StartFight() 

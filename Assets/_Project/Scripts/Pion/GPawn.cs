@@ -26,6 +26,10 @@ public class GPawn : GGridObject
     public bool isPlayer;
     [SerializeReference, ShowIf("isPlayer")]
     public List<GAction> actions = new List<GAction>();
+    [SerializeField]
+    public GReactionData BaseReactionData;
+    [SerializeField]
+    public GReactionData OverrideReactionData;
     [SerializeField, ReadOnly, FoldoutGroup("Components")]
     public GEquipment equipment;
     
@@ -56,7 +60,16 @@ public class GPawn : GGridObject
         foreach (var action in actions)
             action.linkedPawn = this;
     }
-    
+
+    public GReaction GetReaction(GAction action)
+    {
+        if (OverrideReactionData && OverrideReactionData.HasReaction(action))
+            return OverrideReactionData.GetReaction(action);
+        if (BaseReactionData && BaseReactionData.HasReaction(action))
+            return BaseReactionData.GetReaction(action);
+
+        return null;
+    }
     
     public void Possess(GEquipment _equipment)
     {
@@ -72,6 +85,7 @@ public class GPawn : GGridObject
         if (equipment == null) return;
         equipment.OnReleased();
         OnUnequip?.Invoke(equipment);
+        currentCell.Posess(equipment);
         equipment = null;
     }
     
@@ -84,6 +98,8 @@ public class GPawn : GGridObject
     {
         base.SetCell(newCell);
         currentCell.SetPawn(this);
+        if (currentCell.GetTileType == ETileType.Hole)
+            Fall();
     }
     
     public bool RequestAction(GAction action)
@@ -91,7 +107,7 @@ public class GPawn : GGridObject
         if (action == null) return false;
         action.linkedPawn = this;
         print("Request " + action.ToString());
-        if (!GTurnBaseManager.Instance.TryPlayAction(action, false))
+        if (!GTurnBaseManager.Instance.TryPlayAction(action))
         {
             print("Action Failed");
             return false;
@@ -134,6 +150,7 @@ public class GPawn : GGridObject
 
     public void Kill()
     {
+        SetCell(null);
         gameObject.SetActive(false);
         OnKill?.Invoke();
         Destroy(gameObject);

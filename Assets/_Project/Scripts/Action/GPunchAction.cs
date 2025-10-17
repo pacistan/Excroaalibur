@@ -10,7 +10,7 @@ public class GPunchAction : GAction
     float _progress = 0;
     
     
-    public override void PreProcess()
+    public override void PreProcess(GActionContext context = null)
     {
         if (linkedPawn.equipment || linkedPawn.equipment is GCrown) return;
         if (!targetCell || targetCell.GetPawn() || targetCell.GetPawn() == linkedPawn) return;
