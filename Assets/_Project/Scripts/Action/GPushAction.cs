@@ -16,26 +16,37 @@ public class
     
     EHexDirection _direction = EHexDirection.NE;
     float _progress = 0;
-    GPawn _targetPawn;
     GCell _linkedEndCell;
     Vector3 _linkedStartPosition;
-    GCell _targetEndCell;
-    Vector3 _targetStartPosition;
+    GPawn _targetPawn;
+    GReaction _reaction;
     
     bool _inflictDamage = false;
     bool _fall = false;
 
     
-    public override void PreProcess()
+    public override void PreProcess(GActionContext context = null)
     {
         if (linkedPawn.equipment || linkedPawn.equipment is GCrown) return;
         _direction = linkedPawn.coordinate.GetLineDirection(targetCell._hexCoordinates);
         _targetPawn = targetCell.GetPawn();
         if (!_targetPawn) return;
 
-        GCell pathCell = _targetPawn.currentCell;
-        List<GCell> pathCells = new List<GCell>();
-        
+        _reaction = _targetPawn.GetReaction(this);
+        if (_reaction != null)
+        {
+            GActionContext pushContext = new GActionContext();
+            pushContext.Set("direction", _direction);
+            pushContext.Set("distance", _pushDistance);
+            pushContext.Set("damage", _damage);
+            pushContext.Set("stun" , _stun);
+            _reaction.instigatorCell = linkedPawn.currentCell;
+            _reaction.instigatorPawn = linkedPawn;
+            _reaction.linkedPawn = _targetPawn;
+            GTurnBaseManager.Instance.TryPlayReaction(_reaction, pushContext);
+        }
+
+        GCell pathCell = linkedPawn.currentCell;
         
         for (int i = 0; i < _pushDistance; i++)
         {
@@ -43,40 +54,30 @@ public class
             
             GCell neighbor = pathCell.GetNeighbor(_direction);
             
-            if (!neighbor || neighbor.GetTileType == ETileType.Wall || neighbor.GetPawn())
-            {
-                _inflictDamage = true;
-                break;
-            }
+            if (!neighbor || neighbor.GetPawn() || neighbor.GetTileType == ETileType.Wall) break;
 
-            pathCells.Add(pathCell);
             pathCell = neighbor;
-            if (neighbor.GetTileType == ETileType.Hole)
-            {
-                _fall = true;
-                break;
-            }
+            if (neighbor.GetTileType == ETileType.Hole) break;
         }
-        int id = Mathf.Min(pathCells.Count, _followDistance) - 1;
-        if (id < 0 || id >= pathCells.Count) id = 0;
-        if (pathCells.IsNullOrEmpty()) id = -1;
-        _linkedEndCell = id < 0 ? linkedPawn.currentCell : pathCells[id];
+        
+        _linkedEndCell = pathCell;
+        linkedPawn.SetCell(_linkedEndCell);
         _linkedStartPosition = linkedPawn.transform.position;
-        _targetEndCell = pathCell;
-        _targetStartPosition = _targetPawn.transform.position;
     }
 
     public override void Start_Action()
     {
         base.Start_Action();
         
+        //TODO Request start of reaction to turn manager
+        
         // Release Equipment held onto cell if the pawn is leaving the cell
-        if (_linkedEndCell != linkedPawn.currentCell && _targetPawn && _targetPawn.equipment && !(_targetPawn is GAltar))
-        {
-            GEquipment equipment = _targetPawn.equipment;
-            _targetPawn.Release();
-            _targetPawn.currentCell.Posess(equipment);
-        }
+        // if (_linkedEndCell != linkedPawn.currentCell && _targetPawn && _targetPawn.equipment && !(_targetPawn is GAltar))
+        // {
+        //     GEquipment equipment = _targetPawn.equipment;
+        //     _targetPawn.Release();
+        //     _targetPawn.currentCell.Posess(equipment);
+        // }
         // Give Item to the unit that is pushing if there is a wall behind pawn that is pushed.
         /*else if (_linkedEndCell == linkedPawn.currentCell && _targetPawn && _targetPawn.GetEquipment() &&
                  !(_targetPawn is GAltar))
@@ -86,23 +87,14 @@ public class
             linkedPawn.Posess(equipment);
         }*/
         
-        if (_inflictDamage)
-        {
-            _targetPawn.TakeDamage(_damage);
-            _targetPawn.Stun(_stun);
-        }
         
-        
-        if (_targetPawn is GAltar && _targetPawn.equipment && _targetPawn.equipment is GCrown)
-        {
-            GEquipment equipment = _targetPawn.equipment;
-            _targetPawn.Release(); 
-            linkedPawn.Possess(equipment);
-        }
-        
-        _targetPawn.SetCell(_targetEndCell);
-        linkedPawn.SetCell(_linkedEndCell);
-
+        // if (_targetPawn is GAltar && _targetPawn.equipment && _targetPawn.equipment is GCrown)
+        // {
+        //     GEquipment equipment = _targetPawn.equipment;
+        //     _targetPawn.Release(); 
+        //     linkedPawn.Possess(equipment);
+        // }
+        GTurnBaseManager.Instance.TryStartReaction(_reaction);
         _progress = 0;
     }
 
@@ -116,14 +108,12 @@ public class
             return;
         }
         linkedPawn.transform.position = Vector3.Lerp(_linkedStartPosition, _linkedEndCell.transform.position, _progress);
-        _targetPawn.transform.position = Vector3.Lerp(_targetStartPosition, _targetEndCell.transform.position, _progress);
     }
 
     public override void End_Action()
     {
         base.End_Action();
         linkedPawn.transform.position = _linkedEndCell.transform.position;
-        _targetPawn.transform.position = _targetEndCell.transform.position;
         
         GEquipment equipment = _linkedEndCell._equipment;
         if (equipment &&  !(_targetPawn is GAltar))
@@ -132,7 +122,6 @@ public class
             linkedPawn.Possess(equipment);
         }
         
-        if (_fall) _targetPawn.Fall();
     }
 
     public override GHexCoordinate[] GetValidCells()

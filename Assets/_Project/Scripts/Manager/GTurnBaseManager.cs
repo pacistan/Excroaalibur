@@ -93,20 +93,35 @@ public class GTurnBaseManager : GSingleton<GTurnBaseManager>
         StartCoroutine(ProcessEndTurn());
     }
     
-    public bool TryPlayAction(GAction ActionToPlay, bool IsReaction) 
+    public bool TryPlayAction(GAction ActionToPlay) 
     { 
-        if (!IsReaction && isActionPlaying) return false;
+        if (isActionPlaying) return false;
         
         // TODO : Check if it's the good Method ! 
         GAction ActionInstance = ActionToPlay.CloneAction();
         
-        // TODO A check modifs en fonction du return ! 
         ActionInstance.PreProcess();
-        
+
         ActionInstance.Start_Action();
-        _actionsInProgress.Add(ActionInstance);
         actionPlayed?.Invoke(ActionInstance, _currentTurnController);
+        
+        _actionsInProgress.Add(ActionInstance);
         return true;
+    }
+
+    public bool TryPlayReaction(GReaction ReactionToPlay, GActionContext ActionContext)
+    {
+        ReactionToPlay.PreProcess(ActionContext);
+        
+        _actionsInProgress.Add(ReactionToPlay);
+        return true;
+    }
+
+    public void TryStartReaction(GReaction ReactionToStart)
+    {
+        if (!_actionsInProgress.Contains(ReactionToStart)) return;
+        ReactionToStart.Start_Action();
+        actionPlayed?.Invoke(ReactionToStart, _currentTurnController);
     }
     
     private void StartFight() 

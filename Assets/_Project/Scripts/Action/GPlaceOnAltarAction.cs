@@ -3,7 +3,7 @@
     GCrown _crown;
     GAltar _altar;
     
-    public override void PreProcess()
+    public override void PreProcess(GActionContext context = null)
     {
         _crown = null;
         _altar = null;

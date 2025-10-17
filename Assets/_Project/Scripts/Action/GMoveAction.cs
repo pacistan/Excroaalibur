@@ -22,7 +22,7 @@ public class GMoveAction : GAction
     {
     }
 
-    public override void PreProcess()
+    public override void PreProcess(GActionContext context = null)
     {
         _path = GGridManager.Instance.GetPath(linkedPawn.currentCell ,targetCell, true);
         if (_path == null || _path.Length == 0 || _path.Length > _maxMoveDistance) return;

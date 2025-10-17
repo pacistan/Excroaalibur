@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class GMoveOutOfHoleAction : GAction
 {
-    public override void PreProcess()
+    public override void PreProcess(GActionContext context = null)
     {
         if (!targetCell || targetCell.GetPawn() || targetCell.GetPawn() == linkedPawn) return;
         //validate

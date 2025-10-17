@@ -18,7 +18,7 @@ public class GThrowAction : GAction
     int _distance;
     float _progress;
 
-    public override void PreProcess()
+    public override void PreProcess(GActionContext context = null)
     {
         if (!linkedPawn.equipment || linkedPawn.equipment is not GCrown) return;
         _crown = (GCrown)linkedPawn.equipment;

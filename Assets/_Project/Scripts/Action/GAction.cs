@@ -1,7 +1,37 @@
 ﻿using Sirenix.OdinInspector;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 
+// Data container for passing parameters between actions
+// This is an equivalent to a String/Untyped dictionary
+[Serializable]
+public class GActionContext
+{
+    private Dictionary<string, object> _data = new Dictionary<string, object>();
+    
+    public void Set<T>(string key, T value) => _data[key] = value;
+    
+    public T Get<T>(string key, T defaultValue = default)
+    {
+        if (_data.TryGetValue(key, out object value) && value is T typedValue)
+            return typedValue;
+        return defaultValue;
+    }
+    
+    public bool TryGet<T>(string key, out T value)
+    {
+        if (_data.TryGetValue(key, out object obj) && obj is T typedValue)
+        {
+            value = typedValue;
+            return true;
+        }
+        value = default;
+        return false;
+    }
+    
+    public bool Has(string key) => _data.ContainsKey(key);
+}
 
 [Serializable]
 public abstract class GAction
@@ -21,7 +51,7 @@ public abstract class GAction
     [ReadOnly] public GCell targetCell;
     [ReadOnly] public GHexCoordinate[] validCells = Array.Empty<GHexCoordinate>();
     
-    [ReadOnly] public EActionState CurrentState { get; private set; } = EActionState.None;
+    [ReadOnly] public EActionState CurrentState { get; protected set; } = EActionState.None;
 
     public GAction(){}
     public GAction(GPawn inLinkedPawn, GCell inTargetCell, Action inOnActionStarted = null,
@@ -45,7 +75,7 @@ public abstract class GAction
         return clone;
     }
     
-    public virtual void PreProcess()
+    public virtual void PreProcess(GActionContext context = null)
     {
         CurrentState = EActionState.PreProcessing;
     }
