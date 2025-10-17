@@ -17,7 +17,8 @@ public class GThrowAction : GAction
     GCell _pushTarget;
     int _distance;
     float _progress;
-
+    GReaction _reaction;
+    
     public override void PreProcess(GActionContext context = null)
     {
         if (!linkedPawn.equipment || linkedPawn.equipment is not GCrown) return;
@@ -35,28 +36,33 @@ public class GThrowAction : GAction
             if (neighbor.GetPawn() && !neighbor.GetPawn().isPlayer) _toDamage.Add(i, neighbor.GetPawn());
             pathCell = neighbor;
         }
-
+        
         GPawn targetPawn = targetCell.GetPawn();
         if (targetPawn && !targetPawn.isPlayer)
         {
-            _pushTarget = targetCell.GetNeighbor(direction);
-            if (!_pushTarget || _pushTarget.GetPawn() || _pushTarget.GetTileType == ETileType.Wall)
-                _pushTarget = null;
-            else _toPush = targetPawn;
+            _reaction = targetPawn.GetReaction(this);
+            if (_reaction != null)
+            {
+                GActionContext pushContext = new GActionContext();
+                pushContext.Set("direction", direction);
+                pushContext.Set("distance", 1);
+                pushContext.Set("damage", _damage);
+                _reaction.instigatorCell = linkedPawn.currentCell;
+                _reaction.instigatorPawn = linkedPawn;
+                _reaction.linkedPawn = targetPawn;
+                GTurnBaseManager.Instance.TryPlayReaction(_reaction, pushContext);
+            }
         }
+        linkedPawn.Release();
+        _crown.SetCell(targetCell);
+        if (_crown.currentCell.GetPawn()) _crown.currentCell.GetPawn().Possess(_crown);
     }
 
     public override void Start_Action()
     {
         base.Start_Action();
-        linkedPawn.Release();
-        if (_toPush && _pushTarget) _toPush.SetCell(_pushTarget);
-        _crown.SetCell(targetCell);
-        if (_crown.currentCell.GetPawn()) _crown.currentCell.GetPawn().Possess(_crown);
-        
-        Vector3 targetPos = _crown.transform.position;
-        _crown.transform.DOMove(targetPos, 0.5f).From(linkedPawn.currentCell.transform.position).SetEase(Ease.OutQuint);
-        DOTween.To(() => _progress, x => _progress = x, _distance, 0.5f).SetEase(Ease.OutQuint).onComplete = End_Action;
+        _crown.transform.DOMove(_crown.transform.position, 0.5f).From(linkedPawn.currentCell.transform.position).SetEase(Ease.OutBack);
+        DOTween.To(() => _progress, x => _progress = x, _distance, 0.5f).SetEase(Ease.OutBack).onComplete = End_Action;
     }
 
     public override void Update_Action(float delta)
@@ -68,6 +74,11 @@ public class GThrowAction : GAction
             _toDamage[id].TakeDamage(_damage);
             _toDamage.Remove(id);
         }
+        if (id >= _distance && _reaction != null)
+        {
+            GTurnBaseManager.Instance.TryStartReaction(_reaction);
+            _reaction = null;
+        }
     }
 
     public override void End_Action()
@@ -75,9 +86,6 @@ public class GThrowAction : GAction
         base.End_Action();
         foreach (KeyValuePair<int, GPawn> pair in _toDamage)
             pair.Value.TakeDamage(_damage);
-        
-        if (_toPush && _pushTarget)
-            _toPush.transform.DOMove(_pushTarget.transform.position, 0.25f).SetEase(Ease.OutQuint).onComplete = () => {if (_pushTarget.GetTileType == ETileType.Hole) _toPush.Fall();};
     }
 
     public override GHexCoordinate[] GetValidCells()

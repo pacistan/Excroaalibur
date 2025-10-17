@@ -119,7 +119,9 @@ public class GTurnBaseManager : GSingleton<GTurnBaseManager>
 
     public void TryStartReaction(GReaction ReactionToStart)
     {
+        if (ReactionToStart == null) return;
         if (!_actionsInProgress.Contains(ReactionToStart)) return;
+        if (ReactionToStart.CurrentState != GAction.EActionState.PreProcessing) return;
         ReactionToStart.Start_Action();
         actionPlayed?.Invoke(ReactionToStart, _currentTurnController);
     }
