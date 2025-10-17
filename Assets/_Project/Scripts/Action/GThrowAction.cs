@@ -9,7 +9,9 @@ public class GThrowAction : GAction
     [SerializeField, Min(0)]
     private int _maxThrowDistance = 10;
     [SerializeField]
-    private int _damage = 1;
+    private int _damage = 3;
+    [SerializeField]
+    private int _damageEnd = 5;
     
     GCrown _crown;
     Dictionary<int, GPawn> _toDamage = new Dictionary<int, GPawn>();
@@ -33,7 +35,7 @@ public class GThrowAction : GAction
         {
             GCell neighbor = pathCell.GetNeighbor(direction);
             if (neighbor == null) continue;
-            if (neighbor.GetPawn() && !neighbor.GetPawn().isPlayer) _toDamage.Add(i, neighbor.GetPawn());
+            if (neighbor.GetPawn() && !neighbor.GetPawn().isPlayer && i < _distance) _toDamage.Add(i, neighbor.GetPawn());
             pathCell = neighbor;
         }
         
@@ -46,7 +48,7 @@ public class GThrowAction : GAction
                 GActionContext pushContext = new GActionContext();
                 pushContext.Set("direction", direction);
                 pushContext.Set("distance", 1);
-                pushContext.Set("damage", _damage);
+                pushContext.Set("damage", _damageEnd);
                 _reaction.instigatorCell = linkedPawn.currentCell;
                 _reaction.instigatorPawn = linkedPawn;
                 _reaction.linkedPawn = targetPawn;
@@ -61,8 +63,8 @@ public class GThrowAction : GAction
     public override void Start_Action()
     {
         base.Start_Action();
-        _crown.transform.DOMove(_crown.transform.position, 0.5f).From(linkedPawn.currentCell.transform.position).SetEase(Ease.OutBack);
-        DOTween.To(() => _progress, x => _progress = x, _distance, 0.5f).SetEase(Ease.OutBack).onComplete = End_Action;
+        _crown.transform.DOMove(_crown.transform.position, 0.5f).From(linkedPawn.currentCell.transform.position).SetEase(Ease.OutQuint);
+        DOTween.To(() => _progress, x => _progress = x, _distance, 0.5f).SetEase(Ease.OutQuint).onComplete = End_Action;
     }
 
     public override void Update_Action(float delta)

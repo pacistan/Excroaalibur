@@ -18,6 +18,7 @@ public class GEquipment : GGridObject
     
     public void SetOwner(GPawn newOwner)
     {
+        currentCell.ReleaseEquipement();
         owner = newOwner;
     }
 

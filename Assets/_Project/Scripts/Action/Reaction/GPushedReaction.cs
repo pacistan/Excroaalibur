@@ -35,6 +35,21 @@ public class GPushedReaction : GReaction
             _stun = context.Get<int>("stun");
         
         
+        
+        if (instigatorCell != linkedPawn.currentCell && linkedPawn && linkedPawn.equipment && !(linkedPawn is GAltar))
+        {
+            GEquipment equipment = linkedPawn.equipment;
+            linkedPawn.Release();
+            instigatorPawn.Possess(equipment);
+        }
+        
+        if (linkedPawn is GAltar && linkedPawn.equipment && linkedPawn.equipment is GCrown)
+        {
+            GEquipment equipment = linkedPawn.equipment;
+            linkedPawn.Release(); 
+            instigatorPawn.Possess(equipment);
+        }
+        
         GCell cell = linkedPawn.currentCell;
         for (int i = 0; i < _distance; i++)
         {
@@ -45,26 +60,16 @@ public class GPushedReaction : GReaction
                 _inflictDamage = true;
                 break;
             }
-
+            
             cell = neighbor;
+            linkedPawn.SetCell(cell);
+            if (!linkedPawn.equipment && cell._equipment && cell._equipment is GCrown)
+            {
+                linkedPawn.Possess(cell._equipment);
+            }
             if (neighbor.GetTileType == ETileType.Hole)
                 break;
         }
-        
-        if (instigatorCell != linkedPawn.currentCell && linkedPawn && linkedPawn.equipment && !(linkedPawn is GAltar))
-        {
-            GEquipment equipment = linkedPawn.equipment;
-            linkedPawn.Release();
-            linkedPawn.currentCell.Posess(equipment);
-        }
-        
-        if (linkedPawn is GAltar && linkedPawn.equipment && linkedPawn.equipment is GCrown)
-        {
-            GEquipment equipment = linkedPawn.equipment;
-            linkedPawn.Release(); 
-            instigatorPawn.Possess(equipment);
-        }
-        
         
         targetCell = cell;
         linkedPawn.SetCell(targetCell);

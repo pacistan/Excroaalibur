@@ -85,6 +85,7 @@ public class GPawn : GGridObject
         if (equipment == null) return;
         equipment.OnReleased();
         OnUnequip?.Invoke(equipment);
+        currentCell.Posess(equipment);
         equipment = null;
     }
     
