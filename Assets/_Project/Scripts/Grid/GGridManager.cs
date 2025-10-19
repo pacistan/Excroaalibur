@@ -55,7 +55,7 @@ public class GGridManager : GSingleton<GGridManager>
 
         GCell currentCell = to;
         int currentCellStep = _stepMap[to._data.gridCoordinates];
-        if (maxNumberOfSteps != -1 && maxNumberOfSteps < currentCellStep)
+        /*if (maxNumberOfSteps != -1 && maxNumberOfSteps < currentCellStep)
         {
             var finalStep = _stepMap.First(a =>
             {
@@ -67,7 +67,7 @@ public class GGridManager : GSingleton<GGridManager>
             currentCell = GGridManager.Instance.GetCell(finalStep.Key);
             if (!currentCell) return null;
             currentCellStep = finalStep.Value;
-        }
+        }*/
 
         EHexDirection[] path = new EHexDirection[currentCellStep];
 
@@ -92,6 +92,10 @@ public class GGridManager : GSingleton<GGridManager>
                 }
             }
             i++;
+        }
+        if (maxNumberOfSteps != -1 && maxNumberOfSteps < path.Length)
+        {
+            Array.Resize(ref path, maxNumberOfSteps);
         }
         return path;
     }
@@ -113,7 +117,7 @@ public class GGridManager : GSingleton<GGridManager>
 
         GCell currentCell = to;
         int currentCellStep = _stepMap[to._data.gridCoordinates];
-        if (maxNumberOfSteps != -1 && maxNumberOfSteps < currentCellStep)
+        /*if (maxNumberOfSteps != -1 && maxNumberOfSteps < currentCellStep)
         {
             var finalStep = _stepMap.First(a =>
             {
@@ -123,7 +127,7 @@ public class GGridManager : GSingleton<GGridManager>
             currentCell = GGridManager.Instance.GetCell(finalStep.Key);
             if (!currentCell) return null;
             currentCellStep = finalStep.Value;
-        }
+        }*/
         EHexDirection[] path = new EHexDirection[currentCellStep];
 
         int i = 0;
@@ -147,6 +151,10 @@ public class GGridManager : GSingleton<GGridManager>
                 }
             }
             i++;
+        }
+        if (maxNumberOfSteps != -1 && maxNumberOfSteps < path.Length)
+        {
+            Array.Resize(ref path, maxNumberOfSteps);
         }
         return path;
     }

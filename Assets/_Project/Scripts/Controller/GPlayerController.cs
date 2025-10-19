@@ -105,6 +105,15 @@ public class GPlayerController : GController
         return newAvailableActions.ToArray();
     }
 
+    //TODO : Change to Button or other interface
+    private void DebugEndTurn()
+    {
+        if (Input.GetKeyDown(KeyCode.L))
+        {
+            StopTurn();
+        }
+    }
+    
     private void Start()
     {
         _selectInput = InputSystem.actions.FindAction("Select");
@@ -114,7 +123,8 @@ public class GPlayerController : GController
     private void Update()
     {
         if (GTurnBaseManager.Instance.currentTurnController != this) return;
-        
+        DebugEndTurn();
+
         if (_selectInput.WasPressedThisFrame())
         {
             _targetCell = GetCellUnderMouse();
