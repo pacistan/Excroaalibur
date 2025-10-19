@@ -139,6 +139,7 @@ public class GTurnBaseManager : GSingleton<GTurnBaseManager>
     private void StartFight() 
     {
         _turnCount = 0; // Reset Turn Count ! 
+
         CreateQueue();
         StartTurn();
     }
@@ -219,6 +220,7 @@ public class GTurnBaseManager : GSingleton<GTurnBaseManager>
         yield return new WaitUntil(() => !isActionPlaying || Time.time > startTime + _safeTimeHandle);
         
         _currentTurnState = ETurnState.Finished;
+        
         _turnCount++;
         StartTurn();
     }
