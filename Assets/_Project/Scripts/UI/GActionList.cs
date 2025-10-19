@@ -11,6 +11,7 @@ public class GActionList : MonoBehaviour
     [SerializeField] VerticalLayoutGroup _listLayout;
     [SerializeField] Button _buttonPrefab;
 
+
     List<Button> _buttons = new List<Button>();
     
     public void UpdateButtons(GAction[] actions)
@@ -29,7 +30,7 @@ public class GActionList : MonoBehaviour
             Button button = Instantiate(_buttonPrefab, _listLayout.transform);
             button.onClick.AddListener(() => SelectAction(index));
             _buttons.Add(button);
-            button.interactable = actions[i].validCells.Length > 0;
+            button.interactable = actions[i].GetValidCells().Length > 0;
             
             TextMeshProUGUI tmp = button.GetComponentInChildren<TextMeshProUGUI>();
             if (tmp)
