@@ -70,16 +70,16 @@ public class GCellVisualsController : SerializedMonoBehaviour
             }
             else
             {
-                if (_cell._ownedPawn)
+                if (_cell.ownedPawn)
                 {
-                    DestroyImmediate(_cell._ownedPawn.gameObject);
+                    DestroyImmediate(_cell.ownedPawn.gameObject);
                 }
                 GPawn pawnPrefab = instantiationCommonData.pawnTypeData[newPawnType];
                 if (pawnPrefab)
                 {
-                    _cell._ownedPawn = PrefabUtility.InstantiatePrefab(pawnPrefab, _cell._pawnSpawnPoint) as GPawn;
-                    _cell._ownedPawn.transform.localPosition = Vector3.zero;
-                    _cell._ownedPawn.SetCell(_cell);
+                    _cell.ownedPawn = PrefabUtility.InstantiatePrefab(pawnPrefab, _cell._pawnSpawnPoint) as GPawn;
+                    _cell.ownedPawn.transform.localPosition = Vector3.zero;
+                    _cell.ownedPawn.SetCell(_cell);
                 }
                 _previousPawnSpawnType = newPawnType;
             }
@@ -89,7 +89,7 @@ public class GCellVisualsController : SerializedMonoBehaviour
         EEquipmentType newEquipmentType = _cell._data.equipmentType;
         if(_previousEquipmentType != _cell._data.equipmentType)
         {
-            if (_cell._ownedPawn)
+            if (_cell.ownedPawn)
             {
                 _cell._data.equipmentType = _previousEquipmentType;
                 Debug.LogWarning("Can't Change equipment when there is a pawn");

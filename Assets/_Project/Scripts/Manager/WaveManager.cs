@@ -22,9 +22,9 @@ public class WaveManager : GSingleton<WaveManager>
     }
     
     [field: SerializeField, Tooltip("List of waves to spawn")]
-    public List<SWave> _waves { get; private set; } = new List<SWave>();
+    public List<SWave> waves { get; private set; } = new List<SWave>();
     
-    [field: SerializeField, Tooltip("List of potential spawn cells for enemies")]
+    [SerializeField, Tooltip("List of potential spawn cells for enemies")]
     private List<GCell> _spawnCells = new List<GCell>();
     
     

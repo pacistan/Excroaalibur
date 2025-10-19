@@ -35,11 +35,11 @@ public class GThrowAction : GAction
         {
             GCell neighbor = pathCell.GetNeighbor(direction);
             if (neighbor == null) continue;
-            if (neighbor.GetPawn() && !neighbor.GetPawn().isPlayer && i < _distance) _toDamage.Add(i, neighbor.GetPawn());
+            if (neighbor.ownedPawn && !neighbor.ownedPawn.isPlayer && i < _distance) _toDamage.Add(i, neighbor.ownedPawn);
             pathCell = neighbor;
         }
         
-        GPawn targetPawn = targetCell.GetPawn();
+        GPawn targetPawn = targetCell.ownedPawn;
         if (targetPawn && !targetPawn.isPlayer)
         {
             _reaction = targetPawn.GetReaction(this);
@@ -55,9 +55,16 @@ public class GThrowAction : GAction
                 GTurnBaseManager.Instance.TryPlayReaction(_reaction, pushContext);
             }
         }
-        linkedPawn.Release();
-        _crown.SetCell(targetCell);
-        if (_crown.currentCell.GetPawn()) _crown.currentCell.GetPawn().Possess(_crown);
+        
+        linkedPawn.ReleaseEquipement(false);
+        if (targetCell.ownedPawn)
+        {
+            targetCell.ownedPawn.GiveEquipement(_crown);
+        }
+        else
+        {
+            targetCell.GiveEquipement(_crown);
+        }
     }
 
     public override void Start_Action()

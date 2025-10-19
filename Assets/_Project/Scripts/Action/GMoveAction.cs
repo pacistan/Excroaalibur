@@ -73,7 +73,7 @@ public class GMoveAction : GAction
                 if (equipment)
                 {
                     cell.ReleaseEquipement();
-                    linkedPawn.Possess(equipment);
+                    linkedPawn.GiveEquipement(equipment);
                 }
             }
             _currentWayPoint++;

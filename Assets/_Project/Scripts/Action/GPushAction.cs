@@ -29,7 +29,7 @@ public class
     {
         if (linkedPawn.equipment || linkedPawn.equipment is GCrown) return;
         _direction = linkedPawn.coordinate.GetLineDirection(targetCell._hexCoordinates);
-        _targetPawn = targetCell.GetPawn();
+        _targetPawn = targetCell.ownedPawn;
         if (!_targetPawn) return;
 
         _reaction = _targetPawn.GetReaction(this);
@@ -54,7 +54,7 @@ public class
             {
                 GCell neighbor = pathCell.GetNeighbor(_direction);
                 
-                if (!neighbor || neighbor.GetPawn() || neighbor.GetTileType == ETileType.Wall) break;
+                if (!neighbor || neighbor.ownedPawn || neighbor.GetTileType == ETileType.Wall) break;
 
                 pathCell = neighbor;
                 if (neighbor.GetTileType == ETileType.Hole) break;
@@ -96,7 +96,7 @@ public class
         if (equipment &&  !(_targetPawn is GAltar))
         {
             _linkedEndCell.ReleaseEquipement();
-            linkedPawn.Possess(equipment);
+            linkedPawn.GiveEquipement(equipment);
         }
         
     }
@@ -110,7 +110,7 @@ public class
         
         foreach (GCell cell in linkedPawn.currentCell._neighbors)
         {
-            if (!cell || !cell.GetPawn() || cell.GetPawn() == linkedPawn) continue;
+            if (!cell || !cell.ownedPawn || cell.ownedPawn == linkedPawn) continue;
             
             newValidCells.Add(cell._hexCoordinates);
         }

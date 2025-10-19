@@ -63,14 +63,14 @@ public class GPawnVisualsController : SerializedMonoBehaviour
     public void UpdatePawnVisuals()
     {
         // Equipment Type
-        EEquipmentType newEquipmentType = _pawn._equipmentType;
-        if(_previousEquipmentType != _pawn._equipmentType)
+        EEquipmentType newEquipmentType = _pawn.equipmentType;
+        if(_previousEquipmentType != _pawn.equipmentType)
         {
             if (_pawn.equipment)
             {
                 DestroyImmediate(_pawn.equipment.gameObject);
             }
-            GEquipment equipmentPrefab = _instantiationData.equipmentTypeData[_pawn._equipmentType];
+            GEquipment equipmentPrefab = _instantiationData.equipmentTypeData[_pawn.equipmentType];
             if (equipmentPrefab)
             {
                 _pawn.equipment = PrefabUtility.InstantiatePrefab(equipmentPrefab) as GEquipment;

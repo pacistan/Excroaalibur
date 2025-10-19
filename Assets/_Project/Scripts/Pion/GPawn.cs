@@ -18,49 +18,48 @@ public class GPawn : GGridObject
     public event Action OnUnstunned;
     public event Action<int> OnHealthChanged;
     
-    
     [SerializeField]
-    public EEquipmentType _equipmentType = EEquipmentType.None;
+    public EEquipmentType equipmentType = EEquipmentType.None;
     
     [SerializeField]
     public bool isPlayer;
+    
     [SerializeReference, ShowIf("isPlayer")]
     public List<GAction> actions = new List<GAction>();
-    [SerializeField]
-    public GReactionData BaseReactionData;
-    [SerializeField]
-    public GReactionData OverrideReactionData;
+    
+    [SerializeField, FormerlySerializedAs("BaseReactionData")]
+    public GReactionData baseReactionData;
+    
+    [SerializeField, FormerlySerializedAs("OverrideReactionData")]
+    public GReactionData overrideReactionData;
+    
     [SerializeField, ReadOnly, FoldoutGroup("Components")]
     public GEquipment equipment;
 
-    [SerializeField,FoldoutGroup("Components")]
+    [SerializeField, FoldoutGroup("Components")]
     GPawnVisualsController _visuals;
     
-    [FormerlySerializedAs("_stunTurn")]
-    [SerializeField, ReadOnly, HideInEditorMode] 
-    int stunTurn = 0;
+    [SerializeField, ReadOnly, HideInEditorMode, FormerlySerializedAs("_stunTurn")] 
+    public int stunTurn = 0;
     public bool IsStunned => stunTurn > 0;
 
     [field: SerializeField, HideIf("@hp == -1")]
     public int hp { get; protected set; } = 3;
-    
-
 
     [field : SerializeField, FoldoutGroup("Components")]
     public Transform _equipmentParentTr { get; private set; }
-
     
     public GReaction GetReaction(GAction action)
     {
-        if (OverrideReactionData && OverrideReactionData.HasReaction(action))
-            return OverrideReactionData.GetReaction(action);
-        if (BaseReactionData && BaseReactionData.HasReaction(action))
-            return BaseReactionData.GetReaction(action);
+        if (overrideReactionData && overrideReactionData.HasReaction(action))
+            return overrideReactionData.GetReaction(action);
+        if (baseReactionData && baseReactionData.HasReaction(action))
+            return baseReactionData.GetReaction(action);
 
         return null;
     }
     
-    public void Possess(GEquipment _equipment)
+    public void GiveEquipement(GEquipment _equipment)
     {
         equipment = _equipment;
         OnEquip?.Invoke(equipment);
@@ -68,13 +67,16 @@ public class GPawn : GGridObject
         equipment.transform.parent = _equipmentParentTr;
         equipment.transform.localPosition = Vector3.zero; 
     }
-
-    public void Release()
+    
+    public void ReleaseEquipement(bool giveToCell = true)
     {
         if (equipment == null) return;
         equipment.OnReleased();
         OnUnequip?.Invoke(equipment);
-        currentCell.Posess(equipment);
+        
+        if (giveToCell) 
+            currentCell.GiveEquipement(equipment);
+        
         equipment = null;
     }
     
@@ -161,7 +163,7 @@ public class GPawn : GGridObject
     public override void SetCell(GCell newCell)
     {
         base.SetCell(newCell);
-        currentCell.SetPawn(this);
+        currentCell.ownedPawn = this;
         if (currentCell.GetTileType == ETileType.Hole)
             Fall();
     }
