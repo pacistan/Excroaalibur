@@ -18,7 +18,7 @@ public class GEquipment : GGridObject
     
     public void SetOwner(GPawn newOwner)
     {
-        if (currentCell)
+        if (currentCell && currentCell._equipment)
         {
             currentCell.ReleaseEquipement();
         }
