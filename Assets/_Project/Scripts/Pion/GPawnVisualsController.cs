@@ -25,6 +25,8 @@ public class GPawnVisualsController : SerializedMonoBehaviour
         _pawn.OnStunned += OnStunned;
         _pawn.OnUnstunned += OnUnstunned;
         _pawn.OnHealthChanged += HealthChange;
+        
+        if (_pawn.hp < 0) return; // No Hp ! 
         HealthChange(_pawn.hp);
     }
 
@@ -49,23 +51,26 @@ public class GPawnVisualsController : SerializedMonoBehaviour
     private void UpdateText()
     {
         String text = "";
-
         if (_isStunned) text += "STUNNED\n";
-        text += $"HP: {_health}";
+        
+        if (_health >= 0) { 
+            text += $"HP: {_health}";
+        }
+        
         _debugTxt.text = text;
     }
 
     public void UpdatePawnVisuals()
     {
         // Equipment Type
-        EEquipmentType newEquipmentType = _pawn._equipmentType;
-        if(_previousEquipmentType != _pawn._equipmentType)
+        EEquipmentType newEquipmentType = _pawn.equipmentType;
+        if(_previousEquipmentType != _pawn.equipmentType)
         {
             if (_pawn.equipment)
             {
                 DestroyImmediate(_pawn.equipment.gameObject);
             }
-            GEquipment equipmentPrefab = _instantiationData.equipmentTypeData[_pawn._equipmentType];
+            GEquipment equipmentPrefab = _instantiationData.equipmentTypeData[_pawn.equipmentType];
             if (equipmentPrefab)
             {
                 _pawn.equipment = PrefabUtility.InstantiatePrefab(equipmentPrefab) as GEquipment;

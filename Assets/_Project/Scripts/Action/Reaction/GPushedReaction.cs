@@ -40,16 +40,16 @@ public class GPushedReaction : GReaction
         if (instigatorCell != linkedPawn.currentCell && linkedPawn && linkedPawn.equipment && !(linkedPawn is GAltar))
         {
             GEquipment equipment = linkedPawn.equipment;
-            linkedPawn.Release();
-            instigatorPawn.Possess(equipment);
+            linkedPawn.ReleaseEquipement();
+            instigatorPawn.GiveEquipement(equipment);
         }
         
         if (linkedPawn is GAltar && linkedPawn.equipment && linkedPawn.equipment is GCrown)
         {
             // TODO : Move to New Reaction Type
             GEquipment equipment = linkedPawn.equipment;
-            linkedPawn.Release(); 
-            instigatorPawn.Possess(equipment);
+            linkedPawn.ReleaseEquipement(); 
+            instigatorPawn.GiveEquipement(equipment);
             _isPushable = false;
             return;
         }
@@ -59,7 +59,7 @@ public class GPushedReaction : GReaction
         {
             GCell neighbor = cell.GetNeighbor(_direction);
             
-            if (!neighbor || neighbor.GetTileType == ETileType.Wall || neighbor.GetPawn())
+            if (!neighbor || neighbor.GetTileType == ETileType.Wall || neighbor.ownedPawn)
             {
                 _inflictDamage = true;
                 break;
@@ -69,7 +69,7 @@ public class GPushedReaction : GReaction
             linkedPawn.SetCell(cell);
             if (!linkedPawn.equipment && cell._equipment && cell._equipment is GCrown)
             {
-                linkedPawn.Possess(cell._equipment);
+                linkedPawn.GiveEquipement(cell._equipment);
             }
             if (neighbor.GetTileType == ETileType.Hole)
                 break;

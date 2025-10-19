@@ -12,9 +12,9 @@
             _crown = (GCrown)linkedPawn.equipment;
         }
 
-        if (targetCell._ownedPawn && targetCell._ownedPawn is GAltar)
+        if (targetCell.ownedPawn && targetCell.ownedPawn is GAltar)
         {
-            _altar = (GAltar)targetCell._ownedPawn;
+            _altar = (GAltar)targetCell.ownedPawn;
         }
         
     }
@@ -25,7 +25,7 @@
         if (_crown && _altar)
         {
             _crown.ForceRelease();
-            _altar.Possess(_crown);
+            _altar.GiveEquipement(_crown);
         }
         End_Action();
     }

@@ -13,7 +13,7 @@ public class GEquipment : GGridObject
     
     public void ForceRelease()
     {
-        owner.Release();
+        owner.ReleaseEquipement();
     }
     
     public void SetOwner(GPawn newOwner)
@@ -33,7 +33,7 @@ public class GEquipment : GGridObject
     public override void SetCell(GCell newCell)
     {
         base.SetCell(newCell);
-        newCell.Posess(this);
+        // newCell.GiveEquipement(this);
     }
 
     public override void SetCell(GHexCoordinate coordinate)

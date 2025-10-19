@@ -15,7 +15,6 @@ public class GCell : SerializedMonoBehaviour
     [field: SerializeField, FoldoutGroup("PersistantData/Components"), ReadOnly]
     public RectTransform _ui;
     
-
     [SerializeField, FoldoutGroup("PersistantData/Components")]
     public GCellVisualsController _cellVisualsController;
     
@@ -28,14 +27,14 @@ public class GCell : SerializedMonoBehaviour
     [field : SerializeField, ReadOnly, FoldoutGroup("PersistantData")]
     public GCell[] _neighbors {get; private set;}
 
-    [field: SerializeField, ReadOnly, FoldoutGroup("PersistantData")]
-    public GPawn _ownedPawn;
-
+    [FormerlySerializedAs("_ownedPawn")]
+    [SerializeField, ReadOnly, FoldoutGroup("PersistantData")]
+    public GPawn ownedPawn;
+    
     public ETileType GetTileType => _data.tileType;
     
     [field: SerializeField, ReadOnly, FoldoutGroup("PersistantData")]
     public GEquipment _equipment;
-
 
     
     public void ReleaseEquipement()
@@ -51,11 +50,11 @@ public class GCell : SerializedMonoBehaviour
 
     public void Start()
     {
-        if (_ownedPawn)
-            _ownedPawn.SetCell(this);
+        if (ownedPawn)
+            ownedPawn.SetCell(this);
     }
 
-    public void SetNeighbor (EHexDirection direction, GCell cell)
+    public void SetNeighbor(EHexDirection direction, GCell cell)
     {
         _neighbors[(int)direction] = cell;
         cell._neighbors[(int)direction.Opposite()] = this;
@@ -68,29 +67,20 @@ public class GCell : SerializedMonoBehaviour
 
     public bool IsWalkable(bool ignorePawn = false)
     {
-        return _data.tileType == ETileType.Normal && (_ownedPawn == null || ignorePawn);
+        return _data.tileType == ETileType.Normal && (ownedPawn == null || ignorePawn);
     }
 
     public bool IsWalkable(ref ETileType[] walkableTypes, bool ignorePawn = false)
     {
-        return walkableTypes.Contains(_data.tileType) && (_ownedPawn == null || ignorePawn);
-    }
-
-    public void SetPawn(GPawn pawn)
-    {
-        _ownedPawn = pawn;
-    }
-
-    public GPawn GetPawn()
-    {
-        return _ownedPawn;
+        return walkableTypes.Contains(_data.tileType) && (ownedPawn == null || ignorePawn);
     }
     
-    public void Posess(GEquipment equipment)
+    public void GiveEquipement(GEquipment equipment)
     {
         _equipment = equipment;
         _equipment.transform.parent = _pawnSpawnPoint;
         _equipment.transform.localPosition = Vector3.zero;
+        _equipment.SetCell(this);
     }
     
     

@@ -113,7 +113,7 @@ public class GPlayerController : GController
 
     private void Update()
     {
-        if (GTurnBaseManager.Instance._currentTurnController != this) return;
+        if (GTurnBaseManager.Instance.currentTurnController != this) return;
         
         if (_selectInput.WasPressedThisFrame())
         {
@@ -126,12 +126,12 @@ public class GPlayerController : GController
                 return;
             }
             
-            GPawn player = _targetCell.GetPawn() && _targetCell.GetPawn().isPlayer ? _targetCell.GetPawn() : null;
+            GPawn player = _targetCell.ownedPawn && _targetCell.ownedPawn.isPlayer ? _targetCell.ownedPawn : null;
             if (player)
             {
                 if (_selectedPlayer != player && !player.IsStunned)
                 {
-                    SetSelectedPlayer(_targetCell.GetPawn());
+                    SetSelectedPlayer(_targetCell.ownedPawn);
                 }
                 else
                 {

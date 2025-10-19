@@ -30,6 +30,7 @@ public class GReactionData : ScriptableObject
         }
     }
     
+    
     /// <summary>
     /// List of <see cref="ActionReactionPair"/> easily editable from editor.
     /// </summary>

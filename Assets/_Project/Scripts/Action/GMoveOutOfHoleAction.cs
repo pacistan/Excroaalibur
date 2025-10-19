@@ -6,7 +6,7 @@ public class GMoveOutOfHoleAction : GAction
 {
     public override void PreProcess(GActionContext context = null)
     {
-        if (!targetCell || targetCell.GetPawn() || targetCell.GetPawn() == linkedPawn) return;
+        if (!targetCell || targetCell.ownedPawn || targetCell.ownedPawn == linkedPawn) return;
         //validate
     }
 

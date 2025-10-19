@@ -4,6 +4,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 public class GTurnBaseManager : GSingleton<GTurnBaseManager>
 {
@@ -19,7 +20,7 @@ public class GTurnBaseManager : GSingleton<GTurnBaseManager>
     
     /** Manager The Turn Order */
     [field: SerializeField, ReadOnly, HideInEditorMode, BoxGroup("Turn")]
-    public GController _currentTurnController { get; private set; }
+    public GController currentTurnController { get; private set; }
 
     public bool isActionPlaying
     {
@@ -42,7 +43,10 @@ public class GTurnBaseManager : GSingleton<GTurnBaseManager>
 
     [SerializeField, BoxGroup("Dev Settings"), Tooltip("Speed Multiplier of the Action")]
     private float _actionSpeed = 1f;
-
+    
+    [SerializeField, HideInEditorMode, ReadOnly, Tooltip("Number of Turn elapsed since the start of the Fight"), BoxGroup("Turn")]
+    private int _turnCount = 0;
+    
     public ETurnState _currentTurnState { get; private set; }
 
     /** Register an Controller to the Turn Base Manager */
@@ -76,11 +80,11 @@ public class GTurnBaseManager : GSingleton<GTurnBaseManager>
      */
     public void RequestEndTurn(GController Controller, bool reenterQueue = true)
     {
-        Debug.Log("RequestEndTurn of " + _currentTurnController + " by " + Controller?.ToString());
+        Debug.Log("RequestEndTurn of " + currentTurnController + " by " + Controller?.ToString());
         
-        if (Controller != null && Controller != _currentTurnController)
+        if (Controller != null && Controller != currentTurnController)
         {
-            Debug.LogWarning($" {Controller} Trying to End Turn of {_currentTurnController}, but it's not his turn.");
+            Debug.LogWarning($" {Controller} Trying to End Turn of {currentTurnController}, but it's not his turn.");
             return;
         }
 
@@ -88,7 +92,7 @@ public class GTurnBaseManager : GSingleton<GTurnBaseManager>
         // isTurnActive = false;
         if (reenterQueue)
         {
-            _turnOrderControllerQueue.Add(_currentTurnController);
+            _turnOrderControllerQueue.Add(currentTurnController);
         }
         StartCoroutine(ProcessEndTurn());
     }
@@ -103,7 +107,7 @@ public class GTurnBaseManager : GSingleton<GTurnBaseManager>
         ActionInstance.PreProcess();
 
         ActionInstance.Start_Action();
-        actionPlayed?.Invoke(ActionInstance, _currentTurnController);
+        actionPlayed?.Invoke(ActionInstance, currentTurnController);
         
         _actionsInProgress.Add(ActionInstance);
         return true;
@@ -129,11 +133,12 @@ public class GTurnBaseManager : GSingleton<GTurnBaseManager>
         if (!_actionsInProgress.Contains(ReactionToStart)) return;
         if (ReactionToStart.CurrentState != GAction.EActionState.PreProcessing) return;
         ReactionToStart.Start_Action();
-        actionPlayed?.Invoke(ReactionToStart, _currentTurnController);
+        actionPlayed?.Invoke(ReactionToStart, currentTurnController);
     }
     
     private void StartFight() 
     {
+        _turnCount = 0; // Reset Turn Count ! 
         CreateQueue();
         StartTurn();
     }
@@ -158,12 +163,12 @@ public class GTurnBaseManager : GSingleton<GTurnBaseManager>
             return;
         }
         
-        _currentTurnController = _turnOrderControllerQueue.First();
+        currentTurnController = _turnOrderControllerQueue.First();
         _turnOrderControllerQueue.RemoveAt(0);
         
-        _currentTurnController.StartTurn();
+        currentTurnController.StartTurn();
         _currentTurnState = ETurnState.InProgress;
-        startControllerTurn?.Invoke(_currentTurnController);
+        startControllerTurn?.Invoke(currentTurnController);
     }
     
     protected override void Awake()
@@ -214,6 +219,7 @@ public class GTurnBaseManager : GSingleton<GTurnBaseManager>
         yield return new WaitUntil(() => !isActionPlaying || Time.time > startTime + _safeTimeHandle);
         
         _currentTurnState = ETurnState.Finished;
+        _turnCount++;
         StartTurn();
     }
 }

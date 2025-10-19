@@ -13,15 +13,15 @@ public class GPunchAction : GAction
     public override void PreProcess(GActionContext context = null)
     {
         if (linkedPawn.equipment || linkedPawn.equipment is GCrown) return;
-        if (!targetCell || targetCell.GetPawn() || targetCell.GetPawn() == linkedPawn) return;
+        if (!targetCell || targetCell.ownedPawn || targetCell.ownedPawn == linkedPawn) return;
         //validate
     }
 
     public override void Start_Action()
     {
         base.Start_Action();
-        targetCell.GetPawn().TakeDamage(_damage);
-        targetCell.GetPawn().Stun(_stun);
+        targetCell.ownedPawn.TakeDamage(_damage);
+        targetCell.ownedPawn.Stun(_stun);
         _progress = 0;
     }
 
@@ -50,7 +50,7 @@ public class GPunchAction : GAction
 
         foreach (var cell in linkedPawn.currentCell._neighbors)
         {
-            if (!cell || !cell.GetPawn() || cell.GetPawn() == linkedPawn) continue;
+            if (!cell || !cell.ownedPawn || cell.ownedPawn == linkedPawn) continue;
             
             newValidCells.Add(cell._hexCoordinates);
         }
