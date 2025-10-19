@@ -78,7 +78,7 @@ public class GMoveAction : GAction
                 GEquipment equipment = cell._equipment;
                 if (equipment)
                 {
-                    //cell.ReleaseEquipement();
+                    // cell.ReleaseEquipement();
                     linkedPawn.GiveEquipement(equipment);
                 }
             }
