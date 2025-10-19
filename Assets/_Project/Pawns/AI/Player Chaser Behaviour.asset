@@ -12,7 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 67682e12f55942988d23715a180f668b, type: 3}
   m_Name: Player Chaser Behaviour
   m_EditorClassIdentifier: 
-  behaviorState: 0
   _moveAction:
     rid: 3108424149014413393
   references:
@@ -23,3 +22,5 @@ MonoBehaviour:
       data:
         linkedPawn: {fileID: 0}
         targetCell: {fileID: 0}
+        validCells: []
+        _maxMoveDistance: 3

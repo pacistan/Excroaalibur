@@ -4,7 +4,7 @@ using UnityEngine.Serialization;
 using static GCellVisualsController;
 
     public enum ETileType { Normal, Wall, Hole }
-    public enum EPawnSpawnType {None, Sentry, PlayerPawn, Altar}
+    public enum EPawnSpawnType {None, Sentry, PlayerPawn, Altar, Brawler, Speedy}
     public enum EEquipmentType {None, Crown}
 
 [System.Serializable]

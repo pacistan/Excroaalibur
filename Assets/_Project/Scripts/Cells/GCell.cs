@@ -70,6 +70,14 @@ public class GCell : SerializedMonoBehaviour
         return _data.tileType == ETileType.Normal && (_ownedPawn == null || ignorePawn);
     }
 
+    public bool IsWalkable(ref ETileType[] walkableTypes, bool ignorePawn = false)
+    {
+        foreach (var tileType in walkableTypes)
+            if (_data.tileType == tileType)
+                return false;
+        return _ownedPawn == null || ignorePawn;
+    }
+
     public void SetPawn(GPawn pawn)
     {
         _ownedPawn = pawn;

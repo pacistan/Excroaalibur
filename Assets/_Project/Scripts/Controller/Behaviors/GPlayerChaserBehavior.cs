@@ -27,14 +27,16 @@ public class GPlayerChaserBehavior : GAIBehavior
         return currentAction;
     }
 
-    public override void OnTurnEnd()
+    protected override void GetAction<T>(out T action)
     {
+        string typeName = typeof(T).Name;
+        if (typeName == "GMoveAction")
+        {
+            action = _moveAction as T;
+        }
+        else action = null;
     }
 
-    public override void OnActionOver()
-    {
-    }
-    
     private GPawn GetPotentialTargetPlayer(out int distance)
     {
         distance = -1;
@@ -58,17 +60,5 @@ public class GPlayerChaserBehavior : GAIBehavior
         }
         distance = shortestDistance;
         return targetPlayer;
-    }
-    
-    
-    protected override GMoveAction CreateMoveAction(GCell targetCell, Action inOnActionFinished = null)
-    {
-        GMoveAction moveAction = (GMoveAction)_moveAction.CloneAction();
-        moveAction.linkedPawn = _controller.pawn;
-        //TODO : Replace moveDistance by the field in the action
-        moveAction.targetCell = GetClosestCellToTargetCell(_controller.pawn.currentCell, targetCell, moveAction._maxMoveDistance);
-        moveAction.OnActionFinished += OnActionOver;
-        moveAction.OnActionFinished += inOnActionFinished;
-        return moveAction;
     }
 }
