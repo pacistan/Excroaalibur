@@ -124,7 +124,6 @@ public class GPlayerController : GController
     {
         if (GTurnBaseManager.Instance.currentTurnController != this) return;
         DebugEndTurn();
-
         if (_selectInput.WasPressedThisFrame())
         {
             _targetCell = GetCellUnderMouse();
