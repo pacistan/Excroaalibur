@@ -42,6 +42,9 @@ public class GTurnBaseManager : GSingleton<GTurnBaseManager>
 
     [SerializeField, BoxGroup("Dev Settings"), Tooltip("Speed Multiplier of the Action")]
     private float _actionSpeed = 1f;
+    
+    [SerializeField, HideInEditorMode, ReadOnly, Tooltip("Number of Turn elapsed since the start of the Fight"), BoxGroup("Turn")]
+    private int TurnCount = 0;
 
     public ETurnState _currentTurnState { get; private set; }
 
@@ -134,6 +137,7 @@ public class GTurnBaseManager : GSingleton<GTurnBaseManager>
     
     private void StartFight() 
     {
+        TurnCount = 0; // Reset Turn Count ! 
         CreateQueue();
         StartTurn();
     }
@@ -214,6 +218,7 @@ public class GTurnBaseManager : GSingleton<GTurnBaseManager>
         yield return new WaitUntil(() => !isActionPlaying || Time.time > startTime + _safeTimeHandle);
         
         _currentTurnState = ETurnState.Finished;
+        TurnCount++;
         StartTurn();
     }
 }
