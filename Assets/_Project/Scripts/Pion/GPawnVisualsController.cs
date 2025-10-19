@@ -25,6 +25,8 @@ public class GPawnVisualsController : SerializedMonoBehaviour
         _pawn.OnStunned += OnStunned;
         _pawn.OnUnstunned += OnUnstunned;
         _pawn.OnHealthChanged += HealthChange;
+        
+        if (_pawn.hp < 0) return; // No Hp ! 
         HealthChange(_pawn.hp);
     }
 
@@ -49,9 +51,12 @@ public class GPawnVisualsController : SerializedMonoBehaviour
     private void UpdateText()
     {
         String text = "";
-
         if (_isStunned) text += "STUNNED\n";
-        text += $"HP: {_health}";
+        
+        if (_health >= 0) { 
+            text += $"HP: {_health}";
+        }
+        
         _debugTxt.text = text;
     }
 

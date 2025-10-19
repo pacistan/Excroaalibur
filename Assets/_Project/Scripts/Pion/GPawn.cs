@@ -41,7 +41,7 @@ public class GPawn : GGridObject
     int stunTurn = 0;
     public bool IsStunned => stunTurn > 0;
 
-    [field: SerializeField]
+    [field: SerializeField, HideIf("@hp == -1")]
     public int hp { get; protected set; } = 3;
     
 
@@ -50,16 +50,6 @@ public class GPawn : GGridObject
     public Transform _equipmentParentTr { get; private set; }
 
     
-    void Start()
-    {
-        if (!isPlayer) return;
-        GPlayerController controller = FindFirstObjectByType<GPlayerController>();
-        if (controller)
-            controller.RegisterPawn(this);
-        foreach (var action in actions)
-            action.linkedPawn = this;
-    }
-
     public GReaction GetReaction(GAction action)
     {
         if (OverrideReactionData && OverrideReactionData.HasReaction(action))
@@ -88,19 +78,6 @@ public class GPawn : GGridObject
         equipment = null;
     }
     
-    public override void SetCell(GHexCoordinate newCoordinate)
-    {
-        base.SetCell(GGridManager.Instance.GetCell(newCoordinate));
-    }
-    
-    public override void SetCell(GCell newCell)
-    {
-        base.SetCell(newCell);
-        currentCell.SetPawn(this);
-        if (currentCell.GetTileType == ETileType.Hole)
-            Fall();
-    }
-    
     public bool RequestAction(GAction action)
     {
         if (action == null) return false;
@@ -117,7 +94,8 @@ public class GPawn : GGridObject
 
     public void TakeDamage(int damage = 1)
     {
-        if (hp <= 0) return;
+        if (hp <= 0 || isPlayer) return;
+        
         hp--;
         OnHealthChanged?.Invoke(hp);
         if (hp < 0)
@@ -175,6 +153,33 @@ public class GPawn : GGridObject
         
     }
     
+    public override void SetCell(GHexCoordinate newCoordinate)
+    {
+        base.SetCell(GGridManager.Instance.GetCell(newCoordinate));
+    }
+    
+    public override void SetCell(GCell newCell)
+    {
+        base.SetCell(newCell);
+        currentCell.SetPawn(this);
+        if (currentCell.GetTileType == ETileType.Hole)
+            Fall();
+    }
+
+    protected virtual void Awake()
+    {
+        if (isPlayer) hp = -1; // Player has infinite HP
+    }
+
+    protected virtual void Start()
+    {
+        if (!isPlayer) return;
+        GPlayerController controller = FindFirstObjectByType<GPlayerController>();
+        if (controller)
+            controller.RegisterPawn(this);
+        foreach (var action in actions)
+            action.linkedPawn = this;
+    }
     
 #if UNITY_EDITOR
     void OnValidate()
