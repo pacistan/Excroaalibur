@@ -44,13 +44,16 @@ public class GPushedReaction : GReaction
             instigatorPawn.GiveEquipement(equipment);
         }
         
-        if (linkedPawn is GAltar && linkedPawn.equipment && linkedPawn.equipment is GCrown)
+        if (linkedPawn is GAltar )
         {
             // TODO : Move to New Reaction Type
-            GEquipment equipment = linkedPawn.equipment;
-            linkedPawn.ReleaseEquipement(); 
-            instigatorPawn.GiveEquipement(equipment);
             _isPushable = false;
+            if (linkedPawn.equipment && linkedPawn.equipment is GCrown)
+            {
+                GEquipment equipment = linkedPawn.equipment;
+                linkedPawn.ReleaseEquipement(); 
+                instigatorPawn.GiveEquipement(equipment);
+            }
             return;
         }
         
