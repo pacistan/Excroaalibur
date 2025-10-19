@@ -32,6 +32,9 @@ public class GPawn : GGridObject
     public GReactionData OverrideReactionData;
     [SerializeField, ReadOnly, FoldoutGroup("Components")]
     public GEquipment equipment;
+
+    [SerializeField,FoldoutGroup("Components")]
+    GPawnVisualsController _visuals;
     
     [FormerlySerializedAs("_stunTurn")]
     [SerializeField, ReadOnly, HideInEditorMode] 
@@ -41,15 +44,11 @@ public class GPawn : GGridObject
     [field: SerializeField]
     public int hp { get; protected set; } = 3;
     
-    [FormerlySerializedAs("_commonData")]
-    [SerializeField, FoldoutGroup("Components") ]
-    private GCommonInstantiationData _instantiationData;
 
-    [SerializeField, FoldoutGroup("Components")]
-    Transform _equipmentParentTr;
 
-    [SerializeField, HideInInspector]
-    private EEquipmentType _previousEquipmentType;
+    [field : SerializeField, FoldoutGroup("Components")]
+    public Transform _equipmentParentTr { get; private set; }
+
     
     void Start()
     {
@@ -182,25 +181,7 @@ public class GPawn : GGridObject
     {
         if (!Application.isPlaying)
         {
-            // Equipment Type
-            if(_previousEquipmentType != _equipmentType)
-            {
-                if (equipment)
-                {
-                    DestroyImmediate(equipment.gameObject);
-                }
-                GEquipment equipmentPrefab = _instantiationData.equipmentTypeData[_equipmentType];
-                if (equipmentPrefab)
-                {
-                    equipment = PrefabUtility.InstantiatePrefab(equipmentPrefab) as GEquipment;
-                    equipment.transform.parent = _equipmentParentTr;
-                    equipment.transform.localPosition = Vector3.zero;
-                    equipment.SetOwner(this);
-                    EditorUtility.SetDirty(equipment);
-                }
-                _previousEquipmentType = _equipmentType;
-            }
-            EditorUtility.SetDirty(this);
+            _visuals.UpdatePawnVisuals(); 
         }
     }
 #endif

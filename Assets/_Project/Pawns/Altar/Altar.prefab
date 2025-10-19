@@ -173,17 +173,27 @@ MonoBehaviour:
   _equipmentType: 0
   isPlayer: 0
   actions: []
-  BaseReactionData: {fileID: 0}
+  BaseReactionData: {fileID: 11400000, guid: 3d2f439763d27cc4488c148c9d11360b, type: 2}
   OverrideReactionData: {fileID: 0}
   equipment: {fileID: 0}
+  _visuals: {fileID: 1528920753647014634}
   stunTurn: 0
   <hp>k__BackingField: 3
-  _instantiationData: {fileID: 11400000, guid: 4b4fcf36089c3bb4eba6e330bdef62cf, type: 2}
-  _equipmentParentTr: {fileID: 6677674562615435608}
-  _previousEquipmentType: 0
+  <_equipmentParentTr>k__BackingField: {fileID: 6677674562615435608}
   references:
     version: 2
     RefIds: []
+--- !u!114 &1528920753647014634 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 5047510769810583256, guid: 48d2615fd829feb4a9c7bfb377fa75cc, type: 3}
+  m_PrefabInstance: {fileID: 5997542489976667186}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1503913905391733304}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 22df972ed238494cbf86f25aa63f4e2e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!4 &6677674562615435608 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 1121485079055703402, guid: 48d2615fd829feb4a9c7bfb377fa75cc, type: 3}

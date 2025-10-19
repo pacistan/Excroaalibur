@@ -15,6 +15,7 @@ public class GPushedReaction : GReaction
     EHexDirection _direction;
 
     bool _inflictDamage;
+    bool _isPushable;
     
     public override void PreProcess(GActionContext context = null)
     {
@@ -33,9 +34,9 @@ public class GPushedReaction : GReaction
             _damage = context.Get<int>("damage");
         if (context != null && context.Has("stun"))
             _stun = context.Get<int>("stun");
-        
-        
-        
+
+
+        _isPushable = true;
         if (instigatorCell != linkedPawn.currentCell && linkedPawn && linkedPawn.equipment && !(linkedPawn is GAltar))
         {
             GEquipment equipment = linkedPawn.equipment;
@@ -45,9 +46,12 @@ public class GPushedReaction : GReaction
         
         if (linkedPawn is GAltar && linkedPawn.equipment && linkedPawn.equipment is GCrown)
         {
+            // TODO : Move to New Reaction Type
             GEquipment equipment = linkedPawn.equipment;
             linkedPawn.Release(); 
             instigatorPawn.Possess(equipment);
+            _isPushable = false;
+            return;
         }
         
         GCell cell = linkedPawn.currentCell;
@@ -84,7 +88,14 @@ public class GPushedReaction : GReaction
     public override void Start_Action()
     {
         base.Start_Action();
-        linkedPawn.transform.DOMove(targetCell.transform.position, 0.5f).SetEase(Ease.OutCirc).onComplete = End_Action;
+        if (_isPushable)
+        {
+            linkedPawn.transform.DOMove(targetCell.transform.position, 0.5f).SetEase(Ease.OutCirc).onComplete = End_Action;
+        }
+        else
+        {
+            End_Action();
+        }
     }
 
     public override void Update_Action(float delta)
@@ -95,6 +106,9 @@ public class GPushedReaction : GReaction
     public override void End_Action()
     {
         base.End_Action();
-        linkedPawn.transform.position = targetCell.transform.position;
+        if (targetCell != null)
+        {
+            linkedPawn.transform.position = targetCell.transform.position;
+        }
     }
 }

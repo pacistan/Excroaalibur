@@ -9,6 +9,12 @@ public class GMoveAction : GAction
 {
     [SerializeField]
     public int _maxMoveDistance = 2;
+
+    [SerializeField]
+    public ETileType[] _walkingTileType = new[]{ETileType.Normal};
+
+    [SerializeField]
+    public ETileType[] _endMovementTileType = new[]{ETileType.Normal};
     
     private EHexDirection[] _path = new EHexDirection[] { };
     private Vector3[] _wayPoints = new Vector3[] { };
@@ -24,7 +30,8 @@ public class GMoveAction : GAction
 
     public override void PreProcess(GActionContext context = null)
     {
-        _path = GGridManager.Instance.GetPath(linkedPawn.currentCell ,targetCell, true);
+        GGridManager.Instance.GenerateStepMap(linkedPawn.currentCell, _walkingTileType);
+        _path = GGridManager.Instance.GetPath(linkedPawn.currentCell ,targetCell, _endMovementTileType,false);
         if (_path == null || _path.Length == 0 || _path.Length > _maxMoveDistance) return;
         
         _wayPointsCells = new Dictionary<int, GCell>();
@@ -54,8 +61,9 @@ public class GMoveAction : GAction
     public override void Update_Action(float delta)
     {
         base.Update_Action(delta);
-        _progress += delta;
-
+        _progress += delta * _speed;
+        float animatedProgress = _speedCurve.Evaluate(_progress);
+        
         if (_progress > _currentWayPoint)
         {
             if (_wayPointsCells.ContainsKey(_currentWayPoint))
@@ -71,7 +79,7 @@ public class GMoveAction : GAction
             _currentWayPoint++;
         }
 
-        if (_progress >= _wayPoints.Length - 1) 
+        if (_progress > _wayPoints.Length - 1) 
         {
             End_Action();
             return;

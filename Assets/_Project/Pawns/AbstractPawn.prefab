@@ -122,11 +122,10 @@ MonoBehaviour:
   BaseReactionData: {fileID: 11400000, guid: 3d2f439763d27cc4488c148c9d11360b, type: 2}
   OverrideReactionData: {fileID: 0}
   equipment: {fileID: 0}
+  _visuals: {fileID: 5047510769810583256}
   stunTurn: 0
   <hp>k__BackingField: 0
-  _instantiationData: {fileID: 0}
-  _equipmentParentTr: {fileID: 1121485079055703402}
-  _previousEquipmentType: 0
+  <_equipmentParentTr>k__BackingField: {fileID: 1121485079055703402}
   references:
     version: 2
     RefIds: []
@@ -153,6 +152,8 @@ MonoBehaviour:
     SerializationNodes: []
   _pawn: {fileID: 20667597376880823}
   _debugTxt: {fileID: 7342127905333001947}
+  _instantiationData: {fileID: 11400000, guid: 4b4fcf36089c3bb4eba6e330bdef62cf, type: 2}
+  _previousEquipmentType: 0
 --- !u!1 &5266738516767918478
 GameObject:
   m_ObjectHideFlags: 0
