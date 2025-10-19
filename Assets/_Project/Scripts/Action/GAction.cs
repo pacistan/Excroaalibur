@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using UnityEngine;
 
 // Data container for passing parameters between actions
 // This is an equivalent to a String/Untyped dictionary
@@ -9,7 +10,8 @@ using System.Linq;
 public class GActionContext
 {
     private Dictionary<string, object> _data = new Dictionary<string, object>();
-    
+
+
     // Set a property with a generic type value
     public void Set<T>(string key, T value) => _data[key] = value;
     
@@ -51,7 +53,10 @@ public abstract class GAction
     [ReadOnly] public GPawn linkedPawn;
     [ReadOnly] public GCell targetCell;
     [ReadOnly] public GHexCoordinate[] validCells = Array.Empty<GHexCoordinate>();
-    
+    [SerializeField]
+    protected float _speed = 1f;
+    [SerializeField]
+    protected AnimationCurve _speedCurve = AnimationCurve.EaseInOut(0, 0, 1, 1);
     [ReadOnly] public EActionState CurrentState { get; protected set; } = EActionState.None;
 
     public GAction(){}

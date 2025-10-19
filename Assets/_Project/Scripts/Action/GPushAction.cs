@@ -47,17 +47,18 @@ public class
         }
 
         GCell pathCell = linkedPawn.currentCell;
-        
-        for (int i = 0; i < _pushDistance; i++)
-        {
-            if (_targetPawn is GAltar) break;
-            
-            GCell neighbor = pathCell.GetNeighbor(_direction);
-            
-            if (!neighbor || neighbor.GetPawn() || neighbor.GetTileType == ETileType.Wall) break;
 
-            pathCell = neighbor;
-            if (neighbor.GetTileType == ETileType.Hole) break;
+        if (!(_targetPawn is GAltar))
+        {
+            for (int i = 0; i < _pushDistance; i++)
+            {
+                GCell neighbor = pathCell.GetNeighbor(_direction);
+                
+                if (!neighbor || neighbor.GetPawn() || neighbor.GetTileType == ETileType.Wall) break;
+
+                pathCell = neighbor;
+                if (neighbor.GetTileType == ETileType.Hole) break;
+            }
         }
         
         _linkedEndCell = pathCell;

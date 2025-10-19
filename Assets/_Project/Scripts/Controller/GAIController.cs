@@ -7,7 +7,6 @@ using UnityEngine.Serialization;
 [RequireComponent(typeof(GPawn))]
 public class GAIController : GController
 {
-    public enum EAIBehaviorType {Sentry}
     [HideInInspector]
     public  GPawn pawn;
     [SerializeReference]
@@ -23,7 +22,13 @@ public class GAIController : GController
             return;
         }
         remainingActionToken = actionTokens;
+        _aiBehavior.OnTurnStart();
         StartAction();
+    }
+
+    public void ResetTurn()
+    {
+        remainingActionToken = actionTokens;
     }
 
     public override void StartAction()

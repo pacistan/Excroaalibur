@@ -1,5 +1,6 @@
 ﻿using Sirenix.OdinInspector;
 using System;
+using System.Linq;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.Serialization;
@@ -68,6 +69,11 @@ public class GCell : SerializedMonoBehaviour
     public bool IsWalkable(bool ignorePawn = false)
     {
         return _data.tileType == ETileType.Normal && (_ownedPawn == null || ignorePawn);
+    }
+
+    public bool IsWalkable(ref ETileType[] walkableTypes, bool ignorePawn = false)
+    {
+        return walkableTypes.Contains(_data.tileType) && (_ownedPawn == null || ignorePawn);
     }
 
     public void SetPawn(GPawn pawn)

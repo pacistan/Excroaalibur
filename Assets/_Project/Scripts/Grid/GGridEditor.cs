@@ -42,6 +42,7 @@ public class GGridEditor : MonoBehaviour
         int rows = _gridData.rowNum;
         int columns = _gridData.columnNum;
         gridManager._currentGridSize = new Vector2Int(columns, rows);
+        gridManager._isOffsetOnPairs = _gridData.isOffsetOnPairs;
         gridManager._hexSize = _gridData.hexSize;
         int size = rows * columns;
         gridManager._grid = new GCell[size];
@@ -97,7 +98,7 @@ public class GGridEditor : MonoBehaviour
     private void CreateCell(int row, int column, int i, ref GCell[] grid)
     {
         Vector3 position;
-        int pairOffset = _gridData.isOffsetOnPairs ? 0 : 1;
+        int pairOffset = _gridData.isOffsetOnPairs ? 0 : 0;
         position.x = (row + column * .5f - (column + pairOffset) / 2) * (GHexMetrix.innerRadius * 2f);
         position.z = column * (_gridData.hexSize * 1.5f);
         position.y = 0;
@@ -181,7 +182,7 @@ public class GGridEditor : MonoBehaviour
     {
         GGridManager gridManager = GGridManager.Instance ? GGridManager.Instance : GameObject.FindFirstObjectByType<GGridManager>();
         GGridData newAsset = ScriptableObject.CreateInstance<GGridData>();
-        newAsset.GenerateCellData(gridManager._grid, gridManager._currentGridSize, gridManager._hexSize);
+        newAsset.GenerateCellData(gridManager._grid, gridManager._currentGridSize, gridManager._hexSize, gridManager._isOffsetOnPairs);
         UnityEditor.AssetDatabase.CreateAsset(newAsset, $"{pathToGridLayoutFolders}/{_gridDataFileName}.asset");
         UnityEditor.AssetDatabase.SaveAssets();
     }

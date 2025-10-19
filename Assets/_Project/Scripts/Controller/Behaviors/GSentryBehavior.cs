@@ -14,6 +14,9 @@ public class GSentryBehavior : GAIBehavior
     
     [SerializeReference]
     GPlaceOnAltarAction _placeOnAltarAction;
+
+    protected bool _hasMoved = false;
+    protected bool _isTurnOver = false;
     
     public override void Init(GAIController controller)
     {
@@ -26,156 +29,80 @@ public class GSentryBehavior : GAIBehavior
 
         controller.pawn.OnEquip += OnReceivedEquipment;
     }
-    
+
+    public override void OnTurnStart()
+    {
+        base.OnTurnStart();
+        _hasMoved = false;
+        _isTurnOver = false;
+    }
+
     public override GAction GetAction()
     {
-        switch (behaviorState)
+        if (_isTurnOver)
+            return null;
+        
+        GGridManager.Instance.GenerateStepMap(_controller.pawn.currentCell);
+        bool hasCrown = _controller.pawn.equipment && _controller.pawn.equipment is GCrown;
+
+        if (hasCrown)
         {
-            case EBehaviorState.LookingForTarget:
+            GAltar altar = GetPotentialTargetAltar(out int altarDistance);
+            if (altarDistance == 1)
             {
-                GCrown crown = GetPotentialTargetCrown(out int distance);
-                if (crown)
-                {
-                    if (distance == 1 && crown.owner && crown.owner.isPlayer)
-                    {
-                        return CreatePushAction(crown.GetCell(), () => ChangeState(EBehaviorState.LookingForTarget));
-                    }
-                    else
-                    {
-                        ChangeState(EBehaviorState.TryingToPush);
-                        return CreateMoveAction(crown.GetCell());
-                    }
-                }
-                
-            } break;
-            case EBehaviorState.RunningToAltar:
+                _isTurnOver = true;
+                return CreatePlaceOnAltarAction(altar.currentCell);
+            }   
+            else if (altarDistance > 0 && !_hasMoved)
             {
-                GAltar altar = GetPotentialTargetAltar(out int distance);
-                if (altar != null)
-                {
-                    if (distance == 1)
-                    {
-                        return CreatePlaceOnAltarAction(altar.currentCell, () => ChangeState(EBehaviorState.LookingForTarget));
-                    }
-                    else
-                    {
-                        return  CreateMoveAction(altar.currentCell, ()=>ChangeState(EBehaviorState.TryingToPlaceCrown));
-                    }
-                }
-            } break;
-            case EBehaviorState.TryingToPush:
+                _hasMoved = true;
+                return  CreateMoveAction(altar.currentCell);
+            }
+        }
+        else
+        {
+            GCrown crown = GetPotentialTargetCrown(out int crownDistance);
+            if (crownDistance == 1 && crown.owner)
             {
-                GCrown crown = GetPotentialTargetCrown(out int distance);
-                if (distance == 1 && crown.owner.isPlayer)
-                {
-                    return CreatePushAction(crown.GetCell(), () => ChangeState(EBehaviorState.LookingForTarget));
-                }
-            } break;
-            case EBehaviorState.TryingToPlaceCrown:
+                _isTurnOver = true;
+                return CreatePushAction(crown.GetCell());
+            }   
+            else if (crownDistance > 0 && !_hasMoved)
             {
-                GAltar altar = GetPotentialTargetAltar(out int distance);
-                if (distance == 1)
-                {
-                    return CreatePlaceOnAltarAction(altar.currentCell, () => ChangeState(EBehaviorState.LookingForTarget));
-                }
-            } break;
+                _hasMoved = true;
+                return CreateMoveAction(crown.GetCell());
+            }    
         }
         return null;
     }
 
-    public override void OnTurnEnd()
+
+    public override void OnReceivedEquipment(GEquipment equipment)
     {
-        if (behaviorState == EBehaviorState.TryingToPush)
+        base.OnReceivedEquipment(equipment);
+        if (equipment is GCrown)
         {
-            ChangeState(EBehaviorState.LookingForTarget);
+            _hasMoved = false;
+            _isTurnOver = false;
+            _controller.ResetTurn();
         }
-        else if (behaviorState == EBehaviorState.TryingToPlaceCrown)
+    }
+
+    protected override void GetAction<T>(out T action)
+    {
+        action = null;
+        string typeName = typeof(T).Name;
+        switch (typeName)
         {
-            ChangeState(EBehaviorState.RunningToAltar);
+            case "GMoveAction" : 
+                action = _moveAction as T; 
+                break;
+            case "GPushAction" : 
+                action = _pushAction as T; 
+                break;
+            case "GPlaceOnAltarAction" :
+                action = _placeOnAltarAction as T;
+                break;
         }
     }
-
-    public override void OnActionOver()
-    {
-    }
-
-    private GCrown GetPotentialTargetCrown(out int distance)
-    {
-        distance = -1;
-        IEnumerable<GCrown> crowns = GGridObjectRegistry.Instance.GetItemsByPredicate<GCrown>(crown => crown.owner == null || crown.owner.isPlayer);
-
-        if (crowns == null || crowns.Count() == 0) return null;
-        
-        GGridManager.Instance.GenerateStepMap(_controller.pawn.currentCell);
-        
-        int shortestDistance = int.MaxValue;
-        GCrown targetCrown = null;
-        foreach (var crown in crowns)
-        {
-            GCell crownCell = crown.owner ? crown.owner.currentCell : crown.currentCell;
-            int crownStep =  GGridManager.Instance.GetStep(crownCell, true);
-            if (crownStep != -1 && crownStep < shortestDistance) 
-            {
-                shortestDistance = crownStep;
-                targetCrown = crown;
-            }
-        }
-        distance = shortestDistance;
-        return targetCrown;
-    }
-    
-    private GAltar GetPotentialTargetAltar(out int distance)
-    {
-        distance = -1;
-        List<GAltar> receptacles = GGridObjectRegistry.Instance.GetItems<GAltar>();
-
-        if (receptacles == null || receptacles.Count() == 0) return null;
-        
-        GGridManager.Instance.GenerateStepMap(_controller.pawn.currentCell);
-        
-        int shortestDistance = int.MaxValue;
-        GAltar targetAltar = null;
-        foreach (var receptacle in receptacles)
-        {
-            int crownStep = GGridManager.Instance.GetStep(receptacle.currentCell, true);
-            if (crownStep != -1 && crownStep < shortestDistance) 
-            {
-                shortestDistance = crownStep;
-                targetAltar = receptacle;
-            }
-        }
-        distance = shortestDistance;
-        return targetAltar;
-    }
-
-    protected override GMoveAction CreateMoveAction(GCell targetCell, Action inOnActionFinished = null)
-    {
-        GMoveAction moveAction = (GMoveAction)_moveAction.CloneAction();
-        moveAction.linkedPawn = _controller.pawn;
-        moveAction.targetCell = GetClosestCellToTargetCell(_controller.pawn.currentCell, targetCell, moveAction._maxMoveDistance);
-        moveAction.OnActionFinished += OnActionOver;
-        moveAction.OnActionFinished += inOnActionFinished;
-        return moveAction;
-    }
-
-    protected override GPushAction CreatePushAction(GCell targetCell, Action inOnActionFinished = null)
-    {
-        GPushAction pushAction = (GPushAction)_pushAction.CloneAction();
-        pushAction.linkedPawn = _controller.pawn;
-        pushAction.targetCell = targetCell;
-        pushAction.OnActionFinished += OnActionOver;
-        pushAction.OnActionFinished += inOnActionFinished;
-        return pushAction;
-    }
-    
-    protected override GPlaceOnAltarAction CreatePlaceOnAltarAction(GCell targetCell, Action inOnActionFinished = null)
-    {
-        GPlaceOnAltarAction placeOnAltarAction = (GPlaceOnAltarAction)_placeOnAltarAction.CloneAction();
-        placeOnAltarAction.linkedPawn = _controller.pawn;
-        placeOnAltarAction.targetCell = targetCell;
-        placeOnAltarAction.OnActionFinished += OnActionOver;
-        placeOnAltarAction.OnActionFinished += inOnActionFinished;
-        return placeOnAltarAction;
-    }
-
 }

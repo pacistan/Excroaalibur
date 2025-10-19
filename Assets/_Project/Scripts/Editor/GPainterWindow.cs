@@ -19,7 +19,7 @@ public class GPainterWindow :  EditorWindow
     // Painting settings
     private bool isPainting = false;
     private float brushSize = 1f;
-    private LayerMask paintLayerMask = -1;
+    private LayerMask paintLayerMask;
     
     // UI State
     private bool showBrushSettings = true;
@@ -49,7 +49,7 @@ public class GPainterWindow :  EditorWindow
     {
         EditorGUILayout.Space(5);
         
-        DrawLibrarySection();
+          DrawLibrarySection();
         
         if (brushLibrary != null && brushLibrary.brushes.Count > 0)
         {
@@ -285,8 +285,6 @@ public class GPainterWindow :  EditorWindow
             EditorGUILayout.Space(5);
             
             brushSize = EditorGUILayout.Slider("Brush Size", brushSize, 0.1f, 10f);
-            paintLayerMask = LayerMaskField("Paint On Layers", paintLayerMask);
-            
             EditorGUILayout.Space(5);
             
 
@@ -304,7 +302,7 @@ public class GPainterWindow :  EditorWindow
             return;
         
         Event e = Event.current;
-        
+        paintLayerMask = LayerMask.GetMask("Cell");
         // Draw brush preview
         HandleUtility.AddDefaultControl(GUIUtility.GetControlID(FocusType.Passive));
         
@@ -378,14 +376,6 @@ public class GPainterWindow :  EditorWindow
         }
     }
 
-    private Vector3 SnapToGrid(Vector3 position, float gridSize)
-    {
-        position.x = Mathf.Round(position.x / gridSize) * gridSize;
-        position.y = Mathf.Round(position.y / gridSize) * gridSize;
-        position.z = Mathf.Round(position.z / gridSize) * gridSize;
-        return position;
-    }
-
     private void CreateNewLibrary()
     {
         string path = EditorUtility.SaveFilePanelInProject(
@@ -405,40 +395,5 @@ public class GPainterWindow :  EditorWindow
             brushLibrary = newLibrary;
             EditorGUIUtility.PingObject(newLibrary);
         }
-    }
-
-    private LayerMask LayerMaskField(string label, LayerMask layerMask)
-    {
-        List<string> layers = new List<string>();
-        List<int> layerNumbers = new List<int>();
-
-        for (int i = 0; i < 32; i++)
-        {
-            string layerName = LayerMask.LayerToName(i);
-            if (!string.IsNullOrEmpty(layerName))
-            {
-                layers.Add(layerName);
-                layerNumbers.Add(i);
-            }
-        }
-
-        int maskWithoutEmpty = 0;
-        for (int i = 0; i < layerNumbers.Count; i++)
-        {
-            if (((1 << layerNumbers[i]) & layerMask.value) != 0)
-                maskWithoutEmpty |= (1 << i);
-        }
-
-        maskWithoutEmpty = EditorGUILayout.MaskField(label, maskWithoutEmpty, layers.ToArray());
-
-        int mask = 0;
-        for (int i = 0; i < layerNumbers.Count; i++)
-        {
-            if ((maskWithoutEmpty & (1 << i)) != 0)
-                mask |= (1 << layerNumbers[i]);
-        }
-
-        layerMask.value = mask;
-        return layerMask;
     }
 }

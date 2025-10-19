@@ -15,6 +15,9 @@ public class GGridTest : MonoBehaviour
 
     [SerializeField, HideInInspector]
     Dictionary<Vector2Int, int> _stepMap;
+
+    [SerializeField]
+    Vector2Int _testCoordinates;
     
     [Button]
     private void TestStepping()
@@ -47,5 +50,14 @@ public class GGridTest : MonoBehaviour
         {
             cell._cellVisualsController.UpdateCellDebugNum("");
         }
+    }
+
+    [Button]
+    private void TestGrid()
+    {
+        GGridManager gridManager = GGridManager.Instance ? GGridManager.Instance : GameObject.FindFirstObjectByType<GGridManager>();
+        gridManager.GetCell(_testCoordinates);
+        Debug.Log(_testCoordinates + " || " + gridManager._grid[_testCoordinates.x + _testCoordinates.y * _testCoordinates.x]._data.gridCoordinates);
+
     }
 }
