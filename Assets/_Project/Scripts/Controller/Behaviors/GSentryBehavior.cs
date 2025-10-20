@@ -46,8 +46,8 @@ public class GSentryBehavior : GAIBehavior
             return null;
 
         GPawn linkedPawn = _controller.pawn;
-        GCell pawnCell = linkedPawn.currentCell;
-        GGridManager.Instance.GenerateStepMap(_controller.pawn.currentCell);
+        GCell pawnCell = linkedPawn.GetCell();
+        GGridManager.Instance.GenerateStepMap(_controller.pawn.GetCell());
         bool hasCrown = _controller.pawn.equipment && _controller.pawn.equipment is GCrown;
 
         if (hasCrown)
@@ -56,12 +56,16 @@ public class GSentryBehavior : GAIBehavior
             if (altarDistance == 1)
             {
                 _isTurnOver = true;
-                return CreatePlaceOnAltarAction(altar.currentCell);
+                return CreatePlaceOnAltarAction(altar.GetCell());
             }   
             else if (altarDistance > 0 && !_hasMoved)
             {
                 _hasMoved = true;
-                return  CreateMoveAction(altar.currentCell);
+                if (altarDistance > _moveAction._maxMoveDistance)
+                {
+                    _isTurnOver = true;
+                }
+                return  CreateMoveAction(altar.GetCell());
             }
         }
         else
@@ -78,6 +82,10 @@ public class GSentryBehavior : GAIBehavior
             else if (crown && crownDistance > 0 && !_hasMoved)
             {
                 _hasMoved = true;
+                if (crownDistance > _moveAction._maxMoveDistance)
+                {
+                    _isTurnOver = true;
+                }
                 return CreateMoveAction(crown.GetCell());
             }    
         }
@@ -88,12 +96,16 @@ public class GSentryBehavior : GAIBehavior
         if (distance == 1)
         {
             _isTurnOver = true;
-            return CreatePushAction(player.currentCell);
+            return CreatePushAction(player.GetCell());
         }
         else if (distance > 0 && !_hasMoved)
         {
-            GCell cell = player.currentCell;
+            GCell cell = player.GetCell();
             _hasMoved = true;
+            if (distance > _moveAction._maxMoveDistance)
+            {
+                _isTurnOver = true;
+            }
             return CreateMoveAction(cell);
         }
         return null;

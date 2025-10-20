@@ -9,7 +9,7 @@ public class GGridObject : MonoBehaviour
     public GHexCoordinate coordinate;
     
     [ReadOnly, FoldoutGroup("Persistant Data")]
-    public GCell currentCell;
+    protected GCell _currentCell;
     
     public virtual void SetCell(GHexCoordinate newCoordinate)
     {
@@ -18,12 +18,17 @@ public class GGridObject : MonoBehaviour
     
     public virtual void SetCell(GCell newCell)
     {
-        if (currentCell && this is GPawn) currentCell.ownedPawn = null;
-        currentCell = newCell;
+        if (_currentCell && this is GPawn) _currentCell.ownedPawn = null;
+        _currentCell = newCell;
         if (!newCell) return;
         coordinate = newCell._hexCoordinates;
     }
 
+    public virtual GCell GetCell()
+    {
+        return _currentCell;
+    }
+    
     void OnEnable()
     {
         GGridObjectRegistry.Instance.Register(this);

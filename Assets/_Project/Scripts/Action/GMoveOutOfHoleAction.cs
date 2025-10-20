@@ -29,12 +29,12 @@ public class GMoveOutOfHoleAction : GAction
 
     public override GHexCoordinate[] GetValidCells()
     {
-        if (linkedPawn.currentCell.GetTileType != ETileType.Hole)
+        if (linkedPawn.GetCell().GetTileType != ETileType.Hole)
             return validCells = new GHexCoordinate[]{};
         
         List<GHexCoordinate> newValidCells = new List<GHexCoordinate>();
 
-        foreach (var cell in linkedPawn.currentCell._neighbors)
+        foreach (var cell in linkedPawn.GetCell()._neighbors)
         {
             if (!cell || !cell.IsWalkable()) continue;
             

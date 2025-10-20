@@ -6,9 +6,9 @@ public class GEquipment : GGridObject
     [field : SerializeField, ReadOnly]
     public GPawn owner { get; private set; }
 
-    public GCell GetCell()
+    public override GCell GetCell()
     {
-        return owner ? owner.currentCell : currentCell;
+        return owner ? owner.GetCell() : _currentCell;
     }
     
     public void ForceRelease()
@@ -18,12 +18,12 @@ public class GEquipment : GGridObject
     
     public void SetOwner(GPawn newOwner)
     {
-        if (currentCell && currentCell._equipment)
+        if (GetCell() && GetCell()._equipment)
         {
-            currentCell.ReleaseEquipement();
+            GetCell().ReleaseEquipement();
         }
         owner = newOwner;
-        currentCell = owner.currentCell;
+        //GetCell() = owner.GetCell();
     }
 
     public void OnReleased()

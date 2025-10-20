@@ -42,7 +42,7 @@ public abstract class GAIBehavior : ScriptableObject
     {
         GetAction<GMoveAction>(out GMoveAction action);
         GMoveAction moveAction = action.CloneAction() as GMoveAction;
-        moveAction.targetCell = GetClosestCellToTargetCell(_controller.pawn.currentCell, targetCell, moveAction._maxMoveDistance);
+        moveAction.targetCell = GetClosestCellToTargetCell(_controller.pawn.GetCell(), targetCell, moveAction._maxMoveDistance);
         moveAction.OnActionFinished += OnActionOver;
         moveAction.OnActionFinished += inOnActionFinished;
         return moveAction;
@@ -86,7 +86,7 @@ public abstract class GAIBehavior : ScriptableObject
     protected GPawn GetPotentialTargetPlayer(out int distance)
     {
         return GGridObjectRegistry.GetClosestObjectOfTypeWithPredicate<GPawn>
-                (startCell: _controller.pawn.currentCell, 
+                (startCell: _controller.pawn.GetCell(), 
                 out distance, 
                 predicate: player => player.isPlayer);
     }

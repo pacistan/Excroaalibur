@@ -75,7 +75,7 @@ public class GPawn : GGridObject
         OnUnequip?.Invoke(equipment);
         
         if (giveToCell) 
-            currentCell.GiveEquipement(equipment);
+            GetCell().GiveEquipement(equipment);
         
         equipment = null;
     }
@@ -168,7 +168,7 @@ public class GPawn : GGridObject
             Fall();
         }
         base.SetCell(newCell);
-        currentCell.ownedPawn = this;
+        GetCell().ownedPawn = this;
     }
 
     protected virtual void Awake()

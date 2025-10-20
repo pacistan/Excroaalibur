@@ -40,13 +40,13 @@ public class
             pushContext.Set("distance", _pushDistance);
             pushContext.Set("damage", _damage);
             pushContext.Set("stun" , _stun);
-            _reaction.instigatorCell = linkedPawn.currentCell;
+            _reaction.instigatorCell = linkedPawn.GetCell();
             _reaction.instigatorPawn = linkedPawn;
             _reaction.linkedPawn = _targetPawn;
             GTurnBaseManager.Instance.TryPlayReaction(_reaction, pushContext);
         }
 
-        GCell pathCell = linkedPawn.currentCell;
+        GCell pathCell = linkedPawn.GetCell();
 
         if (!(_targetPawn is GAltar))
         {
@@ -108,7 +108,7 @@ public class
         
         List<GHexCoordinate> newValidCells = new List<GHexCoordinate>();
         
-        foreach (GCell cell in linkedPawn.currentCell._neighbors)
+        foreach (GCell cell in linkedPawn.GetCell()._neighbors)
         {
             if (!cell || !cell.ownedPawn || cell.ownedPawn == linkedPawn) continue;
             

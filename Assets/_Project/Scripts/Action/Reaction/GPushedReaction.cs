@@ -37,7 +37,7 @@ public class GPushedReaction : GReaction
 
 
         _isPushable = true;
-        if (instigatorCell != linkedPawn.currentCell && linkedPawn && linkedPawn.equipment && !(linkedPawn is GAltar))
+        if (instigatorCell != linkedPawn.GetCell() && linkedPawn && linkedPawn.equipment && !(linkedPawn is GAltar))
         {
             GEquipment equipment = linkedPawn.equipment;
             linkedPawn.ReleaseEquipement();
@@ -57,7 +57,7 @@ public class GPushedReaction : GReaction
             return;
         }
         
-        GCell cell = linkedPawn.currentCell;
+        GCell cell = linkedPawn.GetCell();
         for (int i = 0; i < _distance; i++)
         {
             GCell neighbor = cell.GetNeighbor(_direction);

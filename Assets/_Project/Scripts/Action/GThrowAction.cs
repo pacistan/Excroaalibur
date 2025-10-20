@@ -29,7 +29,7 @@ public class GThrowAction : GAction
         EHexDirection direction = linkedPawn.coordinate.GetLineDirection(base.targetCell._hexCoordinates);
         _distance = linkedPawn.coordinate.DistanceTo(base.targetCell._hexCoordinates);
 
-        GCell pathCell = linkedPawn.currentCell;
+        GCell pathCell = linkedPawn.GetCell();
         
         for (int i = 1; i <= _distance; i++)
         {
@@ -52,7 +52,7 @@ public class GThrowAction : GAction
                     GActionContext pushContext = new GActionContext();
                     pushContext.Set("direction", direction);
                     pushContext.Set("distance", 1);
-                    _reaction.instigatorCell = linkedPawn.currentCell;
+                    _reaction.instigatorCell = linkedPawn.GetCell();
                     _reaction.instigatorPawn = linkedPawn;
                     _reaction.linkedPawn = targetPawn;
                     GTurnBaseManager.Instance.TryPlayReaction(_reaction, pushContext);
@@ -74,7 +74,7 @@ public class GThrowAction : GAction
     public override void Start_Action()
     {
         base.Start_Action();
-        _crown.transform.DOMove(_crown.transform.position, 0.5f).From(linkedPawn.currentCell.transform.position).SetEase(Ease.OutQuint);
+        _crown.transform.DOMove(_crown.transform.position, 0.5f).From(linkedPawn.GetCell().transform.position).SetEase(Ease.OutQuint);
         DOTween.To(() => _progress, x => _progress = x, _distance, 0.5f).SetEase(Ease.OutQuint).onComplete = End_Action;
     }
 
@@ -107,7 +107,7 @@ public class GThrowAction : GAction
             return validCells = new GHexCoordinate[]{};
         
         List<GHexCoordinate> newValidCells = new List<GHexCoordinate>();
-        GCell startCell = linkedPawn.currentCell;
+        GCell startCell = linkedPawn.GetCell();
         
         foreach (EHexDirection direction in Enum.GetValues(typeof(EHexDirection)))
         {

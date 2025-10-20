@@ -8,7 +8,7 @@ public class GBrawlerBehavior : GSentryBehavior
         if (_isTurnOver) return null;
         
         GPawn linkedPawn = _controller.pawn;
-        GCell pawnCell = linkedPawn.currentCell;
+        GCell pawnCell = linkedPawn.GetCell();
         bool hasCrown = linkedPawn.equipment && linkedPawn.equipment is GCrown;
         GGridManager.Instance.GenerateStepMap(pawnCell);
         
@@ -18,12 +18,12 @@ public class GBrawlerBehavior : GSentryBehavior
             if (altarDistance == 1)
             {
                 _isTurnOver = true;
-                return CreatePlaceOnAltarAction(altar.currentCell);
+                return CreatePlaceOnAltarAction(altar.GetCell());
             }   
             else if (altarDistance > 0 && !_hasMoved)
             {
                 _hasMoved = true;
-                return  CreateMoveAction(altar.currentCell);
+                return  CreateMoveAction(altar.GetCell());
             }
         }
         else
@@ -42,7 +42,7 @@ public class GBrawlerBehavior : GSentryBehavior
             if (playerDistance == 1)
             {
                 _isTurnOver = true;
-                return CreatePushAction(player.currentCell);
+                return CreatePushAction(player.GetCell());
             }
             else if (crownDistance > 0 && !_hasMoved)
             {

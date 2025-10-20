@@ -84,7 +84,7 @@ public class GGridObjectRegistry : GSingleton<GGridObjectRegistry>
         T targetGridObject = null;
         foreach (var gridObject in gridObjects)
         {
-            int targetStep = GGridManager.Instance.GetStep(gridObject.currentCell, true);
+            int targetStep = GGridManager.Instance.GetStep(gridObject.GetCell(), true);
             if (targetStep != -1 && targetStep < shortestDistance) 
             {
                 shortestDistance = targetStep;
@@ -111,7 +111,7 @@ public class GGridObjectRegistry : GSingleton<GGridObjectRegistry>
         T targetGridObject = null;
         foreach (var gridObject in gridObjects)
         {
-            int targetStep = GGridManager.Instance.GetStep(gridObject.currentCell, true);
+            int targetStep = GGridManager.Instance.GetStep(gridObject.GetCell(), true);
             if (targetStep != -1 && targetStep < shortestDistance) 
             {
                 shortestDistance = targetStep;
