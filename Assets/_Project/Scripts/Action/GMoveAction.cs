@@ -36,13 +36,13 @@ public class GMoveAction : GAction
 
     public override void PreProcess(GActionContext context = null)
     {
-        GGridManager.Instance.GenerateStepMap(linkedPawn.currentCell, _walkingTileType);
-        _path = GGridManager.Instance.GetPath(linkedPawn.currentCell ,targetCell, _endMovementTileType,false);
+        GGridManager.Instance.GenerateStepMap(linkedPawn.GetCell(), _walkingTileType);
+        _path = GGridManager.Instance.GetPath(linkedPawn.GetCell() ,targetCell, _endMovementTileType,false);
         if (_path == null || _path.Length == 0 || _path.Length > _maxMoveDistance) return;
         
         _wayPointsCells = new Dictionary<int, GCell>();
 
-        GCell cell = linkedPawn.currentCell;
+        GCell cell = linkedPawn.GetCell();
         List<Vector3> wayPoints = new List<Vector3>();
         wayPoints.Add(cell.transform.position);
         for(int i = 0; i < _path.Length; i++)
@@ -102,7 +102,7 @@ public class GMoveAction : GAction
 
     public override GHexCoordinate[] GetValidCells()
     {
-        GGridManager.Instance.GenerateStepMap(linkedPawn.currentCell);
+        GGridManager.Instance.GenerateStepMap(linkedPawn.GetCell());
         Dictionary<Vector2Int, int> stepMap = GGridManager.Instance._stepMap;
         List<GHexCoordinate> newValidCells = new List<GHexCoordinate>();
 
@@ -112,7 +112,7 @@ public class GMoveAction : GAction
             GCell cell = GGridManager.Instance.GetCell(coordinate);
             
             if (!cell || !cell.IsWalkable() || step.Value > _maxMoveDistance) continue;
-            if (GGridManager.Instance.GetPath(linkedPawn.currentCell, cell).Length <= 0) continue;
+            if (GGridManager.Instance.GetPath(linkedPawn.GetCell(), cell).Length <= 0) continue;
             newValidCells.Add(coordinate);
         }
         

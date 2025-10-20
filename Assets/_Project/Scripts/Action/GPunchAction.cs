@@ -48,7 +48,7 @@ public class GPunchAction : GAction
         
         List<GHexCoordinate> newValidCells = new List<GHexCoordinate>();
 
-        foreach (var cell in linkedPawn.currentCell._neighbors)
+        foreach (var cell in linkedPawn.GetCell()._neighbors)
         {
             if (!cell || !cell.ownedPawn || cell.ownedPawn == linkedPawn) continue;
             

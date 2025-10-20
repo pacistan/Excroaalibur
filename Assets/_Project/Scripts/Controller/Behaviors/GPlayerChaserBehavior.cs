@@ -19,10 +19,10 @@ public class GPlayerChaserBehavior : GAIBehavior
     
     public override GAction GetAction()
     {
-        GGridManager.Instance.GenerateStepMap(_controller.pawn.currentCell);
+        GGridManager.Instance.GenerateStepMap(_controller.pawn.GetCell());
         GPawn player = GetPotentialTargetPlayer(out int distance);
         if (distance == 1) return null;
-        GCell cell = player.currentCell;
+        GCell cell = player.GetCell();
         GAction currentAction = CreateMoveAction(cell);
         return currentAction;
     }
