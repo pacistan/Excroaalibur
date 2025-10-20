@@ -40,22 +40,26 @@ public class GThrowAction : GAction
         }
         
         GPawn targetPawn = targetCell.ownedPawn;
-        if (targetPawn && !targetPawn.isPlayer)
+        if (targetPawn)
         {
-            _reaction = targetPawn.GetReaction(this);
-            if (_reaction != null)
+            targetPawn.TakeDamage(_damageEnd);
+            
+            if (!targetPawn.isPlayer && targetPawn.IsAlive)
             {
-                GActionContext pushContext = new GActionContext();
-                pushContext.Set("direction", direction);
-                pushContext.Set("distance", 1);
-                pushContext.Set("damage", _damageEnd);
-                _reaction.instigatorCell = linkedPawn.currentCell;
-                _reaction.instigatorPawn = linkedPawn;
-                _reaction.linkedPawn = targetPawn;
-                GTurnBaseManager.Instance.TryPlayReaction(_reaction, pushContext);
+                _reaction = targetPawn.GetReaction(this);
+                if (_reaction != null)
+                {
+                    GActionContext pushContext = new GActionContext();
+                    pushContext.Set("direction", direction);
+                    pushContext.Set("distance", 1);
+                    _reaction.instigatorCell = linkedPawn.currentCell;
+                    _reaction.instigatorPawn = linkedPawn;
+                    _reaction.linkedPawn = targetPawn;
+                    GTurnBaseManager.Instance.TryPlayReaction(_reaction, pushContext);
+                }
             }
+            
         }
-        
         linkedPawn.ReleaseEquipement(false);
         if (targetCell.ownedPawn)
         {
@@ -120,5 +124,14 @@ public class GThrowAction : GAction
         }
 
         return validCells = newValidCells.ToArray();
+    }
+
+    public override GAction CloneAction()
+    {
+        GThrowAction clonedAction = base.CloneAction() as GThrowAction;
+        clonedAction._damageEnd = _damageEnd;
+        clonedAction._damage = _damage;
+        clonedAction._maxThrowDistance = _maxThrowDistance;
+        return clonedAction;
     }
 }

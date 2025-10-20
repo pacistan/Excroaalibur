@@ -94,13 +94,15 @@ public class GPawn : GGridObject
         return true;
     }
 
+    public bool IsAlive => !(hp == 0);
+    
     public void TakeDamage(int damage = 1)
     {
         if (hp <= 0 || isPlayer) return;
         
-        hp--;
+        hp = Mathf.Max(0, hp - damage);
         OnHealthChanged?.Invoke(hp);
-        if (hp < 0)
+        if (hp == 0)
         {
             Kill();
         }
@@ -130,7 +132,6 @@ public class GPawn : GGridObject
     public void Kill()
     {
         SetCell(null);
-        gameObject.SetActive(false);
         OnKill?.Invoke();
         Destroy(gameObject);
     }
@@ -181,6 +182,14 @@ public class GPawn : GGridObject
             controller.RegisterPawn(this);
         foreach (var action in actions)
             action.linkedPawn = this;
+    }
+
+    protected virtual void OnDestroy()
+    {
+        if (equipment != null)
+        {
+            ReleaseEquipement(true);
+        }
     }
     
 #if UNITY_EDITOR

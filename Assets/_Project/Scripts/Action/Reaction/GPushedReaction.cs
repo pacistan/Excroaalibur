@@ -91,7 +91,7 @@ public class GPushedReaction : GReaction
     public override void Start_Action()
     {
         base.Start_Action();
-        if (_isPushable)
+        if (_isPushable && linkedPawn)
         {
             linkedPawn.transform.DOMove(targetCell.transform.position, 0.5f).SetEase(Ease.OutCirc).onComplete = End_Action;
         }
