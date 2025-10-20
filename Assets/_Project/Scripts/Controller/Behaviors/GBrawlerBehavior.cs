@@ -5,13 +5,16 @@ public class GBrawlerBehavior : GSentryBehavior
 {
     public override GAction GetAction()
     {
-        if (_isTurnOver)
-            return null;
-        bool hasCrown = _controller.pawn.equipment && _controller.pawn.equipment is GCrown;
-        GGridManager.Instance.GenerateStepMap(_controller.pawn.currentCell);
+        if (_isTurnOver) return null;
+        
+        GPawn linkedPawn = _controller.pawn;
+        GCell pawnCell = linkedPawn.currentCell;
+        bool hasCrown = linkedPawn.equipment && linkedPawn.equipment is GCrown;
+        GGridManager.Instance.GenerateStepMap(pawnCell);
+        
         if (hasCrown)
         {
-            GAltar altar = GetPotentialTargetAltar(out int altarDistance);
+            GAltar altar = GGridObjectRegistry.GetClosestObjectOfType<GAltar>(pawnCell, out int altarDistance);
             if (altarDistance == 1)
             {
                 _isTurnOver = true;
@@ -25,7 +28,10 @@ public class GBrawlerBehavior : GSentryBehavior
         }
         else
         {
-            GCrown crown = GetPotentialTargetCrown(out int crownDistance);
+            GCrown crown = GGridObjectRegistry.GetClosestObjectOfTypeWithPredicate<GCrown>(
+                pawnCell, out int crownDistance, 
+                crown=> !(crown.owner is GAltar));
+            
             if (crownDistance == 1 && crown.owner)
             {
                 _isTurnOver = true;

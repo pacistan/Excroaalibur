@@ -49,23 +49,78 @@ public class GGridObjectRegistry : GSingleton<GGridObjectRegistry>
     /// <param name="predicate">Condition Lambda to filter the result</param>
     /// <typeparam name="T">The Type of GridObject Quieried</typeparam>
     /// <returns></returns>
-    public IEnumerable<T> GetItemsByPredicate<T>(Func<T, bool> predicate) where T : GGridObject
+    public static IEnumerable<T> GetItemsByPredicate<T>(Func<T, bool> predicate) where T : GGridObject
     {
         Type type = typeof(T);
-        if (!_registry.ContainsKey(type))
+        if (!Instance._registry.ContainsKey(type))
         {
             return Enumerable.Empty<T>(); // Return empty if type not registered
         }
-        return _registry[type].Cast<T>().Where(predicate);
+        return Instance._registry[type].Cast<T>().Where(predicate);
     }
 
-    public List<T> GetItems<T>() where T : GGridObject
+    public static List<T> GetItems<T>() where T : GGridObject
     {
         Type type = typeof(T);
-        if (!_registry.ContainsKey(type))
+        if (!Instance._registry.ContainsKey(type))
         {
             return new List<T>(); // Return empty if type not registered
         }
-        return _registry[type].Cast<T>().ToList();
+        return Instance._registry[type].Cast<T>().ToList();
     }
+    
+    public static T GetClosestObjectOfType<T>(GCell startCell, out int distance, bool regenerateStepMap = false, bool forceSearch = true) where T : GGridObject
+    {
+        distance = -1;
+        List<T> gridObjects = GGridObjectRegistry.GetItems<T>();
+        if (gridObjects == null || gridObjects.Count() == 0) return null;
+
+        if (regenerateStepMap)
+        {
+            GGridManager.Instance.GenerateStepMap(startCell);
+        }
+        
+        int shortestDistance = int.MaxValue;
+        T targetGridObject = null;
+        foreach (var gridObject in gridObjects)
+        {
+            int targetStep = GGridManager.Instance.GetStep(gridObject.currentCell, true);
+            if (targetStep != -1 && targetStep < shortestDistance) 
+            {
+                shortestDistance = targetStep;
+                targetGridObject = gridObject;
+            }
+        }
+        distance = shortestDistance;
+        return targetGridObject;
+    }
+    
+    public static T GetClosestObjectOfTypeWithPredicate<T>(GCell startCell, out int distance,Func<T, bool> predicate, bool regenerateStepMap = false, bool forceSearch = true) where T : GGridObject
+    {
+        distance = -1;
+        List<T> gridObjects = GGridObjectRegistry.GetItemsByPredicate<T>(predicate).ToList();
+
+        if (gridObjects == null || gridObjects.Count() == 0) return null;
+        
+        if (regenerateStepMap)
+        {
+            GGridManager.Instance.GenerateStepMap(startCell);
+        }
+        
+        int shortestDistance = int.MaxValue;
+        T targetGridObject = null;
+        foreach (var gridObject in gridObjects)
+        {
+            int targetStep = GGridManager.Instance.GetStep(gridObject.currentCell, true);
+            if (targetStep != -1 && targetStep < shortestDistance) 
+            {
+                shortestDistance = targetStep;
+                targetGridObject = gridObject;
+            }
+        }
+        distance = shortestDistance;
+        return targetGridObject;
+    }
+    
+    
 }

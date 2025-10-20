@@ -51,7 +51,7 @@ public class GPushedReaction : GReaction
             if (linkedPawn.equipment && linkedPawn.equipment is GCrown)
             {
                 GEquipment equipment = linkedPawn.equipment;
-                linkedPawn.ReleaseEquipement(); 
+                linkedPawn.ReleaseEquipement(false); 
                 instigatorPawn.GiveEquipement(equipment);
             }
             return;

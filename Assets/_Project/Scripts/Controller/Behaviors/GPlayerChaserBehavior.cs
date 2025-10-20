@@ -36,29 +36,4 @@ public class GPlayerChaserBehavior : GAIBehavior
         }
         else action = null;
     }
-
-    private GPawn GetPotentialTargetPlayer(out int distance)
-    {
-        distance = -1;
-        IEnumerable<GPawn> pawns = GGridObjectRegistry.Instance.GetItems<GPawn>();
-        GPawn[] players =  pawns.Where(p => p.isPlayer).ToArray();
-
-        if (players == null || players.Count() == 0) return null;
-        
-        GGridManager.Instance.GenerateStepMap(_controller.pawn.currentCell);
-        
-        int shortestDistance = int.MaxValue;
-        GPawn targetPlayer = null;
-        foreach (var player in players)
-        {
-            int step = GGridManager.Instance.GetStep(player.currentCell, true);
-            if (step != -1 && step < shortestDistance) 
-            {
-                shortestDistance = step;
-                targetPlayer = player;
-            }
-        }
-        distance = shortestDistance;
-        return targetPlayer;
-    }
 }

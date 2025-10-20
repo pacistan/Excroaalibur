@@ -83,73 +83,11 @@ public abstract class GAIBehavior : ScriptableObject
 
     protected abstract void GetAction<T>(out T action) where T : GAction;
     
-    protected GCrown GetPotentialTargetCrown(out int distance)
-    {
-        distance = -1;
-        IEnumerable<GCrown> crowns = GGridObjectRegistry.Instance.GetItemsByPredicate<GCrown>(crown => crown.owner == null || crown.owner.isPlayer);
-
-        if (crowns == null || crowns.Count() == 0) return null;
-        
-        int shortestDistance = int.MaxValue;
-        GCrown targetCrown = null;
-        foreach (var crown in crowns)
-        {
-            GCell crownCell = crown.owner ? crown.owner.currentCell : crown.currentCell;
-            int crownStep =  GGridManager.Instance.GetStep(crownCell, true);
-            if (crownStep != -1 && crownStep < shortestDistance) 
-            {
-                shortestDistance = crownStep;
-                targetCrown = crown;
-            }
-        }
-        distance = targetCrown ? shortestDistance : -1;
-        return targetCrown;
-    }
-
     protected GPawn GetPotentialTargetPlayer(out int distance)
     {
-        distance = -1;
-        IEnumerable<GPawn> players = GGridObjectRegistry.Instance.GetItemsByPredicate<GPawn>(player => player.isPlayer);
-
-        if (players == null || players.Count() == 0) return null;
-        
-        
-        int shortestDistance = int.MaxValue;
-        GPawn targetPlayer = null;
-        foreach (var player in players)
-        {
-            GCell playerCell = player.currentCell;
-            int playerStep =  GGridManager.Instance.GetStep(playerCell, true);
-            if (playerStep != -1 && playerStep < shortestDistance) 
-            {
-                shortestDistance = playerStep;
-                targetPlayer = player;
-            }
-        }
-        distance = shortestDistance;
-        return targetPlayer;
+        return GGridObjectRegistry.GetClosestObjectOfTypeWithPredicate<GPawn>
+                (startCell: _controller.pawn.currentCell, 
+                out distance, 
+                predicate: player => player.isPlayer);
     }
-    
-    protected GAltar GetPotentialTargetAltar(out int distance)
-    {
-        distance = -1;
-        List<GAltar> receptacles = GGridObjectRegistry.Instance.GetItems<GAltar>();
-
-        if (receptacles == null || receptacles.Count() == 0) return null;
-        
-        int shortestDistance = int.MaxValue;
-        GAltar targetAltar = null;
-        foreach (var receptacle in receptacles)
-        {
-            int crownStep = GGridManager.Instance.GetStep(receptacle.currentCell, true);
-            if (crownStep != -1 && crownStep < shortestDistance) 
-            {
-                shortestDistance = crownStep;
-                targetAltar = receptacle;
-            }
-        }
-        distance = shortestDistance;
-        return targetAltar;
-    }
-    
 }
