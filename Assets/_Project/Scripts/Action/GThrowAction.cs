@@ -61,7 +61,7 @@ public class GThrowAction : GAction
             
         }
         linkedPawn.ReleaseEquipement(false);
-        if (targetCell.ownedPawn)
+        if (targetCell.ownedPawn && targetCell.ownedPawn.IsAlive)
         {
             targetCell.ownedPawn.GiveEquipement(_crown);
         }

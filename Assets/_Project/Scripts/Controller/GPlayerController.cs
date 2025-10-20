@@ -166,10 +166,11 @@ public class GPlayerController : GController
         {
             SetSelectedPlayer(null);
             remainingActionToken--;
-            if (remainingActionToken <= 0) 
+            // 
+            /*if (remainingActionToken <= 0) 
             {
                 GTurnBaseManager.Instance.RequestEndTurn(this);
-            }
+            }*/
         }
     }
 
