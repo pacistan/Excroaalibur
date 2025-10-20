@@ -254,7 +254,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   serializationData:
-    SerializedFormat: 2
+    SerializedFormat: 0
     SerializedBytes: 
     ReferencedUnityObjects: []
     SerializedBytesString: 
@@ -274,7 +274,7 @@ MonoBehaviour:
     x: 0
     z: 0
   <_neighbors>k__BackingField: []
-  _ownedPawn: {fileID: 0}
+  ownedPawn: {fileID: 0}
   _equipment: {fileID: 0}
 --- !u!114 &3577346378785680272
 MonoBehaviour:
@@ -289,7 +289,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   serializationData:
-    SerializedFormat: 2
+    SerializedFormat: 0
     SerializedBytes: 
     ReferencedUnityObjects: []
     SerializedBytesString: 
@@ -306,6 +306,7 @@ MonoBehaviour:
   _highlight: {fileID: 0}
   _visualsParent: {fileID: 3405757221322417798}
   _collidersParent: {fileID: 5859894880692463213}
+  _visualPreset: {fileID: 0}
   _previousPawnSpawnType: 0
   _previousEquipmentType: 0
 --- !u!114 &6044818382770711880

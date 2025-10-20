@@ -102,7 +102,7 @@ public abstract class GAIBehavior : ScriptableObject
                 targetCrown = crown;
             }
         }
-        distance = shortestDistance;
+        distance = targetCrown ? shortestDistance : -1;
         return targetCrown;
     }
 
