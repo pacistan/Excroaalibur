@@ -22,20 +22,20 @@ public class GAIController : GController
             StopTurn();
             return;
         }
-        remainingActionToken = actionTokens;
+        pawn.remainingActionToken = pawn.actionTokens;
         _aiBehavior.OnTurnStart();
         StartAction();
     }
 
     public void ResetTurn()
     {
-        remainingActionToken = actionTokens;
+        pawn.remainingActionToken = pawn.actionTokens;
     }
 
     public override void StartAction()
     {
         base.StartAction();
-        remainingActionToken--;
+        pawn.remainingActionToken--;
         var action = _aiBehavior.GetAction();
         if (action == null)
         {
@@ -51,7 +51,7 @@ public class GAIController : GController
     public override void OnActionOver()
     {
         base.OnActionOver();
-        if (remainingActionToken == 0)
+        if (pawn.remainingActionToken == 0)
         {
             StopTurn();
         }

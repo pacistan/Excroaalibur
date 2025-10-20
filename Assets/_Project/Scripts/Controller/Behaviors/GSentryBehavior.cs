@@ -18,6 +18,9 @@ public class GSentryBehavior : GAIBehavior
 
     [SerializeField, Tooltip("If true the sentry will try to go push player if crown is not an option")]
     protected bool _isFouteurDeMerde;
+
+    [SerializeField, Tooltip("If true when another sentry has the crown, this sentry will attack it to steal it")]
+    protected bool _isDirtyStealer;
     protected bool _hasMoved = false;
     protected bool _isTurnOver = false;
     
@@ -72,7 +75,7 @@ public class GSentryBehavior : GAIBehavior
         {
             GCrown crown = GGridObjectRegistry.GetClosestObjectOfTypeWithPredicate<GCrown>(
                 pawnCell, out int crownDistance, 
-                crown=> !(crown.owner is GAltar));
+                crown=> !(crown.owner is GAltar) && (_isDirtyStealer || (!crown.owner || crown.owner.isPlayer)));
             
             if (crown && crownDistance == 1 && crown.owner)
             {

@@ -30,7 +30,7 @@ public class GCameraController : MonoBehaviour
     [SerializeField, FoldoutGroup("Components")]
     Transform _cameraTargetTr;
     
-    float _currentHeight = 50;
+    float _currentHeight;
     Vector3 _targetPos;
     private float _horizontalRotationOffset;
     private IEnumerator _rotationEnum;
@@ -50,6 +50,7 @@ public class GCameraController : MonoBehaviour
         _height = InputSystem.actions.FindAction("MoveUpDown");
         _camMove = InputSystem.actions.FindAction("CamMove");
         _targetPos = _cameraTargetTr.position;
+        _currentHeight = follow.FollowOffset.y;
     }
 
     private void Update()
