@@ -53,10 +53,7 @@ public abstract class GAction
     [ReadOnly] public GPawn linkedPawn;
     [ReadOnly] public GCell targetCell;
     [ReadOnly] public GHexCoordinate[] validCells = Array.Empty<GHexCoordinate>();
-    [SerializeField]
-    protected float _speed = 1f;
-    [SerializeField]
-    protected AnimationCurve _speedCurve = AnimationCurve.EaseInOut(0, 0, 1, 1);
+
     [ReadOnly] public EActionState CurrentState { get; protected set; } = EActionState.None;
 
     public GAction(){}
