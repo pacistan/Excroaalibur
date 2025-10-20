@@ -118,6 +118,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5164812354402089066}
+  - component: {fileID: 2026037403582253510}
   m_Layer: 0
   m_Name: Camera
   m_TagString: Untagged
@@ -142,6 +143,50 @@ Transform:
   - {fileID: 4455631825119262492}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &2026037403582253510
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5994669400643579349}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d03c96784bc3dd4419570e7ca681d070, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  TopHeight: 50
+  BottomHeight: 10
+  _quarterRotationSpeed: 1
+  _rotationSpeed: 10
+  _heightSpeed: 10
+  _moveSpeed: 10
+  _rotationCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 1
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  follow: {fileID: 6598540219480766972}
+  _cameraTargetTr: {fileID: 4455631825119262492}
 --- !u!1 &8107968540935100317
 GameObject:
   m_ObjectHideFlags: 0
@@ -151,7 +196,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4455631825119262492}
-  - component: {fileID: 6963774543222204923}
   m_Layer: 0
   m_Name: CameraTarget
   m_TagString: Untagged
@@ -174,28 +218,3 @@ Transform:
   m_Children: []
   m_Father: {fileID: 5164812354402089066}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &6963774543222204923
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8107968540935100317}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d03c96784bc3dd4419570e7ca681d070, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  TopHeight: 50
-  BottomHeight: 10
-  _quarterRotationSpeed: 1
-  _rotationSpeed: 10
-  _heightSpeed: 10
-  _moveSpeed: 10
-  _rotationCurve:
-    serializedVersion: 2
-    m_Curve: []
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
-  follow: {fileID: 6598540219480766972}

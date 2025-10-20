@@ -133,6 +133,7 @@ public class GPawn : GGridObject
     {
         //SetCell(null);
         OnKill?.Invoke();
+        OnKilled();
         Destroy(gameObject);
     }
 
@@ -191,13 +192,14 @@ public class GPawn : GGridObject
         }
     }
 
-    protected virtual void OnDestroy()
+    protected virtual void OnKilled()
     {
         if (equipment != null)
         {
             ReleaseEquipement(true);
         }
     }
+    
     
 #if UNITY_EDITOR
     void OnValidate()
