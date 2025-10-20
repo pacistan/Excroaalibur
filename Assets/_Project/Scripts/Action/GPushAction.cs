@@ -50,7 +50,7 @@ public class
 
         if (!(_targetPawn is GAltar))
         {
-            for (int i = 0; i < _pushDistance; i++)
+            for (int i = 0; i < Mathf.Min(_followDistance, _pushDistance); i++)
             {
                 GCell neighbor = pathCell.GetNeighbor(_direction);
                 
@@ -116,5 +116,15 @@ public class
         }
         
         return validCells = newValidCells.ToArray();
+    }
+
+    public override GAction CloneAction()
+    {
+        GPushAction pushAction =  base.CloneAction() as GPushAction;
+        pushAction._pushDistance = _pushDistance;
+        pushAction._followDistance = _followDistance;
+        pushAction._stun = _stun;
+        pushAction._damage = _damage;
+        return pushAction;
     }
 }

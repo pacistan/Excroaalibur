@@ -11,8 +11,6 @@ public class GPawnVisualsController : SerializedMonoBehaviour
     GPawn _pawn;
     [SerializeField, FoldoutGroup("Components")]
     TextMeshProUGUI _debugTxt;
-    int _health = 0;
-    bool _isStunned = false;
     
     [SerializeField, FoldoutGroup("Components") ]
     private GCommonInstantiationData _instantiationData;
@@ -32,29 +30,26 @@ public class GPawnVisualsController : SerializedMonoBehaviour
 
     public void HealthChange(int health)
     {
-        _health = health;
         UpdateText();
     }
     
     public void OnStunned()
     {
-        _isStunned = true;
         UpdateText();
     }
 
     public void OnUnstunned()
     {
-        _isStunned = false;
         UpdateText();
     }
 
     private void UpdateText()
     {
         String text = "";
-        if (_isStunned) text += "STUNNED\n";
+        if (_pawn.IsStunned) text += "STUNNED\n";
         
-        if (_health >= 0) { 
-            text += $"HP: {_health}";
+        if (_pawn.hp >= 0) { 
+            text += $"HP: {_pawn.hp}";
         }
         
         _debugTxt.text = text;

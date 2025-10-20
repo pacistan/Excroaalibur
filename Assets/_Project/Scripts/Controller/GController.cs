@@ -24,8 +24,11 @@ public abstract class GController : MonoBehaviour
         OnEndTurn += pawn.OnEndTurn;
         OnStartAction += pawn.OnStartAction;
     }
-    
-    public virtual void StartTurn() { OnStartTurn?.Invoke();}
+
+    public virtual void StartTurn()
+    {
+        OnStartTurn?.Invoke();
+    }
 
     public virtual void StartAction() { OnStartAction?.Invoke(); }
     
