@@ -176,12 +176,17 @@ public class GPawn : GGridObject
 
     protected virtual void Start()
     {
-        if (!isPlayer) return;
-        GPlayerController controller = FindFirstObjectByType<GPlayerController>();
-        if (controller)
-            controller.RegisterPawn(this);
-        foreach (var action in actions)
-            action.linkedPawn = this;
+        if (!isPlayer && TryGetComponent(out GController aiController))
+        {
+            aiController.RegisterPawn(this);
+        }
+        else
+        {
+            GPlayerController controller = FindFirstObjectByType<GPlayerController>();
+            if (controller)
+            foreach (var action in actions)
+                action.linkedPawn = this;
+        }
     }
 
     protected virtual void OnDestroy()
