@@ -24,7 +24,7 @@ public class GDebugUI : MonoBehaviour
     public IEnumerator SetActNum(GController controller)
     {
         yield return new WaitForSecondsRealtime(.1f);
-        actNumText.text = controller.remainingActionToken.ToString();
+        //actNumText.text = controller.remainingActionToken.ToString();
     }
 
     public void SetTurnController(GController controller)

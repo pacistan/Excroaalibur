@@ -42,11 +42,6 @@ public class GPlayerController : GController
         if (actionList) actionList.UpdateButtons(availableActions);
     }
 
-    public void ForceEndTurn()
-    {
-        remainingActionToken = 0;
-    }
-
     public void SelectAction(GAction action)
     {
         if (_selectedAction == action) return;
@@ -139,7 +134,7 @@ public class GPlayerController : GController
             GPawn player = _targetCell.ownedPawn && _targetCell.ownedPawn.isPlayer ? _targetCell.ownedPawn : null;
             if (player)
             {
-                if (_selectedPlayer != player && !player.IsStunned)
+                if (_selectedPlayer != player && !player.IsStunned && player.remainingActionToken > 0)
                 {
                     SetSelectedPlayer(_targetCell.ownedPawn);
                 }
@@ -153,8 +148,6 @@ public class GPlayerController : GController
     
     public override void StartTurn()
     {
-        remainingActionToken = actionTokens;
-
         base.StartTurn();
     }
 
@@ -164,8 +157,8 @@ public class GPlayerController : GController
         _selectedAction.targetCell = _targetCell;
         if (_selectedPlayer.RequestAction(_selectedAction))
         {
+            _selectedPlayer.remainingActionToken--;
             SetSelectedPlayer(null);
-            remainingActionToken--;
             // 
             /*if (remainingActionToken <= 0) 
             {

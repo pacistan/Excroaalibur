@@ -18,6 +18,12 @@ public class GPawn : GGridObject
     public event Action OnUnstunned;
     public event Action<int> OnHealthChanged;
     
+    [field : SerializeField, Min(1)]
+    public int actionTokens { get; set; }
+
+    [SerializeField, ReadOnly]
+    public int remainingActionToken;
+    
     [SerializeField]
     public EEquipmentType equipmentType = EEquipmentType.None;
     
@@ -143,6 +149,7 @@ public class GPawn : GGridObject
     
     public void OnStartTurn()
     {
+        remainingActionToken = actionTokens;
         if (stunTurn > 0)
             stunTurn--;
         if (stunTurn == 0)
@@ -178,6 +185,7 @@ public class GPawn : GGridObject
 
     protected virtual void Start()
     {
+        remainingActionToken = actionTokens;
         if (!isPlayer && TryGetComponent(out GController aiController))
         {
             aiController.RegisterPawn(this);
