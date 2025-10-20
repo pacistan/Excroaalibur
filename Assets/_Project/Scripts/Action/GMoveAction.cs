@@ -16,6 +16,12 @@ public class GMoveAction : GAction
     [SerializeField]
     public ETileType[] _endMovementTileType = new[]{ETileType.Normal};
     
+    [SerializeField]
+    protected float _speed = 1f;
+    
+    [SerializeField]
+    protected AnimationCurve _speedCurve = AnimationCurve.EaseInOut(0, 0, 1, 1);
+    
     private EHexDirection[] _path = new EHexDirection[] { };
     private Vector3[] _wayPoints = new Vector3[] { };
     Dictionary<int, GCell> _wayPointsCells = new Dictionary<int, GCell>();
@@ -115,13 +121,11 @@ public class GMoveAction : GAction
     
     public override GAction CloneAction()
     {
-        GAction action = base.CloneAction();
-        ((GMoveAction)action)._maxMoveDistance = _maxMoveDistance;
-        return action;
-    }
-
-    private void LootEquipment(GEquipment equipment)
-    {
+        GMoveAction moveAction = base.CloneAction() as GMoveAction;
+        moveAction._maxMoveDistance = _maxMoveDistance;
+        moveAction._speed = _speed;
+        moveAction._speedCurve = _speedCurve;
         
+        return moveAction;
     }
 }
