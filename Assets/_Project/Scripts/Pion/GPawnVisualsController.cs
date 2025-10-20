@@ -55,6 +55,7 @@ public class GPawnVisualsController : SerializedMonoBehaviour
         _debugTxt.text = text;
     }
 
+    #if UNITY_EDITOR
     public void UpdatePawnVisuals()
     {
         // Equipment Type
@@ -78,4 +79,5 @@ public class GPawnVisualsController : SerializedMonoBehaviour
         }
         EditorUtility.SetDirty(this);
     }
+    #endif
 }

@@ -110,11 +110,10 @@ public class GPawn : GGridObject
     
     public void Stun(int stunTurnNumber)
     {
-        if (stunTurn == 0)
-        {
-            OnStunned?.Invoke();
-        }
+        bool justGotStunned = stunTurn == 0;
         stunTurn += stunTurnNumber;
+        if(justGotStunned)
+            OnStunned?.Invoke();
     }
 
     public void Fall()
