@@ -15,6 +15,9 @@ public class GSentryBehavior : GAIBehavior
     [SerializeReference]
     GPlaceOnAltarAction _placeOnAltarAction;
 
+
+    [SerializeField, Tooltip("If true the sentry will try to go push player if crown is not an option")]
+    protected bool _isFouteurDeMerde;
     protected bool _hasMoved = false;
     protected bool _isTurnOver = false;
     
@@ -77,6 +80,21 @@ public class GSentryBehavior : GAIBehavior
                 _hasMoved = true;
                 return CreateMoveAction(crown.GetCell());
             }    
+        }
+        
+        if(!_isFouteurDeMerde) return null;
+        
+        GPawn player = GetPotentialTargetPlayer(out int distance);
+        if (distance == 1)
+        {
+            _isTurnOver = true;
+            return CreatePushAction(player.currentCell);
+        }
+        else if (distance > 0 && !_hasMoved)
+        {
+            GCell cell = player.currentCell;
+            _hasMoved = true;
+            return CreateMoveAction(cell);
         }
         return null;
     }
