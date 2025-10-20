@@ -23,6 +23,7 @@ public class GEquipment : GGridObject
             currentCell.ReleaseEquipement();
         }
         owner = newOwner;
+        currentCell = owner.currentCell;
     }
 
     public void OnReleased()

@@ -41,13 +41,15 @@ public class GSentryBehavior : GAIBehavior
     {
         if (_isTurnOver)
             return null;
-        
+
+        GPawn linkedPawn = _controller.pawn;
+        GCell pawnCell = linkedPawn.currentCell;
         GGridManager.Instance.GenerateStepMap(_controller.pawn.currentCell);
         bool hasCrown = _controller.pawn.equipment && _controller.pawn.equipment is GCrown;
 
         if (hasCrown)
         {
-            GAltar altar = GetPotentialTargetAltar(out int altarDistance);
+            GAltar altar = GGridObjectRegistry.GetClosestObjectOfType<GAltar>(pawnCell, out int altarDistance);
             if (altarDistance == 1)
             {
                 _isTurnOver = true;
@@ -61,13 +63,16 @@ public class GSentryBehavior : GAIBehavior
         }
         else
         {
-            GCrown crown = GetPotentialTargetCrown(out int crownDistance);
-            if (crownDistance == 1 && crown.owner)
+            GCrown crown = GGridObjectRegistry.GetClosestObjectOfTypeWithPredicate<GCrown>(
+                pawnCell, out int crownDistance, 
+                crown=> !(crown.owner is GAltar));
+            
+            if (crown && crownDistance == 1 && crown.owner)
             {
                 _isTurnOver = true;
                 return CreatePushAction(crown.GetCell());
             }   
-            else if (crownDistance > 0 && !_hasMoved)
+            else if (crown && crownDistance > 0 && !_hasMoved)
             {
                 _hasMoved = true;
                 return CreateMoveAction(crown.GetCell());
