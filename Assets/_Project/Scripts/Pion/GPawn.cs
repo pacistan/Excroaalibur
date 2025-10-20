@@ -131,7 +131,7 @@ public class GPawn : GGridObject
 
     public void Kill()
     {
-        SetCell(null);
+        //SetCell(null);
         OnKill?.Invoke();
         Destroy(gameObject);
     }
@@ -163,10 +163,12 @@ public class GPawn : GGridObject
     
     public override void SetCell(GCell newCell)
     {
+        if (newCell.GetTileType == ETileType.Hole)
+        {
+            Fall();
+        }
         base.SetCell(newCell);
         currentCell.ownedPawn = this;
-        if (currentCell.GetTileType == ETileType.Hole)
-            Fall();
     }
 
     protected virtual void Awake()

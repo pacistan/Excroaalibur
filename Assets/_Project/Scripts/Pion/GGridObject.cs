@@ -19,8 +19,8 @@ public class GGridObject : MonoBehaviour
     public virtual void SetCell(GCell newCell)
     {
         if (currentCell && this is GPawn) currentCell.ownedPawn = null;
-        if (!newCell) return;
         currentCell = newCell;
+        if (!newCell) return;
         coordinate = newCell._hexCoordinates;
     }
 
