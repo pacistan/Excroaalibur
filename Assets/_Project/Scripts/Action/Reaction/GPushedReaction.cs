@@ -43,7 +43,8 @@ public class GPushedReaction : GAction
         
         if (_isPushable) // Check initial param
         {
-            if (linkedPawn.GetCell().GetNeighbor(_direction).GetTileType == ETileType.Wall)
+            if (linkedPawn.GetCell().GetNeighbor(_direction).GetTileType == ETileType.Wall 
+                || linkedPawn.GetCell().GetNeighbor(_direction).GetGridObject<GPawn>())
             {
                 _isPushable = false;
                 _inflictDamage = true;
@@ -68,6 +69,9 @@ public class GPushedReaction : GAction
         } 
         else 
         {
+            if (linkedPawn.equipment)
+                linkedPawn.ReleaseEquipement(true);
+            
             GCell cell = linkedPawn.GetCell();
             for (int i = 0; i < _distance; i++)
             {

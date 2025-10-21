@@ -62,7 +62,7 @@ public class GThrowAction : GAction
                 _impactReaction.linkedPawn = _targetPawn;
                 GTurnBaseManager.Instance.PreProcessReaction(_impactReaction, reactionContext);
             }
-            if (_targetPawn.hp <= 0) _killTarget = true;
+            if (_targetPawn.hp == 0) _killTarget = true;
         }
         
         if (_killTarget) return;
@@ -88,9 +88,9 @@ public class GThrowAction : GAction
         _returnPos = _startPos;
         
         var direction = linkedPawn.coordinate.GetLineDirection(targetCell.hexCoordinates);
-        var backCell  = targetCell.GetNeighbor(direction.Opposite());
-        bool canLandBehind = (backCell && backCell.IsWalkable());
-        _landingPos = (_playerCatch || _killTarget || !canLandBehind) ? _hitPos : backCell.transform.position;
+        var frontCell  = targetCell.GetNeighbor(direction.Opposite());
+        bool canLandInFrontOf = (frontCell && frontCell.IsWalkable());
+        _landingPos = (_playerCatch || _killTarget || canLandInFrontOf) ? _hitPos : frontCell.transform.position;
 
         float outDur   = Vector3.Distance(_startPos, _hitPos)   / Mathf.Max(0.01f, _crownSpeed);
         float backDur  = Vector3.Distance(_hitPos, _returnPos)  / Mathf.Max(0.01f, _crownSpeed);
@@ -124,8 +124,12 @@ public class GThrowAction : GAction
         else if (_playerCatch)
         {
            // Player Catch - stay at hit position 
+           _seq.AppendCallback(() =>
+           {
+               _targetPawn.GiveEquipement(_crown, true, true);
+           }); 
         }
-        else if (_landingPos != _hitPos)
+        else if (Vector3.Distance(_hitPos, _landingPos) <= 0.1f)
         {
             // Sequence Landing front of Target
             _seq.Append(_crown.transform.DOMove(_landingPos, landDur).SetEase(Ease.InSine));

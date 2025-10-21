@@ -52,8 +52,12 @@ public class GMoveAction : GAction
             cell = cell.neighbors[(int)_path[i]];
             if (cell == null) break;
             GEquipment equipment = cell.GetGridObject<GEquipment>();
-            if (equipment)
+            if (equipment && linkedPawn.GetCell() != cell)
+            {
                 linkedPawn.GiveEquipement(equipment, false, false);
+                _EquipementPickUpIndex = i + 1; // pick up between waypoints
+            }
+               
             wayPoints.Add(cell.transform.position);
         }
         _wayPoints = wayPoints.ToArray();

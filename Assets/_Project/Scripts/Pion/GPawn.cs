@@ -86,11 +86,11 @@ public class GPawn : GGridObject
     {
         equipment = _equipment;
         equipment.owner = this;
-        equipment.transform.parent = _equipmentParentTr;
         if (invokeEvent) OnEquip?.Invoke(equipment);
 
         if (updateTransform)
         {
+            equipment.transform.parent = _equipmentParentTr;
             equipment.transform.localPosition = Vector3.zero; 
         }
     }

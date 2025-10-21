@@ -28,7 +28,8 @@ public class GEquipment : GGridObject
     public override void SetCell(GCell newCell)
     {
         base.SetCell(newCell);
-        owner.ReleaseEquipement(false);
+        if(owner)
+            owner.ReleaseEquipement(false);
     }
 
     public override void SetCell(GHexCoordinate coordinate)
