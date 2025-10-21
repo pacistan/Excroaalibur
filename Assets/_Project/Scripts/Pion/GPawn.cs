@@ -190,7 +190,7 @@ public class GPawn : GGridObject
     public void OnStartTurn()
     {
         remainingActionToken = actionTokens;
-        if (stunTurn > 0)
+        if (stunTurn > 0 && !isPlayer)
         {
             stunTurn--;
             visuals.OnUpdateStunTurn();
@@ -213,7 +213,11 @@ public class GPawn : GGridObject
     
     public void OnEndTurn()
     {
-        
+        if (stunTurn > 0 && isPlayer)
+        {
+            stunTurn--;
+            visuals.OnUpdateStunTurn();
+        }
     }
     
     public override void SetCell(GHexCoordinate newCoordinate)

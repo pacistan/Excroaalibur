@@ -28,6 +28,9 @@ public class GPawnVisualsController : SerializedMonoBehaviour
     [SerializeField, FoldoutGroup("Components")]
     Material _stunnedMaterial;
 
+    [SerializeField, FoldoutGroup("Components")]
+    Animator _animator;
+    
     [SerializeField]
     int _stunMaterialIndex = 0;
     
@@ -63,6 +66,17 @@ public class GPawnVisualsController : SerializedMonoBehaviour
         _pawn.OnKill -= OnKilledVisuals;
     }
 
+    /** Walking / Idle / Push / Throw */
+    public void SetAnimationState(string animationStateName)
+    {
+        if (!_animator)
+        {
+            Debug.LogWarning("Animator is not set");
+            return;
+        }
+        _animator.CrossFade(animationStateName, .3f);
+    }
+    
     public void HealthChange()
     {
     }
