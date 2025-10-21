@@ -235,8 +235,13 @@ public class GPawn : GGridObject
         {
             GPlayerController controller = FindFirstObjectByType<GPlayerController>();
             if (controller)
-            foreach (var action in actions)
-                action.linkedPawn = this;
+            {
+                foreach (var action in actions)
+                {
+                    action.linkedPawn = this;
+                    controller.RegisterPawn(this);
+                }
+            }
         }
     }
 
