@@ -1,4 +1,5 @@
-﻿using Sirenix.OdinInspector;
+﻿using FMODUnity;
+using Sirenix.OdinInspector;
 using Sirenix.Utilities;
 using System.Collections.Generic;
 using UnityEngine;
@@ -65,6 +66,7 @@ public class GPushAction : GAction
         // TODO Check the need to replace the tryStartReaction with an event queue for all preprocessed callbacks
         GTurnBaseManager.Instance.TryStartReaction(_reaction);
         GTurnBaseManager.Instance.TryStartReaction(_followAction);
+        RuntimeManager.PlayOneShotAttached("event:/Pawn/Push", linkedPawn.gameObject);
     }
 
     public override void Update_Action(float delta)

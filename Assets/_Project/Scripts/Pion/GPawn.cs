@@ -1,3 +1,4 @@
+using FMODUnity;
 using Sirenix.OdinInspector;
 using Sirenix.Serialization;
 using UnityEngine.Serialization;
@@ -53,6 +54,9 @@ public class GPawn : GGridObject
 
     [field : SerializeField, FoldoutGroup("Components")]
     public Transform equipmentParentTr { get; private set; }
+
+    public EventReference hoverSound;
+    public EventReference SelectSound;
     
     // Cache for quick look-up of override reactions
     private Dictionary<Type, GAction> _overrideCache;
@@ -95,7 +99,12 @@ public class GPawn : GGridObject
         {
             equipment.transform.parent = equipmentParentTr;
             equipment.transform.localPosition = Vector3.zero; 
+            if (equipment is GCrown)
+            {
+                RuntimeManager.PlayOneShotAttached("event:/Crown/Grab", gameObject);
+            }
         }
+
     }
     
     public void ReleaseEquipement(bool giveToCell)
@@ -157,6 +166,8 @@ public class GPawn : GGridObject
         {
             TakeDamage(hp); // instant kill
         }
+        
+        RuntimeManager.PlayOneShotAttached("event:/Pawn/Fall", gameObject);
     }
 
     public void Kill()

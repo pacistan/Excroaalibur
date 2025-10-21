@@ -1,9 +1,13 @@
+using FMOD;
+using FMOD.Studio;
+using FMODUnity;
 using System.Collections.Generic;
 using System;
 using System.Collections;
 using System.Linq;
 using UnityEngine;
 using UnityEngine.Splines;
+using STOP_MODE = FMOD.Studio.STOP_MODE;
 
 
 public class GMoveAction : GAction
@@ -29,6 +33,9 @@ public class GMoveAction : GAction
     int _currentWayPoint = 0;
     
     int _EquipementPickUpIndex = -1; // No Equipement to Picked Up
+
+    String MoveEvent = "event:/Pawn/Move";
+    EventInstance MoveEventInstance = new EventInstance();
     
     public GMoveAction(){}
     
@@ -69,6 +76,10 @@ public class GMoveAction : GAction
         base.Start_Action();
         _progress = 0;
         _currentWayPoint = 0;
+
+        MoveEventInstance = RuntimeManager.CreateInstance(MoveEvent);
+        MoveEventInstance.set3DAttributes(RuntimeUtils.To3DAttributes(linkedPawn.gameObject));
+        MoveEventInstance.start();
     }
 
     public override void Update_Action(float delta)
@@ -98,6 +109,7 @@ public class GMoveAction : GAction
     public override void End_Action()
     {
         linkedPawn.transform.position = targetCell.transform.position;
+        MoveEventInstance.stop(STOP_MODE.ALLOWFADEOUT);
         if (!linkedPawn.IsAlive) linkedPawn.Kill();
         base.End_Action();
     }
