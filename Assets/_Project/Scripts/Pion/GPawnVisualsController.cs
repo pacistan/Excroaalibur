@@ -11,6 +11,7 @@ public class GPawnVisualsController : SerializedMonoBehaviour
 {
     [SerializeField, FoldoutGroup("Components")]
     GPawn _pawn;
+    
     [SerializeField, FoldoutGroup("Components")]
     TextMeshProUGUI _debugTxt;
     
@@ -105,6 +106,20 @@ public class GPawnVisualsController : SerializedMonoBehaviour
         _previousStunTurn = _pawn.stunTurn;
     }
 
+    #if UNITY_EDITOR
+    public void SetClickable(SceneVisibilityManager manager, bool value)
+    {
+        if (value)
+        {
+            manager.EnablePicking(_debugTxt.transform.parent.gameObject, true);
+        }
+        else
+        {
+            manager.DisablePicking(_debugTxt.transform.parent.gameObject, true);
+        }
+    }   
+    #endif
+    
     private void OnKilledVisuals()
     {
         // TODO : Start On Kill Feedbacks
@@ -127,7 +142,7 @@ public class GPawnVisualsController : SerializedMonoBehaviour
                 {
                     // TODO Check ! 
                     _pawn.equipment = PrefabUtility.InstantiatePrefab(equipmentPrefab) as GEquipment;
-                    _pawn.equipment.transform.parent = _pawn._equipmentParentTr;
+                    _pawn.equipment.transform.parent = _pawn.equipmentParentTr;
                     _pawn.equipment.transform.localPosition = Vector3.zero;
                     _pawn.equipment.owner = _pawn;
                     EditorUtility.SetDirty(_pawn.equipment);

@@ -51,6 +51,10 @@ public class GCellVisualsController : SerializedMonoBehaviour
 
             _meshRenderer.sharedMaterials = materials;
             _meshFilter.sharedMesh = mesh;
+            
+            Vector3 position = _meshFilter.transform.parent.position;
+            position.y = tileTypeData.heightOffset;
+            _meshFilter.transform.parent.position = position;
         }
         
         // Object Type
@@ -73,6 +77,11 @@ public class GCellVisualsController : SerializedMonoBehaviour
         {
             _text.color = tileTypeData.textColor;
             _highlight.color = tileTypeData.highlightColor;
+            
+            var rectTransform = _highlight.rectTransform.parent.GetComponent<RectTransform>();
+            Vector3 position = rectTransform.position;
+            position.y = tileTypeData.heightOffset;
+            rectTransform.position = position;
         }
         EditorUtility.SetDirty(this);
         EditorUtility.SetDirty(_cell);

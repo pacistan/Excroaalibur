@@ -52,20 +52,24 @@ public class GThrowAction : GAction
         else if (_targetPawn && !_targetPawn.isPlayer)
         {
             // TODO : Take damage here or in reaction ? 
-            _targetPawn.TakeDamage(_crown.damage);
+            _targetPawn.TakeDamage(_crown._currentDamage);
             _impactReaction = _targetPawn.GetReaction(this);
             if (_impactReaction != null)
             {
                 var reactionContext = new GActionContext();
                 reactionContext.Set("direction", direction);
-                reactionContext.Set("damage", _crown.damage);
+                reactionContext.Set("damage", _crown._baseDamage);
                 _impactReaction.linkedPawn = _targetPawn;
                 GTurnBaseManager.Instance.PreProcessReaction(_impactReaction, reactionContext);
             }
             if (_targetPawn.hp == 0) _killTarget = true;
         }
-        
-        if (_killTarget) return;
+
+        if (_killTarget)
+        {
+            _crown.ResetCrown();
+            return;
+        }
         
         if (!_playerCatch)
         {
@@ -76,6 +80,11 @@ public class GThrowAction : GAction
                 _targetPawn.GiveEquipement(_crown, false, false);
             else
                 targetCell.gridObject = _crown;
+            _crown.ResetCrown();
+        }
+        else
+        {
+            _crown.OnPass();
         }
     }
 
@@ -83,14 +92,16 @@ public class GThrowAction : GAction
     {
         base.Start_Action();
 
-        _startPos  = linkedPawn.GetCell().transform.position;
-        _hitPos    = targetCell.transform.position;
+        GPawn targetPawn = targetCell.GetGridObject<GPawn>();
+        
+        _startPos  = linkedPawn.equipmentParentTr.position;
+        _hitPos    =  targetPawn ? targetPawn.equipmentParentTr.position : targetCell.transform.position;
         _returnPos = _startPos;
         
         var direction = linkedPawn.coordinate.GetLineDirection(targetCell.hexCoordinates);
         var frontCell  = targetCell.GetNeighbor(direction.Opposite());
         bool canLandInFrontOf = (frontCell && frontCell.IsWalkable());
-        _landingPos = (_playerCatch || _killTarget || canLandInFrontOf) ? _hitPos : frontCell.transform.position;
+        _landingPos = (_playerCatch || _killTarget || !canLandInFrontOf) ? _hitPos : frontCell.transform.position;
 
         float outDur   = Vector3.Distance(_startPos, _hitPos)   / Mathf.Max(0.01f, _crownSpeed);
         float backDur  = Vector3.Distance(_hitPos, _returnPos)  / Mathf.Max(0.01f, _crownSpeed);
@@ -130,7 +141,7 @@ public class GThrowAction : GAction
                _targetPawn.GiveEquipement(_crown, true, true);
            }); 
         }
-        else if (Vector3.Distance(_hitPos, _landingPos) <= 0.1f)
+        else if (canLandInFrontOf && targetPawn)
         {
             // Sequence Landing front of Target
             _seq.Append(_crown.transform.DOMove(_landingPos, landDur).SetEase(Ease.InSine));
@@ -140,7 +151,8 @@ public class GThrowAction : GAction
         {
             if (_killTarget)          _crown.transform.position = _returnPos;
             else if (_playerCatch)    _crown.transform.position = _hitPos;
-            else                      _crown.transform.position = _landingPos;
+            else if (targetPawn)      _crown.transform.position = _landingPos;
+            else                      _crown.transform.position = _hitPos;
 
             End_Action();
         });

@@ -15,7 +15,8 @@ public class GCellCommonData : SerializedScriptableObject
         [field: SerializeField, BoxGroup("Mesh")]
         public Material[] materials { get; private set; }
         
-
+        [field: SerializeField, BoxGroup("Mesh")]
+        public float heightOffset { get; private set; }
         
         [field: SerializeField, BoxGroup("UI")] 
         public Color textColor { get; private set; }
