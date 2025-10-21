@@ -74,7 +74,7 @@ public class GThrowAction : GAction
         
         if (!_playerCatch)
         {
-            linkedPawn.ReleaseEquipement(false);
+            linkedPawn.ReleaseEquipement(false, true);
             if (_targetPawn && targetCell.GetNeighbor(direction.Opposite()).IsWalkable(true))
             {
                 GPawn neighborPawn = targetCell.GetNeighbor(direction.Opposite()).GetGridObject<GPawn>();
@@ -91,7 +91,6 @@ public class GThrowAction : GAction
                 _targetPawn.GiveEquipement(_crown, false, false);
             else
                 targetCell.gridObject = _crown;
-            _crown.ResetCrown();
         }
         else
         {

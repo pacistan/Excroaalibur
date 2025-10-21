@@ -24,7 +24,7 @@
         base.Start_Action();
         if (_crown && _altar)
         {
-            _crown.owner.ReleaseEquipement(false);
+            _crown.owner.ReleaseEquipement(false, true);
             _altar.GiveEquipement(_crown, true, true);
         }
         End_Action();

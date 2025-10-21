@@ -39,7 +39,7 @@ public class GPawnVisualsController : SerializedMonoBehaviour
 
     void Start()
     {
-        if (!_pawn.isPlayer)
+        if (!_pawn.isPlayer && !(_pawn is GAltar))
         {
             _debugTxt.text = $"{_pawn.hp}";
         }

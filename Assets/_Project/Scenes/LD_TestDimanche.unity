@@ -10080,6 +10080,10 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 189961503}
     - target: {fileID: 3577346378785680272, guid: ea08067a6a7f16e46a2a7007c2355b2e, type: 3}
+      propertyPath: _previousObjectSpawnType
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3577346378785680272, guid: ea08067a6a7f16e46a2a7007c2355b2e, type: 3}
       propertyPath: serializationData.Prefab
       value: 
       objectReference: {fileID: 3577346378785680272, guid: ea08067a6a7f16e46a2a7007c2355b2e, type: 3}
@@ -10108,7 +10112,15 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 523573725}
     - target: {fileID: 8962405803899580738, guid: ea08067a6a7f16e46a2a7007c2355b2e, type: 3}
+      propertyPath: _gridObject
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 8962405803899580738, guid: ea08067a6a7f16e46a2a7007c2355b2e, type: 3}
       propertyPath: data.tileType
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8962405803899580738, guid: ea08067a6a7f16e46a2a7007c2355b2e, type: 3}
+      propertyPath: data.objectType
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8962405803899580738, guid: ea08067a6a7f16e46a2a7007c2355b2e, type: 3}
@@ -52915,7 +52927,7 @@ PrefabInstance:
     - target: {fileID: 1741723611902861267, guid: 4faa7d19c747dcc44b1a5c5207f21aa4, type: 3}
       propertyPath: serializationData.Prefab
       value: 
-      objectReference: {fileID: 0}
+      objectReference: {fileID: 1741723611902861267, guid: 4faa7d19c747dcc44b1a5c5207f21aa4, type: 3}
     - target: {fileID: 1741723611902861267, guid: 4faa7d19c747dcc44b1a5c5207f21aa4, type: 3}
       propertyPath: <hasCrown>k__BackingField
       value: 1
