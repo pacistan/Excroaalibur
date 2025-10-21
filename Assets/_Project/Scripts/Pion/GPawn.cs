@@ -40,8 +40,8 @@ public class GPawn : GGridObject
     [SerializeField, ReadOnly, FoldoutGroup("Components")]
     public GEquipment equipment;
 
-    [SerializeField, FoldoutGroup("Components")]
-    GPawnVisualsController _visuals;
+    [field : SerializeField, FoldoutGroup("Components")]
+    public GPawnVisualsController visuals { get; private set; }
     
     [SerializeField, ReadOnly, HideInEditorMode, FormerlySerializedAs("_stunTurn")] 
     public int stunTurn = 0;
@@ -52,7 +52,7 @@ public class GPawn : GGridObject
     public int hp { get; protected set; } = 3;
 
     [field : SerializeField, FoldoutGroup("Components")]
-    public Transform _equipmentParentTr { get; private set; }
+    public Transform equipmentParentTr { get; private set; }
     
     // Cache for quick look-up of override reactions
     private Dictionary<Type, GAction> _overrideCache;
@@ -93,7 +93,7 @@ public class GPawn : GGridObject
 
         if (updateTransform)
         {
-            equipment.transform.parent = _equipmentParentTr;
+            equipment.transform.parent = equipmentParentTr;
             equipment.transform.localPosition = Vector3.zero; 
         }
     }
@@ -175,7 +175,10 @@ public class GPawn : GGridObject
     {
         remainingActionToken = actionTokens;
         if (stunTurn > 0)
+        {
             stunTurn--;
+            visuals.OnUpdateStunTurn();
+        }
         if (stunTurn == 0)
         {
             OnUnstunned?.Invoke();
@@ -184,12 +187,12 @@ public class GPawn : GGridObject
 
     public void UpdateStunTurn()
     {
-        _visuals.OnUpdateStunTurn();
+        visuals.OnUpdateStunTurn();
     }
 
     public void UpdateHpNumber()
     {
-        _visuals.OnUpdateHealthPoints();
+        visuals.OnUpdateHealthPoints();
     }
     
     public void OnEndTurn()
@@ -229,8 +232,12 @@ public class GPawn : GGridObject
             // La dernière entrée gagnante écrase l’ancienne (pratique si doublons)
             _overrideCache[type] = val;
         }
-        
-        EditorUtility.SetDirty(this);
+    #if UNITY_EDITOR
+        if (!Application.isPlaying)
+        {
+            EditorUtility.SetDirty(this);
+        }
+    #endif
     }
 
 
@@ -266,7 +273,7 @@ public class GPawn : GGridObject
     {
         if (!Application.isPlaying)
         {
-            _visuals.UpdatePawnVisuals(); 
+            visuals.UpdatePawnVisuals(); 
         }
         
         RebuildOverrideCache();

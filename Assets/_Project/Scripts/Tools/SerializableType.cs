@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using Sirenix.OdinInspector;
 
+
 /// <summary>
 /// Type sérialisable générique (filtré sur TBase).
 /// Le type est choisi dans l’inspector parmi les classes concrètes assignables à TBase.
@@ -13,11 +14,12 @@ public class SerializableType<TBase> : IEquatable<SerializableType<TBase>>
 {
     [SerializeField, HideInInspector]
     private string assemblyQualifiedName;
-
+#if UNITY_EDITOR
     [LabelText("Type sélectionné")]
     [ValueDropdown(nameof(GetDropdown))]
     [OnValueChanged(nameof(OnTypeChanged))]
     [InlineButton(nameof(Clear), "Clear")]
+#endif
     [SerializeField]
     private string fullName;
 

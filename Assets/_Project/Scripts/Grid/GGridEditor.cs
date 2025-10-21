@@ -191,16 +191,33 @@ public class GGridEditor : MonoBehaviour
 
     private void EnablePickingUIGrid()
     {
+        GGridManager gridManager = GGridManager.Instance ? GGridManager.Instance : GameObject.FindFirstObjectByType<GGridManager>();
         SceneVisibilityManager manager = SceneVisibilityManager.instance;
         if (_isUIGridPickable)
         {
             manager.EnablePicking(_cellsCanvas.gameObject, true);
             manager.EnablePicking(_hudTransform.gameObject, true);
+            foreach (var cell in gridManager._grid)
+            {
+                var owningPawn = cell.GetGridObject<GPawn>();
+                if (owningPawn)
+                {
+                    owningPawn.visuals.SetClickable(manager, true);
+                }
+            }
         }
         else
         {
             manager.DisablePicking(_cellsCanvas.gameObject, true);
             manager.DisablePicking(_hudTransform.gameObject, true);
+            foreach (var cell in gridManager._grid)
+            {
+                var owningPawn = cell.GetGridObject<GPawn>();
+                if (owningPawn)
+                {
+                    owningPawn.visuals.SetClickable(manager, false);
+                }
+            }
         }
     }
 }
