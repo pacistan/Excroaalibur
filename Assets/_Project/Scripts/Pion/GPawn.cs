@@ -175,7 +175,10 @@ public class GPawn : GGridObject
     {
         remainingActionToken = actionTokens;
         if (stunTurn > 0)
+        {
             stunTurn--;
+            _visuals.OnUpdateStunTurn();
+        }
         if (stunTurn == 0)
         {
             OnUnstunned?.Invoke();
@@ -229,8 +232,12 @@ public class GPawn : GGridObject
             // La dernière entrée gagnante écrase l’ancienne (pratique si doublons)
             _overrideCache[type] = val;
         }
-        
-        EditorUtility.SetDirty(this);
+    #if UNITY_EDITOR
+        if (!Application.isPlaying)
+        {
+            EditorUtility.SetDirty(this);
+        }
+    #endif
     }
 
 

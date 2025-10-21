@@ -73,6 +73,11 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 5f37d33f41e61f8449a2bee6c506a15f, type: 3}
+--- !u!23 &811124621729040076 stripped
+MeshRenderer:
+  m_CorrespondingSourceObject: {fileID: -7511558181221131132, guid: 5f37d33f41e61f8449a2bee6c506a15f, type: 3}
+  m_PrefabInstance: {fileID: 2053681193158253128}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &1948542787635150243 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 5f37d33f41e61f8449a2bee6c506a15f, type: 3}
@@ -162,6 +167,14 @@ PrefabInstance:
       propertyPath: 'm_Materials.Array.data[0]'
       value: 
       objectReference: {fileID: 2100000, guid: 5dbad3364a3caeb4bb13400d90a12f32, type: 2}
+    - target: {fileID: 5047510769810583256, guid: 48d2615fd829feb4a9c7bfb377fa75cc, type: 3}
+      propertyPath: _mainRenderer
+      value: 
+      objectReference: {fileID: 811124621729040076}
+    - target: {fileID: 5047510769810583256, guid: 48d2615fd829feb4a9c7bfb377fa75cc, type: 3}
+      propertyPath: _stunMaterialIndex
+      value: 2
+      objectReference: {fileID: 0}
     - target: {fileID: 5047510769810583256, guid: 48d2615fd829feb4a9c7bfb377fa75cc, type: 3}
       propertyPath: serializationData.Prefab
       value: 

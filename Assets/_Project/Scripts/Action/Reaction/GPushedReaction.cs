@@ -121,7 +121,7 @@ public class GPushedReaction : GAction
         }
         else
         {
-            End_Action();
+            //End_Action();
         } 
     }
 

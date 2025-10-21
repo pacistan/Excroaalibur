@@ -1,5 +1,7 @@
 ﻿using Sirenix.OdinInspector;
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using TMPro;
 using UnityEditor;
 using UnityEngine;
@@ -17,18 +19,36 @@ public class GPawnVisualsController : SerializedMonoBehaviour
     
     [SerializeField, HideInInspector]
     private bool _previousHasCrown;
+
+    [SerializeField, FoldoutGroup("Components")]
+    Renderer _mainRenderer;
+    
+    [SerializeField, FoldoutGroup("Components")]
+    Material _stunnedMaterial;
+
+    [SerializeField]
+    int _stunMaterialIndex = 0;
+    
+
+    Material _defaultMaterial;
     
     int _previousHpNumber;
     int _previousStunTurn;
-    
+
+    void Start()
+    {
+        OnUpdateStunTurn();
+        OnUpdateHealthPoints();
+        _stunMaterialIndex = Mathf.Min(_mainRenderer.materials.Length, _stunMaterialIndex);
+        _defaultMaterial = _mainRenderer.materials[_stunMaterialIndex];
+    }
+
     void OnEnable()
     {
         _pawn.OnStunned += OnStunned;
         _pawn.OnUnstunned += OnUnstunned;
         _pawn.OnHealthChanged += HealthChange;
         _pawn.OnKill += OnKilledVisuals;
-        OnUpdateHealthPoints();
-        OnUpdateStunTurn();
     }
 
     void OnDisable()
@@ -57,7 +77,7 @@ public class GPawnVisualsController : SerializedMonoBehaviour
         
         if (_pawn.hp >= 0 && _pawn.hp != _previousHpNumber) 
         { 
-            text += $"HP: {_pawn.hp}";
+            text += $"{_pawn.hp}";
             //TODO : Start Take Damage Feedbacks
         }
         
@@ -67,19 +87,22 @@ public class GPawnVisualsController : SerializedMonoBehaviour
     
     public void OnUpdateStunTurn()
     {
-        String text = "";
         if (_pawn.IsStunned && _previousStunTurn != _pawn.stunTurn)
         {
-            text += "STUNNED\n";
+            List<Material> materials = _mainRenderer.materials.ToList();
+            materials[_stunMaterialIndex] = _stunnedMaterial;
+            _mainRenderer.SetMaterials(materials);
             //TODO : Start Stun Feedbacks
         }
         else if (!_pawn.IsStunned && _previousStunTurn != _pawn.stunTurn)
         {
+            List<Material> materials = _mainRenderer.materials.ToList();
+            materials[_stunMaterialIndex] = _defaultMaterial;
+            _mainRenderer.SetMaterials(materials);
             //TODO : Start UnStun Feedbacks            
         }
         
         _previousStunTurn = _pawn.stunTurn;
-        _debugTxt.text = text;
     }
 
     private void OnKilledVisuals()
