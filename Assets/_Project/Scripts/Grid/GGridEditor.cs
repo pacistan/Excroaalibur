@@ -86,8 +86,8 @@ public class GGridEditor : MonoBehaviour
             for (int i = grid.Length - 1; i >= 0; i--)
             {
                 if (grid[i] == null) continue;
-                if (grid[i]._ui != null)
-                    DestroyImmediate(grid[i]._ui.gameObject);
+                if (grid[i].ui != null)
+                    DestroyImmediate(grid[i].ui.gameObject);
                 DestroyImmediate(grid[i].gameObject);
             }
 
@@ -156,7 +156,7 @@ public class GGridEditor : MonoBehaviour
         {
             rectTr.gameObject.name = $"Label_Cell {row}, {column}";
             rectTr.anchoredPosition = new Vector2(position.x, position.z);
-            cell._ui = rectTr;
+            cell.ui = rectTr;
         }
         
         // Cell Data Init
@@ -164,16 +164,16 @@ public class GGridEditor : MonoBehaviour
             Vector2Int cellCoordinates = new Vector2Int(row, column);
             if (_gridData.cellData != null && _gridData.cellData.ContainsKey(cellCoordinates))
             {
-                cell._data = new GCellData(_gridData.cellData[cellCoordinates], cellCoordinates);
+                cell.data = new GCellData(_gridData.cellData[cellCoordinates], cellCoordinates);
             }
             else
             {
-                cell._data = new GCellData(cellCoordinates);
+                cell.data = new GCellData(cellCoordinates);
             }
         }
-        cell._cellVisualsController.UpdateCellVisuals();
-        cell._cellVisualsController.UpdateScaling(_gridData.hexSize);
-        cell._hexCoordinates = GHexCoordinate.FrommOffsetCoordinate(row, column);
+        cell.cellVisualsController.UpdateCellVisuals();
+        cell.cellVisualsController.UpdateScaling(_gridData.hexSize);
+        cell.hexCoordinates = GHexCoordinate.FrommOffsetCoordinate(row, column);
     }
 
     // Creates a new ScriptableObject of type GGridData in the referenced Folder with the data of the active grid

@@ -13,54 +13,46 @@ MonoBehaviour:
   m_Name: BaseReaction
   m_EditorClassIdentifier: 
   _reactionPairs:
-  - actionTypeReference:
-      rid: 828711102939922560
+  - actionType:
+      assemblyQualifiedName: GPushAction, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
+        PublicKeyToken=null
+      fullName: GPushAction
     reaction:
       rid: 828711102939922561
-  - actionTypeReference:
-      rid: 828711102939922588
-    reaction:
-      rid: 828711102939922589
   references:
     version: 2
     RefIds:
-    - rid: 828711102939922560
-      type: {class: GPushAction, ns: , asm: Assembly-CSharp}
-      data:
-        linkedPawn: {fileID: 0}
-        targetCell: {fileID: 0}
-        validCells: []
-        _pushDistance: 2
-        _followDistance: 1
-        _stun: 2
-        _damage: 1
     - rid: 828711102939922561
       type: {class: GPushedReaction, ns: , asm: Assembly-CSharp}
       data:
         linkedPawn: {fileID: 0}
         targetCell: {fileID: 0}
         validCells: []
-        instigatorPawn: {fileID: 0}
-        instigatorCell: {fileID: 0}
-        _distance: 2
+        _speed: 1
+        _speedCurve:
+          serializedVersion: 2
+          m_Curve:
+          - serializedVersion: 3
+            time: 0
+            value: 0
+            inSlope: 0
+            outSlope: 0
+            tangentMode: 0
+            weightedMode: 0
+            inWeight: 0
+            outWeight: 0
+          - serializedVersion: 3
+            time: 1
+            value: 1
+            inSlope: 0
+            outSlope: 0
+            tangentMode: 0
+            weightedMode: 0
+            inWeight: 0
+            outWeight: 0
+          m_PreInfinity: 2
+          m_PostInfinity: 2
+          m_RotationOrder: 4
+        _isPushable: 1
+        _DamageRelatedToPushForce: 0
         _damage: 2
-        _stun: 2
-    - rid: 828711102939922588
-      type: {class: GThrowAction, ns: , asm: Assembly-CSharp}
-      data:
-        linkedPawn: {fileID: 0}
-        targetCell: {fileID: 0}
-        validCells: []
-        _maxThrowDistance: 10
-        _damage: 1
-    - rid: 828711102939922589
-      type: {class: GPushedReaction, ns: , asm: Assembly-CSharp}
-      data:
-        linkedPawn: {fileID: 0}
-        targetCell: {fileID: 0}
-        validCells: []
-        instigatorPawn: {fileID: 0}
-        instigatorCell: {fileID: 0}
-        _distance: 2
-        _damage: 2
-        _stun: 2

@@ -18,10 +18,11 @@ public class GMoveAction : GAction
     
     private EHexDirection[] _path = new EHexDirection[] { };
     private Vector3[] _wayPoints = new Vector3[] { };
-    Dictionary<int, GCell> _wayPointsCells = new Dictionary<int, GCell>();
     float _progress = 0;
     int _currentWayPoint = 0;
-
+    
+    int _EquipementPickUpIndex = -1; // No Equipement to Picked Up
+    
     public GMoveAction(){}
     
     public GMoveAction(GPawn inLinkedPawn, GCell inTargetCell, Action inOnActionStarted = null, Action inOnActionFinished = null) : base(inLinkedPawn, inTargetCell, inOnActionStarted, inOnActionFinished)
@@ -30,30 +31,30 @@ public class GMoveAction : GAction
 
     public override void PreProcess(GActionContext context = null)
     {
+        base.PreProcess(context);
         GGridManager.Instance.GenerateStepMap(linkedPawn.currentCell, _walkingTileType);
         _path = GGridManager.Instance.GetPath(linkedPawn.currentCell ,targetCell, _endMovementTileType,false);
         if (_path == null || _path.Length == 0 || _path.Length > _maxMoveDistance) return;
         
-        _wayPointsCells = new Dictionary<int, GCell>();
-
         GCell cell = linkedPawn.currentCell;
         List<Vector3> wayPoints = new List<Vector3>();
         wayPoints.Add(cell.transform.position);
         for(int i = 0; i < _path.Length; i++)
         {
-            cell = cell._neighbors[(int)_path[i]];
+            cell = cell.neighbors[(int)_path[i]];
             if (cell == null) break;
-            _wayPointsCells.Add(i, cell);
+            GEquipment equipment = cell.GetGridObject<GEquipment>();
+            if (equipment)
+                linkedPawn.GiveEquipement(equipment, false, false);
             wayPoints.Add(cell.transform.position);
         }
         _wayPoints = wayPoints.ToArray();
-        
+        linkedPawn.SetCell(targetCell);
     }
 
     public override void Start_Action()
     {
         base.Start_Action();
-        linkedPawn.SetCell(targetCell);
         _progress = 0;
         _currentWayPoint = 0;
     }
@@ -66,15 +67,9 @@ public class GMoveAction : GAction
         
         if (_progress > _currentWayPoint)
         {
-            if (_wayPointsCells.ContainsKey(_currentWayPoint))
-            {
-                GCell cell = _wayPointsCells[_currentWayPoint];
-                GEquipment equipment = cell._equipment;
-                if (equipment)
-                {
-                    // cell.ReleaseEquipement();
-                    linkedPawn.GiveEquipement(equipment);
-                }
+            if (_EquipementPickUpIndex == _currentWayPoint)
+            { 
+                linkedPawn.GiveEquipement(linkedPawn.equipment, true, true);
             }
             _currentWayPoint++;
         }

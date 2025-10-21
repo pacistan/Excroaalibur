@@ -6,7 +6,7 @@ public class GMoveOutOfHoleAction : GAction
 {
     public override void PreProcess(GActionContext context = null)
     {
-        if (!targetCell || targetCell.ownedPawn || targetCell.ownedPawn == linkedPawn) return;
+        if (!targetCell || targetCell.GetGridObject<GPawn>() || targetCell.GetGridObject<GPawn>() == linkedPawn) return;
         //validate
     }
 
@@ -34,11 +34,11 @@ public class GMoveOutOfHoleAction : GAction
         
         List<GHexCoordinate> newValidCells = new List<GHexCoordinate>();
 
-        foreach (var cell in linkedPawn.currentCell._neighbors)
+        foreach (var cell in linkedPawn.currentCell.neighbors)
         {
             if (!cell || !cell.IsWalkable()) continue;
             
-            newValidCells.Add(cell._hexCoordinates);
+            newValidCells.Add(cell.hexCoordinates);
         }
         
         return validCells = newValidCells.ToArray();

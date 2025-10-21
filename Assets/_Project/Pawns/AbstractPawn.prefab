@@ -112,15 +112,43 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7ff5fda34982d27488444fda3f69392d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  serializationData:
+    SerializedFormat: 2
+    SerializedBytes: 
+    ReferencedUnityObjects: []
+    SerializedBytesString: 
+    Prefab: {fileID: 0}
+    PrefabModificationsReferencedUnityObjects: []
+    PrefabModifications: []
+    SerializationNodes:
+    - Name: overrideReactionByType
+      Entry: 7
+      Data: 0|System.Collections.Generic.Dictionary`2[[SerializableType`1[[GAction,
+        Assembly-CSharp]], Assembly-CSharp],[GAction, Assembly-CSharp]], mscorlib
+    - Name: comparer
+      Entry: 7
+      Data: 1|System.Collections.Generic.GenericEqualityComparer`1[[SerializableType`1[[GAction,
+        Assembly-CSharp]], Assembly-CSharp]], mscorlib
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 12
+      Data: 0
+    - Name: 
+      Entry: 13
+      Data: 
+    - Name: 
+      Entry: 8
+      Data: 
   coordinate:
     x: 0
     z: 0
   currentCell: {fileID: 0}
-  equipmentType: 0
+  <hasCrown>k__BackingField: 0
   isPlayer: 0
   actions: []
   baseReactionData: {fileID: 11400000, guid: 3d2f439763d27cc4488c148c9d11360b, type: 2}
-  overrideReactionData: {fileID: 0}
   equipment: {fileID: 0}
   _visuals: {fileID: 5047510769810583256}
   stunTurn: 0
@@ -153,7 +181,7 @@ MonoBehaviour:
   _pawn: {fileID: 20667597376880823}
   _debugTxt: {fileID: 7342127905333001947}
   _instantiationData: {fileID: 11400000, guid: 4b4fcf36089c3bb4eba6e330bdef62cf, type: 2}
-  _previousEquipmentType: 0
+  _previousHasCrown: 0
 --- !u!1 &5266738516767918478
 GameObject:
   m_ObjectHideFlags: 0

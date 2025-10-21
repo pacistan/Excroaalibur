@@ -68,7 +68,7 @@ public class GPlayerController : GController
         foreach (var coordinate in _validCells)
         {
             GCell cell = GGridManager.Instance.GetCell(coordinate);
-            cell._cellVisualsController.ChangeCellHighlightColor(Color.blue);
+            cell.cellVisualsController.ChangeCellHighlightColor(Color.blue);
         }
     }
 
@@ -77,7 +77,7 @@ public class GPlayerController : GController
         foreach (var coordinate in _validCells)
         {
             GCell cell = GGridManager.Instance.GetCell(coordinate);
-            cell._cellVisualsController.ResetCellHighlightColor();
+            cell.cellVisualsController.ResetCellHighlightColor();
         }
     }
     
@@ -129,18 +129,18 @@ public class GPlayerController : GController
             _targetCell = GetCellUnderMouse();
             if (!_targetCell) return;
             
-            if (_selectedPlayer && _selectedAction != null && _selectedAction.IsValidCell(_targetCell._hexCoordinates))
+            if (_selectedPlayer && _selectedAction != null && _selectedAction.IsValidCell(_targetCell.hexCoordinates))
             {
                 StartAction();
                 return;
             }
             
-            GPawn player = _targetCell.ownedPawn && _targetCell.ownedPawn.isPlayer ? _targetCell.ownedPawn : null;
+            GPawn player = _targetCell.GetGridObject<GPawn>() && _targetCell.GetGridObject<GPawn>().isPlayer ? _targetCell.GetGridObject<GPawn>() : null;
             if (player)
             {
                 if (_selectedPlayer != player && !player.IsStunned)
                 {
-                    SetSelectedPlayer(_targetCell.ownedPawn);
+                    SetSelectedPlayer(_targetCell.GetGridObject<GPawn>());
                 }
                 else
                 {
@@ -159,7 +159,7 @@ public class GPlayerController : GController
 
     public override void StartAction()
     {
-        if (!_validCells.Contains(_targetCell._hexCoordinates)) return;
+        if (!_validCells.Contains(_targetCell.hexCoordinates)) return;
         _selectedAction.targetCell = _targetCell;
         if (_selectedPlayer.RequestAction(_selectedAction))
         {

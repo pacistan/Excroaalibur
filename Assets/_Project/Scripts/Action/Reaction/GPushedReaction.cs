@@ -1,85 +1,92 @@
 ﻿using DG.Tweening;
+using Sirenix.OdinInspector;
 using System.Runtime.CompilerServices;
 using UnityEngine;
 
-public class GPushedReaction : GReaction
+public class GPushedReaction : GAction
 {
     [SerializeField]
-    int _distance = 2;
+    bool _isPushable = true;
     
     [SerializeField]
-    int _damage = 2;
-    [SerializeField]
-    int _stun = 2;
+    bool _DamageRelatedToPushForce = false;
     
-    EHexDirection _direction;
-
+    [SerializeField, ShowIf("_DamageRelatedToPushForce"), Tooltip("Damage inflicted if we hit Something while being pushed")]
+    int _damage = 1;
+    
+    int _distance;
+    int _stun;
+    
     bool _inflictDamage;
-    bool _isPushable;
+    EHexDirection _direction;
+    GMoveAction _moveAction = null;
+    
+    GEquipment CachedEquipment;
     
     public override void PreProcess(GActionContext context = null)
     {
-        base.PreProcess();
+        base.PreProcess(context);
+
+        if (context == null)
+        {
+            Debug.LogWarning($"GPushedReaction on {linkedPawn} missing context");
+            return;
+        }
         
-        if (context != null && context.Has("direction"))
+        if (context.Has("direction"))
             _direction = context.Get<EHexDirection>("direction");
-        else if (instigatorCell && instigatorCell._hexCoordinates.InStraightLine(instigatorCell._hexCoordinates))
-            _direction = instigatorCell._hexCoordinates.GetLineDirection(linkedPawn.coordinate);
-        else
-            return;
-        
-        if (context != null && context.Has("distance"))
-            _distance = context.Get<int>("distance");
-        if (context != null && context.Has("damage"))
-            _damage = context.Get<int>("damage");
-        if (context != null && context.Has("stun"))
-            _stun = context.Get<int>("stun");
+        if (context.Has("force"))
+            _distance = context.Get<int>("force");
 
 
-        _isPushable = true;
-        if (instigatorCell != linkedPawn.currentCell && linkedPawn && linkedPawn.equipment && !(linkedPawn is GAltar))
+        if (_isPushable) // Check initial param
         {
-            GEquipment equipment = linkedPawn.equipment;
-            linkedPawn.ReleaseEquipement();
-            instigatorPawn.GiveEquipement(equipment);
-        }
-        
-        if (linkedPawn is GAltar )
-        {
-            // TODO : Move to New Reaction Type
-            _isPushable = false;
-            if (linkedPawn.equipment && linkedPawn.equipment is GCrown)
+            if (linkedPawn.currentCell.GetNeighbor(_direction).GetTileType == ETileType.Wall)
             {
-                GEquipment equipment = linkedPawn.equipment;
-                linkedPawn.ReleaseEquipement(); 
-                instigatorPawn.GiveEquipement(equipment);
-            }
-            return;
-        }
-        
-        GCell cell = linkedPawn.currentCell;
-        for (int i = 0; i < _distance; i++)
-        {
-            GCell neighbor = cell.GetNeighbor(_direction);
-            
-            if (!neighbor || neighbor.GetTileType == ETileType.Wall || neighbor.ownedPawn)
-            {
+                _isPushable = false;
                 _inflictDamage = true;
-                break;
+            }
+        }
+
+        if (!_isPushable) // do not put in else !
+        {
+            GPawn Instigitator = linkedPawn.currentCell.GetNeighbor(_direction.Opposite()).GetGridObject<GPawn>();
+            if (Instigitator) 
+            {
+                CachedEquipment = linkedPawn.equipment;
+                linkedPawn.ReleaseEquipement(false);
+                Instigitator.GiveEquipement(CachedEquipment, false, false);
             }
             
-            cell = neighbor;
-            linkedPawn.SetCell(cell);
-            if (!linkedPawn.equipment && cell._equipment && cell._equipment is GCrown)
+            _inflictDamage = false;
+        } 
+        else 
+        {
+            GCell cell = linkedPawn.currentCell;
+            for (int i = 0; i < _distance; i++)
             {
-                linkedPawn.GiveEquipement(cell._equipment);
+                GCell neighbor = cell.GetNeighbor(_direction);
+            
+                if (!neighbor || neighbor.GetTileType == ETileType.Wall)
+                {
+                    _inflictDamage = true;
+                    _damage = _DamageRelatedToPushForce ? _distance - i: _damage;
+                    break;
+                }
+                
+                cell = neighbor;
+                if (neighbor.GetTileType == ETileType.Hole)
+                    break;
             }
-            if (neighbor.GetTileType == ETileType.Hole)
-                break;
+            
+            _moveAction = new GMoveAction();
+            _moveAction.targetCell = cell;
+            _moveAction.linkedPawn = linkedPawn;
+            _moveAction._maxMoveDistance = _distance;
+            _moveAction._walkingTileType = new ETileType[] { ETileType.Normal, ETileType.Hole };
+            _moveAction._endMovementTileType = new ETileType[] { ETileType.Normal, ETileType.Hole };
+            GTurnBaseManager.Instance.PreProcessReaction(_moveAction, new GActionContext());
         }
-        
-        targetCell = cell;
-        linkedPawn.SetCell(targetCell);
         
         if (_inflictDamage)
         {
@@ -91,27 +98,23 @@ public class GPushedReaction : GReaction
     public override void Start_Action()
     {
         base.Start_Action();
-        if (_isPushable)
-        {
-            linkedPawn.transform.DOMove(targetCell.transform.position, 0.5f).SetEase(Ease.OutCirc).onComplete = End_Action;
-        }
-        else
-        {
-            End_Action();
-        }
+        if (_moveAction != null)
+            GTurnBaseManager.Instance.TryStartReaction(_moveAction);
     }
 
     public override void Update_Action(float delta)
     {
         base.Update_Action(delta);
+        
+        if (_moveAction == null || _moveAction.CurrentState == GAction.EActionState.Finished)
+        {
+            End_Action();
+        }
     }
 
     public override void End_Action()
     {
+        CachedEquipment.owner.GiveEquipement(CachedEquipment, true, true);
         base.End_Action();
-        if (targetCell != null)
-        {
-            linkedPawn.transform.position = targetCell.transform.position;
-        }
     }
 }

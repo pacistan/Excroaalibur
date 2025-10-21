@@ -3,8 +3,8 @@ using UnityEngine;
 
 public class GEquipment : GGridObject
 {
-    [field : SerializeField, ReadOnly]
-    public GPawn owner { get; private set; }
+    [SerializeField, ReadOnly]
+    public GPawn owner;
 
     public GCell GetCell()
     {
@@ -13,27 +13,7 @@ public class GEquipment : GGridObject
     
     public void ForceRelease()
     {
-        owner.ReleaseEquipement();
-    }
-    
-    public void SetOwner(GPawn newOwner)
-    {
-        if (currentCell && currentCell._equipment)
-        {
-            currentCell.ReleaseEquipement();
-        }
-        owner = newOwner;
-    }
-
-    public void OnReleased()
-    {
-        owner = null;
-    }
-
-    public override void SetCell(GCell newCell)
-    {
-        base.SetCell(newCell);
-        // newCell.GiveEquipement(this);
+        owner.ReleaseEquipement(false);
     }
 
     public override void SetCell(GHexCoordinate coordinate)

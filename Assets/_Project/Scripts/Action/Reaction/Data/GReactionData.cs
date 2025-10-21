@@ -1,86 +1,86 @@
 ﻿using System;
 using System.Collections.Generic;
 using UnityEngine;
+using Sirenix.OdinInspector;   
+using Sirenix.Serialization;
 
 [CreateAssetMenu(fileName = "ReactionData", menuName = "Reaction", order = 0)]
 public class GReactionData : ScriptableObject
 {
     /// <summary>
-    /// Pair of action and reaction with editable data.
-    /// <see cref="ActionType"/> is the cached type of the ActionTypeReference to build the look-up Dictionary .
+    /// Pair "Action Type" -> "Reaction".
+    /// The key is selected via a dropdown (all concrete classes derived from GAction).
+    /// The value is the reaction action to be cloned at runtime.
     /// </summary>
     [Serializable]
     public class ActionReactionPair
     {
-        [SerializeReference] public GAction actionTypeReference;
-        [SerializeReference] public GReaction reaction;
-        
-        [NonSerialized] private Type _cachedType;
-        
-        public Type ActionType
-        {
-            get
-            {
-                if (_cachedType == null && actionTypeReference != null)
-                {
-                    _cachedType = actionTypeReference.GetType();
-                }
-                return _cachedType;
-            }
-        }
+        [LabelText("Action Type")]
+        [SerializeField] public SerializableType<GAction> actionType;
+
+        [LabelText("Reaction")]
+        [SerializeReference] public GAction reaction;
+
+        // Type of the action
+        public Type ActionType => actionType != null ? actionType.Type : null;
     }
-    
-    
-    /// <summary>
-    /// List of <see cref="ActionReactionPair"/> easily editable from editor.
-    /// </summary>
+
+    // Editable list of action-reaction pairs
     [SerializeField]
     private List<ActionReactionPair> _reactionPairs = new List<ActionReactionPair>();
+
+    // Dictionnaire runtime pour le lookup rapide
+    private Dictionary<Type, GAction> _runtimeLookup;
     
-    private Dictionary<Type, GReaction> _runtimeLookup;
-    
-    /// <summary>
-    /// Build the Type driven dictionary for quick look-up from the editor interactable list <see cref="_reactionPairs"/> of <see cref="ActionReactionPair"/>.
-    /// </summary>
+    /** Build the runtime lookup dictionary */
     private void BuildLookup()
     {
         if (_runtimeLookup != null) return;
-        
-        _runtimeLookup = new Dictionary<Type, GReaction>();
+
+        _runtimeLookup = new Dictionary<Type, GAction>();
         foreach (var pair in _reactionPairs)
         {
-            if (pair.ActionType != null && pair.reaction != null)
-            {
-                _runtimeLookup[pair.ActionType] = pair.reaction;
-            }
+            var t = pair?.ActionType;
+            var r = pair?.reaction;
+            if (t == null || r == null) continue;
+
+            // La dernière entrée l’emporte si doublon de Type
+            _runtimeLookup[t] = r;
         }
     }
 
-    /// <summary>
-    /// Check if an action is available in the table.
-    /// </summary>
-    /// <param name="action">Action to search a reaction for.</param>
-    /// <returns>True if a reaction was found.</returns>
+  
+    /** Check if there is a reaction for the given action */
     public bool HasReaction(GAction action)
     {
         BuildLookup();
         return action != null && _runtimeLookup.ContainsKey(action.GetType());
     }
-    
-    /// <summary>
-    /// Get the reaction for a given action (Can check if there is a reaction with <see cref="HasReaction"/>.
-    /// </summary>
-    /// <param name="action">Action to search a reaction for.</param>
-    /// <returns>Reaction fot the given action, null if none were found.</returns>
-    public GReaction GetReaction(GAction action)
+
+   
+    /** Get the reaction for the given action, if there is */
+    public GAction GetReaction(GAction action)
     {
-        if (HasReaction(action))
+        if (action == null) return null;
+
+        BuildLookup();
+
+        if (_runtimeLookup.TryGetValue(action.GetType(), out var reaction) && reaction != null)
         {
-            return (GReaction)_runtimeLookup[action.GetType()].CloneAction();
+            return (GAction)reaction.CloneAction();
         }
         return null;
     }
-    
+
+#if UNITY_EDITOR
+    [Button("Rebuild Lookup (Editor)")]
+    private void RebuildLookupEditor()
+    {
+        _runtimeLookup = null;
+        BuildLookup();
+    }
+#endif
+
     private void OnValidate()
     {
         _runtimeLookup = null;

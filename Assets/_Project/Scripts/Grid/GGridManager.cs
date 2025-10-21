@@ -50,11 +50,11 @@ public class GGridManager : GSingleton<GGridManager>
             return null;
         }
         
-        if (!_stepMap.ContainsKey(to._data.gridCoordinates) ||
-            !_stepMap.ContainsKey(from._data.gridCoordinates)) return null;
+        if (!_stepMap.ContainsKey(to.data.gridCoordinates) ||
+            !_stepMap.ContainsKey(from.data.gridCoordinates)) return null;
 
         GCell currentCell = to;
-        int currentCellStep = _stepMap[to._data.gridCoordinates];
+        int currentCellStep = _stepMap[to.data.gridCoordinates];
         /*if (maxNumberOfSteps != -1 && maxNumberOfSteps < currentCellStep)
         {
             var finalStep = _stepMap.First(a =>
@@ -74,16 +74,16 @@ public class GGridManager : GSingleton<GGridManager>
         int i = 0;
         while (currentCellStep != 0 && i < 4000)
         {
-            foreach (var cell in currentCell._neighbors)
+            foreach (var cell in currentCell.neighbors)
             {
                 if (!cell)
                 {
                     continue;
                 }
-                Vector2Int gridCoordinates = cell._data.gridCoordinates;
+                Vector2Int gridCoordinates = cell.data.gridCoordinates;
                 if (_stepMap.ContainsKey(gridCoordinates) && _stepMap[gridCoordinates] < currentCellStep)
                 {
-                    EHexDirection direction = cell._hexCoordinates.GetLineDirection(currentCell._hexCoordinates);
+                    EHexDirection direction = cell.hexCoordinates.GetLineDirection(currentCell.hexCoordinates);
                     currentCell = cell;
                     currentCellStep = _stepMap[gridCoordinates];
                     path[currentCellStep] = direction;
@@ -112,11 +112,11 @@ public class GGridManager : GSingleton<GGridManager>
             return null;
         }
         
-        if (!_stepMap.ContainsKey(to._data.gridCoordinates) ||
-            !_stepMap.ContainsKey(from._data.gridCoordinates)) return null;
+        if (!_stepMap.ContainsKey(to.data.gridCoordinates) ||
+            !_stepMap.ContainsKey(from.data.gridCoordinates)) return null;
 
         GCell currentCell = to;
-        int currentCellStep = _stepMap[to._data.gridCoordinates];
+        int currentCellStep = _stepMap[to.data.gridCoordinates];
         /*if (maxNumberOfSteps != -1 && maxNumberOfSteps < currentCellStep)
         {
             var finalStep = _stepMap.First(a =>
@@ -133,16 +133,16 @@ public class GGridManager : GSingleton<GGridManager>
         int i = 0;
         while (currentCellStep != 0 && i < 4000)
         {
-            foreach (var cell in currentCell._neighbors)
+            foreach (var cell in currentCell.neighbors)
             {
                 if (!cell)
                 {
                     continue;
                 }
-                Vector2Int gridCoordinates = cell._data.gridCoordinates;
+                Vector2Int gridCoordinates = cell.data.gridCoordinates;
                 if (_stepMap.ContainsKey(gridCoordinates) && _stepMap[gridCoordinates] < currentCellStep)
                 {
-                    EHexDirection direction = cell._hexCoordinates.GetLineDirection(currentCell._hexCoordinates);
+                    EHexDirection direction = cell.hexCoordinates.GetLineDirection(currentCell.hexCoordinates);
                     currentCell = cell;
                     currentCellStep = _stepMap[gridCoordinates];
                     path[currentCellStep] = direction;
@@ -170,8 +170,8 @@ public class GGridManager : GSingleton<GGridManager>
         }
         
         int stepNum = 0;
-        _stepMap.Add(from._data.gridCoordinates, stepNum);
-        from._cellVisualsController.UpdateCellDebugNum($"{stepNum}");
+        _stepMap.Add(from.data.gridCoordinates, stepNum);
+        from.cellVisualsController.UpdateCellDebugNum($"{stepNum}");
         ETileType[] walkableTypes = new []{ ETileType.Normal };
         StepRecursion(from, stepNum + 1, ref walkableTypes);
     }
@@ -185,28 +185,28 @@ public class GGridManager : GSingleton<GGridManager>
         }
         
         int stepNum = 0;
-        _stepMap.Add(from._data.gridCoordinates, stepNum);
-        from._cellVisualsController.UpdateCellDebugNum($"{stepNum}");
+        _stepMap.Add(from.data.gridCoordinates, stepNum);
+        from.cellVisualsController.UpdateCellDebugNum($"{stepNum}");
         StepRecursion(from, stepNum + 1, ref walkableTypes);
     }
 
     private void StepRecursion(GCell from, int stepNum, ref ETileType[] walkableTypes)
     {
-        foreach (GCell cell in from._neighbors)
+        foreach (GCell cell in from.neighbors)
         {
             if (cell && cell.IsWalkable(ref walkableTypes))
             {
-                var coordinates = cell._data.gridCoordinates;
+                var coordinates = cell.data.gridCoordinates;
                 if(!_stepMap.ContainsKey(coordinates))
                 {
-                    _stepMap.Add(cell._data.gridCoordinates, stepNum);
-                    cell._cellVisualsController.UpdateCellDebugNum(stepNum.ToString());
+                    _stepMap.Add(cell.data.gridCoordinates, stepNum);
+                    cell.cellVisualsController.UpdateCellDebugNum(stepNum.ToString());
                     StepRecursion(cell, stepNum + 1, ref walkableTypes);
                 }
                 else if(_stepMap[coordinates] >= stepNum)
                 {
                     _stepMap[coordinates] = stepNum;
-                    cell._cellVisualsController.UpdateCellDebugNum(stepNum.ToString());
+                    cell.cellVisualsController.UpdateCellDebugNum(stepNum.ToString());
                     StepRecursion(cell, stepNum + 1, ref walkableTypes);
                 }
 
@@ -217,19 +217,19 @@ public class GGridManager : GSingleton<GGridManager>
 
     public int GetStep(GCell targetCell, bool forceSearch = false)
     {
-        if (_stepMap.ContainsKey(targetCell._data.gridCoordinates))
+        if (_stepMap.ContainsKey(targetCell.data.gridCoordinates))
         {
-            return _stepMap[targetCell._data.gridCoordinates];
+            return _stepMap[targetCell.data.gridCoordinates];
         }
         else if (forceSearch)
         {
             int lowestStep = -1;
-            foreach (GCell neighbor in targetCell._neighbors)
+            foreach (GCell neighbor in targetCell.neighbors)
             {
                 if (!neighbor) continue;
-                if (_stepMap.ContainsKey(neighbor._data.gridCoordinates))
+                if (_stepMap.ContainsKey(neighbor.data.gridCoordinates))
                 {
-                    int step = _stepMap[neighbor._data.gridCoordinates];
+                    int step = _stepMap[neighbor.data.gridCoordinates];
                     if (step < lowestStep || lowestStep == -1)
                     {
                         lowestStep = step;
@@ -243,16 +243,16 @@ public class GGridManager : GSingleton<GGridManager>
 
     public GCell GetLowestAdjacentCell(GCell ogCell)
     {
-        if (_stepMap.ContainsKey(ogCell._data.gridCoordinates))
+        if (_stepMap.ContainsKey(ogCell.data.gridCoordinates))
         {
             return ogCell;
         }
         GCell outCell = null;
         int lowestStep = int.MaxValue;
-        foreach (GCell cell in ogCell._neighbors)
+        foreach (GCell cell in ogCell.neighbors)
         {
             if (!cell) continue;
-            Vector2Int coordinates = cell._data.gridCoordinates;
+            Vector2Int coordinates = cell.data.gridCoordinates;
             if (_stepMap.ContainsKey(coordinates) && _stepMap[coordinates] < lowestStep)
             {
                 lowestStep = _stepMap[coordinates];
