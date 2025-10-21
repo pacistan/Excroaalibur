@@ -1,4 +1,5 @@
 ﻿using DG.Tweening;
+using FMODUnity;
 using Sirenix.Utilities;
 using System;
 using System.Collections.Generic;
@@ -110,6 +111,9 @@ public class GThrowAction : GAction
         _seq = DOTween.Sequence()
             .SetUpdate(UpdateType.Manual, false); // Manual update mode
 
+        
+        RuntimeManager.PlayOneShotAttached("event:/Pawn/Throw", linkedPawn.gameObject);
+        
         // Sequence to Target 
         _seq.Append(_crown.transform.DOMove(_hitPos, outDur).SetEase(Ease.OutQuint));
 
@@ -122,6 +126,10 @@ public class GThrowAction : GAction
                 _impactReaction = null;
             }
             _targetPawn.UpdateHpNumber();
+            if (_targetPawn && !_targetPawn.isPlayer)
+            {
+                RuntimeManager.PlayOneShotAttached("event:/Crown/Hit", _crown.gameObject);
+            }
         });
 
         if (_killTarget)
@@ -130,6 +138,7 @@ public class GThrowAction : GAction
             _seq.AppendCallback(() =>
             {
                 _targetPawn.Kill();
+                RuntimeManager.PlayOneShotAttached("event:/Crown/Catch", _crown.gameObject);
             }); 
             _seq.Append(_crown.transform.DOMove(_returnPos, backDur).SetEase(Ease.InQuint));
         }
@@ -144,7 +153,11 @@ public class GThrowAction : GAction
         else if (canLandInFrontOf && targetPawn)
         {
             // Sequence Landing front of Target
-            _seq.Append(_crown.transform.DOMove(_landingPos, landDur).SetEase(Ease.InSine));
+            _seq.AppendCallback(() =>
+            {
+                RuntimeManager.PlayOneShotAttached("event:/Crown/Fall", _crown.gameObject);
+            }); 
+            _seq.Append(_crown.transform.DOMove(_landingPos, landDur).SetEase(Ease.OutCubic));
         }
         
         _seq.OnComplete(() =>

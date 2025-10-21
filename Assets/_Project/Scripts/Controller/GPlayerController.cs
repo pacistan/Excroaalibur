@@ -27,6 +27,7 @@ public class GPlayerController : GController
     
     
     private GCell _targetCell;
+    private GCell _hoverCell;
     
     public void SetSelectedPlayer(GPawn newSelected)
     {
@@ -122,18 +123,32 @@ public class GPlayerController : GController
         DebugEndTurn();
         
         GCell newCell = GetCellUnderMouse();
-        if (newCell != _targetCell)
+        if (newCell  && newCell != _targetCell && newCell != _hoverCell)
         {
-            RuntimeManager.PlayOneShot("event:/Map/Hover_Empty");
-            _targetCell = newCell;
+            GPawn cellPawn = newCell.GetGridObject<GPawn>();
+            if (cellPawn && !cellPawn.hoverSound.IsNull)
+                RuntimeManager.PlayOneShotAttached(cellPawn.hoverSound, cellPawn.gameObject);
+            else
+                RuntimeManager.PlayOneShot("event:/Map/Hover_Empty");
+            
+            _hoverCell = newCell;
         }
         if (_selectInput.WasPressedThisFrame())
         {
-            if (!_targetCell) return;
+            if (!_hoverCell || !newCell) return;
+
+            _targetCell = _hoverCell;
+            
+            GPawn cellPawn = _targetCell.GetGridObject<GPawn>();
+            if (cellPawn && !cellPawn.SelectSound.IsNull)
+                RuntimeManager.PlayOneShotAttached(cellPawn.SelectSound, cellPawn.gameObject);
+            else
+                RuntimeManager.PlayOneShot("event:/Map/Select_Empty");
             
             if (_selectedPlayer && _selectedAction != null && _selectedAction.IsValidCell(_targetCell.hexCoordinates))
             {
                 StartAction();
+                _targetCell = null;
                 return;
             }
             

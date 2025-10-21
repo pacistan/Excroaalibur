@@ -1,4 +1,5 @@
-﻿using Sirenix.OdinInspector;
+﻿using FMODUnity;
+using Sirenix.OdinInspector;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -80,6 +81,8 @@ public class GPawnVisualsController : SerializedMonoBehaviour
         { 
             text += $"{_pawn.hp}";
             //TODO : Start Take Damage Feedbacks
+
+            RuntimeManager.PlayOneShotAttached("event:/Pawn/Damaged", gameObject);
         }
         
         _previousHpNumber = _pawn.hp;
@@ -123,6 +126,7 @@ public class GPawnVisualsController : SerializedMonoBehaviour
     private void OnKilledVisuals()
     {
         // TODO : Start On Kill Feedbacks
+        RuntimeManager.PlayOneShot("event:/Pawn/Die", gameObject.transform.position);
     }
     
 
