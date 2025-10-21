@@ -112,6 +112,12 @@ public class GPawn : GGridObject
         if (equipment == null) return;
         equipment.owner = null;
         OnUnequip?.Invoke(equipment);
+
+        if (equipment is GCrown)
+        {
+            GCrown crown = (GCrown)equipment;
+            crown.ResetCrown();
+        }
         
         if (giveToCell) 
             GetCell().gridObject = equipment;
