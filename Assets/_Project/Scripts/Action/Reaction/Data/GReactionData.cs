@@ -67,7 +67,7 @@ public class GReactionData : ScriptableObject
 
         if (_runtimeLookup.TryGetValue(action.GetType(), out var reaction) && reaction != null)
         {
-            return (GAction)reaction.CloneAction();
+            return reaction.CloneAction();
         }
         return null;
     }

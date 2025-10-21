@@ -18,7 +18,10 @@ public class GThrowAction : GAction
     Sequence _seq;
     
     bool _playerCatch;
-    bool _KillTarget = false;
+    bool _killTarget = false;
+    
+    // TODO : check because not the good way
+    GPawn _targetPawn;
     
     private Vector3 _startPos;
     private Vector3 _hitPos;
@@ -37,39 +40,42 @@ public class GThrowAction : GAction
         EHexDirection direction = linkedPawn.coordinate.GetLineDirection(base.targetCell.hexCoordinates);
         _distance = linkedPawn.coordinate.DistanceTo(base.targetCell.hexCoordinates);
         
-        GPawn targetPawn = targetCell.GetGridObject<GPawn>();
+        _targetPawn = targetCell.GetGridObject<GPawn>();
         
-        if (targetPawn && targetPawn.isPlayer)
+        if (_targetPawn && _targetPawn.isPlayer)
         {
             _playerCatch = true;
             
             linkedPawn.ReleaseEquipement(false);
-            targetPawn.GiveEquipement(_crown, false, false);
+            _targetPawn.GiveEquipement(_crown, false, false);
         } 
-        else if (targetPawn && !targetPawn.isPlayer)
+        else if (_targetPawn && !_targetPawn.isPlayer)
         {
             // TODO : Take damage here or in reaction ? 
-            _impactReaction = targetPawn.GetReaction(this);
+            _targetPawn.TakeDamage(_crown.damage);
+            _impactReaction = _targetPawn.GetReaction(this);
             if (_impactReaction != null)
             {
                 var reactionContext = new GActionContext();
                 reactionContext.Set("direction", direction);
                 reactionContext.Set("damage", _crown.damage);
-                _impactReaction.linkedPawn = targetPawn;
+                _impactReaction.linkedPawn = _targetPawn;
                 GTurnBaseManager.Instance.PreProcessReaction(_impactReaction, reactionContext);
             }
-            if (targetPawn.hp <= 0) _KillTarget = true;
+            if (_targetPawn.hp <= 0) _killTarget = true;
         }
         
-        if (_KillTarget) return;
+        if (_killTarget) return;
         
         if (!_playerCatch)
         {
             linkedPawn.ReleaseEquipement(false);
-            if (targetCell.GetNeighbor(direction.Opposite()).IsWalkable())
+            if (_targetPawn&& targetCell.GetNeighbor(direction.Opposite()).IsWalkable())
                 targetCell.GetNeighbor(direction.Opposite()).gridObject = _crown;
-            else if (targetPawn) // can give to non-player target if cell in front is not Available
-                targetPawn.GiveEquipement(_crown, false, false);
+            else if (_targetPawn) // can give to non-player target if cell in front is not Available
+                _targetPawn.GiveEquipement(_crown, false, false);
+            else
+                targetCell.gridObject = _crown;
         }
     }
 
@@ -84,7 +90,7 @@ public class GThrowAction : GAction
         var direction = linkedPawn.coordinate.GetLineDirection(targetCell.hexCoordinates);
         var backCell  = targetCell.GetNeighbor(direction.Opposite());
         bool canLandBehind = (backCell && backCell.IsWalkable());
-        _landingPos = (_playerCatch || _KillTarget || !canLandBehind) ? _hitPos : backCell.transform.position;
+        _landingPos = (_playerCatch || _killTarget || !canLandBehind) ? _hitPos : backCell.transform.position;
 
         float outDur   = Vector3.Distance(_startPos, _hitPos)   / Mathf.Max(0.01f, _crownSpeed);
         float backDur  = Vector3.Distance(_hitPos, _returnPos)  / Mathf.Max(0.01f, _crownSpeed);
@@ -106,9 +112,13 @@ public class GThrowAction : GAction
             }
         });
 
-        if (_KillTarget)
+        if (_killTarget)
         {
             // Sequence Return to Owner
+            _seq.AppendCallback(() =>
+            {
+                _targetPawn.Kill();
+            }); 
             _seq.Append(_crown.transform.DOMove(_returnPos, backDur).SetEase(Ease.InQuint));
         }
         else if (_playerCatch)
@@ -123,7 +133,7 @@ public class GThrowAction : GAction
         
         _seq.OnComplete(() =>
         {
-            if (_KillTarget)          _crown.transform.position = _returnPos;
+            if (_killTarget)          _crown.transform.position = _returnPos;
             else if (_playerCatch)    _crown.transform.position = _hitPos;
             else                      _crown.transform.position = _landingPos;
 

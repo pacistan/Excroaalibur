@@ -14,8 +14,11 @@ public class GPushedReaction : GAction
     [SerializeField, ShowIf("_DamageRelatedToPushForce"), Tooltip("Damage inflicted if we hit Something while being pushed")]
     int _damage = 1;
     
+    [SerializeField, Tooltip("Stun inflicted if we hit Something while being pushed")]
+    int _stun = 1;
+    
+    
     int _distance;
-    int _stun;
     
     bool _inflictDamage;
     EHexDirection _direction;
@@ -53,11 +56,15 @@ public class GPushedReaction : GAction
             if (Instigitator) 
             {
                 CachedEquipment = linkedPawn.equipment;
-                linkedPawn.ReleaseEquipement(false);
-                Instigitator.GiveEquipement(CachedEquipment, false, false);
+                if (CachedEquipment)
+                {
+                    linkedPawn.ReleaseEquipement(false);
+                    Instigitator.GiveEquipement(CachedEquipment, false, false);
+                }
             }
             
-            _inflictDamage = false;
+            if (linkedPawn is GAltar) 
+                _inflictDamage = false;
         } 
         else 
         {
@@ -109,6 +116,10 @@ public class GPushedReaction : GAction
         
         if (_moveAction == null || _moveAction.CurrentState == GAction.EActionState.Finished)
         {
+            if (linkedPawn && !linkedPawn.IsAlive && !linkedPawn.isMarkedForDestruction)
+            {
+                linkedPawn.Kill();
+            }
             End_Action();
         }
     }
@@ -116,7 +127,18 @@ public class GPushedReaction : GAction
     public override void End_Action()
     {
         // TODO : check error null here !
-        CachedEquipment.owner.GiveEquipement(CachedEquipment, true, true);
+        if (CachedEquipment)
+            CachedEquipment.owner.GiveEquipement(CachedEquipment, true, true);
         base.End_Action();
+    }
+
+    public override GAction CloneAction()
+    {
+        GPushedReaction reaction = base.CloneAction() as GPushedReaction;
+        reaction._isPushable = _isPushable;
+        reaction._DamageRelatedToPushForce = _DamageRelatedToPushForce;
+        reaction._damage = _damage;
+        reaction._stun = _stun;
+        return reaction;
     }
 }

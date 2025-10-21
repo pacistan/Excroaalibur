@@ -129,10 +129,6 @@ public class GPawn : GGridObject
         
         hp = Mathf.Max(0, hp - damage);
         OnHealthChanged?.Invoke(hp);
-        if (hp == 0)
-        {
-            Kill();
-        }
     }
     
     public void Stun(int stunTurnNumber)
@@ -151,13 +147,14 @@ public class GPawn : GGridObject
         }
         else
         {
-            Kill();
+            TakeDamage(hp); // instant kill
         }
     }
 
     public void Kill()
     {
-        //SetCell(null);
+        if (GetCell().gridObject == this) 
+            GetCell().gridObject = null;
         OnKill?.Invoke();
         OnKilled();
         Destroy(gameObject);
@@ -249,6 +246,7 @@ public class GPawn : GGridObject
         {
             ReleaseEquipement(true);
         }
+        isMarkedForDestruction = true;
     }
     
     

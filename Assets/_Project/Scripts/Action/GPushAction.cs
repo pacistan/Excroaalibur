@@ -20,7 +20,6 @@ public class GPushAction : GAction
     public override void PreProcess(GActionContext context = null)
     {
         base.PreProcess(context);
-        if (linkedPawn.equipment || linkedPawn.equipment is GCrown) return;
         _direction = linkedPawn.coordinate.GetLineDirection(targetCell.hexCoordinates);
         _targetPawn = targetCell.GetGridObject<GPawn>();
         if (!_targetPawn) return;
@@ -82,7 +81,7 @@ public class GPushAction : GAction
     {
         base.End_Action();
     }
-
+    
     public override GHexCoordinate[] GetValidCells()
     {
         if (linkedPawn.equipment || linkedPawn.equipment is GCrown)

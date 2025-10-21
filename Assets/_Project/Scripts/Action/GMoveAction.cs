@@ -3,6 +3,7 @@ using System;
 using System.Collections;
 using System.Linq;
 using UnityEngine;
+using UnityEngine.Splines;
 
 
 public class GMoveAction : GAction
@@ -37,7 +38,6 @@ public class GMoveAction : GAction
 
     public override void PreProcess(GActionContext context = null)
     {
-
         base.PreProcess(context);
         GGridManager.Instance.GenerateStepMap(linkedPawn.GetCell(), _walkingTileType);
         _path = GGridManager.Instance.GetPath(linkedPawn.GetCell() ,targetCell, _endMovementTileType,false);
@@ -93,8 +93,9 @@ public class GMoveAction : GAction
 
     public override void End_Action()
     {
-        base.End_Action();
         linkedPawn.transform.position = targetCell.transform.position;
+        if (!linkedPawn.IsAlive) linkedPawn.Kill();
+        base.End_Action();
     }
 
     public override GHexCoordinate[] GetValidCells()

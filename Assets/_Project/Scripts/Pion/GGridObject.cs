@@ -11,6 +11,8 @@ public class GGridObject : SerializedMonoBehaviour
     [ReadOnly, FoldoutGroup("Persistant Data")]
     protected GCell _currentCell;
     
+    public bool isMarkedForDestruction { get; set; } = false;
+    
     public virtual void SetCell(GHexCoordinate newCoordinate)
     {
         SetCell(GGridManager.Instance.GetCell(newCoordinate));
@@ -18,8 +20,8 @@ public class GGridObject : SerializedMonoBehaviour
     
     public virtual void SetCell(GCell newCell)
     {
-        _currentCell = newCell;
         if (_currentCell && _currentCell != newCell) _currentCell.gridObject = null;
+        _currentCell = newCell;
         if (!newCell) return;
         coordinate = newCell.hexCoordinates;
     }
