@@ -63,10 +63,8 @@ MonoBehaviour:
         linkedPawn: {fileID: 0}
         targetCell: {fileID: 0}
         validCells: []
-        _pushDistance: 2
+        _pushForce: 1
         _followDistance: 1
-        _stun: 2
-        _damage: 1
     - rid: 3108424154922877075
       type: {class: GPlaceOnAltarAction, ns: , asm: Assembly-CSharp}
       data:
