@@ -217,8 +217,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5f2648375c874c8f84a81f49ff3b8b6f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  serializationData:
+    SerializedFormat: 2
+    SerializedBytes: 
+    ReferencedUnityObjects: []
+    SerializedBytesString: 
+    Prefab: {fileID: 0}
+    PrefabModificationsReferencedUnityObjects: []
+    PrefabModifications: []
+    SerializationNodes:
+    - Name: _currentDamage
+      Entry: 3
+      Data: 0
   coordinate:
     x: 0
     z: 0
-  currentCell: {fileID: 0}
-  <owner>k__BackingField: {fileID: 0}
+  owner: {fileID: 0}
+  _baseDamage: 1
+  _bonusPassDamage: 1

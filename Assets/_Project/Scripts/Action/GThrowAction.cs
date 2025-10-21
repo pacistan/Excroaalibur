@@ -74,14 +74,23 @@ public class GThrowAction : GAction
         
         if (!_playerCatch)
         {
-            linkedPawn.ReleaseEquipement(false);
-            if (_targetPawn&& targetCell.GetNeighbor(direction.Opposite()).IsWalkable())
-                targetCell.GetNeighbor(direction.Opposite()).gridObject = _crown;
+            linkedPawn.ReleaseEquipement(false, true);
+            if (_targetPawn && targetCell.GetNeighbor(direction.Opposite()).IsWalkable(true))
+            {
+                GPawn neighborPawn = targetCell.GetNeighbor(direction.Opposite()).GetGridObject<GPawn>();
+                if (neighborPawn)
+                {
+                    neighborPawn.GiveEquipement(_crown, false, false);
+                }
+                else
+                {
+                    targetCell.GetNeighbor(direction.Opposite()).gridObject = _crown;
+                }
+            }
             else if (_targetPawn) // can give to non-player target if cell in front is not Available
                 _targetPawn.GiveEquipement(_crown, false, false);
             else
                 targetCell.gridObject = _crown;
-            _crown.ResetCrown();
         }
         else
         {
@@ -101,8 +110,23 @@ public class GThrowAction : GAction
         
         var direction = linkedPawn.coordinate.GetLineDirection(targetCell.hexCoordinates);
         var frontCell  = targetCell.GetNeighbor(direction.Opposite());
-        bool canLandInFrontOf = (frontCell && frontCell.IsWalkable());
-        _landingPos = (_playerCatch || _killTarget || !canLandInFrontOf) ? _hitPos : frontCell.transform.position;
+        bool canLandInFrontOf = (frontCell && frontCell.IsWalkable(true));
+        if (_playerCatch || _killTarget || !canLandInFrontOf)
+        {
+            _landingPos = _hitPos;
+        }
+        else
+        {
+            GPawn landPawn = frontCell.GetGridObject<GPawn>();
+            if (landPawn)
+            {
+                _landingPos = landPawn.equipmentParentTr.position;
+            }
+            else
+            {
+                _landingPos = frontCell.transform.position;
+            }
+        }
 
         float outDur   = Vector3.Distance(_startPos, _hitPos)   / Mathf.Max(0.01f, _crownSpeed);
         float backDur  = Vector3.Distance(_hitPos, _returnPos)  / Mathf.Max(0.01f, _crownSpeed);
@@ -153,11 +177,26 @@ public class GThrowAction : GAction
         else if (canLandInFrontOf && targetPawn)
         {
             // Sequence Landing front of Target
+            GPawn landPawn = frontCell.GetGridObject<GPawn>();
             _seq.AppendCallback(() =>
             {
                 RuntimeManager.PlayOneShotAttached("event:/Crown/Fall", _crown.gameObject);
             }); 
             _seq.Append(_crown.transform.DOMove(_landingPos, landDur).SetEase(Ease.OutCubic));
+            if (landPawn)
+            {
+                _seq.AppendCallback(() =>
+                {
+                    landPawn.GiveEquipement(_crown, true, true);
+                });
+            }
+        }
+        else if (targetPawn)
+        {
+            _seq.AppendCallback(() =>
+            {
+                _targetPawn.GiveEquipement(_crown, true, true);
+            }); 
         }
         
         _seq.OnComplete(() =>

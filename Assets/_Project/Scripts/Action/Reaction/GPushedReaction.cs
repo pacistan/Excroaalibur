@@ -59,7 +59,7 @@ public class GPushedReaction : GAction
                 CachedEquipment = linkedPawn.equipment;
                 if (CachedEquipment)
                 {
-                    linkedPawn.ReleaseEquipement(false);
+                    linkedPawn.ReleaseEquipement(false, true);
                     Instigitator.GiveEquipement(CachedEquipment, false, false);
                 }
             }
@@ -70,7 +70,9 @@ public class GPushedReaction : GAction
         else 
         {
             if (linkedPawn.equipment)
-                linkedPawn.ReleaseEquipement(true);
+            {
+                linkedPawn.ReleaseEquipement(true, true);
+            }
             
             GCell cell = linkedPawn.GetCell();
             for (int i = 0; i < _distance; i++)

@@ -107,11 +107,16 @@ public class GPawn : GGridObject
 
     }
     
-    public void ReleaseEquipement(bool giveToCell)
+    public void ReleaseEquipement(bool giveToCell, bool resetCrownPassCount = false)
     {
         if (equipment == null) return;
         equipment.owner = null;
         OnUnequip?.Invoke(equipment);
+
+        if (resetCrownPassCount && equipment && equipment is GCrown)
+        {
+            ((GCrown)equipment).ResetCrown();
+        }
         
         if (giveToCell) 
             GetCell().gridObject = equipment;

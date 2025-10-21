@@ -39,8 +39,10 @@ public class GPawnVisualsController : SerializedMonoBehaviour
 
     void Start()
     {
-        OnUpdateStunTurn();
-        OnUpdateHealthPoints();
+        if (!_pawn.isPlayer && !(_pawn is GAltar))
+        {
+            _debugTxt.text = $"{_pawn.hp}";
+        }
         _stunMaterialIndex = Mathf.Min(_mainRenderer.materials.Length, _stunMaterialIndex);
         _defaultMaterial = _mainRenderer.materials[_stunMaterialIndex];
     }
