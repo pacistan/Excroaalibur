@@ -77,6 +77,7 @@ public class GMoveAction : GAction
         _progress = 0;
         _currentWayPoint = 0;
 
+        linkedPawn.visuals.SetAnimationState("Walking");
         MoveEventInstance = RuntimeManager.CreateInstance(MoveEvent);
         MoveEventInstance.set3DAttributes(RuntimeUtils.To3DAttributes(linkedPawn.gameObject));
         MoveEventInstance.start();
@@ -95,6 +96,9 @@ public class GMoveAction : GAction
                 linkedPawn.GiveEquipement(linkedPawn.equipment, true, true);
             }
             _currentWayPoint++;
+            Vector3 lookAtPosition = _wayPoints[Mathf.Min(_currentWayPoint + 1, _wayPoints.Length - 1)];
+            lookAtPosition.y = linkedPawn.transform.position.y;
+            linkedPawn.transform.LookAt(lookAtPosition);
         }
 
         if (_progress > _wayPoints.Length - 1) 
@@ -109,6 +113,7 @@ public class GMoveAction : GAction
     public override void End_Action()
     {
         linkedPawn.transform.position = targetCell.transform.position;
+        linkedPawn.visuals.SetAnimationState("Idle");
         MoveEventInstance.stop(STOP_MODE.ALLOWFADEOUT);
         if (!linkedPawn.IsAlive) linkedPawn.Kill();
         base.End_Action();
