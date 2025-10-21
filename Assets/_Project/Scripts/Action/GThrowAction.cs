@@ -108,6 +108,7 @@ public class GThrowAction : GAction
             if (_impactReaction != null)
             {
                 GTurnBaseManager.Instance.TryStartReaction(_impactReaction);
+                _targetPawn.UpdateHpNumber();
                 _impactReaction = null;
             }
         });

@@ -18,40 +18,75 @@ public class GPawnVisualsController : SerializedMonoBehaviour
     [SerializeField, HideInInspector]
     private bool _previousHasCrown;
     
-    void Start()
+    int _previousHpNumber;
+    int _previousStunTurn;
+    
+    void OnEnable()
     {
         _pawn.OnStunned += OnStunned;
         _pawn.OnUnstunned += OnUnstunned;
         _pawn.OnHealthChanged += HealthChange;
-        HealthChange(_pawn.hp);
+        _pawn.OnKill += OnKilledVisuals;
+        OnUpdateHealthPoints();
+        OnUpdateStunTurn();
     }
 
-    public void HealthChange(int health)
+    void OnDisable()
     {
-        UpdateText();
+        _pawn.OnStunned -= OnStunned;
+        _pawn.OnUnstunned -= OnUnstunned;
+        _pawn.OnHealthChanged -= HealthChange;
+        _pawn.OnKill -= OnKilledVisuals;
+    }
+
+    public void HealthChange()
+    {
     }
     
     public void OnStunned()
     {
-        UpdateText();
     }
 
     public void OnUnstunned()
     {
-        UpdateText();
     }
 
-    private void UpdateText()
+    public void OnUpdateHealthPoints()
     {
-        String text = "";
-        if (_pawn.IsStunned) text += "STUNNED\n";
+        string text = "";
         
-        if (_pawn.hp >= 0) { 
+        if (_pawn.hp >= 0 && _pawn.hp != _previousHpNumber) 
+        { 
             text += $"HP: {_pawn.hp}";
+            //TODO : Start Take Damage Feedbacks
         }
         
+        _previousHpNumber = _pawn.hp;
         _debugTxt.text = text;
     }
+    
+    public void OnUpdateStunTurn()
+    {
+        String text = "";
+        if (_pawn.IsStunned && _previousStunTurn != _pawn.stunTurn)
+        {
+            text += "STUNNED\n";
+            //TODO : Start Stun Feedbacks
+        }
+        else if (!_pawn.IsStunned && _previousStunTurn != _pawn.stunTurn)
+        {
+            //TODO : Start UnStun Feedbacks            
+        }
+        
+        _previousStunTurn = _pawn.stunTurn;
+        _debugTxt.text = text;
+    }
+
+    private void OnKilledVisuals()
+    {
+        // TODO : Start On Kill Feedbacks
+    }
+    
 
     #if UNITY_EDITOR
     public void UpdatePawnVisuals()
