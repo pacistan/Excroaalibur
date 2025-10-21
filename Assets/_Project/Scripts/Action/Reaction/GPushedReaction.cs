@@ -108,10 +108,21 @@ public class GPushedReaction : GAction
     public override void Start_Action()
     {
         base.Start_Action();
+
+        if (_inflictDamage)
+        {
+            linkedPawn.UpdateHpNumber();
+            linkedPawn.UpdateStunTurn();
+        }
+        
         if (_moveAction != null)
+        {
             GTurnBaseManager.Instance.TryStartReaction(_moveAction);
-        else 
+        }
+        else
+        {
             End_Action();
+        } 
     }
 
     public override void Update_Action(float delta)

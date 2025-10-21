@@ -13,7 +13,7 @@ public class GPawn : GGridObject
     public event Action OnKill;
     public event Action OnStunned;
     public event Action OnUnstunned;
-    public event Action<int> OnHealthChanged;
+    public event Action OnHealthChanged;
     
     [field : SerializeField, Min(1)]
     public int actionTokens { get; set; }
@@ -45,6 +45,7 @@ public class GPawn : GGridObject
     
     [SerializeField, ReadOnly, HideInEditorMode, FormerlySerializedAs("_stunTurn")] 
     public int stunTurn = 0;
+    
     public bool IsStunned => stunTurn > 0;
 
     [field: SerializeField, HideIf("@hp == -1")]
@@ -55,6 +56,8 @@ public class GPawn : GGridObject
     
     // Cache for quick look-up of override reactions
     private Dictionary<Type, GAction> _overrideCache;
+
+
     
     public GAction GetReaction(GAction action)
     {
@@ -128,7 +131,12 @@ public class GPawn : GGridObject
         if (hp <= 0 || isPlayer) return;
         
         hp = Mathf.Max(0, hp - damage);
-        OnHealthChanged?.Invoke(hp);
+        OnHealthChanged?.Invoke();
+        
+        if (hp == 0 && GetCell().gridObject == this)
+        {
+            GetCell().gridObject = null;
+        } 
     }
     
     public void Stun(int stunTurnNumber)
@@ -153,10 +161,8 @@ public class GPawn : GGridObject
 
     public void Kill()
     {
-        if (GetCell().gridObject == this) 
-            GetCell().gridObject = null;
         OnKill?.Invoke();
-        OnKilled();
+        isMarkedForDestruction = true;
         Destroy(gameObject);
     }
 
@@ -176,6 +182,16 @@ public class GPawn : GGridObject
         }
     }
 
+    public void UpdateStunTurn()
+    {
+        _visuals.OnUpdateStunTurn();
+    }
+
+    public void UpdateHpNumber()
+    {
+        _visuals.OnUpdateHealthPoints();
+    }
+    
     public void OnEndTurn()
     {
         
@@ -245,16 +261,6 @@ public class GPawn : GGridObject
         }
     }
 
-    protected virtual void OnKilled()
-    {
-        if (equipment != null)
-        {
-            ReleaseEquipement(true);
-        }
-        isMarkedForDestruction = true;
-    }
-    
-    
 #if UNITY_EDITOR
     void OnValidate()
     {

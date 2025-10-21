@@ -8,7 +8,7 @@ public class GGridData : SerializedScriptableObject
 {
     [field : SerializeField] public int columnNum { get; private set; }
     [field : SerializeField] public int rowNum { get; private set; }
-    [field : SerializeField] public float hexSize { get; private set; }
+    [field: SerializeField, Min(0.3f)] public float hexSize { get; private set; } = 3f;
     [field : SerializeField, HideInInspector] public bool isOffsetOnPairs { get; private set; }
     [field : SerializeField] public Dictionary<Vector2Int, GCellData> cellData { get; set; }
 
