@@ -11,7 +11,7 @@ public class GPushedReaction : GAction
     [SerializeField]
     bool _DamageRelatedToPushForce = false;
     
-    [SerializeField, ShowIf("_DamageRelatedToPushForce"), Tooltip("Damage inflicted if we hit Something while being pushed")]
+    [SerializeField, HideIf("_DamageRelatedToPushForce"), Tooltip("Damage inflicted if we hit Something while being pushed")]
     int _damage = 1;
     
     [SerializeField, Tooltip("Stun inflicted if we hit Something while being pushed")]
