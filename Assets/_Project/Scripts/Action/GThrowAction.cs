@@ -6,99 +6,170 @@ using UnityEngine;
 
 public class GThrowAction : GAction
 {
-    [SerializeField, Min(0)]
+    [SerializeField, Min(0), Tooltip("Maximum distance the Crown can be thrown")]
     private int _maxThrowDistance = 10;
-    [SerializeField]
-    private int _damage = 3;
-    [SerializeField]
-    private int _damageEnd = 5;
+    
+    [SerializeField, Tooltip("Speed of the Crown when thrown")]
+    private float _crownSpeed = 10f;
     
     GCrown _crown;
-    Dictionary<int, GPawn> _toDamage = new Dictionary<int, GPawn>();
-    GPawn _toPush;
-    GCell _pushTarget;
-    int _distance;
-    float _progress;
-    GReaction _reaction;
+    GAction _impactReaction;
+    
+    Sequence _seq;
+    
+    bool _playerCatch;
+    bool _killTarget = false;
+    
+    // TODO : check because not the good way
+    GPawn _targetPawn;
+    
+    private Vector3 _startPos;
+    private Vector3 _hitPos;
+    private Vector3 _returnPos;
+    private Vector3 _landingPos;
+    
+    private float _distance;
+    private float _progress;
     
     public override void PreProcess(GActionContext context = null)
     {
+        base.PreProcess(context);
         if (!linkedPawn.equipment || linkedPawn.equipment is not GCrown) return;
         _crown = (GCrown)linkedPawn.equipment;
         
-        EHexDirection direction = linkedPawn.coordinate.GetLineDirection(base.targetCell._hexCoordinates);
-        _distance = linkedPawn.coordinate.DistanceTo(base.targetCell._hexCoordinates);
-
-        GCell pathCell = linkedPawn.GetCell();
+        EHexDirection direction = linkedPawn.coordinate.GetLineDirection(base.targetCell.hexCoordinates);
+        _distance = linkedPawn.coordinate.DistanceTo(base.targetCell.hexCoordinates);
         
-        for (int i = 1; i <= _distance; i++)
-        {
-            GCell neighbor = pathCell.GetNeighbor(direction);
-            if (neighbor == null) continue;
-            if (neighbor.ownedPawn && !neighbor.ownedPawn.isPlayer && i < _distance) _toDamage.Add(i, neighbor.ownedPawn);
-            pathCell = neighbor;
-        }
+        _targetPawn = targetCell.GetGridObject<GPawn>();
         
-        GPawn targetPawn = targetCell.ownedPawn;
-        if (targetPawn)
+        if (_targetPawn && _targetPawn.isPlayer)
         {
-            targetPawn.TakeDamage(_damageEnd);
+            _playerCatch = true;
             
-            if (!targetPawn.isPlayer && targetPawn.IsAlive)
+            linkedPawn.ReleaseEquipement(false);
+            _targetPawn.GiveEquipement(_crown, false, false);
+        } 
+        else if (_targetPawn && !_targetPawn.isPlayer)
+        {
+            // TODO : Take damage here or in reaction ? 
+            _targetPawn.TakeDamage(_crown.damage);
+            _impactReaction = _targetPawn.GetReaction(this);
+            if (_impactReaction != null)
             {
-                _reaction = targetPawn.GetReaction(this);
-                if (_reaction != null)
-                {
-                    GActionContext pushContext = new GActionContext();
-                    pushContext.Set("direction", direction);
-                    pushContext.Set("distance", 1);
-                    _reaction.instigatorCell = linkedPawn.GetCell();
-                    _reaction.instigatorPawn = linkedPawn;
-                    _reaction.linkedPawn = targetPawn;
-                    GTurnBaseManager.Instance.TryPlayReaction(_reaction, pushContext);
-                }
+                var reactionContext = new GActionContext();
+                reactionContext.Set("direction", direction);
+                reactionContext.Set("damage", _crown.damage);
+                _impactReaction.linkedPawn = _targetPawn;
+                GTurnBaseManager.Instance.PreProcessReaction(_impactReaction, reactionContext);
             }
-            
+            if (_targetPawn.hp == 0) _killTarget = true;
         }
-        linkedPawn.ReleaseEquipement(false);
-        if (targetCell.ownedPawn && targetCell.ownedPawn.IsAlive)
+        
+        if (_killTarget) return;
+        
+        if (!_playerCatch)
         {
-            targetCell.ownedPawn.GiveEquipement(_crown);
-        }
-        else
-        {
-            targetCell.GiveEquipement(_crown);
+            linkedPawn.ReleaseEquipement(false);
+            if (_targetPawn&& targetCell.GetNeighbor(direction.Opposite()).IsWalkable())
+                targetCell.GetNeighbor(direction.Opposite()).gridObject = _crown;
+            else if (_targetPawn) // can give to non-player target if cell in front is not Available
+                _targetPawn.GiveEquipement(_crown, false, false);
+            else
+                targetCell.gridObject = _crown;
         }
     }
 
     public override void Start_Action()
     {
         base.Start_Action();
-        _crown.transform.DOMove(_crown.transform.position, 0.5f).From(linkedPawn.GetCell().transform.position).SetEase(Ease.OutQuint);
-        DOTween.To(() => _progress, x => _progress = x, _distance, 0.5f).SetEase(Ease.OutQuint).onComplete = End_Action;
+
+        _startPos  = linkedPawn.GetCell().transform.position;
+        _hitPos    = targetCell.transform.position;
+        _returnPos = _startPos;
+        
+        var direction = linkedPawn.coordinate.GetLineDirection(targetCell.hexCoordinates);
+        var frontCell  = targetCell.GetNeighbor(direction.Opposite());
+        bool canLandInFrontOf = (frontCell && frontCell.IsWalkable());
+        _landingPos = (_playerCatch || _killTarget || canLandInFrontOf) ? _hitPos : frontCell.transform.position;
+
+        float outDur   = Vector3.Distance(_startPos, _hitPos)   / Mathf.Max(0.01f, _crownSpeed);
+        float backDur  = Vector3.Distance(_hitPos, _returnPos)  / Mathf.Max(0.01f, _crownSpeed);
+        float landDur  = Vector3.Distance(_hitPos, _landingPos) / Mathf.Max(0.01f, _crownSpeed);
+
+        _seq = DOTween.Sequence()
+            .SetUpdate(UpdateType.Manual, false); // Manual update mode
+
+        // Sequence to Target 
+        _seq.Append(_crown.transform.DOMove(_hitPos, outDur).SetEase(Ease.OutQuint));
+
+        // Impact callback: Fire the reaction of the target pawn
+        _seq.AppendCallback(() =>
+        {
+            if (_impactReaction != null)
+            {
+                GTurnBaseManager.Instance.TryStartReaction(_impactReaction);
+                _impactReaction = null;
+            }
+        });
+
+        if (_killTarget)
+        {
+            // Sequence Return to Owner
+            _seq.AppendCallback(() =>
+            {
+                _targetPawn.Kill();
+            }); 
+            _seq.Append(_crown.transform.DOMove(_returnPos, backDur).SetEase(Ease.InQuint));
+        }
+        else if (_playerCatch)
+        {
+           // Player Catch - stay at hit position 
+           _seq.AppendCallback(() =>
+           {
+               _targetPawn.GiveEquipement(_crown, true, true);
+           }); 
+        }
+        else if (Vector3.Distance(_hitPos, _landingPos) <= 0.1f)
+        {
+            // Sequence Landing front of Target
+            _seq.Append(_crown.transform.DOMove(_landingPos, landDur).SetEase(Ease.InSine));
+        }
+        
+        _seq.OnComplete(() =>
+        {
+            if (_killTarget)          _crown.transform.position = _returnPos;
+            else if (_playerCatch)    _crown.transform.position = _hitPos;
+            else                      _crown.transform.position = _landingPos;
+
+            End_Action();
+        });
     }
 
     public override void Update_Action(float delta)
     {
         base.Update_Action(delta);
-        int id = Mathf.FloorToInt(_progress);
-        if (_toDamage.ContainsKey(id))
+        
+        // Manually update the DOTween sequence
+        if (_seq != null && _seq.IsActive() && _seq.IsPlaying())
         {
-            _toDamage[id].TakeDamage(_damage);
-            _toDamage.Remove(id);
+            DOTween.ManualUpdate(delta, delta);
         }
-        if (id >= _distance && _reaction != null)
+
+        // Keep your old progress/reaction guard (safe if something changes mid-flight)
+        _progress += delta * _crownSpeed;
+        int id = Mathf.FloorToInt(_progress);
+        if (id >= _distance && _impactReaction != null)
         {
-            GTurnBaseManager.Instance.TryStartReaction(_reaction);
-            _reaction = null;
+            GTurnBaseManager.Instance.TryStartReaction(_impactReaction);
+            _impactReaction = null;
         }
     }
 
     public override void End_Action()
     {
+        if (_seq != null && _seq.IsActive()) _seq.Kill();
+        _seq = null;
         base.End_Action();
-        foreach (KeyValuePair<int, GPawn> pair in _toDamage)
-            pair.Value.TakeDamage(_damage);
     }
 
     public override GHexCoordinate[] GetValidCells()
@@ -119,7 +190,7 @@ public class GThrowAction : GAction
                 if (!cell || cell.GetTileType == ETileType.Wall) break;
                 if (cell.GetTileType == ETileType.Hole) continue;
                     
-                newValidCells.Add(cell._hexCoordinates);
+                newValidCells.Add(cell.hexCoordinates);
             }
         }
 
@@ -129,9 +200,8 @@ public class GThrowAction : GAction
     public override GAction CloneAction()
     {
         GThrowAction clonedAction = base.CloneAction() as GThrowAction;
-        clonedAction._damageEnd = _damageEnd;
-        clonedAction._damage = _damage;
         clonedAction._maxThrowDistance = _maxThrowDistance;
+        clonedAction._crownSpeed = _crownSpeed;
         return clonedAction;
     }
 }

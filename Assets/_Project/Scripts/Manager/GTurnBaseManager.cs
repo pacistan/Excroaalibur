@@ -101,7 +101,6 @@ public class GTurnBaseManager : GSingleton<GTurnBaseManager>
     { 
         if (isActionPlaying) return false;
         
-        // TODO : Check if it's the good Method ! 
         GAction ActionInstance = ActionToPlay.CloneAction();
         
         ActionInstance.PreProcess();
@@ -115,24 +114,22 @@ public class GTurnBaseManager : GSingleton<GTurnBaseManager>
 
     /// Preprocess a reaction without starting it with the associated context
     /// <param name="ActionContext">collection of parameters of generic type to pass to the reaction from the action</param>
-    public bool TryPlayReaction(GReaction ReactionToPlay, GActionContext ActionContext)
+    public bool PreProcessReaction(GAction ReactionToPlay, GActionContext ActionContext)
     {
         ReactionToPlay.PreProcess(ActionContext);
-        
-        _actionsInProgress.Add(ReactionToPlay);
         return true;
     }
 
     /// <summary>
     /// Start the reaction if it's preprocess is over, to use only for visuals synced with the corresponding instigator action
     /// </summary>
-    /// <remarks>all reaction should be played at the end of the action. If reaction are still in queue after action end, these should be played and emptied</remarks>
-    public void TryStartReaction(GReaction ReactionToStart)
+    /// <remarks>all reaction should be start by the action.</remarks>
+    public void TryStartReaction(GAction ReactionToStart)
     {
         if (ReactionToStart == null) return;
-        if (!_actionsInProgress.Contains(ReactionToStart)) return;
         if (ReactionToStart.CurrentState != GAction.EActionState.PreProcessing) return;
         ReactionToStart.Start_Action();
+        _actionsInProgress.Add(ReactionToStart);
         actionPlayed?.Invoke(ReactionToStart, currentTurnController);
     }
     

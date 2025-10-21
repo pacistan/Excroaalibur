@@ -13,15 +13,15 @@ public class GPunchAction : GAction
     public override void PreProcess(GActionContext context = null)
     {
         if (linkedPawn.equipment || linkedPawn.equipment is GCrown) return;
-        if (!targetCell || targetCell.ownedPawn || targetCell.ownedPawn == linkedPawn) return;
+        if (!targetCell || targetCell.GetGridObject<GPawn>() || targetCell.GetGridObject<GPawn>() == linkedPawn) return;
         //validate
     }
 
     public override void Start_Action()
     {
         base.Start_Action();
-        targetCell.ownedPawn.TakeDamage(_damage);
-        targetCell.ownedPawn.Stun(_stun);
+        targetCell.GetGridObject<GPawn>().TakeDamage(_damage);
+        targetCell.GetGridObject<GPawn>().Stun(_stun);
         _progress = 0;
     }
 
@@ -47,12 +47,12 @@ public class GPunchAction : GAction
             return validCells = new GHexCoordinate[]{};
         
         List<GHexCoordinate> newValidCells = new List<GHexCoordinate>();
-
-        foreach (var cell in linkedPawn.GetCell()._neighbors)
+        
+        foreach (var cell in linkedPawn.GetCell().neighbors)
         {
-            if (!cell || !cell.ownedPawn || cell.ownedPawn == linkedPawn) continue;
+            if (!cell || !cell.GetGridObject<GPawn>() || cell.GetGridObject<GPawn>() == linkedPawn) continue;
             
-            newValidCells.Add(cell._hexCoordinates);
+            newValidCells.Add(cell.hexCoordinates);
         }
         
         return validCells = newValidCells.ToArray();

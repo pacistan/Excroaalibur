@@ -1,19 +1,16 @@
 using Sirenix.OdinInspector;
-using Sirenix.Utilities;
+using Sirenix.Serialization;
+using UnityEngine.Serialization;
 using System;
 using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
-using UnityEngine.Serialization;
-
 
 public class GPawn : GGridObject
 {
     public event Action<GEquipment> OnEquip;
     public event Action<GEquipment> OnUnequip;
-
     public event Action OnKill;
-
     public event Action OnStunned;
     public event Action OnUnstunned;
     public event Action<int> OnHealthChanged;
@@ -24,8 +21,8 @@ public class GPawn : GGridObject
     [SerializeField, ReadOnly]
     public int remainingActionToken;
     
-    [SerializeField]
-    public EEquipmentType equipmentType = EEquipmentType.None;
+    [field: SerializeField]
+    public bool hasCrown { get; private set; } = false;
     
     [SerializeField]
     public bool isPlayer;
@@ -36,8 +33,9 @@ public class GPawn : GGridObject
     [SerializeField, FormerlySerializedAs("BaseReactionData")]
     public GReactionData baseReactionData;
     
-    [SerializeField, FormerlySerializedAs("OverrideReactionData")]
-    public GReactionData overrideReactionData;
+    // Cache in _overrideCache at Awake and OnValidate
+    [OdinSerialize, DictionaryDrawerSettings(KeyLabel = "Action Type", ValueLabel = "Reaction"), Tooltip("Dictionary mapping action types to reaction actions that override both base reactions and default reactions.")] 
+    public Dictionary<SerializableType<GAction>, GAction> overrideReactionByType = new();
     
     [SerializeField, ReadOnly, FoldoutGroup("Components")]
     public GEquipment equipment;
@@ -55,33 +53,56 @@ public class GPawn : GGridObject
     [field : SerializeField, FoldoutGroup("Components")]
     public Transform _equipmentParentTr { get; private set; }
     
-    public GReaction GetReaction(GAction action)
+    // Cache for quick look-up of override reactions
+    private Dictionary<Type, GAction> _overrideCache;
+    
+    public GAction GetReaction(GAction action)
     {
-        if (overrideReactionData && overrideReactionData.HasReaction(action))
-            return overrideReactionData.GetReaction(action);
+        if (action == null) return null;
+      
+        var t = action.GetType();
+        
+        // Exact type 
+        if (_overrideCache != null && _overrideCache.TryGetValue(t, out var overExact) && overExact != null)
+            return overExact;
+
+        // Parent type
+        var bt = t.BaseType;
+        while (bt != null && typeof(GAction).IsAssignableFrom(bt))
+        {
+            if (_overrideCache.TryGetValue(bt, out var overBase) && overBase != null)
+                return overBase;
+            bt = bt.BaseType;
+        }
+        
+        // Fallback to base reaction data
         if (baseReactionData && baseReactionData.HasReaction(action))
             return baseReactionData.GetReaction(action);
 
         return null;
     }
     
-    public void GiveEquipement(GEquipment _equipment)
+    public void GiveEquipement(GEquipment _equipment, bool updateTransform, bool invokeEvent)
     {
         equipment = _equipment;
-        OnEquip?.Invoke(equipment);
-        equipment.SetOwner(this);
-        equipment.transform.parent = _equipmentParentTr;
-        equipment.transform.localPosition = Vector3.zero; 
+        equipment.owner = this;
+        if (invokeEvent) OnEquip?.Invoke(equipment);
+
+        if (updateTransform)
+        {
+            equipment.transform.parent = _equipmentParentTr;
+            equipment.transform.localPosition = Vector3.zero; 
+        }
     }
     
-    public void ReleaseEquipement(bool giveToCell = true)
+    public void ReleaseEquipement(bool giveToCell)
     {
         if (equipment == null) return;
-        equipment.OnReleased();
+        equipment.owner = null;
         OnUnequip?.Invoke(equipment);
         
         if (giveToCell) 
-            GetCell().GiveEquipement(equipment);
+            GetCell().gridObject = equipment;
         
         equipment = null;
     }
@@ -108,10 +129,6 @@ public class GPawn : GGridObject
         
         hp = Mathf.Max(0, hp - damage);
         OnHealthChanged?.Invoke(hp);
-        if (hp == 0)
-        {
-            Kill();
-        }
     }
     
     public void Stun(int stunTurnNumber)
@@ -130,13 +147,14 @@ public class GPawn : GGridObject
         }
         else
         {
-            Kill();
+            TakeDamage(hp); // instant kill
         }
     }
 
     public void Kill()
     {
-        //SetCell(null);
+        if (GetCell().gridObject == this) 
+            GetCell().gridObject = null;
         OnKill?.Invoke();
         OnKilled();
         Destroy(gameObject);
@@ -170,17 +188,40 @@ public class GPawn : GGridObject
     
     public override void SetCell(GCell newCell)
     {
+        base.SetCell(newCell);
         if (newCell.GetTileType == ETileType.Hole)
         {
             Fall();
         }
-        base.SetCell(newCell);
-        GetCell().ownedPawn = this;
+        GetCell().gridObject = this;
     }
+    
+    private void RebuildOverrideCache()
+    {
+        _overrideCache = new Dictionary<Type, GAction>();
+
+        if (overrideReactionByType == null) return;
+
+        foreach (var kv in overrideReactionByType)
+        {
+            var key = kv.Key;   // SerializableType<GAction>
+            var val = kv.Value; // GAction
+            var type = key != null ? key.Type : null;
+
+            if (type == null || val == null) continue;
+
+            // La dernière entrée gagnante écrase l’ancienne (pratique si doublons)
+            _overrideCache[type] = val;
+        }
+        
+        EditorUtility.SetDirty(this);
+    }
+
 
     protected virtual void Awake()
     {
         if (isPlayer) hp = -1; // Player has infinite HP
+        RebuildOverrideCache();
     }
 
     protected virtual void Start()
@@ -210,6 +251,7 @@ public class GPawn : GGridObject
         {
             ReleaseEquipement(true);
         }
+        isMarkedForDestruction = true;
     }
     
     
@@ -220,6 +262,8 @@ public class GPawn : GGridObject
         {
             _visuals.UpdatePawnVisuals(); 
         }
+        
+        RebuildOverrideCache();
     }
 #endif
     

@@ -2,5 +2,5 @@
 
 public class GCrown : GEquipment
 {
-    
+    public int damage = 2;
 }

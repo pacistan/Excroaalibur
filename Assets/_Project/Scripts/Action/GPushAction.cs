@@ -1,35 +1,27 @@
-﻿using Sirenix.Utilities;
+﻿using Sirenix.OdinInspector;
+using Sirenix.Utilities;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class 
-    GPushAction : GAction
+public class GPushAction : GAction
 {
-    [SerializeField, Min(0)]
-    private int _pushDistance = 2;
-    [SerializeField, Min(0)]
+    [SerializeField, Min(0), Tooltip("Number of cells the pushed pawn will be moved away")]
+    private int _pushForce = 2;
+    
+    [SerializeField, Min(0), Tooltip("Distance Of the pawn following the pushed pawn, if possible")]
     private int _followDistance = 1;
-    [SerializeField]
-    private int _stun = 2;
-    [SerializeField]
-    private int _damage = 1;
     
     EHexDirection _direction = EHexDirection.NE;
-    float _progress = 0;
-    GCell _linkedEndCell;
-    Vector3 _linkedStartPosition;
     GPawn _targetPawn;
-    GReaction _reaction;
     
-    bool _inflictDamage = false;
-    bool _fall = false;
-
+    GAction _reaction;
+    GMoveAction _followAction = null;
     
     public override void PreProcess(GActionContext context = null)
     {
-        if (linkedPawn.equipment || linkedPawn.equipment is GCrown) return;
-        _direction = linkedPawn.coordinate.GetLineDirection(targetCell._hexCoordinates);
-        _targetPawn = targetCell.ownedPawn;
+        base.PreProcess(context);
+        _direction = linkedPawn.coordinate.GetLineDirection(targetCell.hexCoordinates);
+        _targetPawn = targetCell.GetGridObject<GPawn>();
         if (!_targetPawn) return;
 
         _reaction = _targetPawn.GetReaction(this);
@@ -37,70 +29,59 @@ public class
         {
             GActionContext pushContext = new GActionContext();
             pushContext.Set("direction", _direction);
-            pushContext.Set("distance", _pushDistance);
-            pushContext.Set("damage", _damage);
-            pushContext.Set("stun" , _stun);
-            _reaction.instigatorCell = linkedPawn.GetCell();
-            _reaction.instigatorPawn = linkedPawn;
+            pushContext.Set("force", _pushForce);
             _reaction.linkedPawn = _targetPawn;
-            GTurnBaseManager.Instance.TryPlayReaction(_reaction, pushContext);
+            GTurnBaseManager.Instance.PreProcessReaction(_reaction, pushContext);
         }
 
         GCell pathCell = linkedPawn.GetCell();
 
         if (!(_targetPawn is GAltar))
         {
-            for (int i = 0; i < Mathf.Min(_followDistance, _pushDistance); i++)
+            for (int i = 0; i < _followDistance; i++)
             {
                 GCell neighbor = pathCell.GetNeighbor(_direction);
                 
-                if (!neighbor || neighbor.ownedPawn || neighbor.GetTileType == ETileType.Wall) break;
+                if (!neighbor || neighbor.GetGridObject<GPawn>() || neighbor.GetTileType == ETileType.Wall) break;
 
                 pathCell = neighbor;
                 if (neighbor.GetTileType == ETileType.Hole) break;
             }
         }
         
-        _linkedEndCell = pathCell;
-        linkedPawn.SetCell(_linkedEndCell);
-        _linkedStartPosition = linkedPawn.transform.position;
+        _followAction = new GMoveAction();
+        _followAction.targetCell = pathCell;
+        _followAction.linkedPawn = linkedPawn;
+        _followAction._maxMoveDistance = _followDistance;
+        _followAction._walkingTileType = new ETileType[] { ETileType.Normal, ETileType.Hole };
+        _followAction._endMovementTileType = new ETileType[] { ETileType.Normal, ETileType.Hole };
+        GTurnBaseManager.Instance.PreProcessReaction(_followAction, new GActionContext());
     }
 
     public override void Start_Action()
     {
         base.Start_Action();
         
-        //TODO Check the need to replace the tryStartReaction with an event queue for all preprocessed callbacks
+        // TODO Check the need to replace the tryStartReaction with an event queue for all preprocessed callbacks
         GTurnBaseManager.Instance.TryStartReaction(_reaction);
-        _progress = 0;
+        GTurnBaseManager.Instance.TryStartReaction(_followAction);
     }
 
     public override void Update_Action(float delta)
     {
         base.Update_Action(delta);
-        _progress += delta;
-        if (_progress >= 1) 
+        if (_followAction.CurrentState == GAction.EActionState.Finished 
+            && _reaction.CurrentState == GAction.EActionState.Finished)
         {
             End_Action();
-            return;
         }
-        linkedPawn.transform.position = Vector3.Lerp(_linkedStartPosition, _linkedEndCell.transform.position, _progress);
     }
 
     public override void End_Action()
     {
         base.End_Action();
-        linkedPawn.transform.position = _linkedEndCell.transform.position;
-        
-        GEquipment equipment = _linkedEndCell._equipment;
-        if (equipment &&  !(_targetPawn is GAltar))
-        {
-            _linkedEndCell.ReleaseEquipement();
-            linkedPawn.GiveEquipement(equipment);
-        }
-        
     }
-
+    
     public override GHexCoordinate[] GetValidCells()
     {
         if (linkedPawn.equipment || linkedPawn.equipment is GCrown)
@@ -108,11 +89,11 @@ public class
         
         List<GHexCoordinate> newValidCells = new List<GHexCoordinate>();
         
-        foreach (GCell cell in linkedPawn.GetCell()._neighbors)
+        foreach (GCell cell in linkedPawn.GetCell().neighbors)
         {
-            if (!cell || !cell.ownedPawn || cell.ownedPawn == linkedPawn) continue;
+            if (!cell || !cell.GetGridObject<GPawn>() || cell.GetGridObject<GPawn>() == linkedPawn) continue;
             
-            newValidCells.Add(cell._hexCoordinates);
+            newValidCells.Add(cell.hexCoordinates);
         }
         
         return validCells = newValidCells.ToArray();
@@ -121,10 +102,8 @@ public class
     public override GAction CloneAction()
     {
         GPushAction pushAction =  base.CloneAction() as GPushAction;
-        pushAction._pushDistance = _pushDistance;
+        pushAction._pushForce = _pushForce;
         pushAction._followDistance = _followDistance;
-        pushAction._stun = _stun;
-        pushAction._damage = _damage;
         return pushAction;
     }
 }

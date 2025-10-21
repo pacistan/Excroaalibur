@@ -12,9 +12,9 @@
             _crown = (GCrown)linkedPawn.equipment;
         }
         
-        if (targetCell.ownedPawn && targetCell.ownedPawn is GAltar)
+        if (targetCell.GetGridObject<GPawn>() && targetCell.GetGridObject<GPawn>() is GAltar)
         {
-            _altar = (GAltar)targetCell.ownedPawn;
+            _altar = (GAltar)targetCell.GetGridObject<GPawn>();
         }
         
     }
@@ -25,7 +25,7 @@
         if (_crown && _altar)
         {
             _crown.owner.ReleaseEquipement(false);
-            _altar.GiveEquipement(_crown);
+            _altar.GiveEquipement(_crown, true, true);
         }
         End_Action();
     }

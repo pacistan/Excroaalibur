@@ -27,6 +27,4 @@ public class WaveManager : GSingleton<WaveManager>
     [SerializeField, Tooltip("List of potential spawn cells for enemies")]
     private List<GCell> _spawnCells = new List<GCell>();
     
-    
-    
 }

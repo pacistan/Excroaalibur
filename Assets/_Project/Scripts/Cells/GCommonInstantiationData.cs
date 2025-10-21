@@ -7,30 +7,18 @@ using UnityEngine;
 public class GCommonInstantiationData : SerializedScriptableObject
 {
     [DictionaryDrawerSettings(DisplayMode = DictionaryDisplayOptions.OneLine)]
-    public Dictionary<EPawnSpawnType, GPawn> pawnTypeData;
-    
-    [DictionaryDrawerSettings(DisplayMode = DictionaryDisplayOptions.OneLine)]
-    public Dictionary<EEquipmentType, GEquipment> equipmentTypeData;
+    public Dictionary<EGridObjectType, GGridObject> objectTypeData;
     
 #if UNITY_EDITOR
     [OnInspectorInit]
     public void CreateData()
     {
-        if (pawnTypeData == null)
+        if (objectTypeData == null)
         {
-            pawnTypeData = new Dictionary<EPawnSpawnType, GPawn>();
-            foreach (var pawnSpawnType in Enum.GetValues(typeof(EPawnSpawnType)) as EPawnSpawnType[])
+            objectTypeData = new Dictionary<EGridObjectType, GGridObject>();
+            foreach (var gridObjectSpawnType in Enum.GetValues(typeof(EGridObjectType)) as EGridObjectType[])
             {
-                pawnTypeData.Add(pawnSpawnType, null);
-            }
-        }
-
-        if (equipmentTypeData == null)
-        {
-            equipmentTypeData = new Dictionary<EEquipmentType, GEquipment>();
-            foreach (var equipmentType in Enum.GetValues(typeof(EEquipmentType)) as EEquipmentType[])
-            {
-                equipmentTypeData.Add(equipmentType, null);
+                objectTypeData.Add(gridObjectSpawnType, null);
             }
         }
     }

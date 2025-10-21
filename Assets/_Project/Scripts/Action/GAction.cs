@@ -49,13 +49,20 @@ public abstract class GAction
     
     public event Action OnActionStarted; 
     public event Action OnActionFinished;
-
-    [ReadOnly] public GPawn linkedPawn;
-    [ReadOnly] public GCell targetCell;
-    [ReadOnly] public GHexCoordinate[] validCells = Array.Empty<GHexCoordinate>();
-
+    
+    [ReadOnly, HideInEditorMode] 
+    public GPawn linkedPawn;
+    [ReadOnly, HideInEditorMode] 
+    public GCell targetCell;
+    [ReadOnly, HideInEditorMode] 
+    public GHexCoordinate[] validCells = Array.Empty<GHexCoordinate>();
     [ReadOnly] public EActionState CurrentState { get; protected set; } = EActionState.None;
 
+    
+    // Safe handle to avoid infinite action state !
+    float safehandle = 10f;
+    float _elapsedTime = 0f;
+    
     public GAction(){}
     public GAction(GPawn inLinkedPawn, GCell inTargetCell, Action inOnActionStarted = null,
         Action inOnActionFinished = null)
@@ -95,6 +102,7 @@ public abstract class GAction
     /// </summary>
     public virtual void Start_Action()
     {
+        _elapsedTime = 0f;
         CurrentState = EActionState.InProgress;
         OnActionStarted?.Invoke();
     }
@@ -103,7 +111,15 @@ public abstract class GAction
     /// Visual impact of the action. May trigger reactions start.
     /// </summary>
     /// <param name="delta"></param>
-    public virtual void Update_Action(float delta) {}
+    public virtual void Update_Action(float delta)
+    {
+        _elapsedTime += delta;
+        if (_elapsedTime > safehandle)
+        {
+            Debug.LogWarning($"Action {this.GetType().Name} exceeded safe handle time limit. Forcing end of action.");
+            End_Action();
+        }
+    }
 
     /// <summary>
     /// Visual impact of the action. May trigger reactions start.
