@@ -8,88 +8,97 @@ using UnityEngine.Serialization;
 [SelectionBase]
 public class GCell : SerializedMonoBehaviour
 {
-    // Data of the Cell
-    [SerializeField]
-    public GCellData _data;
+    [SerializeField][FormerlySerializedAs("_data")]
+    public GCellData data;
+    
+    [field: SerializeField, FoldoutGroup("PersistantData/Components"), ReadOnly][FormerlySerializedAs("_ui")]
+    public RectTransform ui;
+    
+    [SerializeField, FoldoutGroup("PersistantData/Components")][FormerlySerializedAs("_cellVisualsController")]
+    public GCellVisualsController cellVisualsController;
+    
+    [SerializeField, FoldoutGroup("PersistantData/Components")][FormerlySerializedAs("_pawnSpawnPoint")]
+    public Transform pawnSpawnPoint;
+    
+    [SerializeField, ReadOnly, FoldoutGroup("PersistantData")][FormerlySerializedAs("_hexCoordinates")]
+    public GHexCoordinate hexCoordinates;
+    
+    [field : SerializeField, ReadOnly, FoldoutGroup("PersistantData")][field: FormerlySerializedAs("<_neighbors>k__BackingField")]
+    public GCell[] neighbors {get; private set;}
+    
+    public ETileType GetTileType => data.tileType;
 
-    [field: SerializeField, FoldoutGroup("PersistantData/Components"), ReadOnly]
-    public RectTransform _ui;
-    
-    [SerializeField, FoldoutGroup("PersistantData/Components")]
-    public GCellVisualsController _cellVisualsController;
-    
-    [SerializeField, FoldoutGroup("PersistantData/Components")]
-    public Transform _pawnSpawnPoint;
-    
-    [SerializeField, ReadOnly, FoldoutGroup("PersistantData")]
-    public GHexCoordinate _hexCoordinates;
-
-    [field : SerializeField, ReadOnly, FoldoutGroup("PersistantData")]
-    public GCell[] _neighbors {get; private set;}
-
-    [FormerlySerializedAs("_ownedPawn")]
-    [SerializeField, ReadOnly, FoldoutGroup("PersistantData")]
-    public GPawn ownedPawn;
-    
-    public ETileType GetTileType => _data.tileType;
-    
-    [field: SerializeField, ReadOnly, FoldoutGroup("PersistantData")]
-    public GEquipment _equipment;
-
-    
-    public void ReleaseEquipement()
+    public GGridObject gridObject
     {
-        _equipment.OnReleased();
-        _equipment = null;
+        get {
+            return _gridObject;
+        }
+        
+        set {
+            if (value != null)
+                value.transform.parent = pawnSpawnPoint;
+            _gridObject = value;
+        }
+    }
+    
+    [SerializeField, ReadOnly, FoldoutGroup("PersistantData")]
+    private GGridObject _gridObject;
+
+    public void UpdateGridObject()
+    {
+        gridObject.transform.localPosition = Vector3.zero;
+    }
+    
+    /** Remove the grid object from the cell */
+    public void RemoveGridObject()
+    {
+        gridObject = null;
+    }
+    
+    /** Generic method to get the grid object as a specific type */
+    public T GetGridObject<T>() where T : GGridObject
+    {
+        return gridObject as T;
     }
     
     public void Initialize()
     {
-        _neighbors = new GCell[Enum.GetValues(typeof(EHexDirection)).Length];
+        neighbors = new GCell[Enum.GetValues(typeof(EHexDirection)).Length];
     }
-
-    public void Start()
-    {
-        if (ownedPawn)
-            ownedPawn.SetCell(this);
-    }
-
+    
     public void SetNeighbor(EHexDirection direction, GCell cell)
     {
-        _neighbors[(int)direction] = cell;
-        cell._neighbors[(int)direction.Opposite()] = this;
+        neighbors[(int)direction] = cell;
+        cell.neighbors[(int)direction.Opposite()] = this;
     }
 
     public GCell GetNeighbor(EHexDirection direction)
     {
-        return _neighbors[(int)direction];
+        return neighbors[(int)direction];
     }
 
     public bool IsWalkable(bool ignorePawn = false)
     {
-        return _data.tileType == ETileType.Normal && (ownedPawn == null || ignorePawn);
+        return data.tileType == ETileType.Normal && (GetGridObject<GPawn>() == null || ignorePawn);
     }
 
     public bool IsWalkable(ref ETileType[] walkableTypes, bool ignorePawn = false)
     {
-        return walkableTypes.Contains(_data.tileType) && (ownedPawn == null || ignorePawn);
+        return walkableTypes.Contains(data.tileType) && (GetGridObject<GPawn>() == null || ignorePawn);
     }
     
-    public void GiveEquipement(GEquipment equipment)
+    public void Start()
     {
-        _equipment = equipment;
-        _equipment.transform.parent = _pawnSpawnPoint;
-        _equipment.transform.localPosition = Vector3.zero;
-        _equipment.SetCell(this);
+        if (gridObject)
+            gridObject.SetCell(this);
     }
-    
     
 #if UNITY_EDITOR
     void OnValidate()
     {
-        if (!Application.isPlaying && _cellVisualsController != null)
+        if (!Application.isPlaying && cellVisualsController != null)
         {
-            _cellVisualsController.UpdateCellVisuals();
+            cellVisualsController.UpdateCellVisuals();
         }
     }
 #endif

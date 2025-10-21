@@ -16,15 +16,13 @@ public class GPawnVisualsController : SerializedMonoBehaviour
     private GCommonInstantiationData _instantiationData;
     
     [SerializeField, HideInInspector]
-    private EEquipmentType _previousEquipmentType;
+    private bool _previousHasCrown;
     
     void Start()
     {
         _pawn.OnStunned += OnStunned;
         _pawn.OnUnstunned += OnUnstunned;
         _pawn.OnHealthChanged += HealthChange;
-        
-        if (_pawn.hp < 0) return; // No Hp ! 
         HealthChange(_pawn.hp);
     }
 
@@ -58,26 +56,28 @@ public class GPawnVisualsController : SerializedMonoBehaviour
     #if UNITY_EDITOR
     public void UpdatePawnVisuals()
     {
-        // Equipment Type
-        EEquipmentType newEquipmentType = _pawn.equipmentType;
-        if(_previousEquipmentType != _pawn.equipmentType)
+        if(_previousHasCrown != _pawn.hasCrown)
         {
             if (_pawn.equipment)
             {
                 DestroyImmediate(_pawn.equipment.gameObject);
             }
-            GEquipment equipmentPrefab = _instantiationData.equipmentTypeData[_pawn.equipmentType];
-            if (equipmentPrefab)
+            else
             {
-                _pawn.equipment = PrefabUtility.InstantiatePrefab(equipmentPrefab) as GEquipment;
-                _pawn.equipment.transform.parent = _pawn._equipmentParentTr;
-                _pawn.equipment.transform.localPosition = Vector3.zero;
-                _pawn.equipment.SetOwner(_pawn);
-                EditorUtility.SetDirty(_pawn.equipment);
+                GEquipment equipmentPrefab = _instantiationData.objectTypeData[EGridObjectType.Crown] as GEquipment;
+                if (equipmentPrefab)
+                {
+                    // TODO Check ! 
+                    _pawn.equipment = PrefabUtility.InstantiatePrefab(equipmentPrefab) as GEquipment;
+                    _pawn.equipment.transform.parent = _pawn._equipmentParentTr;
+                    _pawn.equipment.transform.localPosition = Vector3.zero;
+                    _pawn.equipment.owner = _pawn;
+                    EditorUtility.SetDirty(_pawn.equipment);
+                }
             }
-            _previousEquipmentType = newEquipmentType;
+            _previousHasCrown = _pawn.hasCrown;
+            EditorUtility.SetDirty(this);
         }
-        EditorUtility.SetDirty(this);
     }
     #endif
 }

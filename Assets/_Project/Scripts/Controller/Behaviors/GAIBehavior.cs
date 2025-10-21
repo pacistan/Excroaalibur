@@ -76,7 +76,7 @@ public abstract class GAIBehavior : ScriptableObject
         GCell cell = startCell;
         foreach (EHexDirection direction in path)
         {
-            cell = cell._neighbors[(int)direction];
+            cell = cell.neighbors[(int)direction];
         }
         return cell;
     }

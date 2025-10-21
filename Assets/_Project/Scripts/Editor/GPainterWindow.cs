@@ -364,14 +364,14 @@ public class GPainterWindow :  EditorWindow
             {
                 // Instantiate prefab
                 GameObject instance = (GameObject)PrefabUtility.InstantiatePrefab(currentBrush.prefab);
-                cell._cellVisualsController.OnCreateVisualPreset(instance, rotation, useRandomRotation);
+                cell.cellVisualsController.OnCreateVisualPreset(instance, rotation, useRandomRotation);
                 // Register undo
                 Undo.RegisterCreatedObjectUndo(instance, "Paint Prefab");
                 Selection.activeGameObject = instance;
             }
             else
             {
-                cell._cellVisualsController.OnCreateVisualPreset(null);
+                cell.cellVisualsController.OnCreateVisualPreset(null);
             }
         }
     }

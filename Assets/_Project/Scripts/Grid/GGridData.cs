@@ -29,9 +29,9 @@ public class GGridData : SerializedScriptableObject
         {
             for (int column = 0; column < gridSize.y; column++)
             {
-                if (grid[i]._data.IsCellChanged())
+                if (grid[i].data.IsCellChanged())
                 {
-                    cellData.Add(new Vector2Int(column, row), grid[i]._data);
+                    cellData.Add(new Vector2Int(column, row), grid[i].data);
                 }
                 i++;
             }

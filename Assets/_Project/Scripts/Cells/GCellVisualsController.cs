@@ -8,8 +8,6 @@ using UnityEngine.UI;
 [RequireComponent(typeof(GCell))]
 public class GCellVisualsController : SerializedMonoBehaviour
 {
-
-    
     [FormerlySerializedAs("_commonCellData")]
     [SerializeField]
     GCellCommonData cellCommonData;
@@ -34,21 +32,17 @@ public class GCellVisualsController : SerializedMonoBehaviour
 
     [SerializeField, ReadOnly, FoldoutGroup("Components")]
     GameObject _visualPreset;
-
-
-    [SerializeField, HideInInspector]
-    EPawnSpawnType _previousPawnSpawnType;
     
     [SerializeField, HideInInspector]
-    EEquipmentType _previousEquipmentType;
+    EGridObjectType _previousObjectSpawnType;
     
 #if UNITY_EDITOR
     public void UpdateCellVisuals()
     {
-        if (_cell._ui == null) return;
-        _text = _cell._ui.GetComponentInChildren<TextMeshProUGUI>();
-        _highlight = _cell._ui.GetComponentInChildren<Image>();
-        var tileTypeData = cellCommonData.tileTypeData[_cell._data.tileType];
+        if (_cell.ui == null) return;
+        _text = _cell.ui.GetComponentInChildren<TextMeshProUGUI>();
+        _highlight = _cell.ui.GetComponentInChildren<Image>();
+        var tileTypeData = cellCommonData.tileTypeData[_cell.data.tileType];
 
         // Tile Type
         {
@@ -59,57 +53,20 @@ public class GCellVisualsController : SerializedMonoBehaviour
             _meshFilter.sharedMesh = mesh;
         }
         
-        // Pawn Type
-        EPawnSpawnType newPawnType = _cell._data.pawnType;
-        if(_previousPawnSpawnType != newPawnType)
+        // Object Type
+        EGridObjectType newObjectType = _cell.data.objectType;
+        if(_previousObjectSpawnType != newObjectType)
         {
-            if (_cell._equipment)
+            if (_cell.GetGridObject<GPawn>())
             {
-                _cell._data.pawnType = _previousPawnSpawnType;
-                Debug.LogWarning("Can't Change Pawn when there is an equipment");
+                DestroyImmediate(_cell.gridObject.gameObject);
             }
-            else
+            GGridObject objectPrefab = instantiationCommonData.objectTypeData[newObjectType];
+            if (objectPrefab)
             {
-                if (_cell.ownedPawn)
-                {
-                    DestroyImmediate(_cell.ownedPawn.gameObject);
-                }
-                GPawn pawnPrefab = instantiationCommonData.pawnTypeData[newPawnType];
-                if (pawnPrefab)
-                {
-                    _cell.ownedPawn = PrefabUtility.InstantiatePrefab(pawnPrefab, _cell._pawnSpawnPoint) as GPawn;
-                    _cell.ownedPawn.transform.localPosition = Vector3.zero;
-                    _cell.ownedPawn.SetCell(_cell);
-                }
-                _previousPawnSpawnType = newPawnType;
+                _cell.gridObject = PrefabUtility.InstantiatePrefab(objectPrefab, _cell.pawnSpawnPoint) as GGridObject;
             }
-        }
-        
-        // Equipment Type
-        EEquipmentType newEquipmentType = _cell._data.equipmentType;
-        if(_previousEquipmentType != _cell._data.equipmentType)
-        {
-            if (_cell.ownedPawn)
-            {
-                _cell._data.equipmentType = _previousEquipmentType;
-                Debug.LogWarning("Can't Change equipment when there is a pawn");
-            }
-            else
-            {
-                if (_cell._equipment)
-                {
-                    DestroyImmediate(_cell._equipment.gameObject);
-                }
-                GEquipment equipmentPrefab = instantiationCommonData.equipmentTypeData[newEquipmentType];
-                if (equipmentPrefab)
-                {
-                    _cell._equipment = PrefabUtility.InstantiatePrefab(equipmentPrefab) as GEquipment;
-                    _cell._equipment.transform.parent = _cell._pawnSpawnPoint;
-                    _cell._equipment.transform.localPosition = Vector3.zero;
-                    _cell._equipment.SetCell(_cell);
-                }
-                _previousEquipmentType = newEquipmentType;
-            }
+            _previousObjectSpawnType = newObjectType;
         }
         
         // UI
@@ -157,7 +114,7 @@ public class GCellVisualsController : SerializedMonoBehaviour
 
     public void ResetCellHighlightColor()
     {
-        var tileTypeData = cellCommonData.tileTypeData[_cell._data.tileType];
+        var tileTypeData = cellCommonData.tileTypeData[_cell.data.tileType];
         _highlight.color = tileTypeData.highlightColor;
     }
 

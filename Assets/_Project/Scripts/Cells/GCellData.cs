@@ -4,44 +4,36 @@ using UnityEngine.Serialization;
 using static GCellVisualsController;
 
     public enum ETileType { Normal, Wall, Hole }
-    public enum EPawnSpawnType {None, Sentry, PlayerPawn, Altar, Brawler, Speedy}
-    public enum EEquipmentType {None, Crown}
+    public enum EGridObjectType {None, Sentry, PlayerPawn, Altar, Brawler, Speedy, Crown}
 
 [System.Serializable]
 public struct GCellData
 {
-
     [SerializeField, ReadOnly]
     public Vector2Int gridCoordinates;
     
     [SerializeField]
     public ETileType tileType;
 
-    [SerializeField, EnableIf("equipmentType", EEquipmentType.None)]
-    public EPawnSpawnType pawnType;
-    
-    [SerializeField, EnableIf("pawnType", EPawnSpawnType.None)]
-    public EEquipmentType equipmentType;
-
+    [SerializeField, ShowIf("tileType", ETileType.Normal)]
+    public EGridObjectType objectType;
     
     public GCellData(Vector2Int inGridCoordinates)
     {
         gridCoordinates = inGridCoordinates;
         tileType = ETileType.Normal;
-        pawnType = EPawnSpawnType.None;
-        equipmentType = EEquipmentType.None;
+        objectType = EGridObjectType.None;
     }
 
     public GCellData(GCellData inCellData,Vector2Int inGridCoordinates)
     {
         gridCoordinates = inGridCoordinates;
         tileType = inCellData.tileType;
-        pawnType = inCellData.pawnType;
-        equipmentType = inCellData.equipmentType;
+        objectType = inCellData.objectType;
     }
 
     public bool IsCellChanged()
     {
-        return tileType != ETileType.Normal || pawnType != EPawnSpawnType.None || equipmentType != EEquipmentType.None;
+        return tileType != ETileType.Normal || objectType != EGridObjectType.None;
     }
 }

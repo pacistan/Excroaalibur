@@ -36,14 +36,14 @@ public class GGridManipulation
 
             var values = (ETileType[])Enum.GetValues(typeof(ETileType));
             int len = values.Length;
-            int cur = (int)cell._data.tileType;
+            int cur = (int)cell.data.tileType;
             int next = (cur + 1) % len;
 
             // If _data is a struct, modify via copy then reassign:
-            var data = cell._data;
+            var data = cell.data;
             data.tileType = values[next];
-            cell._data = data;
-            cell._cellVisualsController.UpdateCellVisuals();
+            cell.data = data;
+            cell.cellVisualsController.UpdateCellVisuals();
             EditorUtility.SetDirty(cell);
         }
     }

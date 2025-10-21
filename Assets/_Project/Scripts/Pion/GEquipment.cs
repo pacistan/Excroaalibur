@@ -3,27 +3,21 @@ using UnityEngine;
 
 public class GEquipment : GGridObject
 {
-    [field : SerializeField, ReadOnly]
-    public GPawn owner { get; private set; }
+    [SerializeField, ReadOnly]
+    public GPawn owner;
 
     public override GCell GetCell()
     {
         return owner ? owner.GetCell() : _currentCell;
     }
     
-    public void ForceRelease()
-    {
-        owner.ReleaseEquipement();
-    }
-    
     public void SetOwner(GPawn newOwner)
     {
-        if (GetCell() && GetCell()._equipment)
+        if (GetCell() && GetCell().GetGridObject<GEquipment>())
         {
-            GetCell().ReleaseEquipement();
+            GetCell().gridObject = null;
         }
         owner = newOwner;
-        //GetCell() = owner.GetCell();
     }
 
     public void OnReleased()
@@ -34,7 +28,7 @@ public class GEquipment : GGridObject
     public override void SetCell(GCell newCell)
     {
         base.SetCell(newCell);
-        // newCell.GiveEquipement(this);
+        owner.ReleaseEquipement(false);
     }
 
     public override void SetCell(GHexCoordinate coordinate)

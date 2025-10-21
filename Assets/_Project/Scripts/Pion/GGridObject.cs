@@ -3,7 +3,7 @@ using System;
 using UnityEngine;
 
 [SelectionBase]
-public class GGridObject : MonoBehaviour
+public class GGridObject : SerializedMonoBehaviour
 {
     [ReadOnly, FoldoutGroup("Persistant Data")]
     public GHexCoordinate coordinate;
@@ -18,10 +18,10 @@ public class GGridObject : MonoBehaviour
     
     public virtual void SetCell(GCell newCell)
     {
-        if (_currentCell && this is GPawn) _currentCell.ownedPawn = null;
         _currentCell = newCell;
+        if (_currentCell && _currentCell != newCell) _currentCell.gridObject = null;
         if (!newCell) return;
-        coordinate = newCell._hexCoordinates;
+        coordinate = newCell.hexCoordinates;
     }
 
     public virtual GCell GetCell()
