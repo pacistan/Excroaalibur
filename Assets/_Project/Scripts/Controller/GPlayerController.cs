@@ -1,4 +1,5 @@
-﻿using Sirenix.OdinInspector;
+﻿using FMODUnity;
+using Sirenix.OdinInspector;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -119,9 +120,15 @@ public class GPlayerController : GController
     {
         if (GTurnBaseManager.Instance.currentTurnController != this) return;
         DebugEndTurn();
+        
+        GCell newCell = GetCellUnderMouse();
+        if (newCell != _targetCell)
+        {
+            RuntimeManager.PlayOneShot("event:/Map/Hover_Empty");
+            _targetCell = newCell;
+        }
         if (_selectInput.WasPressedThisFrame())
         {
-            _targetCell = GetCellUnderMouse();
             if (!_targetCell) return;
             
             if (_selectedPlayer && _selectedAction != null && _selectedAction.IsValidCell(_targetCell.hexCoordinates))
