@@ -1,10 +1,12 @@
 ﻿using DG.Tweening;
+using FMOD.Studio;
 using FMODUnity;
 using Sirenix.OdinInspector;
 using Sirenix.Utilities;
 using System;
 using System.Collections.Generic;
 using UnityEngine;
+using STOP_MODE = FMOD.Studio.STOP_MODE;
 
 public class GThrowAction : GAction
 {
@@ -55,6 +57,8 @@ public class GThrowAction : GAction
     
     private float _distance;
     private float _progress;
+
+    EventInstance ThrowSoundInstance;
     
     public override void PreProcess(GActionContext context = null)
     {
@@ -160,10 +164,11 @@ public class GThrowAction : GAction
         float backDur  = Vector3.Distance(_hitPos, _returnPos)  / Mathf.Max(0.01f, _returnCrownSpeed);
         float landDur  = Vector3.Distance(_hitPos, _landingPos) / Mathf.Max(0.01f, _landCrownSpeed);
 
+        ThrowSoundInstance = RuntimeManager.CreateInstance("event:/Crown/Throw");
+        ThrowSoundInstance.set3DAttributes(RuntimeUtils.To3DAttributes(_crown.gameObject));
+
         _seq = DOTween.Sequence()
             .SetUpdate(UpdateType.Manual, false); // Manual update mode
-        
-        RuntimeManager.PlayOneShotAttached("event:/Pawn/Throw", linkedPawn.gameObject);
         
         Vector3 throwMidPoint = Vector3.Lerp(_startPos, _hitPos, 0.5f);
         throwMidPoint.y += _throwMidPointHeight;
@@ -174,6 +179,7 @@ public class GThrowAction : GAction
                 .SetOptions(false)
         );
 
+        ThrowSoundInstance.start();
         // Impact callback: Fire the reaction of the target pawn
         _seq.AppendCallback(() =>
         {
@@ -189,6 +195,7 @@ public class GThrowAction : GAction
                 if (!_targetPawn.isPlayer)
                     RuntimeManager.PlayOneShotAttached("event:/Crown/Hit", _crown.gameObject);
             }
+            ThrowSoundInstance.stop(STOP_MODE.ALLOWFADEOUT);
         });
 
         if (_killTarget)
