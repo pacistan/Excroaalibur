@@ -1,4 +1,5 @@
 ﻿using Sirenix.OdinInspector;
+using System.Collections.Generic;
 using TMPro;
 using UnityEditor;
 using UnityEngine;
@@ -31,8 +32,8 @@ public class GCellVisualsController : SerializedMonoBehaviour
     Transform _collidersParent;
 
     [SerializeField, ReadOnly, FoldoutGroup("Components")]
-    GameObject _visualPreset;
-    
+    List<GameObject> _visualPresetInstances;
+
     [SerializeField, HideInInspector]
     EGridObjectType _previousObjectSpawnType;
     
@@ -88,28 +89,30 @@ public class GCellVisualsController : SerializedMonoBehaviour
         Image image;
     }
 
-    public void OnCreateVisualPreset(GameObject preset, Quaternion rotation = new Quaternion(), bool useRandomRotation = false)
+    public GameObject OnCreateVisualPreset(GCellVisualPresetData brush, bool serialize = true)
     {
-        if (_visualPreset)
+        GameObject instance = (GameObject)PrefabUtility.InstantiatePrefab(brush.prefab);
+        _visualPresetInstances.Add(instance);
+        if (serialize)
         {
-            DestroyImmediate(_visualPreset);
-        }
-        _visualPreset = preset;
-
-        if (preset)
-        {
-            preset.transform.parent = _visualsParent;
-            preset.transform.localPosition = Vector3.zero;
-            if (useRandomRotation)
-            {
-                preset.transform.localRotation = rotation;
-            }
-            else
-            {
-                preset.transform.Rotate(rotation * Vector3.up);
-            }
+            _cell.data.AddPaintedVisual(brush);
         }
         
+        if (instance)
+        {
+            instance.transform.parent = _visualsParent;
+            instance.transform.localPosition = Vector3.zero;
+            instance.transform.localRotation = Quaternion.Euler(0, brush.rotation, 0);
+        }
+        EditorUtility.SetDirty(this);
+        return instance;
+    }
+
+    public void ClearVisualsPresets()
+    {
+        _visualPresetInstances.ForEach(instance => DestroyImmediate(instance));
+        _cell.data.paintedVisuals.Clear();
+        _visualPresetInstances.Clear();
     }
 #endif
     public void UpdateCellDebugNum(string newDebugText)

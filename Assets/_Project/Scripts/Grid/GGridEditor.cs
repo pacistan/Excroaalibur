@@ -176,6 +176,10 @@ public class GGridEditor : MonoBehaviour
         cell.cellVisualsController.UpdateCellVisuals();
         cell.cellVisualsController.UpdateScaling(_gridData.hexSize);
         cell.hexCoordinates = GHexCoordinate.FrommOffsetCoordinate(row, column);
+        foreach (var visualPreset in cell.data.paintedVisuals)
+        {
+            cell.cellVisualsController.OnCreateVisualPreset(visualPreset, false);
+        }
     }
 
     // Creates a new ScriptableObject of type GGridData in the referenced Folder with the data of the active grid
@@ -187,6 +191,7 @@ public class GGridEditor : MonoBehaviour
         newAsset.GenerateCellData(gridManager._grid, gridManager._currentGridSize, gridManager._hexSize, gridManager._isOffsetOnPairs);
         UnityEditor.AssetDatabase.CreateAsset(newAsset, $"{pathToGridLayoutFolders}/{_gridDataFileName}.asset");
         UnityEditor.AssetDatabase.SaveAssets();
+        _gridData = newAsset;
     }
 
     private void EnablePickingUIGrid()

@@ -8,7 +8,7 @@ public class GPainterWindow :  EditorWindow
     
     // Currently selected brush
     private int selectedBrushIndex = -1;
-    private GPrefabBrushLibrary.BrushData currentBrush;
+    private GBrushData currentBrush;
     
     // Grid display settings
     private int columns = 5;
@@ -149,7 +149,7 @@ public class GPainterWindow :  EditorWindow
         EditorGUILayout.EndVertical();
     }
 
-    private void DrawBrushCell(Rect rect, int index, GPrefabBrushLibrary.BrushData brush)
+    private void DrawBrushCell(Rect rect, int index, GBrushData brush)
     {
         bool isSelected = (index == selectedBrushIndex);
         
@@ -334,18 +334,15 @@ public class GPainterWindow :  EditorWindow
             return;
 
         // Calculate rotation
-        Quaternion rotation = Quaternion.identity;
-        bool useRandomRotation = false;
+        float rotation = 0;
         
         if (currentBrush.randomRotation)
         {
-            float randomRotatiton = currentBrush.isIncrementalRotation ? Random.Range(0, 6) * 60f : Random.Range(0f, 360f);
-            rotation *= Quaternion.Euler(0f, Random.Range(0f, 360f),0f);
-            useRandomRotation = true;
+            rotation = currentBrush.isIncrementalRotation ? Random.Range(0, 6) * 60f : Random.Range(0f, 360f);
         }
         else
         {
-            rotation *= Quaternion.Euler(0, currentBrush.rotationOffset, 0);
+            rotation += currentBrush.rotationOffset;
         }
         
         var hits = Physics.OverlapSphere(hit.point, brushSize, paintLayerMask);
@@ -364,15 +361,17 @@ public class GPainterWindow :  EditorWindow
             if (currentBrush.prefab != null)
             {
                 // Instantiate prefab
-                GameObject instance = (GameObject)PrefabUtility.InstantiatePrefab(currentBrush.prefab);
-                cell.cellVisualsController.OnCreateVisualPreset(instance, rotation, useRandomRotation);
+
+                GCellVisualPresetData presetData = new GCellVisualPresetData(currentBrush.prefab, rotation);
+                
+                GameObject instance = cell.cellVisualsController.OnCreateVisualPreset(presetData);
                 // Register undo
                 Undo.RegisterCreatedObjectUndo(instance, "Paint Prefab");
                 Selection.activeGameObject = instance;
             }
             else
             {
-                cell.cellVisualsController.OnCreateVisualPreset(null);
+                cell.cellVisualsController.ClearVisualsPresets();
             }
         }
     }
