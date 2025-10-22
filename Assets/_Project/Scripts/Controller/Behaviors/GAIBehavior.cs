@@ -28,7 +28,6 @@ public abstract class GAIBehavior : ScriptableObject
     
     public virtual void OnReceivedEquipment(GEquipment equipment)
     {
-
     }
 
     public virtual void OnLoseEquipment(GEquipment lostItem)
