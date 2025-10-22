@@ -138,5 +138,10 @@ public class WaveManager : GSingleton<WaveManager>
         _cachedNextWave = null;
         _cachedNextSpawnCells.Clear();
     }
-    
+
+    protected override void Awake()
+    {
+        base.Awake(); 
+        // TODO : All Spawncell become Spawner TileType ! 
+    }
 }
