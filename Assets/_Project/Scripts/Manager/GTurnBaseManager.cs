@@ -46,6 +46,8 @@ public class GTurnBaseManager : GSingleton<GTurnBaseManager>
     [SerializeField, HideInEditorMode, ReadOnly, Tooltip("Number of Turn elapsed since the start of the Fight"), BoxGroup("Turn")]
     private int _turnCount = 0;
     
+    private WaitUntil _waitForTurn = null;
+    
     public ETurnState _currentTurnState { get; private set; }
 
     /** Register an Controller to the Turn Base Manager */
@@ -179,6 +181,7 @@ public class GTurnBaseManager : GSingleton<GTurnBaseManager>
     protected override void Awake()
     {
         base.Awake();
+        _waitForTurn = new WaitUntil(() => !isActionPlaying);
         _turnOrderControllerQueue.Clear();
         _actionsInProgress.Clear();
         // enabled = false;
@@ -218,10 +221,15 @@ public class GTurnBaseManager : GSingleton<GTurnBaseManager>
         _actionsInProgress.Clear();
     }
     
+    // ReSharper disable Unity.PerformanceAnalysis
     IEnumerator ProcessEndTurn()
     {
         float startTime = Time.time;
-        yield return new WaitUntil(() => !isActionPlaying || Time.time > startTime + _safeTimeHandle);
+        /*while (isActionPlaying && Time.time <= startTime + _safeTimeHandle)
+        {
+            yield return null;
+        }*/
+        yield return _waitForTurn; /*=> !isActionPlaying || Time.time > startTime + _safeTimeHandle);*/
         
         _currentTurnState = ETurnState.Finished;
         
@@ -242,6 +250,7 @@ public class GTurnBaseManager : GSingleton<GTurnBaseManager>
         }
         
         StartTurn();
+        yield return null;
     }
 }
 

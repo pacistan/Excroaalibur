@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Sirenix.OdinInspector;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
@@ -54,7 +55,7 @@ public class WaveManager : GSingleton<WaveManager>
     [field: SerializeField, Tooltip("List of waves to spawn")]
     public List<SWave> waves { get; private set; } = new List<SWave>();
     
-    [SerializeField, Tooltip("List of potential spawn cells for enemies")]
+    [HideInEditorMode, ReadOnly, Tooltip("List of potential spawn cells for enemies")]
     private List<GCell> _spawnCells = new List<GCell>();
     
     private readonly List<GCell> _cachedNextSpawnCells = new List<GCell>();
@@ -142,6 +143,6 @@ public class WaveManager : GSingleton<WaveManager>
     protected override void Awake()
     {
         base.Awake(); 
-        // TODO : All Spawncell become Spawner TileType ! 
+        _spawnCells = GGridManager.Instance.GetAllCellsOfType(ETileType.Spawner);
     }
 }

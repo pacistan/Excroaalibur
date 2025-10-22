@@ -4345,6 +4345,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 2773145366231783339, guid: ea08067a6a7f16e46a2a7007c2355b2e, type: 3}
+      propertyPath: m_Mesh
+      value: 
+      objectReference: {fileID: -3579005124961438040, guid: 7dbd900cbba64de469aee262e60351e3, type: 3}
     - target: {fileID: 3577346378785680272, guid: ea08067a6a7f16e46a2a7007c2355b2e, type: 3}
       propertyPath: _text
       value: 
@@ -4364,7 +4368,7 @@ PrefabInstance:
     - target: {fileID: 6697371883044350570, guid: ea08067a6a7f16e46a2a7007c2355b2e, type: 3}
       propertyPath: 'm_Materials.Array.data[0]'
       value: 
-      objectReference: {fileID: 2100000, guid: ee0facce3cc58ce4c90a60ca00ae5868, type: 2}
+      objectReference: {fileID: 2100000, guid: 8f754fa9c9dfe07408c1199466eb8976, type: 2}
     - target: {fileID: 8962405803899580738, guid: ea08067a6a7f16e46a2a7007c2355b2e, type: 3}
       propertyPath: ui
       value: 
@@ -4373,6 +4377,10 @@ PrefabInstance:
       propertyPath: _ui
       value: 
       objectReference: {fileID: 74322047}
+    - target: {fileID: 8962405803899580738, guid: ea08067a6a7f16e46a2a7007c2355b2e, type: 3}
+      propertyPath: data.tileType
+      value: 3
+      objectReference: {fileID: 0}
     - target: {fileID: 8962405803899580738, guid: ea08067a6a7f16e46a2a7007c2355b2e, type: 3}
       propertyPath: hexCoordinates.z
       value: 2
@@ -6802,6 +6810,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 2773145366231783339, guid: ea08067a6a7f16e46a2a7007c2355b2e, type: 3}
+      propertyPath: m_Mesh
+      value: 
+      objectReference: {fileID: -3579005124961438040, guid: 7dbd900cbba64de469aee262e60351e3, type: 3}
     - target: {fileID: 3577346378785680272, guid: ea08067a6a7f16e46a2a7007c2355b2e, type: 3}
       propertyPath: _text
       value: 
@@ -6821,7 +6833,7 @@ PrefabInstance:
     - target: {fileID: 6697371883044350570, guid: ea08067a6a7f16e46a2a7007c2355b2e, type: 3}
       propertyPath: 'm_Materials.Array.data[0]'
       value: 
-      objectReference: {fileID: 2100000, guid: ee0facce3cc58ce4c90a60ca00ae5868, type: 2}
+      objectReference: {fileID: 2100000, guid: 8f754fa9c9dfe07408c1199466eb8976, type: 2}
     - target: {fileID: 8962405803899580738, guid: ea08067a6a7f16e46a2a7007c2355b2e, type: 3}
       propertyPath: ui
       value: 
@@ -6830,6 +6842,10 @@ PrefabInstance:
       propertyPath: _ui
       value: 
       objectReference: {fileID: 1504203412}
+    - target: {fileID: 8962405803899580738, guid: ea08067a6a7f16e46a2a7007c2355b2e, type: 3}
+      propertyPath: data.tileType
+      value: 3
+      objectReference: {fileID: 0}
     - target: {fileID: 8962405803899580738, guid: ea08067a6a7f16e46a2a7007c2355b2e, type: 3}
       propertyPath: hexCoordinates.x
       value: -1
@@ -11882,6 +11898,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 2773145366231783339, guid: ea08067a6a7f16e46a2a7007c2355b2e, type: 3}
+      propertyPath: m_Mesh
+      value: 
+      objectReference: {fileID: -3579005124961438040, guid: 7dbd900cbba64de469aee262e60351e3, type: 3}
     - target: {fileID: 3577346378785680272, guid: ea08067a6a7f16e46a2a7007c2355b2e, type: 3}
       propertyPath: _text
       value: 
@@ -11901,7 +11921,7 @@ PrefabInstance:
     - target: {fileID: 6697371883044350570, guid: ea08067a6a7f16e46a2a7007c2355b2e, type: 3}
       propertyPath: 'm_Materials.Array.data[0]'
       value: 
-      objectReference: {fileID: 2100000, guid: ee0facce3cc58ce4c90a60ca00ae5868, type: 2}
+      objectReference: {fileID: 2100000, guid: 8f754fa9c9dfe07408c1199466eb8976, type: 2}
     - target: {fileID: 8962405803899580738, guid: ea08067a6a7f16e46a2a7007c2355b2e, type: 3}
       propertyPath: ui
       value: 
@@ -11910,6 +11930,10 @@ PrefabInstance:
       propertyPath: _ui
       value: 
       objectReference: {fileID: 179301616}
+    - target: {fileID: 8962405803899580738, guid: ea08067a6a7f16e46a2a7007c2355b2e, type: 3}
+      propertyPath: data.tileType
+      value: 3
+      objectReference: {fileID: 0}
     - target: {fileID: 8962405803899580738, guid: ea08067a6a7f16e46a2a7007c2355b2e, type: 3}
       propertyPath: hexCoordinates.x
       value: -1
@@ -20141,7 +20165,7 @@ PrefabInstance:
     - target: {fileID: 6513531931879083242, guid: 4151a7ed24221ff4f8f5f9c8d5cc51bc, type: 3}
       propertyPath: serializationData.Prefab
       value: 
-      objectReference: {fileID: 0}
+      objectReference: {fileID: 6513531931879083242, guid: 4151a7ed24221ff4f8f5f9c8d5cc51bc, type: 3}
     - target: {fileID: 6513531931879083242, guid: 4151a7ed24221ff4f8f5f9c8d5cc51bc, type: 3}
       propertyPath: <actionTokens>k__BackingField
       value: 2
@@ -20611,6 +20635,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 2773145366231783339, guid: ea08067a6a7f16e46a2a7007c2355b2e, type: 3}
+      propertyPath: m_Mesh
+      value: 
+      objectReference: {fileID: -3579005124961438040, guid: 7dbd900cbba64de469aee262e60351e3, type: 3}
     - target: {fileID: 3577346378785680272, guid: ea08067a6a7f16e46a2a7007c2355b2e, type: 3}
       propertyPath: _text
       value: 
@@ -20630,7 +20658,7 @@ PrefabInstance:
     - target: {fileID: 6697371883044350570, guid: ea08067a6a7f16e46a2a7007c2355b2e, type: 3}
       propertyPath: 'm_Materials.Array.data[0]'
       value: 
-      objectReference: {fileID: 2100000, guid: ee0facce3cc58ce4c90a60ca00ae5868, type: 2}
+      objectReference: {fileID: 2100000, guid: 8f754fa9c9dfe07408c1199466eb8976, type: 2}
     - target: {fileID: 8962405803899580738, guid: ea08067a6a7f16e46a2a7007c2355b2e, type: 3}
       propertyPath: ui
       value: 
@@ -20639,6 +20667,10 @@ PrefabInstance:
       propertyPath: _ui
       value: 
       objectReference: {fileID: 241106526}
+    - target: {fileID: 8962405803899580738, guid: ea08067a6a7f16e46a2a7007c2355b2e, type: 3}
+      propertyPath: data.tileType
+      value: 3
+      objectReference: {fileID: 0}
     - target: {fileID: 8962405803899580738, guid: ea08067a6a7f16e46a2a7007c2355b2e, type: 3}
       propertyPath: hexCoordinates.x
       value: -1

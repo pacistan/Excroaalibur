@@ -55,6 +55,7 @@ public class GGridManager : GSingleton<GGridManager>
 
         GCell currentCell = to;
         int currentCellStep = _stepMap[to.data.gridCoordinates];
+        
         /*if (maxNumberOfSteps != -1 && maxNumberOfSteps < currentCellStep)
         {
             var finalStep = _stepMap.First(a =>
@@ -179,7 +180,7 @@ public class GGridManager : GSingleton<GGridManager>
     public void GenerateStepMap(GCell from, ETileType[] walkableTypes)
     {
         _stepMap = new Dictionary<Vector2Int, int>();
-        if (!from || !from.IsWalkable(true))
+        if (!from || !from.IsWalkable(ref walkableTypes, true))
         {
             return;
         }
@@ -260,6 +261,19 @@ public class GGridManager : GSingleton<GGridManager>
             }
         }
         return outCell;
+    }
+    
+    public List<GCell> GetAllCellsOfType(ETileType tileType)
+    {
+        List<GCell> cellsOfType = new List<GCell>();
+        foreach (GCell cell in _grid)
+        {
+            if (cell.data.tileType == tileType)
+            {
+                cellsOfType.Add(cell);
+            }
+        }
+        return cellsOfType;
     }
 }
 
