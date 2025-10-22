@@ -6,6 +6,9 @@ public class GEquipment : GGridObject
     [SerializeField, ReadOnly]
     public GPawn owner;
 
+    [field: SerializeField, FoldoutGroup("Components")]
+    public GEquipmentVisuals visuals { get; private set; }
+    
     public override GCell GetCell()
     {
         return owner ? owner.GetCell() : _currentCell;

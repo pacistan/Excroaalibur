@@ -85,6 +85,7 @@ public class GCellVisualsController : SerializedMonoBehaviour
         }
         EditorUtility.SetDirty(this);
         EditorUtility.SetDirty(_cell);
+        Image image;
     }
 
     public void OnCreateVisualPreset(GameObject preset, Quaternion rotation = new Quaternion(), bool useRandomRotation = false)

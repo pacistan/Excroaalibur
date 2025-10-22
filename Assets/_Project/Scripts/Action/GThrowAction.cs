@@ -205,6 +205,7 @@ public class GThrowAction : GAction
             {
                 _targetPawn.Kill();
                 RuntimeManager.PlayOneShotAttached("event:/Crown/Catch", _crown.gameObject);
+                _crown.visuals.OnUpdateDebugTextContent(_crown._currentDamage);
             }); 
             
             Vector3 returnMidPoint = Vector3.Lerp(_hitPos, _returnPos, 0.5f);
@@ -222,6 +223,7 @@ public class GThrowAction : GAction
            _seq.AppendCallback(() =>
            {
                _targetPawn.GiveEquipement(_crown, true, true);
+               _crown.visuals.OnUpdateDebugTextContent(_crown._currentDamage);
            }); 
         }
         else if (canLandInFrontOf && _targetPawn)
