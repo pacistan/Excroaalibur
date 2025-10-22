@@ -78,8 +78,8 @@ public class GAIController : GController
         GTurnBaseManager.Instance.UnregisterController(this);
         GTurnBaseManager.Instance.RequestEndTurn(this, false);
     }
-    
-    void Start()
+
+    void Awake()
     {
         pawn = GetComponent<GPawn>();
         _aiBehavior = ScriptableObject.Instantiate(_aiBehavior);
@@ -87,5 +87,6 @@ public class GAIController : GController
         pawn.actions = _aiBehavior.actions;
         pawn.OnKill += OnKilled;
     }
+    
 }
 

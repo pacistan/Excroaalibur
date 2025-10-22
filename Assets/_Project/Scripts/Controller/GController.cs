@@ -5,8 +5,6 @@ using UnityEngine;
 
 public abstract class GController : MonoBehaviour
 {
-
-
     public event Action OnStartTurn;
     public event Action OnEndTurn;
     public event Action OnStartAction;

@@ -53,6 +53,7 @@ public class GTurnBaseManager : GSingleton<GTurnBaseManager>
     {
         if (enabled && !_turnOrderControllerQueue.Contains(Controller))
         {
+            _controllerList.Add(Controller);
             _turnOrderControllerQueue.Add(Controller);
         } 
         else if (!_controllerList.Contains(Controller))
@@ -140,9 +141,17 @@ public class GTurnBaseManager : GSingleton<GTurnBaseManager>
     }
     
     /** Create the Queue based on Rule (Actually : player is first, then IA) */
-    private void CreateQueue()
+    private void CreateQueue(bool playerLast = false)
     {
-        var orderedEntities = _controllerList.OrderBy(entity => entity is GPlayerController ? 0 : 1).ToList();
+        _turnOrderControllerQueue.Clear();
+        var orderedEntities = _controllerList.OrderBy(entity =>
+        {
+            if (entity is GPlayerController) return playerLast ? int.MaxValue : int.MinValue;
+            int closestCrownDistance;
+            GGridObjectRegistry.GetClosestObjectOfType<GCrown>(entity.GetComponent<GPawn>().GetCell(), out closestCrownDistance, true);
+            return closestCrownDistance;
+        }).ToList();
+        
         foreach (var entity in orderedEntities) 
         {
             _turnOrderControllerQueue.Add(entity);
@@ -172,7 +181,7 @@ public class GTurnBaseManager : GSingleton<GTurnBaseManager>
         base.Awake();
         _turnOrderControllerQueue.Clear();
         _actionsInProgress.Clear();
-        // enabled = false;0
+        // enabled = false;
         _currentTurnState = ETurnState.NotStarted;
     }
 
@@ -218,8 +227,7 @@ public class GTurnBaseManager : GSingleton<GTurnBaseManager>
         
         if (_turnOrderControllerQueue.First() is GPlayerController) // Before Player Turn
         {
-            // TODO : Create Next Queue For Order The New Turn ! 
-            // CreateQueue();
+            CreateQueue();
             _turnCount++;
             WaveManager.Instance.CheckNextWave(_turnCount);
         }
@@ -229,6 +237,8 @@ public class GTurnBaseManager : GSingleton<GTurnBaseManager>
             {
                 WaveManager.Instance.SpawnNextWave();
             }
+            
+            CreateQueue(true);
         }
         
         StartTurn();
