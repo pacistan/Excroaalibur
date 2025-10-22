@@ -95,7 +95,13 @@ public class GPushAction : GAction
         
         foreach (GCell cell in linkedPawn.GetCell().neighbors)
         {
-            if (!cell || !cell.GetGridObject<GPawn>() || cell.GetGridObject<GPawn>() == linkedPawn) continue;
+            if (!cell
+                || !cell.GetGridObject<GPawn>()
+                || cell.GetGridObject<GPawn>() == linkedPawn
+                || cell.GetTileType == ETileType.Hole)
+            {
+                continue;
+            }
             
             newValidCells.Add(cell.hexCoordinates);
         }
@@ -110,4 +116,5 @@ public class GPushAction : GAction
         pushAction._followDistance = _followDistance;
         return pushAction;
     }
+    
 }

@@ -256,6 +256,7 @@ public class GThrowAction : GAction
                 if (cell.GetTileType == ETileType.Hole) continue;
                     
                 newValidCells.Add(cell.hexCoordinates);
+                if (cell.GetGridObject<GPawn>()) break;
             }
         }
 
