@@ -8,7 +8,7 @@ public class GGridObject : SerializedMonoBehaviour
     [ReadOnly, FoldoutGroup("Persistant Data")]
     public GHexCoordinate coordinate;
     
-    [ReadOnly, FoldoutGroup("Persistant Data")]
+    [SerializeField, ReadOnly, FoldoutGroup("Persistant Data")]
     protected GCell _currentCell;
     
     public bool isMarkedForDestruction { get; set; } = false;
