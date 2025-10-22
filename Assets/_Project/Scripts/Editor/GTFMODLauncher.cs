@@ -7,7 +7,7 @@ public class GTFMODLauncher
     [MenuItem("Tools/FMOD/Open FMOD Project")]
     public static void OpenFMODProject()
     {
-        string relativePath = "Croawn\\Croawn.fspro";
+        string relativePath = "FMOD_Project\\FMOD_Project.fspro";
         string fullPath = Path.Combine(Directory.GetCurrentDirectory(), relativePath);
 
         if (File.Exists(fullPath))
