@@ -4,7 +4,6 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
-using UnityEngine.Serialization;
 
 public class GTurnBaseManager : GSingleton<GTurnBaseManager>
 {
@@ -16,7 +15,7 @@ public class GTurnBaseManager : GSingleton<GTurnBaseManager>
     }
     
     public event Action<GAction, GController> actionPlayed; 
-    public event Action<GController> startControllerTurn; 
+    public event Action<GController> startControllerTurn;
     
     /** Manager The Turn Order */
     [field: SerializeField, ReadOnly, HideInEditorMode, BoxGroup("Turn")]
@@ -135,7 +134,7 @@ public class GTurnBaseManager : GSingleton<GTurnBaseManager>
     
     private void StartFight() 
     {
-        _turnCount = 0; // Reset Turn Count ! 
+        _turnCount = 1; // Reset Turn Count ! 
         CreateQueue();
         StartTurn();
     }
@@ -173,7 +172,7 @@ public class GTurnBaseManager : GSingleton<GTurnBaseManager>
         base.Awake();
         _turnOrderControllerQueue.Clear();
         _actionsInProgress.Clear();
-        // enabled = false;
+        // enabled = false;0
         _currentTurnState = ETurnState.NotStarted;
     }
 
@@ -216,7 +215,22 @@ public class GTurnBaseManager : GSingleton<GTurnBaseManager>
         yield return new WaitUntil(() => !isActionPlaying || Time.time > startTime + _safeTimeHandle);
         
         _currentTurnState = ETurnState.Finished;
-        _turnCount++;
+        
+        if (_turnOrderControllerQueue.First() is GPlayerController) // Before Player Turn
+        {
+            // TODO : Create Next Queue For Order The New Turn ! 
+            // CreateQueue();
+            _turnCount++;
+            WaveManager.Instance.CheckNextWave(_turnCount);
+        }
+        else if (currentTurnController is GPlayerController) // After Player Turn
+        {
+            if (WaveManager.Instance.HasNextWave())
+            {
+                WaveManager.Instance.SpawnNextWave();
+            }
+        }
+        
         StartTurn();
     }
 }

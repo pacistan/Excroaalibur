@@ -44,6 +44,7 @@ public class GCell : SerializedMonoBehaviour
     [SerializeField, ReadOnly, FoldoutGroup("PersistantData")]
     private GGridObject _gridObject;
 
+    /** Update the position of the grid object to be centered in the cell */
     public void UpdateGridObject()
     {
         gridObject.transform.localPosition = Vector3.zero;
@@ -75,6 +76,12 @@ public class GCell : SerializedMonoBehaviour
     public GCell GetNeighbor(EHexDirection direction)
     {
         return neighbors[(int)direction];
+    }
+    
+    public void RegisterGridObject(GGridObject inGridObject)
+    {
+        gridObject = inGridObject;
+        inGridObject.SetCell(this);
     }
 
     public bool IsWalkable(bool ignorePawn = false)

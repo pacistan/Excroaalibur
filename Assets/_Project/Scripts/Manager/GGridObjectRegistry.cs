@@ -91,7 +91,7 @@ public class GGridObjectRegistry : GSingleton<GGridObjectRegistry>
                 targetGridObject = gridObject;
             }
         }
-        distance = shortestDistance;
+        distance = shortestDistance == int.MaxValue ? -1 : shortestDistance;
         return targetGridObject;
     }
     

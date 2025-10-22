@@ -8172,7 +8172,7 @@ PrefabInstance:
     - target: {fileID: 8963703425807656487, guid: 05d949de3c2a4aa4eb1df7f5d5a2e8ac, type: 3}
       propertyPath: serializationData.Prefab
       value: 
-      objectReference: {fileID: 0}
+      objectReference: {fileID: 8963703425807656487, guid: 05d949de3c2a4aa4eb1df7f5d5a2e8ac, type: 3}
     - target: {fileID: 8963703425807656487, guid: 05d949de3c2a4aa4eb1df7f5d5a2e8ac, type: 3}
       propertyPath: <hasCrown>k__BackingField
       value: 0
@@ -20195,7 +20195,7 @@ PrefabInstance:
     - target: {fileID: 8963703425807656487, guid: 05d949de3c2a4aa4eb1df7f5d5a2e8ac, type: 3}
       propertyPath: serializationData.Prefab
       value: 
-      objectReference: {fileID: 0}
+      objectReference: {fileID: 8963703425807656487, guid: 05d949de3c2a4aa4eb1df7f5d5a2e8ac, type: 3}
     - target: {fileID: 8963703425807656487, guid: 05d949de3c2a4aa4eb1df7f5d5a2e8ac, type: 3}
       propertyPath: <hasCrown>k__BackingField
       value: 0
@@ -35743,6 +35743,58 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 4617941082954126669, guid: 2cc6da91958a17e4e8d043154c7dd2d6, type: 3}
+      propertyPath: wavesTest.Array.size
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4617941082954126669, guid: 2cc6da91958a17e4e8d043154c7dd2d6, type: 3}
+      propertyPath: _spawnCells.Array.size
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 4617941082954126669, guid: 2cc6da91958a17e4e8d043154c7dd2d6, type: 3}
+      propertyPath: '_spawnCells.Array.data[0]'
+      value: 
+      objectReference: {fileID: 1117573918}
+    - target: {fileID: 4617941082954126669, guid: 2cc6da91958a17e4e8d043154c7dd2d6, type: 3}
+      propertyPath: '_spawnCells.Array.data[1]'
+      value: 
+      objectReference: {fileID: 413716824}
+    - target: {fileID: 4617941082954126669, guid: 2cc6da91958a17e4e8d043154c7dd2d6, type: 3}
+      propertyPath: '_spawnCells.Array.data[2]'
+      value: 
+      objectReference: {fileID: 457641179}
+    - target: {fileID: 4617941082954126669, guid: 2cc6da91958a17e4e8d043154c7dd2d6, type: 3}
+      propertyPath: '_spawnCells.Array.data[3]'
+      value: 
+      objectReference: {fileID: 182151844}
+    - target: {fileID: 4617941082954126669, guid: 2cc6da91958a17e4e8d043154c7dd2d6, type: 3}
+      propertyPath: <waves>k__BackingField.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4617941082954126669, guid: 2cc6da91958a17e4e8d043154c7dd2d6, type: 3}
+      propertyPath: <waves>k__BackingField.Array.data[0].turn
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 4617941082954126669, guid: 2cc6da91958a17e4e8d043154c7dd2d6, type: 3}
+      propertyPath: <waves>k__BackingField.Array.data[1].turn
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4617941082954126669, guid: 2cc6da91958a17e4e8d043154c7dd2d6, type: 3}
+      propertyPath: <waves>k__BackingField.Array.data[0].enemiesToSpawn.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4617941082954126669, guid: 2cc6da91958a17e4e8d043154c7dd2d6, type: 3}
+      propertyPath: <waves>k__BackingField.Array.data[1].enemiesToSpawn.Array.size
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4617941082954126669, guid: 2cc6da91958a17e4e8d043154c7dd2d6, type: 3}
+      propertyPath: <waves>k__BackingField.Array.data[0].enemiesToSpawn.Array.data[0].count
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 4617941082954126669, guid: 2cc6da91958a17e4e8d043154c7dd2d6, type: 3}
+      propertyPath: <waves>k__BackingField.Array.data[0].enemiesToSpawn.Array.data[0].enemy
+      value: 
+      objectReference: {fileID: 3539483301687403083, guid: 05d949de3c2a4aa4eb1df7f5d5a2e8ac, type: 3}
     - target: {fileID: 4748550418197267300, guid: 2cc6da91958a17e4e8d043154c7dd2d6, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
