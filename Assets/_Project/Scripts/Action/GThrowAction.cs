@@ -1,5 +1,6 @@
 ﻿using DG.Tweening;
 using FMODUnity;
+using Sirenix.OdinInspector;
 using Sirenix.Utilities;
 using System;
 using System.Collections.Generic;
@@ -10,8 +11,32 @@ public class GThrowAction : GAction
     [SerializeField, Min(0), Tooltip("Maximum distance the Crown can be thrown")]
     private int _maxThrowDistance = 10;
     
-    [SerializeField, Tooltip("Speed of the Crown when thrown")]
-    private float _crownSpeed = 10f;
+    [SerializeField, Min(0), BoxGroup("Animation"), Tooltip("Height of the mid point of the curve when the crown is thrown")]
+    private float _throwMidPointHeight = 0f;
+    
+    [SerializeField, BoxGroup("Animation"), Tooltip("Speed of the Crown when thrown")]
+    float _throwCrownSpeed = 20f;
+    
+    [SerializeField, BoxGroup("Animation"), Tooltip("Animation curve, When the crown is thrown")]
+    private AnimationCurve _speedThrowCurve = AnimationCurve.EaseInOut(0, 0, 1, 1);
+    
+    [SerializeField, Min(0), BoxGroup("Animation"), Tooltip("Height of the mid point of the curve when the crown return")]
+    private float _returnMidPointHeight = 2f;
+    
+    [SerializeField, BoxGroup("Animation"), Tooltip("Speed of the Crown when returning")]
+    float _returnCrownSpeed = 10f;
+    
+    [SerializeField, BoxGroup("Animation"), Tooltip("Animation curve, When the crown return to the owner")]
+    private AnimationCurve _speedReturnCurve = AnimationCurve.EaseInOut(0, 0, 1, 1);
+    
+    [SerializeField, Min(0), BoxGroup("Animation"), Tooltip("Height of the mid point of the curve when the crown land")]
+    private  float _landMidPointHeight = 2f;
+    
+    [SerializeField, BoxGroup("Animation"), Tooltip("Speed of the Crown when land")]
+    float _landCrownSpeed = 10f;
+    
+    [SerializeField, BoxGroup("Animation"), Tooltip("Animation curve When the crown fall on the cell in front of the target")]
+    private AnimationCurve _speedLandCurve = AnimationCurve.Linear(0, 0, 1, 1);
     
     GCrown _crown;
     GAction _impactReaction;
@@ -21,7 +46,6 @@ public class GThrowAction : GAction
     bool _playerCatch;
     bool _killTarget = false;
     
-    // TODO : check because not the good way
     GPawn _targetPawn;
     
     private Vector3 _startPos;
@@ -101,11 +125,9 @@ public class GThrowAction : GAction
     public override void Start_Action()
     {
         base.Start_Action();
-
-        GPawn targetPawn = targetCell.GetGridObject<GPawn>();
         
         _startPos  = linkedPawn.equipmentParentTr.position;
-        _hitPos    =  targetPawn ? targetPawn.equipmentParentTr.position : targetCell.transform.position;
+        _hitPos    =  _targetPawn ? _targetPawn.equipmentParentTr.position : targetCell.transform.position;
         _returnPos = _startPos;
         
         var direction = linkedPawn.coordinate.GetLineDirection(targetCell.hexCoordinates);
@@ -128,18 +150,23 @@ public class GThrowAction : GAction
             }
         }
 
-        float outDur   = Vector3.Distance(_startPos, _hitPos)   / Mathf.Max(0.01f, _crownSpeed);
-        float backDur  = Vector3.Distance(_hitPos, _returnPos)  / Mathf.Max(0.01f, _crownSpeed);
-        float landDur  = Vector3.Distance(_hitPos, _landingPos) / Mathf.Max(0.01f, _crownSpeed);
+        float outDur   = Vector3.Distance(_startPos, _hitPos)   / Mathf.Max(0.01f, _throwCrownSpeed);
+        float backDur  = Vector3.Distance(_hitPos, _returnPos)  / Mathf.Max(0.01f, _returnCrownSpeed);
+        float landDur  = Vector3.Distance(_hitPos, _landingPos) / Mathf.Max(0.01f, _landCrownSpeed);
 
         _seq = DOTween.Sequence()
             .SetUpdate(UpdateType.Manual, false); // Manual update mode
-
         
         RuntimeManager.PlayOneShotAttached("event:/Pawn/Throw", linkedPawn.gameObject);
         
-        // Sequence to Target 
-        _seq.Append(_crown.transform.DOMove(_hitPos, outDur).SetEase(Ease.OutQuint));
+        Vector3 throwMidPoint = Vector3.Lerp(_startPos, _hitPos, 0.5f);
+        throwMidPoint.y += _throwMidPointHeight;
+        
+        Vector3[] ThrowPath = new Vector3[] { _startPos, throwMidPoint, _hitPos };
+        _seq.Append(_crown.transform.DOPath(ThrowPath, outDur, PathType.CatmullRom)
+                .SetEase(_speedThrowCurve)
+                .SetOptions(false)
+        );
 
         // Impact callback: Fire the reaction of the target pawn
         _seq.AppendCallback(() =>
@@ -149,10 +176,12 @@ public class GThrowAction : GAction
                 GTurnBaseManager.Instance.TryStartReaction(_impactReaction);
                 _impactReaction = null;
             }
-            _targetPawn.UpdateHpNumber();
-            if (_targetPawn && !_targetPawn.isPlayer)
+
+            if (_targetPawn)
             {
-                RuntimeManager.PlayOneShotAttached("event:/Crown/Hit", _crown.gameObject);
+                _targetPawn.UpdateHpNumber();
+                if (!_targetPawn.isPlayer)
+                    RuntimeManager.PlayOneShotAttached("event:/Crown/Hit", _crown.gameObject);
             }
         });
 
@@ -164,7 +193,15 @@ public class GThrowAction : GAction
                 _targetPawn.Kill();
                 RuntimeManager.PlayOneShotAttached("event:/Crown/Catch", _crown.gameObject);
             }); 
-            _seq.Append(_crown.transform.DOMove(_returnPos, backDur).SetEase(Ease.InQuint));
+            
+            Vector3 returnMidPoint = Vector3.Lerp(_hitPos, _returnPos, 0.5f);
+            returnMidPoint.y += _returnMidPointHeight;
+        
+            Vector3[] returnPath = new Vector3[] { _hitPos, returnMidPoint, _returnPos};
+            _seq.Append(_crown.transform.DOPath(returnPath, backDur, PathType.CatmullRom)
+                .SetEase(_speedReturnCurve)
+                .SetOptions(false)
+            );
         }
         else if (_playerCatch)
         {
@@ -174,7 +211,7 @@ public class GThrowAction : GAction
                _targetPawn.GiveEquipement(_crown, true, true);
            }); 
         }
-        else if (canLandInFrontOf && targetPawn)
+        else if (canLandInFrontOf && _targetPawn)
         {
             // Sequence Landing front of Target
             GPawn landPawn = frontCell.GetGridObject<GPawn>();
@@ -182,7 +219,16 @@ public class GThrowAction : GAction
             {
                 RuntimeManager.PlayOneShotAttached("event:/Crown/Fall", _crown.gameObject);
             }); 
-            _seq.Append(_crown.transform.DOMove(_landingPos, landDur).SetEase(Ease.OutCubic));
+            
+            Vector3 midPoint = Vector3.Lerp(_hitPos, _landingPos, 0.5f);
+            midPoint.y += _landMidPointHeight;
+        
+            Vector3[] path = new Vector3[] { _hitPos, midPoint, _landingPos};
+            _seq.Append(_crown.transform.DOPath(path, outDur, PathType.CatmullRom)
+                .SetEase(_speedLandCurve)
+                .SetOptions(false)
+            );
+            
             if (landPawn)
             {
                 _seq.AppendCallback(() =>
@@ -191,7 +237,7 @@ public class GThrowAction : GAction
                 });
             }
         }
-        else if (targetPawn)
+        else if (_targetPawn)
         {
             _seq.AppendCallback(() =>
             {
@@ -203,7 +249,7 @@ public class GThrowAction : GAction
         {
             if (_killTarget)          _crown.transform.position = _returnPos;
             else if (_playerCatch)    _crown.transform.position = _hitPos;
-            else if (targetPawn)      _crown.transform.position = _landingPos;
+            else if (_targetPawn)      _crown.transform.position = _landingPos;
             else                      _crown.transform.position = _hitPos;
 
             End_Action();
@@ -221,13 +267,13 @@ public class GThrowAction : GAction
         }
 
         // Keep your old progress/reaction guard (safe if something changes mid-flight)
-        _progress += delta * _crownSpeed;
+        /*_progress += delta * _crownSpeed;
         int id = Mathf.FloorToInt(_progress);
         if (id >= _distance && _impactReaction != null)
         {
             GTurnBaseManager.Instance.TryStartReaction(_impactReaction);
             _impactReaction = null;
-        }
+        }*/
     }
 
     public override void End_Action()
@@ -267,7 +313,15 @@ public class GThrowAction : GAction
     {
         GThrowAction clonedAction = base.CloneAction() as GThrowAction;
         clonedAction._maxThrowDistance = _maxThrowDistance;
-        clonedAction._crownSpeed = _crownSpeed;
+        clonedAction._throwCrownSpeed = _throwCrownSpeed;
+        clonedAction._throwMidPointHeight = _throwMidPointHeight;
+        clonedAction._speedThrowCurve = _speedThrowCurve;
+        clonedAction._returnCrownSpeed = _returnCrownSpeed;
+        clonedAction._returnMidPointHeight = _returnMidPointHeight;
+        clonedAction._speedReturnCurve = _speedReturnCurve;
+        clonedAction._landCrownSpeed = _landCrownSpeed;
+        clonedAction._landMidPointHeight = _landMidPointHeight;
+        clonedAction._speedLandCurve = _speedLandCurve;
         return clonedAction;
     }
 }
