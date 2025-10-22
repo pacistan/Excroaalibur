@@ -85,10 +85,13 @@ public class GThrowAction : GAction
                 else
                 {
                     targetCell.GetNeighbor(direction.Opposite()).gridObject = _crown;
+                    _crown.SetCell(targetCell.GetNeighbor(direction.Opposite()));
                 }
             }
             else if (_targetPawn) // can give to non-player target if cell in front is not Available
+            {
                 _targetPawn.GiveEquipement(_crown, false, false);
+            }
             else
             {
                 targetCell.gridObject = _crown;
