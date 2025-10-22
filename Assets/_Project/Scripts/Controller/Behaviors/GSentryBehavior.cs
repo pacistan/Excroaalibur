@@ -50,7 +50,7 @@ public class GSentryBehavior : GAIBehavior
 
         GPawn linkedPawn = _controller.pawn;
         GCell pawnCell = linkedPawn.GetCell();
-        GGridManager.Instance.GenerateStepMap(_controller.pawn.GetCell());
+        GGridManager.Instance.GenerateStepMap(pawnCell, _moveAction._walkingTileType);
         bool hasCrown = _controller.pawn.equipment && _controller.pawn.equipment is GCrown;
 
         if (hasCrown)

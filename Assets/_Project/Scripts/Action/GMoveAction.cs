@@ -151,7 +151,6 @@ public class GMoveAction : GAction
         moveAction._speedCurve = _speedCurve;
         moveAction._walkingTileType = _walkingTileType;
         moveAction._endMovementTileType = _endMovementTileType;
-        
         return moveAction;
     }
 }
