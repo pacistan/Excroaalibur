@@ -1,0 +1,55 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 75b0e129f5ac427c954910efb2e8aef3, type: 3}
+  m_Name: Youhouuuuuuuuuu
+  m_EditorClassIdentifier: 
+  serializationData:
+    SerializedFormat: 2
+    SerializedBytes: 
+    ReferencedUnityObjects: []
+    SerializedBytesString: 
+    Prefab: {fileID: 0}
+    PrefabModificationsReferencedUnityObjects: []
+    PrefabModifications: []
+    SerializationNodes: []
+  brushes:
+  - brushName: Cailloux1
+    prefab: {fileID: 5259198938208051763, guid: 0003c2eb6f6577845ba37827a0d3b1c4, type: 3}
+    icon: {fileID: 0}
+    randomRotation: 0
+    rotationOffset: {x: 0, y: 1, z: 0}
+  - brushName: Kaillou1
+    prefab: {fileID: 4002927700227966452, guid: 69c5d4c3acbc0ce409ace620e3864224, type: 3}
+    icon: {fileID: 0}
+    randomRotation: 0
+    rotationOffset: {x: 0, y: 1, z: 0}
+  - brushName: KAYOU
+    prefab: {fileID: 618594891250078018, guid: b21775aa903e9f04c837e9eae464d714, type: 3}
+    icon: {fileID: 0}
+    randomRotation: 0
+    rotationOffset: {x: 0, y: 0, z: 0}
+  - brushName: cacayou
+    prefab: {fileID: 7198526457719328067, guid: 53d076246c434ad45ae30f50864e94ed, type: 3}
+    icon: {fileID: 0}
+    randomRotation: 0
+    rotationOffset: {x: 0, y: 0, z: 0}
+  - brushName: KAYOUYOU
+    prefab: {fileID: 6009493466206287724, guid: 6ccae5bb832a0e24989811a6948b7c65, type: 3}
+    icon: {fileID: 0}
+    randomRotation: 0
+    rotationOffset: {x: 0, y: 0, z: 0}
+  - brushName: New Brush
+    prefab: {fileID: 0}
+    icon: {fileID: 0}
+    randomRotation: 0
+    rotationOffset: {x: 0, y: 0, z: 0}
+  defaultBrushSize: 1
