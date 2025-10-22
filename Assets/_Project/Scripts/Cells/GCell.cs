@@ -98,6 +98,7 @@ public class GCell : SerializedMonoBehaviour
     {
         if (gridObject)
             gridObject.SetCell(this);
+        cellVisualsController.ResetCellHighlightColor();
     }
     
 #if UNITY_EDITOR

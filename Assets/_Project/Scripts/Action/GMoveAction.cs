@@ -139,6 +139,7 @@ public class GMoveAction : GAction
             newValidCells.Add(coordinate);
         }
         
+        
         return validCells = newValidCells.ToArray();
     }
     

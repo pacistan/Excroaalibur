@@ -137,19 +137,26 @@ public class GPlayerController : GController
         {
             if (!_hoverCell || !newCell) return;
 
-            _targetCell = _hoverCell;
+            _targetCell = newCell;
             
             GPawn cellPawn = _targetCell.GetGridObject<GPawn>();
             if (cellPawn && !cellPawn.SelectSound.IsNull)
                 RuntimeManager.PlayOneShotAttached(cellPawn.SelectSound, cellPawn.gameObject);
             else
                 RuntimeManager.PlayOneShot("event:/Map/Select_Empty");
+
+
+           if (cellPawn && cellPawn == _selectedPlayer && _selectedAction != null)
+           {
+               SelectAction(null);
+               return;
+           }
             
             if (_selectedPlayer && _selectedAction != null && _selectedAction.IsValidCell(_targetCell.hexCoordinates))
             {
-                StartAction();
-                _targetCell = null;
-                return;
+                 StartAction();
+                 _targetCell = null;
+                 return;
             }
             
             GPawn player = _targetCell.GetGridObject<GPawn>() && _targetCell.GetGridObject<GPawn>().isPlayer ? _targetCell.GetGridObject<GPawn>() : null;
@@ -179,6 +186,7 @@ public class GPlayerController : GController
         if (_selectedPlayer.RequestAction(_selectedAction))
         {
             _selectedPlayer.remainingActionToken--;
+            _selectedPlayer.visuals.OnUpdateActionsToken();
             SetSelectedPlayer(null);
             // 
             /*if (remainingActionToken <= 0) 

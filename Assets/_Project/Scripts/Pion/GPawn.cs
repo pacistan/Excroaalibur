@@ -115,7 +115,9 @@ public class GPawn : GGridObject
 
         if (resetCrownPassCount && equipment && equipment is GCrown)
         {
-            ((GCrown)equipment).ResetCrown();
+            GCrown crown = (GCrown)equipment;
+            crown.ResetCrown();
+            crown.visuals.OnUpdateDebugTextContent(crown._currentDamage);
         }
         
         if (giveToCell) 
@@ -195,6 +197,11 @@ public class GPawn : GGridObject
             stunTurn--;
             visuals.OnUpdateStunTurn();
         }
+        else if (isPlayer)
+        {
+            visuals.OnUpdateActionsToken();
+        }
+        
         if (stunTurn == 0)
         {
             OnUnstunned?.Invoke();
@@ -277,6 +284,7 @@ public class GPawn : GGridObject
         else
         {
             GPlayerController controller = FindFirstObjectByType<GPlayerController>();
+            visuals.OnUpdateActionsToken();
             if (controller)
             {
                 foreach (var action in actions)

@@ -104,6 +104,12 @@ public class GPawnVisualsController : SerializedMonoBehaviour
         _previousHpNumber = _pawn.hp;
         _debugTxt.text = text;
     }
+
+    public void OnUpdateActionsToken()
+    {
+        string text = "";
+        _debugTxt.text = $"{_pawn.remainingActionToken}";
+    }
     
     public void OnUpdateStunTurn()
     {
