@@ -256,7 +256,7 @@ public class GPainterWindow :  EditorWindow
             EditorGUILayout.LabelField("Placement Options:", EditorStyles.miniBoldLabel);
             EditorGUI.BeginDisabledGroup(true);
             EditorGUILayout.Toggle("Random Rotation", currentBrush.randomRotation);
-            EditorGUILayout.Vector3Field("Rotation Offset", currentBrush.rotationOffset);
+            EditorGUILayout.FloatField("Rotation Offset", currentBrush.rotationOffset);
             EditorGUI.EndDisabledGroup();
             
             EditorGUI.indentLevel--;
@@ -339,12 +339,13 @@ public class GPainterWindow :  EditorWindow
         
         if (currentBrush.randomRotation)
         {
-            rotation *= Quaternion.Euler(Random.Range(0f, 360f), Random.Range(0f, 360f), Random.Range(0f, 360f));
+            float randomRotatiton = currentBrush.isIncrementalRotation ? Random.Range(0, 6) * 60f : Random.Range(0f, 360f);
+            rotation *= Quaternion.Euler(0f, Random.Range(0f, 360f),0f);
             useRandomRotation = true;
         }
         else
         {
-            rotation *= Quaternion.Euler(currentBrush.rotationOffset);
+            rotation *= Quaternion.Euler(0, currentBrush.rotationOffset, 0);
         }
         
         var hits = Physics.OverlapSphere(hit.point, brushSize, paintLayerMask);

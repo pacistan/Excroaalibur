@@ -1,6 +1,7 @@
 ﻿using Sirenix.OdinInspector;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 [CreateAssetMenu(fileName = "PrefabBrushLibrary", menuName = "Painter Tool/Prefab Brush Library")]
 public class GPrefabBrushLibrary : SerializedScriptableObject
@@ -18,8 +19,11 @@ public class GPrefabBrushLibrary : SerializedScriptableObject
         [Header("Placement Settings")]
         [FoldoutGroup("$brushName")]
         public bool randomRotation = false;
-        [FoldoutGroup("$brushName")]
-        public Vector3 rotationOffset = Vector3.zero;
+        [FormerlySerializedAs("incrementalRotation")]
+        [FoldoutGroup("$brushName"), ShowIf("randomRotation")]
+        public bool isIncrementalRotation = false;
+        [FoldoutGroup("$brushName"),HideIf("randomRotation")]
+        public float rotationOffset = 0;
     }
     
     [Header("Brush Collection")]
