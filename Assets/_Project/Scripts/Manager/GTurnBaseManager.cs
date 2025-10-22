@@ -4,7 +4,6 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
-using UnityEngine.Serialization;
 
 public class GTurnBaseManager : GSingleton<GTurnBaseManager>
 {
@@ -16,7 +15,7 @@ public class GTurnBaseManager : GSingleton<GTurnBaseManager>
     }
     
     public event Action<GAction, GController> actionPlayed; 
-    public event Action<GController> startControllerTurn; 
+    public event Action<GController> startControllerTurn;
     
     /** Manager The Turn Order */
     [field: SerializeField, ReadOnly, HideInEditorMode, BoxGroup("Turn")]
@@ -54,6 +53,7 @@ public class GTurnBaseManager : GSingleton<GTurnBaseManager>
     {
         if (enabled && !_turnOrderControllerQueue.Contains(Controller))
         {
+            _controllerList.Add(Controller);
             _turnOrderControllerQueue.Add(Controller);
         } 
         else if (!_controllerList.Contains(Controller))
@@ -135,15 +135,23 @@ public class GTurnBaseManager : GSingleton<GTurnBaseManager>
     
     private void StartFight() 
     {
-        _turnCount = 0; // Reset Turn Count ! 
+        _turnCount = 1; // Reset Turn Count ! 
         CreateQueue();
         StartTurn();
     }
     
     /** Create the Queue based on Rule (Actually : player is first, then IA) */
-    private void CreateQueue()
+    private void CreateQueue(bool playerLast = false)
     {
-        var orderedEntities = _controllerList.OrderBy(entity => entity is GPlayerController ? 0 : 1).ToList();
+        _turnOrderControllerQueue.Clear();
+        var orderedEntities = _controllerList.OrderBy(entity =>
+        {
+            if (entity is GPlayerController) return playerLast ? int.MaxValue : int.MinValue;
+            int closestCrownDistance;
+            GGridObjectRegistry.GetClosestObjectOfType<GCrown>(entity.GetComponent<GPawn>().GetCell(), out closestCrownDistance, true);
+            return closestCrownDistance;
+        }).ToList();
+        
         foreach (var entity in orderedEntities) 
         {
             _turnOrderControllerQueue.Add(entity);
@@ -216,7 +224,23 @@ public class GTurnBaseManager : GSingleton<GTurnBaseManager>
         yield return new WaitUntil(() => !isActionPlaying || Time.time > startTime + _safeTimeHandle);
         
         _currentTurnState = ETurnState.Finished;
-        _turnCount++;
+        
+        if (_turnOrderControllerQueue.First() is GPlayerController) // Before Player Turn
+        {
+            CreateQueue();
+            _turnCount++;
+            WaveManager.Instance.CheckNextWave(_turnCount);
+        }
+        else if (currentTurnController is GPlayerController) // After Player Turn
+        {
+            if (WaveManager.Instance.HasNextWave())
+            {
+                WaveManager.Instance.SpawnNextWave();
+            }
+            
+            CreateQueue(true);
+        }
+        
         StartTurn();
     }
 }

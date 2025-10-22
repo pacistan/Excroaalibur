@@ -69,7 +69,7 @@ public class GGridObjectRegistry : GSingleton<GGridObjectRegistry>
         return Instance._registry[type].Cast<T>().ToList();
     }
     
-    public static T GetClosestObjectOfType<T>(GCell startCell, out int distance, bool regenerateStepMap = false, bool forceSearch = true) where T : GGridObject
+    public static T GetClosestObjectOfType<T>(GCell startCell, out int distance, bool regenerateStepMap = false) where T : GGridObject
     {
         distance = -1;
         List<T> gridObjects = GGridObjectRegistry.GetItems<T>();
@@ -91,11 +91,11 @@ public class GGridObjectRegistry : GSingleton<GGridObjectRegistry>
                 targetGridObject = gridObject;
             }
         }
-        distance = shortestDistance;
+        distance = shortestDistance == int.MaxValue ? -1 : shortestDistance;
         return targetGridObject;
     }
     
-    public static T GetClosestObjectOfTypeWithPredicate<T>(GCell startCell, out int distance,Func<T, bool> predicate, bool regenerateStepMap = false, bool forceSearch = true) where T : GGridObject
+    public static T GetClosestObjectOfTypeWithPredicate<T>(GCell startCell, out int distance,Func<T, bool> predicate, bool regenerateStepMap = false) where T : GGridObject
     {
         distance = -1;
         List<T> gridObjects = GGridObjectRegistry.GetItemsByPredicate<T>(predicate).ToList();

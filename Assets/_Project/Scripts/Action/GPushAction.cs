@@ -50,6 +50,8 @@ public class GPushAction : GAction
             }
         }
         
+        if (pathCell == linkedPawn.GetCell())  return; // No valid cell to follow
+        
         _followAction = new GMoveAction();
         _followAction.targetCell = pathCell;
         _followAction.linkedPawn = linkedPawn;
@@ -72,8 +74,8 @@ public class GPushAction : GAction
     public override void Update_Action(float delta)
     {
         base.Update_Action(delta);
-        if (_followAction.CurrentState == GAction.EActionState.Finished 
-            && _reaction.CurrentState == GAction.EActionState.Finished)
+        if ((_followAction == null || _followAction.CurrentState == GAction.EActionState.Finished) 
+             && (_reaction == null ||_reaction.CurrentState == GAction.EActionState.Finished))
         {
             End_Action();
         }
