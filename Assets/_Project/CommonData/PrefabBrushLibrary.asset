@@ -12,7 +12,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 75b0e129f5ac427c954910efb2e8aef3, type: 3}
   m_Name: PrefabBrushLibrary
   m_EditorClassIdentifier: 
-  brushes: []
+  serializationData:
+    SerializedFormat: 2
+    SerializedBytes: 
+    ReferencedUnityObjects: []
+    SerializedBytesString: 
+    Prefab: {fileID: 0}
+    PrefabModificationsReferencedUnityObjects: []
+    PrefabModifications: []
+    SerializationNodes: []
+  brushes:
+  - brushName: New Brush
+    prefab: {fileID: 0}
+    icon: {fileID: 0}
+    randomRotation: 0
+    rotationOffset: {x: 0, y: 0, z: 0}
   defaultBrushSize: 1
-  snapToGrid: 0
-  gridSize: 1
