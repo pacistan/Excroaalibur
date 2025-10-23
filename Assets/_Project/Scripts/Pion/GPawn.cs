@@ -6,6 +6,7 @@ using System;
 using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
+using UnityEngine.Events;
 
 public class GPawn : GGridObject
 {
@@ -15,6 +16,9 @@ public class GPawn : GGridObject
     public event Action OnStunned;
     public event Action OnUnstunned;
     public event Action OnHealthChanged;
+    
+    [SerializeField, FoldoutGroup("Events"), HideIf("@hp < 0")]
+    private UnityEvent _OnDeath;
     
     [field : SerializeField, Min(1)]
     public int actionTokens { get; set; }
@@ -180,6 +184,7 @@ public class GPawn : GGridObject
     public void Kill()
     {
         OnKill?.Invoke();
+        _OnDeath?.Invoke();
         isMarkedForDestruction = true;
         Destroy(gameObject);
     }

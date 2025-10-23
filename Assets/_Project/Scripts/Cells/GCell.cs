@@ -1,13 +1,19 @@
 ﻿using Sirenix.OdinInspector;
 using System;
 using System.Linq;
-using UnityEditor;
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.Serialization;
 
 [SelectionBase]
 public class GCell : SerializedMonoBehaviour
 {
+    [SerializeField, FoldoutGroup("Events")]
+    private UnityEvent _OnPreviewSpawnedPawn;
+    
+    [SerializeField, FoldoutGroup("Events")]
+    private UnityEvent _OnSpawnedPawnFinished;
+    
     [SerializeField][FormerlySerializedAs("_data")]
     public GCellData data;
     
@@ -82,6 +88,19 @@ public class GCell : SerializedMonoBehaviour
     {
         gridObject = inGridObject;
         inGridObject.SetCell(this);
+    }
+
+    public void PreviewSpawnPawn()
+    {
+        _OnPreviewSpawnedPawn?.Invoke();
+        // TODO : Other debug here !
+    }
+    
+    public void SpawnPawnFinish(GPawn pawn)
+    {
+        RegisterGridObject(pawn);
+        UpdateGridObject();
+        _OnSpawnedPawnFinished?.Invoke();
     }
 
     public bool IsWalkable(bool ignorePawn = false)
