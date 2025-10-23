@@ -3,6 +3,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class GTurnBaseManager : GSingleton<GTurnBaseManager>
@@ -135,13 +136,6 @@ public class GTurnBaseManager : GSingleton<GTurnBaseManager>
         actionPlayed?.Invoke(ReactionToStart, currentTurnController);
     }
     
-    private void StartFight() 
-    {
-        _turnCount = 1; // Reset Turn Count ! 
-        CreateQueue();
-        StartTurn();
-    }
-    
     /** Create the Queue based on Rule (Actually : player is first, then IA) */
     private void CreateQueue(bool playerLast = false)
     {
@@ -210,7 +204,7 @@ public class GTurnBaseManager : GSingleton<GTurnBaseManager>
         _controllerList = FindObjectsByType<GController>(FindObjectsSortMode.None).ToList();
         if (_controllerList.Count > 0)
         {
-            StartFight();
+            StartCoroutine(StartFight());
         } else Debug.LogWarning("No Controller to start the Turn Base Manager");
     }
 
@@ -219,6 +213,18 @@ public class GTurnBaseManager : GSingleton<GTurnBaseManager>
         _currentTurnState = ETurnState.NotStarted;
         _turnOrderControllerQueue.Clear();
         _actionsInProgress.Clear();
+    }
+    
+    // TODO : Check 
+    private IEnumerator StartFight()
+    {
+        yield return new WaitForEndOfFrame(); // Wait for all Awake / Start to be called
+        
+        _turnCount = 1; // Reset Turn Count ! 
+        CreateQueue();
+        WaveManager.Instance.CheckNextWave(_turnCount);
+        StartTurn();
+        yield return null;
     }
     
     // ReSharper disable Unity.PerformanceAnalysis
