@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 7304654020356424047}
   - component: {fileID: 1721150657162632406}
   - component: {fileID: 4617941082954126669}
+  - component: {fileID: 1647048347549451874}
   m_Layer: 0
   m_Name: Manager
   m_TagString: Untagged
@@ -91,3 +92,23 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   <waves>k__BackingField: []
   _spawnCells: []
+--- !u!114 &1647048347549451874
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7048197546018214810}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dadc38fa1c3e42f3af733a70aa577bdd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  isGamePaused: 0
+  musicEvent:
+    Guid:
+      Data1: -1790422121
+      Data2: 1171781365
+      Data3: 1726052739
+      Data4: 638072658
+    Path: event:/Music/Music

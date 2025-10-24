@@ -54,7 +54,7 @@
 			<destination>{9f38bed4-702a-4d44-a8b7-5a812158fefb}</destination>
 		</relationship>
 		<relationship name="output">
-			<destination>{f8a0e390-3e8f-48b3-b0b6-9d7e589d5db6}</destination>
+			<destination>{a5f39982-4d5e-41ad-b8fd-66a21bc44ddd}</destination>
 		</relationship>
 	</object>
 	<object class="EventAutomatableProperties" id="{86598c68-02c3-4ad6-8d1a-d3344c343e78}">
@@ -167,7 +167,6 @@
 	<object class="MixerBusEffectChain" id="{5e9f9edf-293d-44e7-9b28-05eb59849134}">
 		<relationship name="effects">
 			<destination>{b25287d1-ef28-4f50-98c2-44150d9120d0}</destination>
-			<destination>{cfe2a996-4aea-4b37-8bbb-073e8ff582fb}</destination>
 			<destination>{677565cf-9f67-4a3e-83d3-a56b1479ec80}</destination>
 		</relationship>
 	</object>
@@ -199,17 +198,6 @@
 		</property>
 	</object>
 	<object class="MixerBusFader" id="{b25287d1-ef28-4f50-98c2-44150d9120d0}" />
-	<object class="DelayEffect" id="{cfe2a996-4aea-4b37-8bbb-073e8ff582fb}">
-		<property name="delay">
-			<value>220</value>
-		</property>
-		<property name="feedback">
-			<value>38</value>
-		</property>
-		<property name="level">
-			<value>-6.5</value>
-		</property>
-	</object>
 	<object class="ThreeEQEffect" id="{677565cf-9f67-4a3e-83d3-a56b1479ec80}">
 		<property name="lowGain">
 			<value>-80</value>
