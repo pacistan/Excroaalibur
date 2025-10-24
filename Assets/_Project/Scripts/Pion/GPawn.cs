@@ -55,6 +55,8 @@ public class GPawn : GGridObject
 
     [field: SerializeField, HideIf("@hp == -1")]
     public int hp { get; protected set; } = 3;
+    
+    public int startHp { get; protected set; } 
 
     [field : SerializeField, FoldoutGroup("Components")]
     public Transform equipmentParentTr { get; private set; }
@@ -282,6 +284,7 @@ public class GPawn : GGridObject
     protected virtual void Start()
     {
         remainingActionToken = actionTokens;
+        startHp = hp;
         if (!isPlayer && TryGetComponent(out GController aiController))
         {
             aiController.RegisterPawn(this);

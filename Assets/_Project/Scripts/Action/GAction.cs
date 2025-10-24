@@ -50,6 +50,10 @@ public abstract class GAction
     public event Action OnActionStarted; 
     public event Action OnActionFinished;
     
+    [field: SerializeField, FoldoutGroup("Visuals")]
+    public string actionLabel { get; private set; }
+    [field: SerializeField, FoldoutGroup("Visuals")]
+    public Sprite actionIcon { get; private set; }
     [ReadOnly, HideInEditorMode] 
     public GPawn linkedPawn;
     [ReadOnly, HideInEditorMode] 
@@ -73,6 +77,7 @@ public abstract class GAction
         OnActionFinished += inOnActionFinished;
     }
     
+    
     /// <summary>
     /// Create a new instance of the action with the same parameters, Override this for Add Params
     /// </summary>
@@ -85,6 +90,8 @@ public abstract class GAction
         clone.CurrentState = CurrentState;
         clone.OnActionStarted = OnActionStarted;
         clone.OnActionFinished = OnActionFinished;
+        clone.actionIcon = actionIcon;
+        clone.actionLabel = actionLabel;
         return clone;
     }
     
