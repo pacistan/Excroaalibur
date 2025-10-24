@@ -88,9 +88,12 @@ public class WaveManager : GSingleton<WaveManager>
         if (spawnCount <= 0) return;
         
         _spawnCells.Shuffle();
-        
+
         for (int i = 0; i < spawnCount; i++)
+        {
             _cachedNextSpawnCells.Add(_spawnCells[i]);
+            _spawnCells[i].PreviewSpawnPawn();
+        }
     }
 
     public void SpawnNextWave()
@@ -124,10 +127,8 @@ public class WaveManager : GSingleton<WaveManager>
                 Debug.LogWarning("[WaveManager] Spawned controller has no GPawn component.");
                 continue;
             }
-
-            // TODO: gérer anims/sons/VFX ici si besoin
-            _cachedNextSpawnCells[i].RegisterGridObject(pawn);
-            _cachedNextSpawnCells[i].UpdateGridObject();
+            
+            _cachedNextSpawnCells[i].SpawnPawnFinish(pawn);
         }
 
         wave.hasSpawned = true;

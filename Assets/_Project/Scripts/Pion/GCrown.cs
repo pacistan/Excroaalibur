@@ -5,9 +5,7 @@ using UnityEngine.Serialization;
 
 public class GCrown : GEquipment
 {
-    [FormerlySerializedAs("damage")]
     public int _baseDamage = 2;
-    
     public int _bonusPassDamage = 1;
 
     [SerializeField, HideInEditorMode]

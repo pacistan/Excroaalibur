@@ -13,31 +13,40 @@ public class GThrowAction : GAction
     [SerializeField, Min(0), Tooltip("Maximum distance the Crown can be thrown")]
     private int _maxThrowDistance = 10;
     
-    [SerializeField, Min(0), BoxGroup("Animation"), Tooltip("Height of the mid point of the curve when the crown is thrown")]
+    [SerializeField, Min(0), BoxGroup("Animation/Throw"), Tooltip("Height of the mid point of the curve when the crown is thrown")]
     private float _throwMidPointHeight = 0f;
     
-    [SerializeField, BoxGroup("Animation"), Tooltip("Speed of the Crown when thrown")]
+    [SerializeField, BoxGroup("Animation/Throw"), Tooltip("Speed of the Crown when thrown")]
     float _throwCrownSpeed = 20f;
     
-    [SerializeField, BoxGroup("Animation"), Tooltip("Animation curve, When the crown is thrown")]
-    private AnimationCurve _speedThrowCurve = AnimationCurve.EaseInOut(0, 0, 1, 1);
+    [SerializeField, BoxGroup("Animation/Throw"), Tooltip("Animation curve, When the crown is thrown")]
+    private AnimationCurve _speedThrowCurve = AnimationCurve.Linear(0, 0, 1, 1);
     
-    [SerializeField, Min(0), BoxGroup("Animation"), Tooltip("Height of the mid point of the curve when the crown return")]
+    [SerializeField, Min(0), BoxGroup("Animation/Pass"), Tooltip("Height of the mid point of the curve when the crown is passed to another pawn")]
+    private float _passMidPointHeight = 0f;
+    
+    [SerializeField, BoxGroup("Animation/Pass"), Tooltip("Speed of the Crown when passed")]
+    float _passCrownSpeed = 25f;
+    
+    [SerializeField, BoxGroup("Animation/Pass"), Tooltip("Animation curve, When the crown is thrown")]
+    private AnimationCurve _speedPassCurve = AnimationCurve.Linear(0, 0, 1, 1);
+    
+    [SerializeField, Min(0), BoxGroup("Animation/Return"), Tooltip("Height of the mid point of the curve when the crown return")]
     private float _returnMidPointHeight = 2f;
     
-    [SerializeField, BoxGroup("Animation"), Tooltip("Speed of the Crown when returning")]
+    [SerializeField, BoxGroup("Animation/Return"), Tooltip("Speed of the Crown when returning")]
     float _returnCrownSpeed = 10f;
     
-    [SerializeField, BoxGroup("Animation"), Tooltip("Animation curve, When the crown return to the owner")]
-    private AnimationCurve _speedReturnCurve = AnimationCurve.EaseInOut(0, 0, 1, 1);
+    [SerializeField, BoxGroup("Animation/Return"), Tooltip("Animation curve, When the crown return to the owner")]
+    private AnimationCurve _speedReturnCurve = AnimationCurve.Linear(0, 0, 1, 1);
     
-    [SerializeField, Min(0), BoxGroup("Animation"), Tooltip("Height of the mid point of the curve when the crown land")]
+    [SerializeField, Min(0), BoxGroup("Animation/Land"), Tooltip("Height of the mid point of the curve when the crown land")]
     private  float _landMidPointHeight = 2f;
     
-    [SerializeField, BoxGroup("Animation"), Tooltip("Speed of the Crown when land")]
+    [SerializeField, BoxGroup("Animation/Land"), Tooltip("Speed of the Crown when land")]
     float _landCrownSpeed = 10f;
     
-    [SerializeField, BoxGroup("Animation"), Tooltip("Animation curve When the crown fall on the cell in front of the target")]
+    [SerializeField, BoxGroup("Animation/Land"), Tooltip("Animation curve When the crown fall on the cell in front of the target")]
     private AnimationCurve _speedLandCurve = AnimationCurve.Linear(0, 0, 1, 1);
     
     GCrown _crown;
@@ -160,7 +169,7 @@ public class GThrowAction : GAction
             }
         }
 
-        float outDur   = Vector3.Distance(_startPos, _hitPos)   / Mathf.Max(0.01f, _throwCrownSpeed);
+        float outDur   = Vector3.Distance(_startPos, _hitPos)   / Mathf.Max(0.01f, _playerCatch ? _passCrownSpeed : _throwCrownSpeed);
         float backDur  = Vector3.Distance(_hitPos, _returnPos)  / Mathf.Max(0.01f, _returnCrownSpeed);
         float landDur  = Vector3.Distance(_hitPos, _landingPos) / Mathf.Max(0.01f, _landCrownSpeed);
 
@@ -171,11 +180,11 @@ public class GThrowAction : GAction
             .SetUpdate(UpdateType.Manual, false); // Manual update mode
         
         Vector3 throwMidPoint = Vector3.Lerp(_startPos, _hitPos, 0.5f);
-        throwMidPoint.y += _throwMidPointHeight;
+        throwMidPoint.y += _playerCatch ? _passMidPointHeight : _throwMidPointHeight;
         
-        Vector3[] ThrowPath = new Vector3[] { _startPos, throwMidPoint, _hitPos };
+        Vector3[] ThrowPath = new Vector3[] { _startPos, throwMidPoint , _hitPos };
         _seq.Append(_crown.transform.DOPath(ThrowPath, outDur, PathType.CatmullRom)
-                .SetEase(_speedThrowCurve)
+                .SetEase(_playerCatch ?_speedPassCurve : _speedThrowCurve)
                 .SetOptions(false)
         );
 
