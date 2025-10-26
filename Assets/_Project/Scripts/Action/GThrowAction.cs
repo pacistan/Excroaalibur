@@ -91,6 +91,7 @@ public class GThrowAction : GAction
         {
             GAction impactReaction = _targetPawn.GetReaction(this);
             previsuContext.Set(GActionContext.DAMAGE_STRING, _crown._currentDamage);
+
             if (impactReaction != null)
             {
                 previsuContext.Set(GActionContext.DIRECTION_STRING, direction);
