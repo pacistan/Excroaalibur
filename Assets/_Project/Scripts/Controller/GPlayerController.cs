@@ -157,8 +157,6 @@ public class GPlayerController : GController
 
         HandlePlayerHover();
         HandlePlayerClick();
-       
-        
     }
 
     void HandlePlayerHover()
@@ -254,7 +252,11 @@ public class GPlayerController : GController
             
             if (_selectedPlayer && _selectedAction.IsValidCell(_targetCell.hexCoordinates))
             {
+                ResetHighlight();
                 StartAction();
+                SetSelectedPlayer(null);
+                SelectAction(null);
+                _targetCell = null;
             }
             else
             {
@@ -328,17 +330,16 @@ public class GPlayerController : GController
         {
             _selectedPlayer.remainingActionToken--;
             _selectedPlayer.visuals.OnUpdateActionsToken();
-            availableActions = GetAvailableActions();
+            /*availableActions = GetAvailableActions();
             foreach (var action in availableActions)
                 action.GetValidCells();
-            SelectAction(0);
+            SelectAction(0);*/
             _playerHudManager.UpdateGridObjectHoveredInfo(_selectedPlayer);
-            //SetSelectedPlayer(null);
-            // 
-            /*if (remainingActionToken <= 0) 
-            {
-                GTurnBaseManager.Instance.RequestEndTurn(this);
-            }*/
         }
+    }
+
+    public override void OnActionOver()
+    {
+        base.OnActionOver();
     }
 }
