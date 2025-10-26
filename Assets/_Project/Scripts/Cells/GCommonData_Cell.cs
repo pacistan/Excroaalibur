@@ -33,6 +33,8 @@ public class GCellCommonData : SerializedScriptableObject
     
     public Dictionary<ETileHighlightActionType, Color> tileHighlightActionData;
     
+    public Color previsualizedColor = Color.green;
+    
     #if UNITY_EDITOR
     [OnInspectorInit]
     public void CreateData()

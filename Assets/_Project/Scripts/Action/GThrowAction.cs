@@ -88,7 +88,7 @@ public class GThrowAction : GAction
         else if (_targetPawn && !_targetPawn.isPlayer)
         {
             GAction impactReaction = _targetPawn.GetReaction(this);
-            previsuContext.Set(GActionContext.DAMAGE_STRING, _crown._baseDamage);
+            previsuContext.Set(GActionContext.DAMAGE_STRING, _crown._currentDamage);
             if (impactReaction != null)
             {
                 previsuContext.Set(GActionContext.DIRECTION_STRING, direction);
@@ -112,6 +112,10 @@ public class GThrowAction : GAction
                 }
             }
             
+        }
+        else
+        {
+            previewCells.Add(targetCell); // Target Cell
         }
         
         return previewCells;
