@@ -10,6 +10,11 @@ public class GGridObject : SerializedMonoBehaviour
     
     [SerializeField, ReadOnly]
     public GHexCoordinate coordinate;
+
+    [SerializeField, Tooltip("Visual GameObject to copy for caching purposes")]
+    public GameObject visualToCopy;
+    
+    public bool isMarkedForDestruction { get; set; } = false;
     
     [field: SerializeField, FoldoutGroup("Persistant Data")]
     public Sprite headerSprite { get; private set; }
@@ -29,8 +34,6 @@ public class GGridObject : SerializedMonoBehaviour
     [field: SerializeField, FoldoutGroup("Persistant Data")]
     public string className { get; private set; }
     
-    
-    public bool isMarkedForDestruction { get; set; } = false;
     
     public virtual void SetCell(GHexCoordinate newCoordinate)
     {

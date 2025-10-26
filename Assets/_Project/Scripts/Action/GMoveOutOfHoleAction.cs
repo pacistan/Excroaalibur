@@ -5,6 +5,13 @@ using UnityEngine;
 public class GMoveOutOfHoleAction : GAction
 {
     public override ETileHighlightActionType GetHighlightActionType() => ETileHighlightActionType.Move;
+    
+    public override List<GCell> Previsualisation(in GActionContext previsuContext)
+    {
+        List<GCell> previewCells = new List<GCell>();
+        previewCells.Add(targetCell);
+        return previewCells;
+    }
 
     public override void PreProcess(GActionContext context = null)
     {

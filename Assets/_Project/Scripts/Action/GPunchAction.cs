@@ -46,6 +46,12 @@ public class GPunchAction : GAction
         base.End_Action();
     }
 
+    public override List<GCell> Previsualisation(in GActionContext previsuContext)
+    {
+        // Old Action, note used 
+        return null;
+    }
+    
     public override GHexCoordinate[] GetValidCells()
     {
         if (linkedPawn.equipment || linkedPawn.equipment is not GCrown)
