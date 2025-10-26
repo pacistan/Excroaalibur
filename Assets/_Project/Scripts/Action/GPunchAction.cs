@@ -8,8 +8,13 @@ public class GPunchAction : GAction
     [SerializeField]
     private int _stun = 1;
     float _progress = 0;
-    
-    
+
+
+    public override ETileHighlightActionType GetHighlightActionType()
+    {
+        throw new System.NotImplementedException();
+    }
+
     public override void PreProcess(GActionContext context = null)
     {
         if (linkedPawn.equipment || linkedPawn.equipment is GCrown) return;

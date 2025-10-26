@@ -17,7 +17,7 @@ public class GPlayerController : GController
 
     [SerializeField, ReadOnly, HideInEditorMode] 
     GPawn _selectedPlayer;
-    
+
     [SerializeField, ReadOnly, HideInEditorMode]
     GAction _selectedAction;
     
@@ -61,7 +61,7 @@ public class GPlayerController : GController
         ResetHighlight();
         _selectedAction = action;
         if (_selectedAction == null) return;
-        _selectedAction.linkedPawn = _selectedPlayer;
+        //_selectedAction.linkedPawn = _selectedPlayer;
         ShowHighlight();
     }
     
@@ -77,7 +77,7 @@ public class GPlayerController : GController
         foreach (var coordinate in _validCells)
         {
             GCell cell = GGridManager.Instance.GetCell(coordinate);
-            cell.cellVisualsController.ChangeCellHighlightColor(Color.blue);
+            cell.visuals.SetHighlightActionType(_selectedAction.GetHighlightActionType());
         }
     }
 
@@ -86,10 +86,10 @@ public class GPlayerController : GController
         foreach (var coordinate in _validCells)
         {
             GCell cell = GGridManager.Instance.GetCell(coordinate);
-            cell.cellVisualsController.ResetCellHighlightColor();
+            cell.visuals.SetHighlightActionType(ETileHighlightActionType.Normal);
         }
     }
-    
+
     private GCell GetCellUnderMouse()
     {
         Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
@@ -101,27 +101,35 @@ public class GPlayerController : GController
         return null;
     }
 
-    private GAction[] GetAvailableActions()
+    private GAction[] GetAvailableActions(GPawn target = null)
     {
-        if (!_selectedPlayer) return new GAction[]{};
+        target = target ? target : _selectedPlayer;
+        if (!target) return new GAction[]{};
 
         List<GAction> newAvailableActions = new List<GAction>();
 
-        if (_selectedPlayer.GetCell().data.tileType == ETileType.Hole)
+        if (target.isPlayer)
         {
-            newAvailableActions.Add(_selectedPlayer.actions[3]);
-        }
-        else
-        {
-            newAvailableActions.Add(_selectedPlayer.actions[0]);
-            if (_selectedPlayer.equipment && _selectedPlayer.equipment is GCrown)
+            if (target.GetCell().data.tileType == ETileType.Hole)
             {
-                newAvailableActions.Add(_selectedPlayer.actions[2]);
+                newAvailableActions.Add(target.actions[3]);
             }
             else
             {
-                newAvailableActions.Add(_selectedPlayer.actions[1]);
+                newAvailableActions.Add(target.actions[0]);
+                if (target.equipment && target.equipment is GCrown)
+                {
+                    newAvailableActions.Add(target.actions[2]);
+                }
+                else
+                {
+                    newAvailableActions.Add(target.actions[1]);
+                }
             }
+        }
+        else if (target.TryGetComponent<GAIController>(out GAIController controller))
+        {
+            // TODO : Get Default Action from AI Controller
         }
         
         return newAvailableActions.ToArray();
@@ -158,12 +166,26 @@ public class GPlayerController : GController
         GCell newCell = GetCellUnderMouse();
         if (newCell && newCell != _hoverCell)
         {
+            newCell.visuals.isHovered = true;
+            if (_hoverCell != null)
+            {
+                _hoverCell.visuals.isHovered = false;
+            }
+            
+            // Hover New Tile with no Selection
             if (!_selectedPlayer && newCell.gridObject)
             {
                 _playerHudManager.OnGridObjectHovered(newCell.gridObject);
             }
+            // Hover New Tile with no Selection and No Object
+            else if (!_selectedPlayer && !newCell.gridObject)
+            {
+                _playerHudManager.OnGridObjectHovered(null);
+            }
+            
             GPawn cellPawn = newCell.GetGridObject<GPawn>();
             
+            // Handle Hover Sounds
             if (cellPawn && !cellPawn.hoverSound.IsNull)
             {
                 RuntimeManager.PlayOneShotAttached(cellPawn.hoverSound, cellPawn.gameObject);
@@ -173,10 +195,33 @@ public class GPlayerController : GController
                 RuntimeManager.PlayOneShot("event:/Map/Hover_Empty");
             }
             
+            // Handle Action Highlight on Hover
+            if (cellPawn && _hoverCell != newCell && !_selectedPlayer)
+            {
+                var tempAvailableActions = GetAvailableActions(cellPawn);
+                if (tempAvailableActions.Length > 0)
+                {
+                    tempAvailableActions[0].GetValidCells();
+                    SelectAction(tempAvailableActions[0]);
+                }
+                else
+                {
+                    SelectAction(null);
+                }
+            }
+            else if (!_selectedPlayer && _hoverCell != newCell && _selectedAction != null)
+            {
+                SelectAction(null);
+            }
+            
             _hoverCell = newCell;
         }
         else if (!newCell)
         {
+            if (_hoverCell != null)
+            {
+                _hoverCell.visuals.isHovered = false;
+            }
             _hoverCell = null;
             if (!_selectedPlayer)
             {
@@ -190,6 +235,19 @@ public class GPlayerController : GController
         if (_leftClickInput.WasPressedThisFrame())
         {
             if (!_hoverCell) return;
+
+            if (_targetCell != null)
+            {
+                _targetCell.visuals.isSelected = false;
+                if (_targetCell == _hoverCell)
+                {
+                    _targetCell = null;
+                    SetSelectedPlayer(null);
+                    return;
+                }
+            }
+
+            
             _targetCell = _hoverCell;
             GPawn cellPawn = _targetCell.GetGridObject<GPawn>();
 
@@ -210,6 +268,7 @@ public class GPlayerController : GController
                     // No Selected player and Clicked on Player Pawn
                     else if (!_selectedPlayer && cellPawn.isPlayer)
                     {
+                        _targetCell.visuals.isSelected = true;
                         SetSelectedPlayer(cellPawn);
                     }
                     // Already Selected pawn
@@ -220,6 +279,7 @@ public class GPlayerController : GController
                     // Other Player Selected
                     else if (_selectedPlayer != cellPawn && _selectedPlayer.isPlayer)
                     {
+                        _targetCell.visuals.isSelected = true;
                         SetSelectedPlayer(cellPawn);
                         _playerHudManager.OnGridObjectHovered(cellPawn);
                     }
@@ -260,11 +320,6 @@ public class GPlayerController : GController
         SelectAction(_currentActionIndex);
     }
     
-    public override void StartTurn()
-    {
-        base.StartTurn();
-    }
-
     public override void StartAction()
     {
         if (!_validCells.Contains(_targetCell.hexCoordinates)) return;
@@ -285,15 +340,5 @@ public class GPlayerController : GController
                 GTurnBaseManager.Instance.RequestEndTurn(this);
             }*/
         }
-    }
-
-    public override void OnActionOver()
-    {
-        throw new NotImplementedException();
-    }
-
-    public override void EndTurn()
-    {
-        base.EndTurn();
     }
 }

@@ -76,6 +76,8 @@ public abstract class GAction
         OnActionStarted += inOnActionStarted;
         OnActionFinished += inOnActionFinished;
     }
+
+    public abstract ETileHighlightActionType GetHighlightActionType();
     
     
     /// <summary>

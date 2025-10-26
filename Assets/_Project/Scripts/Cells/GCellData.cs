@@ -5,11 +5,15 @@ using UnityEngine.Serialization;
 using static GCellVisualsController;
 
     public enum ETileType { Normal, Wall, Hole, Spawner}
-    public enum EGridObjectType {None, Sentry, PlayerPawn, Altar, Brawler, Speedy, Crown}
+    public enum EGridObjectType { None, Sentry, PlayerPawn, Altar, Brawler, Speedy, Crown }
+    public enum ETileHighlightType { CellBase, CellHover, CellSelect  }
+
+    public enum ETileHighlightActionType { Normal, Move, Push, Throw }
 
 [System.Serializable]
 public struct GCellData
 {
+    //TODO : Add height
     [SerializeField, ReadOnly]
     public Vector2Int gridCoordinates;
     

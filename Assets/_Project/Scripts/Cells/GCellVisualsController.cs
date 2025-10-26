@@ -1,4 +1,5 @@
 ﻿using Sirenix.OdinInspector;
+using System;
 using System.Collections.Generic;
 using TMPro;
 using UnityEditor;
@@ -36,7 +37,20 @@ public class GCellVisualsController : SerializedMonoBehaviour
 
     [SerializeField, HideInInspector]
     EGridObjectType _previousObjectSpawnType;
+
+    [SerializeField, HideInInspector, ReadOnly]
+    public bool isHovered;
+
+    [SerializeField, HideInInspector, ReadOnly]
+    public bool isSelected;
     
+    [FormerlySerializedAs("_currentactionHighlightActionType")]
+    [SerializeField, HideInInspector, ReadOnly]
+    public ETileHighlightActionType _currentHighlightActionType;
+
+    [SerializeField, HideInInspector, ReadOnly]
+    public ETileHighlightType _currentHighlightType = ETileHighlightType.CellSelect;
+
 #if UNITY_EDITOR
     public void UpdateCellVisuals()
     {
@@ -120,21 +134,54 @@ public class GCellVisualsController : SerializedMonoBehaviour
         _text.text = newDebugText;
     }
 
-    public void ChangeCellHighlightColor(Color color)
+    public void ChangeSprite(ETileHighlightType highlightType)
     {
-        _highlight.color = color;
+        _highlight.sprite = cellCommonData.tileHighlightData[highlightType];
     }
-
-    public void ResetCellHighlightColor()
-    {
-        var tileTypeData = cellCommonData.tileTypeData[_cell.data.tileType];
-        _highlight.color = tileTypeData.highlightColor;
-    }
-
+    
     public void UpdateScaling(float scale)
     {
         _visualsParent.localScale = new Vector3(scale, scale, scale);
         _collidersParent.localScale = new Vector3(scale, scale, scale);
         _highlight.rectTransform.localScale = new Vector3(scale, scale, scale);
+    }
+
+    void LateUpdate()
+    {
+        UpdateHighlightSprite();
+    }
+
+    void Start()
+    {
+        SetHighlightActionType(ETileHighlightActionType.Normal);
+    }
+
+    private void UpdateHighlightSprite()
+    {
+        ETileHighlightType newHighlightType = ETileHighlightType.CellBase;
+
+        newHighlightType = isSelected ? ETileHighlightType.CellSelect :
+            isHovered ? ETileHighlightType.CellHover : ETileHighlightType.CellBase;
+        
+        if (newHighlightType != _currentHighlightType)
+        {
+            ChangeSprite(newHighlightType);
+        }
+        
+        _currentHighlightType = newHighlightType;
+    }
+
+    public void SetHighlightActionType(ETileHighlightActionType highlightActionType)
+    {
+        _currentHighlightActionType = highlightActionType;
+
+        if (highlightActionType == ETileHighlightActionType.Normal)
+        {
+            _highlight.color = cellCommonData.tileTypeData[_cell.data.tileType].highlightColor;
+        }
+        else
+        {
+            _highlight.color = cellCommonData.tileHighlightActionData[highlightActionType];
+        }
     }
 }

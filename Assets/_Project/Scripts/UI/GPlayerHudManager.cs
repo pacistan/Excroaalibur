@@ -19,6 +19,9 @@ public class GPlayerHudManager : MonoBehaviour
     private Image[] _actionTokenImgArray;
     
     [SerializeField, BoxGroup("Components")]
+    private CanvasGroup _canvasGroup;
+    
+    [SerializeField, BoxGroup("Components")]
     [FoldoutGroup("Components/Image")]
     private Image _headerPanelImage;
     
@@ -92,70 +95,91 @@ public class GPlayerHudManager : MonoBehaviour
 
     public void OnGridObjectHovered(GGridObject gridObject)
     {
-        if (_previousGridObject == gridObject || !gridObject) 
+        if ((!gridObject && !_previousGridObject) || _previousGridObject == gridObject) return;
+        
+        if (_tweenSequence != null && _tweenSequence.IsPlaying())
+        {
+            _tweenSequence.Kill();
+            _tweenSequence = null;
+        }
+        
+        TweenCallback callback = () =>
+        {
+            _headerPanelImage.sprite = gridObject.headerSprite;
+            _cadreImage.sprite = gridObject.cadreSprite;
+            _headerObjectIconImage.sprite = gridObject.headerObjectIconSprite;
+            _headerObjectIconImage.color = gridObject.pawnColor;
+
+            _cadreImage.gameObject.SetActive(gridObject.cadreSprite != null);
+
+            GPawn pawn = gridObject as GPawn;
+            actionList.UpdateButtons(pawn);
+            _panelRmbIndicator.SetActive(pawn && pawn.isPlayer);
+
+            _headerHasCrownIconImage.sprite = pawn && pawn.equipment && pawn.equipment is GCrown
+                ? _headerCrownIconSprite
+                : _headerNoCrownIconSprite;
+
+            _headerHasCrownIconImage.color = gridObject.pawnColor;
+
+            _headerNameText.text = gridObject.headerName;
+            _classNameText.text = $"Class : {gridObject.className}";
+
+            if (pawn)
+            {
+                if (pawn.isPlayer)
+                {
+                    for (int i = 0; i < _actionTokenImgArray.Length; i++)
+                    {
+                        _actionTokenImgArray[i].gameObject.SetActive(i <= pawn.actionTokens);
+                        bool isActionTokenOn = i <= pawn.remainingActionToken;
+                        _actionTokenImgArray[i].sprite = isActionTokenOn ? _actionTokenOnSprite : _actionTokenOffSprite;
+                        _actionTokenImgArray[i].color = isActionTokenOn ? _actionTokenOnColor : _actionTokenOffColor;
+                    }
+                    _aiHpNumberText.gameObject.SetActive(false);
+                }
+                else
+                {
+                    foreach (var image in _actionTokenImgArray)
+                    {
+                        image.gameObject.SetActive(false);
+                    }
+                    _aiHpNumberText.gameObject.SetActive(true);
+                    _aiHpNumberText.text = $"{pawn.hp}/{pawn.startHp} HPs";
+                }
+            }
+        };
+        
+        if (!gridObject) 
         {
             ShowPanel(false);
+            //_tweenSequence.AppendCallback(callback);
             _previousGridObject = null;
             return;
         }
         else if(!_previousGridObject)
         {
             _previousGridObject = gridObject;
+            if (_tweenSequence == null)
+            {
+                _tweenSequence = DOTween.Sequence().SetUpdate(UpdateType.Normal, false);
+                _tweenSequence.OnComplete(() => _tweenSequence = null);
+            }
+            _tweenSequence.AppendCallback(callback);
             ShowPanel(true);
         }
         else
         {
             _previousGridObject = gridObject;
             ShowPanel(false);
+            _tweenSequence.AppendCallback(callback);
             ShowPanel(true);
         }
         
-        _headerPanelImage.sprite = gridObject.headerSprite;
-        _cadreImage.sprite = gridObject.cadreSprite;
-        _headerObjectIconImage.sprite = gridObject.headerObjectIconSprite;
-        _headerObjectIconImage.color = gridObject.pawnColor;
-        
-        _cadreImage.gameObject.SetActive(gridObject.cadreSprite != null);
-        
-        GPawn pawn = gridObject as GPawn;
-         actionList.UpdateButtons(pawn);
-         _panelRmbIndicator.SetActive(pawn && pawn.isPlayer);
-        
-        _headerHasCrownIconImage.sprite = pawn && pawn.equipment && pawn.equipment is GCrown ?
-            _headerCrownIconSprite : _headerNoCrownIconSprite;
 
-        _headerHasCrownIconImage.color = gridObject.pawnColor;
-        
-        _headerNameText.text = gridObject.headerName;
-        _classNameText.text = $"Class : {gridObject.className}";
-
-        if (pawn)
-        {
-            if (pawn.isPlayer)
-            {
-                for (int i = 0; i < _actionTokenImgArray.Length; i++)
-                {
-                    _actionTokenImgArray[i].gameObject.SetActive(i <= pawn.actionTokens);
-                    bool isActionTokenOn = i <= pawn.remainingActionToken;
-                    _actionTokenImgArray[i].sprite = isActionTokenOn ?
-                            _actionTokenOnSprite : _actionTokenOffSprite;
-                    _actionTokenImgArray[i].color = isActionTokenOn ?
-                        _actionTokenOnColor : _actionTokenOffColor;
-                }
-                _aiHpNumberText.gameObject.SetActive(false);
-            }
-            else
-            {
-                foreach (var image in _actionTokenImgArray)
-                {
-                    image.gameObject.SetActive(false);
-                }
-                _aiHpNumberText.gameObject.SetActive(true);
-                _aiHpNumberText.text = $"{pawn.hp}/{pawn.startHp} HPs";
-            }
-        }
-        
     }
+    
+    
 
     public void UpdateGridObjectHoveredInfo(GGridObject gridObject)
     {
@@ -193,11 +217,12 @@ public class GPlayerHudManager : MonoBehaviour
             _tweenSequence = DOTween.Sequence().SetUpdate(UpdateType.Normal, false);
             _tweenSequence.OnComplete(() => _tweenSequence = null);
         }
-    
         Vector3 targetPos = isShow ? _inPosition : _outPosition;
+        float targetFade = isShow ? 1f : 0f;
         float duration = isShow ? _inMovementDuration : _outMovementDuration;
         AnimationCurve curve = isShow ? _inMovementCurve : _outMovementCurve;
         
         _tweenSequence.Append(_leftPanelRectTransform.DOAnchorPos(targetPos, duration).SetEase(curve));
+        _tweenSequence.Join(_canvasGroup.DOFade(targetFade, duration).SetEase(curve));
     }
 }

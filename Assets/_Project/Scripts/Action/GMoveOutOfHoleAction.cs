@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class GMoveOutOfHoleAction : GAction
 {
+    public override ETileHighlightActionType GetHighlightActionType() => ETileHighlightActionType.Move;
+
     public override void PreProcess(GActionContext context = null)
     {
         if (!targetCell || targetCell.GetGridObject<GPawn>() || targetCell.GetGridObject<GPawn>() == linkedPawn) return;

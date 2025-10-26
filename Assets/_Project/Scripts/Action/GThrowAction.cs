@@ -333,6 +333,8 @@ public class GThrowAction : GAction
         return validCells = newValidCells.ToArray();
     }
 
+    public override ETileHighlightActionType GetHighlightActionType() => ETileHighlightActionType.Throw;
+
     public override GAction CloneAction()
     {
         GThrowAction clonedAction = base.CloneAction() as GThrowAction;

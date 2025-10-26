@@ -20,8 +20,9 @@ public class GCell : SerializedMonoBehaviour
     [field: SerializeField, FoldoutGroup("PersistantData/Components"), ReadOnly][FormerlySerializedAs("_ui")]
     public RectTransform ui;
     
+    [FormerlySerializedAs("cellVisualsController")]
     [SerializeField, FoldoutGroup("PersistantData/Components")][FormerlySerializedAs("_cellVisualsController")]
-    public GCellVisualsController cellVisualsController;
+    public GCellVisualsController visuals;
     
     [SerializeField, FoldoutGroup("PersistantData/Components")][FormerlySerializedAs("_pawnSpawnPoint")]
     public Transform pawnSpawnPoint;
@@ -117,15 +118,14 @@ public class GCell : SerializedMonoBehaviour
     {
         if (gridObject)
             gridObject.SetCell(this);
-        cellVisualsController.ResetCellHighlightColor();
     }
     
 #if UNITY_EDITOR
     void OnValidate()
     {
-        if (!Application.isPlaying && cellVisualsController != null)
+        if (!Application.isPlaying && visuals != null)
         {
-            cellVisualsController.UpdateCellVisuals();
+            visuals.UpdateCellVisuals();
         }
     }
 #endif
