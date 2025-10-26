@@ -186,9 +186,37 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 20667597376880823, guid: 48d2615fd829feb4a9c7bfb377fa75cc, type: 3}
     - target: {fileID: 20667597376880823, guid: 48d2615fd829feb4a9c7bfb377fa75cc, type: 3}
+      propertyPath: <className>k__BackingField
+      value: Sentry
+      objectReference: {fileID: 0}
+    - target: {fileID: 20667597376880823, guid: 48d2615fd829feb4a9c7bfb377fa75cc, type: 3}
+      propertyPath: <cadreSprite>k__BackingField
+      value: 
+      objectReference: {fileID: 21300000, guid: 6a3886767c56a744b9de9f15eb100e16, type: 3}
+    - target: {fileID: 20667597376880823, guid: 48d2615fd829feb4a9c7bfb377fa75cc, type: 3}
+      propertyPath: <pawnColor>k__BackingField.a
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 20667597376880823, guid: 48d2615fd829feb4a9c7bfb377fa75cc, type: 3}
+      propertyPath: <pawnColor>k__BackingField.b
+      value: 0.14117648
+      objectReference: {fileID: 0}
+    - target: {fileID: 20667597376880823, guid: 48d2615fd829feb4a9c7bfb377fa75cc, type: 3}
+      propertyPath: <pawnColor>k__BackingField.g
+      value: 0.54901963
+      objectReference: {fileID: 0}
+    - target: {fileID: 20667597376880823, guid: 48d2615fd829feb4a9c7bfb377fa75cc, type: 3}
+      propertyPath: <pawnColor>k__BackingField.r
+      value: 0.7294118
+      objectReference: {fileID: 0}
+    - target: {fileID: 20667597376880823, guid: 48d2615fd829feb4a9c7bfb377fa75cc, type: 3}
       propertyPath: <actionTokens>k__BackingField
       value: 2
       objectReference: {fileID: 0}
+    - target: {fileID: 20667597376880823, guid: 48d2615fd829feb4a9c7bfb377fa75cc, type: 3}
+      propertyPath: <headerSprite>k__BackingField
+      value: 
+      objectReference: {fileID: 21300000, guid: 26ed47a4467b520499df68831f979510, type: 3}
     - target: {fileID: 20667597376880823, guid: 48d2615fd829feb4a9c7bfb377fa75cc, type: 3}
       propertyPath: <equipmentParentTr>k__BackingField
       value: 
@@ -197,6 +225,10 @@ PrefabInstance:
       propertyPath: serializationData.SerializedFormat
       value: 2
       objectReference: {fileID: 0}
+    - target: {fileID: 20667597376880823, guid: 48d2615fd829feb4a9c7bfb377fa75cc, type: 3}
+      propertyPath: <headerObjectIconSprite>k__BackingField
+      value: 
+      objectReference: {fileID: 21300000, guid: f1517fed954dae745b2bbd4bd4d67515, type: 3}
     - target: {fileID: 20667597376880823, guid: 48d2615fd829feb4a9c7bfb377fa75cc, type: 3}
       propertyPath: serializationData.SerializedBytes.Array.size
       value: 0

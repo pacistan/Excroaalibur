@@ -292,6 +292,12 @@ MonoBehaviour:
     - Name: $v
       Entry: 7
       Data: 3|GPushedReaction, Assembly-CSharp
+    - Name: <actionLabel>k__BackingField
+      Entry: 6
+      Data: 
+    - Name: <actionIcon>k__BackingField
+      Entry: 6
+      Data: 
     - Name: linkedPawn
       Entry: 6
       Data: 
@@ -334,10 +340,16 @@ MonoBehaviour:
     - Name: 
       Entry: 8
       Data: 
+  _currentCell: {fileID: 0}
   coordinate:
     x: 0
     z: 0
-  _currentCell: {fileID: 0}
+  <headerSprite>k__BackingField: {fileID: 21300000, guid: 4a1b46b2953e99247b022a45b8f57d8a, type: 3}
+  <cadreSprite>k__BackingField: {fileID: 0}
+  <headerObjectIconSprite>k__BackingField: {fileID: 21300000, guid: a7a01ffd4262a0f4686ffa90767e3248, type: 3}
+  <pawnColor>k__BackingField: {r: 1, g: 1, b: 1, a: 1}
+  <headerName>k__BackingField: Altar
+  <className>k__BackingField: 
   _OnDeath:
     m_PersistentCalls:
       m_Calls: []

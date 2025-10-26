@@ -149,6 +149,11 @@ public class GPushedReaction : GAction
         base.End_Action();
     }
 
+    public override ETileHighlightActionType GetHighlightActionType()
+    {
+        throw new System.NotImplementedException();
+    }
+
     public override GAction CloneAction()
     {
         GPushedReaction reaction = base.CloneAction() as GPushedReaction;

@@ -210,9 +210,37 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 20667597376880823, guid: 48d2615fd829feb4a9c7bfb377fa75cc, type: 3}
     - target: {fileID: 20667597376880823, guid: 48d2615fd829feb4a9c7bfb377fa75cc, type: 3}
+      propertyPath: <className>k__BackingField
+      value: Player
+      objectReference: {fileID: 0}
+    - target: {fileID: 20667597376880823, guid: 48d2615fd829feb4a9c7bfb377fa75cc, type: 3}
+      propertyPath: <cadreSprite>k__BackingField
+      value: 
+      objectReference: {fileID: 21300000, guid: 84042ed2dd5e67348ba09ba6c6d8f134, type: 3}
+    - target: {fileID: 20667597376880823, guid: 48d2615fd829feb4a9c7bfb377fa75cc, type: 3}
+      propertyPath: <pawnColor>k__BackingField.a
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 20667597376880823, guid: 48d2615fd829feb4a9c7bfb377fa75cc, type: 3}
+      propertyPath: <pawnColor>k__BackingField.b
+      value: 0.6
+      objectReference: {fileID: 0}
+    - target: {fileID: 20667597376880823, guid: 48d2615fd829feb4a9c7bfb377fa75cc, type: 3}
+      propertyPath: <pawnColor>k__BackingField.g
+      value: 0.56078434
+      objectReference: {fileID: 0}
+    - target: {fileID: 20667597376880823, guid: 48d2615fd829feb4a9c7bfb377fa75cc, type: 3}
+      propertyPath: <pawnColor>k__BackingField.r
+      value: 0.1764706
+      objectReference: {fileID: 0}
+    - target: {fileID: 20667597376880823, guid: 48d2615fd829feb4a9c7bfb377fa75cc, type: 3}
       propertyPath: <actionTokens>k__BackingField
       value: 2
       objectReference: {fileID: 0}
+    - target: {fileID: 20667597376880823, guid: 48d2615fd829feb4a9c7bfb377fa75cc, type: 3}
+      propertyPath: <headerSprite>k__BackingField
+      value: 
+      objectReference: {fileID: 21300000, guid: 9b89309b78b7c5e46881b9eb244e2f9f, type: 3}
     - target: {fileID: 20667597376880823, guid: 48d2615fd829feb4a9c7bfb377fa75cc, type: 3}
       propertyPath: serializationData.SerializedFormat
       value: 2
@@ -273,6 +301,10 @@ PrefabInstance:
       propertyPath: 'managedReferences[7723294537050751054]'
       value: Assembly-CSharp GThrowAction
       objectReference: {fileID: 0}
+    - target: {fileID: 20667597376880823, guid: 48d2615fd829feb4a9c7bfb377fa75cc, type: 3}
+      propertyPath: <headerObjectIconSprite>k__BackingField
+      value: 
+      objectReference: {fileID: 21300000, guid: d87de8399d6678542b01da2d209e6238, type: 3}
     - target: {fileID: 20667597376880823, guid: 48d2615fd829feb4a9c7bfb377fa75cc, type: 3}
       propertyPath: managedReferences[828711034850902217]._stun
       value: 1
@@ -2126,6 +2158,10 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 20667597376880823, guid: 48d2615fd829feb4a9c7bfb377fa75cc, type: 3}
+      propertyPath: managedReferences[3462553869388087377].<actionIcon>k__BackingField
+      value: 
+      objectReference: {fileID: 21300000, guid: bedbdbdfd22faed4b94289c70058e100, type: 3}
+    - target: {fileID: 20667597376880823, guid: 48d2615fd829feb4a9c7bfb377fa75cc, type: 3}
       propertyPath: managedReferences[3462553869388087377]._speedCurve.m_RotationOrder
       value: 0
       objectReference: {fileID: 0}
@@ -2133,6 +2169,10 @@ PrefabInstance:
       propertyPath: managedReferences[3462553869388087377]._walkingTileType.Array.size
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 20667597376880823, guid: 48d2615fd829feb4a9c7bfb377fa75cc, type: 3}
+      propertyPath: managedReferences[3462553869388087378].<actionIcon>k__BackingField
+      value: 
+      objectReference: {fileID: 21300000, guid: 27e8fab003f993449a17bb55575cf502, type: 3}
     - target: {fileID: 20667597376880823, guid: 48d2615fd829feb4a9c7bfb377fa75cc, type: 3}
       propertyPath: managedReferences[3462553869388087378]._speedCurve.m_RotationOrder
       value: 0
@@ -2150,12 +2190,36 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 20667597376880823, guid: 48d2615fd829feb4a9c7bfb377fa75cc, type: 3}
+      propertyPath: managedReferences[3462553869388087380].<actionIcon>k__BackingField
+      value: 
+      objectReference: {fileID: 21300000, guid: bedbdbdfd22faed4b94289c70058e100, type: 3}
+    - target: {fileID: 20667597376880823, guid: 48d2615fd829feb4a9c7bfb377fa75cc, type: 3}
       propertyPath: managedReferences[3462553869388087380]._speedCurve.m_RotationOrder
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 20667597376880823, guid: 48d2615fd829feb4a9c7bfb377fa75cc, type: 3}
+      propertyPath: managedReferences[7723294537050751054].<actionIcon>k__BackingField
+      value: 
+      objectReference: {fileID: 21300000, guid: 4343b554cc3a747478185bc9f94543ac, type: 3}
+    - target: {fileID: 20667597376880823, guid: 48d2615fd829feb4a9c7bfb377fa75cc, type: 3}
+      propertyPath: managedReferences[3462553869388087377].<actionLabel>k__BackingField
+      value: Move
+      objectReference: {fileID: 0}
+    - target: {fileID: 20667597376880823, guid: 48d2615fd829feb4a9c7bfb377fa75cc, type: 3}
+      propertyPath: managedReferences[3462553869388087378].<actionLabel>k__BackingField
+      value: Push
+      objectReference: {fileID: 0}
+    - target: {fileID: 20667597376880823, guid: 48d2615fd829feb4a9c7bfb377fa75cc, type: 3}
       propertyPath: managedReferences[3462553869388087379]._returnCurve.m_RotationOrder
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 20667597376880823, guid: 48d2615fd829feb4a9c7bfb377fa75cc, type: 3}
+      propertyPath: managedReferences[3462553869388087380].<actionLabel>k__BackingField
+      value: Move
+      objectReference: {fileID: 0}
+    - target: {fileID: 20667597376880823, guid: 48d2615fd829feb4a9c7bfb377fa75cc, type: 3}
+      propertyPath: managedReferences[7723294537050751054].<actionLabel>k__BackingField
+      value: Throw
       objectReference: {fileID: 0}
     - target: {fileID: 20667597376880823, guid: 48d2615fd829feb4a9c7bfb377fa75cc, type: 3}
       propertyPath: managedReferences[3462553869388087379]._landCurve.m_Curve.Array.size

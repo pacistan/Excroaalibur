@@ -173,12 +173,12 @@ public class GGridEditor : MonoBehaviour
                 cell.data = new GCellData(cellCoordinates);
             }
         }
-        cell.cellVisualsController.UpdateCellVisuals();
-        cell.cellVisualsController.UpdateScaling(_gridData.hexSize);
+        cell.visuals.UpdateCellVisuals();
+        cell.visuals.UpdateScaling(_gridData.hexSize);
         cell.hexCoordinates = GHexCoordinate.FrommOffsetCoordinate(row, column);
         foreach (var visualPreset in cell.data.paintedVisuals)
         {
-            cell.cellVisualsController.OnCreateVisualPreset(visualPreset, false);
+            cell.visuals.OnCreateVisualPreset(visualPreset, false);
         }
     }
 

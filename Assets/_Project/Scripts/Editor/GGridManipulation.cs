@@ -43,7 +43,7 @@ public class GGridManipulation
             var data = cell.data;
             data.tileType = values[next];
             cell.data = data;
-            cell.cellVisualsController.UpdateCellVisuals();
+            cell.visuals.UpdateCellVisuals();
             EditorUtility.SetDirty(cell);
         }
     }

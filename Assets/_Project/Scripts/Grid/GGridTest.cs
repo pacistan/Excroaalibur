@@ -33,13 +33,13 @@ public class GGridTest : MonoBehaviour
         GGridManager gridManager = GGridManager.Instance ? GGridManager.Instance : GameObject.FindFirstObjectByType<GGridManager>();
         var path =  gridManager.GetPath(_startCell, _endCell, true);
         GCell currentCell = _startCell;
-        currentCell.cellVisualsController.UpdateCellDebugNum("O");
+        currentCell.visuals.UpdateCellDebugNum("O");
         foreach (var hexDirection in path)
         {
             currentCell = currentCell.neighbors[(int)hexDirection];
-            currentCell.cellVisualsController.UpdateCellDebugNum("|||");
+            currentCell.visuals.UpdateCellDebugNum("|||");
         }
-        currentCell.cellVisualsController.UpdateCellDebugNum("X");
+        currentCell.visuals.UpdateCellDebugNum("X");
     }
 
     [Button]
@@ -48,7 +48,7 @@ public class GGridTest : MonoBehaviour
         GGridManager gridManager = GGridManager.Instance ? GGridManager.Instance : GameObject.FindFirstObjectByType<GGridManager>();
         foreach (var cell in gridManager._grid)
         {
-            cell.cellVisualsController.UpdateCellDebugNum("");
+            cell.visuals.UpdateCellDebugNum("");
         }
     }
 

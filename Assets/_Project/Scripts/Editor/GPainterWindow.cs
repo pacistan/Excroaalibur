@@ -364,14 +364,14 @@ public class GPainterWindow :  EditorWindow
 
                 GCellVisualPresetData presetData = new GCellVisualPresetData(currentBrush.prefab, rotation);
                 
-                GameObject instance = cell.cellVisualsController.OnCreateVisualPreset(presetData);
+                GameObject instance = cell.visuals.OnCreateVisualPreset(presetData);
                 // Register undo
                 Undo.RegisterCreatedObjectUndo(instance, "Paint Prefab");
                 Selection.activeGameObject = instance;
             }
             else
             {
-                cell.cellVisualsController.ClearVisualsPresets();
+                cell.visuals.ClearVisualsPresets();
             }
         }
     }

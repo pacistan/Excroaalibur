@@ -172,7 +172,7 @@ public class GGridManager : GSingleton<GGridManager>
         
         int stepNum = 0;
         _stepMap.Add(from.data.gridCoordinates, stepNum);
-        from.cellVisualsController.UpdateCellDebugNum($"{stepNum}");
+        from.visuals.UpdateCellDebugNum($"{stepNum}");
         ETileType[] walkableTypes = new []{ ETileType.Normal };
         StepRecursion(from, stepNum + 1, ref walkableTypes);
     }
@@ -187,7 +187,7 @@ public class GGridManager : GSingleton<GGridManager>
         
         int stepNum = 0;
         _stepMap.Add(from.data.gridCoordinates, stepNum);
-        from.cellVisualsController.UpdateCellDebugNum($"{stepNum}");
+        from.visuals.UpdateCellDebugNum($"{stepNum}");
         StepRecursion(from, stepNum + 1, ref walkableTypes);
     }
 
@@ -201,13 +201,13 @@ public class GGridManager : GSingleton<GGridManager>
                 if(!_stepMap.ContainsKey(coordinates))
                 {
                     _stepMap.Add(cell.data.gridCoordinates, stepNum);
-                    cell.cellVisualsController.UpdateCellDebugNum(stepNum.ToString());
+                    cell.visuals.UpdateCellDebugNum(stepNum.ToString());
                     StepRecursion(cell, stepNum + 1, ref walkableTypes);
                 }
                 else if(_stepMap[coordinates] >= stepNum)
                 {
                     _stepMap[coordinates] = stepNum;
-                    cell.cellVisualsController.UpdateCellDebugNum(stepNum.ToString());
+                    cell.visuals.UpdateCellDebugNum(stepNum.ToString());
                     StepRecursion(cell, stepNum + 1, ref walkableTypes);
                 }
 

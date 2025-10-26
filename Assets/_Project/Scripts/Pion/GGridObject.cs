@@ -5,11 +5,30 @@ using UnityEngine;
 [SelectionBase]
 public class GGridObject : SerializedMonoBehaviour
 {
-    [ReadOnly, FoldoutGroup("Persistant Data")]
+    [SerializeField, ReadOnly]
+    protected GCell _currentCell;
+    
+    [SerializeField, ReadOnly]
     public GHexCoordinate coordinate;
     
-    [SerializeField, ReadOnly, FoldoutGroup("Persistant Data")]
-    protected GCell _currentCell;
+    [field: SerializeField, FoldoutGroup("Persistant Data")]
+    public Sprite headerSprite { get; private set; }
+    
+    [field: SerializeField, FoldoutGroup("Persistant Data")]
+    public Sprite cadreSprite { get; private set; }
+    
+    [field: SerializeField, FoldoutGroup("Persistant Data")]
+    public Sprite headerObjectIconSprite { get; private set; }
+    
+    [field: SerializeField, FoldoutGroup("Persistant Data")]
+    public Color pawnColor { get; private set; }
+    
+    [field: SerializeField, FoldoutGroup("Persistant Data")]
+    public string headerName { get; private set; }
+    
+    [field: SerializeField, FoldoutGroup("Persistant Data")]
+    public string className { get; private set; }
+    
     
     public bool isMarkedForDestruction { get; set; } = false;
     
