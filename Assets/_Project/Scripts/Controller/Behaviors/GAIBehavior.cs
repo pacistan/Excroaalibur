@@ -25,7 +25,13 @@ public abstract class GAIBehavior : ScriptableObject
     public virtual void OnTurnEnd(){}
     
     public virtual void OnActionOver(){}
-    
+
+
+    public virtual GAction GetActionPrevisualitation()
+    {
+        return null;
+    }
+
     public virtual void OnReceivedEquipment(GEquipment equipment)
     {
     }

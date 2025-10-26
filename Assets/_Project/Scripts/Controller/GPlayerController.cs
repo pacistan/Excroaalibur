@@ -33,6 +33,7 @@ public class GPlayerController : GController
     private GCell _hoverCell;
     private int _currentActionIndex;
     
+    List<GCell> previsuCell = new List<GCell>();
     
     public void SetSelectedPlayer(GPawn newSelected)
     {
@@ -164,6 +165,23 @@ public class GPlayerController : GController
         GCell newCell = GetCellUnderMouse();
         if (newCell && newCell != _hoverCell)
         {
+            foreach (GCell cell in previsuCell)
+                cell.visuals.isPrevisualized = false;
+            
+            if (_selectedPlayer && _selectedAction != null && newCell != _hoverCell && _selectedAction.IsValidCell(newCell.hexCoordinates))
+            {
+                GActionContext context = new GActionContext();
+                _selectedAction.targetCell = newCell;
+                
+                previsuCell = _selectedAction.Previsualisation(context);
+                foreach (GCell cell in previsuCell)
+                {
+                    cell.visuals.isPrevisualized = true;
+                }
+                
+                // TODO : Here recup Stun and Damage Value 
+            }
+            
             newCell.visuals.isHovered = true;
             if (_hoverCell != null)
             {

@@ -43,8 +43,23 @@ public class GMoveAction : GAction
     {
     }
 
+    public override List<GCell> Previsualisation(in GActionContext previsuContext)
+    {
+        GGridManager.Instance.GenerateStepMap(linkedPawn.GetCell(), _walkingTileType);
+        _path = GGridManager.Instance.GetPath(linkedPawn.GetCell() ,targetCell, _endMovementTileType,false);
+        if (_path == null || _path.Length == 0 || _path.Length > _maxMoveDistance) return null;
+        
+        GCell cell = linkedPawn.GetCell();
+        
+        List<GCell> previewCells = new List<GCell>();
+        previewCells.Add(targetCell);
+        
+        return previewCells;
+    }
+
     public override void PreProcess(GActionContext context = null)
     {
+        // TODO check player and do not generate step map if player ?
         base.PreProcess(context);
         GGridManager.Instance.GenerateStepMap(linkedPawn.GetCell(), _walkingTileType);
         _path = GGridManager.Instance.GetPath(linkedPawn.GetCell() ,targetCell, _endMovementTileType,false);
@@ -138,7 +153,6 @@ public class GMoveAction : GAction
             if (GGridManager.Instance.GetPath(linkedPawn.GetCell(), cell).Length <= 0) continue;
             newValidCells.Add(coordinate);
         }
-        
         
         return validCells = newValidCells.ToArray();
     }

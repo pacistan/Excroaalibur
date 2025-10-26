@@ -9,11 +9,18 @@ using UnityEngine;
 [Serializable]
 public class GActionContext
 {
+    public const string DAMAGE_STRING = "Damage";
+    public const string STUN_STRING = "Stun";
+    public const string DIRECTION_STRING = "Direction";
+    public const string FORCE_STRING = "Force"; 
+    
     private Dictionary<string, object> _data = new Dictionary<string, object>();
-
-
+    
     // Set a property with a generic type value
     public void Set<T>(string key, T value) => _data[key] = value;
+    
+    // Remove a property by key
+    public void Remove(string key) =>  _data.Remove(key);
     
     public T Get<T>(string key, T defaultValue = default)
     {
@@ -95,6 +102,20 @@ public abstract class GAction
         clone.actionIcon = actionIcon;
         clone.actionLabel = actionLabel;
         return clone;
+    }
+    
+    
+    public virtual GAction SetTargetCell(GCell inTargetCell)
+    {
+        targetCell = inTargetCell;
+        return this;
+    }
+
+    public abstract List<GCell> Previsualisation(in GActionContext previsuContext);
+    
+    public virtual void ClearPrevisualisation()
+    {
+        if (!linkedPawn) return;
     }
     
     /// <summary>

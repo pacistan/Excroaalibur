@@ -1,5 +1,6 @@
 ﻿using DG.Tweening;
 using Sirenix.OdinInspector;
+using System.Collections.Generic;
 using System.Runtime.CompilerServices;
 using UnityEngine;
 
@@ -17,7 +18,6 @@ public class GPushedReaction : GAction
     [SerializeField, Tooltip("Stun inflicted if we hit Something while being pushed")]
     int _stun = 1;
     
-    
     int _distance;
     
     bool _inflictDamage;
@@ -25,6 +25,67 @@ public class GPushedReaction : GAction
     GMoveAction _moveAction = null;
     
     GEquipment CachedEquipment;
+
+    public override List<GCell> Previsualisation(in GActionContext previsuContext)
+    {
+        if (previsuContext == null)
+        {
+            Debug.LogWarning($"GPushedReaction on {linkedPawn} missing context");
+            return null;
+        }
+        
+        List<GCell> PreviewCells = new List<GCell>();
+        if (previsuContext.Has(GActionContext.DIRECTION_STRING))
+            _direction = previsuContext.Get<EHexDirection>(GActionContext.DIRECTION_STRING);
+        if (previsuContext.Has(GActionContext.FORCE_STRING))
+            _distance = previsuContext.Get<int>(GActionContext.FORCE_STRING);
+        
+        if (_isPushable) // Check initial param
+        {
+            if (linkedPawn.GetCell().GetNeighbor(_direction).GetTileType == ETileType.Wall 
+                || linkedPawn.GetCell().GetNeighbor(_direction).GetGridObject<GPawn>())
+            {
+                _isPushable = false;
+                _inflictDamage = true;
+            }
+        }
+
+        if (!_isPushable) // do not put in else !
+        {
+            if (linkedPawn is GAltar) _inflictDamage = false;
+            PreviewCells.Add(linkedPawn.GetCell());
+        } 
+        else 
+        {
+            
+            GCell cell = linkedPawn.GetCell();
+            for (int i = 0; i < _distance; i++)
+            {
+                GCell neighbor = cell.GetNeighbor(_direction);
+            
+                if (!neighbor || neighbor.GetTileType == ETileType.Wall)
+                {
+                    _inflictDamage = true;
+                    _damage = _DamageRelatedToPushForce ? _distance - i: _damage;
+                    break;
+                }
+                
+                cell = neighbor;
+                if (neighbor.GetTileType == ETileType.Hole)
+                    break;
+            }
+            
+            PreviewCells.Add(cell);
+        }
+        
+        if (_inflictDamage)
+        {
+            previsuContext.Set(GActionContext.DAMAGE_STRING, _damage);
+            previsuContext.Set(GActionContext.STUN_STRING, _stun);
+        }
+        
+        return PreviewCells;
+    }
     
     public override void PreProcess(GActionContext context = null)
     {
@@ -36,10 +97,10 @@ public class GPushedReaction : GAction
             return;
         }
         
-        if (context.Has("direction"))
-            _direction = context.Get<EHexDirection>("direction");
-        if (context.Has("force"))
-            _distance = context.Get<int>("force");
+        if (context.Has(GActionContext.DIRECTION_STRING))
+            _direction = context.Get<EHexDirection>(GActionContext.DIRECTION_STRING);
+        if (context.Has(GActionContext.FORCE_STRING))
+            _distance = context.Get<int>(GActionContext.FORCE_STRING);
         
         if (_isPushable) // Check initial param
         {

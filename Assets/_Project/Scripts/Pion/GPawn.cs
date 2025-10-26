@@ -66,8 +66,6 @@ public class GPawn : GGridObject
     
     // Cache for quick look-up of override reactions
     private Dictionary<Type, GAction> _overrideCache;
-
-
     
     public GAction GetReaction(GAction action)
     {
@@ -77,14 +75,14 @@ public class GPawn : GGridObject
         
         // Exact type 
         if (_overrideCache != null && _overrideCache.TryGetValue(t, out var overExact) && overExact != null)
-            return overExact;
+            return overExact.CloneAction();
 
         // Parent type
         var bt = t.BaseType;
         while (bt != null && typeof(GAction).IsAssignableFrom(bt))
         {
             if (_overrideCache.TryGetValue(bt, out var overBase) && overBase != null)
-                return overBase;
+                return overBase.CloneAction();
             bt = bt.BaseType;
         }
         

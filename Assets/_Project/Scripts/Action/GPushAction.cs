@@ -2,6 +2,7 @@
 using Sirenix.OdinInspector;
 using Sirenix.Utilities;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class GPushAction : GAction
@@ -17,7 +18,43 @@ public class GPushAction : GAction
     
     GAction _reaction;
     GMoveAction _followAction = null;
-    
+
+    public override List<GCell> Previsualisation(in GActionContext previsuContext)
+    {
+        _direction = linkedPawn.coordinate.GetLineDirection(targetCell.hexCoordinates);
+        _targetPawn = targetCell.GetGridObject<GPawn>();
+        if (!_targetPawn) return null; 
+
+        List<GCell> previewCells = new List<GCell>();
+        _reaction = _targetPawn.GetReaction(this);
+        if (_reaction != null)
+        {
+            previsuContext.Set(GActionContext.DIRECTION_STRING, _direction);
+            previsuContext.Set(GActionContext.FORCE_STRING, _pushForce);
+            _reaction.linkedPawn = _targetPawn;
+            previewCells.AddRange(_reaction.Previsualisation(in previsuContext));
+        }
+
+        GCell pathCell = linkedPawn.GetCell();
+
+        if (previewCells.Contains(_targetPawn.GetCell())) return previewCells; // No valid cell to follow !
+        
+        if (!(_targetPawn is GAltar))
+        {
+            for (int i = 0; i < _followDistance; i++)
+            {
+                GCell neighbor = pathCell.GetNeighbor(_direction);
+                
+                if (!neighbor || previewCells.Contains(neighbor)) break;
+
+                pathCell = neighbor;
+            }
+            
+            previewCells.Add(pathCell);
+        }
+        
+        return previewCells;
+    }
     public override void PreProcess(GActionContext context = null)
     {
         base.PreProcess(context);
@@ -29,8 +66,8 @@ public class GPushAction : GAction
         if (_reaction != null)
         {
             GActionContext pushContext = new GActionContext();
-            pushContext.Set("direction", _direction);
-            pushContext.Set("force", _pushForce);
+            pushContext.Set(GActionContext.DIRECTION_STRING, _direction);
+            pushContext.Set(GActionContext.FORCE_STRING, _pushForce);
             _reaction.linkedPawn = _targetPawn;
             GTurnBaseManager.Instance.PreProcessReaction(_reaction, pushContext);
         }

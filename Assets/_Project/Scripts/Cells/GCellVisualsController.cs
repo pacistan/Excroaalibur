@@ -43,6 +43,12 @@ public class GCellVisualsController : SerializedMonoBehaviour
 
     [SerializeField, HideInInspector, ReadOnly]
     public bool isSelected;
+
+    // TODO : Change later 
+    private bool _wasPrevisualized;
+    
+    [SerializeField, HideInInspector, ReadOnly]
+    public bool isPrevisualized = false;
     
     [FormerlySerializedAs("_currentactionHighlightActionType")]
     [SerializeField, HideInInspector, ReadOnly]
@@ -129,6 +135,7 @@ public class GCellVisualsController : SerializedMonoBehaviour
         _visualPresetInstances.Clear();
     }
 #endif
+    
     public void UpdateCellDebugNum(string newDebugText)
     {
         _text.text = newDebugText;
@@ -149,6 +156,11 @@ public class GCellVisualsController : SerializedMonoBehaviour
     void LateUpdate()
     {
         UpdateHighlightSprite();
+        if (_wasPrevisualized != isPrevisualized)
+        {
+            _wasPrevisualized = isPrevisualized; 
+            _highlight.color = isPrevisualized ? cellCommonData.previsualizedColor : cellCommonData.tileHighlightActionData[_currentHighlightActionType];
+        }
     }
 
     void Start()

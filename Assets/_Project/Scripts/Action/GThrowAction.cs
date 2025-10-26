@@ -13,6 +13,7 @@ public class GThrowAction : GAction
     [SerializeField, Min(0), Tooltip("Maximum distance the Crown can be thrown")]
     private int _maxThrowDistance = 10;
     
+    [BoxGroup("Animation")]
     [SerializeField, Min(0), BoxGroup("Animation/Throw"), Tooltip("Height of the mid point of the curve when the crown is thrown")]
     private float _throwMidPointHeight = 0f;
     
@@ -68,6 +69,58 @@ public class GThrowAction : GAction
     private float _progress;
 
     EventInstance ThrowSoundInstance;
+
+    public override List<GCell> Previsualisation(in GActionContext previsuContext)
+    {
+        if (!linkedPawn.equipment || linkedPawn.equipment is not GCrown) return null;
+        _crown = (GCrown)linkedPawn.equipment;
+        
+        EHexDirection direction = linkedPawn.coordinate.GetLineDirection(base.targetCell.hexCoordinates);
+        _distance = linkedPawn.coordinate.DistanceTo(base.targetCell.hexCoordinates);
+        
+        _targetPawn = targetCell.GetGridObject<GPawn>();
+        List<GCell> previewCells = new List<GCell>();
+        
+        if (_targetPawn && _targetPawn.isPlayer)
+        {
+            previewCells.Add(targetCell);  // Target Cell
+        } 
+        else if (_targetPawn && !_targetPawn.isPlayer)
+        {
+            GAction impactReaction = _targetPawn.GetReaction(this);
+            previsuContext.Set(GActionContext.DAMAGE_STRING, _crown._currentDamage);
+            if (impactReaction != null)
+            {
+                previsuContext.Set(GActionContext.DIRECTION_STRING, direction);
+                impactReaction.linkedPawn = _targetPawn;
+                impactReaction.Previsualisation(in previsuContext);
+            }
+            
+            if (_targetPawn.hp - previsuContext.Get<int>(GActionContext.DAMAGE_STRING) <= 0) // Kill 
+            {
+                previewCells.Add(linkedPawn.GetCell()); // Return to owner (Cell of the linked pawn)
+            }
+            else
+            {
+                if (_targetPawn && targetCell.GetNeighbor(direction.Opposite()).IsWalkable(true))
+                {
+                    previewCells.Add(targetCell.GetNeighbor(direction.Opposite())); // Cell in front of target
+                }
+                else
+                {
+                    previewCells.Add(targetCell); // Target Cell
+                }
+            }
+            
+        }
+        else
+        {
+            previewCells.Add(targetCell); // Target Cell
+        }
+        
+        return previewCells;
+    }
+    
     
     public override void PreProcess(GActionContext context = null)
     {
@@ -95,8 +148,8 @@ public class GThrowAction : GAction
             if (_impactReaction != null)
             {
                 var reactionContext = new GActionContext();
-                reactionContext.Set("direction", direction);
-                reactionContext.Set("damage", _crown._baseDamage);
+                reactionContext.Set(GActionContext.DIRECTION_STRING, direction);
+                reactionContext.Set(GActionContext.DAMAGE_STRING, _crown._baseDamage);
                 _impactReaction.linkedPawn = _targetPawn;
                 GTurnBaseManager.Instance.PreProcessReaction(_impactReaction, reactionContext);
             }
@@ -289,15 +342,7 @@ public class GThrowAction : GAction
         {
             DOTween.ManualUpdate(delta, delta);
         }
-
-        // Keep your old progress/reaction guard (safe if something changes mid-flight)
-        /*_progress += delta * _crownSpeed;
-        int id = Mathf.FloorToInt(_progress);
-        if (id >= _distance && _impactReaction != null)
-        {
-            GTurnBaseManager.Instance.TryStartReaction(_impactReaction);
-            _impactReaction = null;
-        }*/
+        
     }
 
     public override void End_Action()
@@ -326,7 +371,7 @@ public class GThrowAction : GAction
                 if (cell.GetTileType == ETileType.Hole) continue;
                     
                 newValidCells.Add(cell.hexCoordinates);
-                if (cell.GetGridObject<GPawn>()) break;
+                if (cell.GetGridObject<GPawn>() && cell.GetGridObject<GPawn>() is not GAltar) break;
             }
         }
 

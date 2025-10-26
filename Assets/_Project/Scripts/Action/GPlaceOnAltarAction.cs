@@ -1,10 +1,17 @@
-﻿public class GPlaceOnAltarAction : GAction
+﻿using System.Collections.Generic;
+
+public class GPlaceOnAltarAction : GAction
 {
     GCrown _crown;
     GAltar _altar;
 
     public override ETileHighlightActionType GetHighlightActionType() => ETileHighlightActionType.Move;
-
+    
+    public override List<GCell> Previsualisation(in GActionContext previsuContext)
+    {
+        return new List<GCell>() { targetCell }; 
+    }
+    
     public override void PreProcess(GActionContext context = null)
     {
         _crown = null;
