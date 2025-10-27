@@ -125,6 +125,11 @@ public class GPlayerHudManager : MonoBehaviour
             _headerNameText.text = gridObject.headerName;
             _classNameText.text = $"Class : {gridObject.className}";
 
+            foreach (var image in _actionTokenImgArray)
+            {
+                image.gameObject.SetActive(pawn && pawn.isPlayer);
+            }
+            
             if (pawn)
             {
                 if (pawn.isPlayer)
@@ -192,13 +197,17 @@ public class GPlayerHudManager : MonoBehaviour
         _headerHasCrownIconImage.sprite = pawn && pawn.equipment && pawn.equipment is GCrown ?
             _headerCrownIconSprite : _headerNoCrownIconSprite;
 
+        foreach (var image in _actionTokenImgArray)
+        {
+            image.gameObject.SetActive(pawn && pawn.isPlayer);
+        }
         if (pawn)
         {
             if (pawn.isPlayer)
             {
                 for (int i = 0; i < _actionTokenImgArray.Length; i++)
                 {
-                    _actionTokenImgArray[i].gameObject.SetActive(i < pawn.actionTokens);
+                    //_actionTokenImgArray[i].gameObject.SetActive(i < pawn.actionTokens);
                     bool isActionTokenOn = i < pawn.remainingActionToken;
                     _actionTokenImgArray[i].sprite = isActionTokenOn ?
                         _actionTokenOnSprite : _actionTokenOffSprite;

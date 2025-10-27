@@ -149,7 +149,12 @@ public class GPushedReaction : GAction
                 
                 cell = neighbor;
                 if (neighbor.GetTileType == ETileType.Hole)
+                {
+                    _inflictDamage = true;
+                    _damage = 0;
+                    _stun = 1;
                     break;
+                }
             }
             
             _moveAction = new GMoveAction();
