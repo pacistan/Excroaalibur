@@ -18,7 +18,7 @@ public class GActionList : MonoBehaviour
 
     List<Image> _images = new List<Image>();
     
-    public void UpdateButtons(GPawn pawn)
+    public void UpdateButtons(GPawn pawn, bool isFirstAction)
     {
         foreach (var image in _images)
         {
@@ -29,7 +29,11 @@ public class GActionList : MonoBehaviour
 
         if (pawn && pawn.isPlayer && pawn.actions != null)
         {
-            if (pawn.GetCell().data.tileType == ETileType.Hole)
+            if (isFirstAction)
+            {
+                CreateActionSlot(pawn.actions[1],false);
+            }
+            else if (pawn.GetCell().data.tileType == ETileType.Hole)
             {
                 CreateActionSlot(pawn.actions[3], true);
             }
