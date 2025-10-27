@@ -171,6 +171,6 @@ public abstract class GAction
     /// </summary>
     /// <param name="cell">Cell to check the validity of</param>
     /// <returns>True if cell is valid for this action</returns>
-    public bool IsValidCell(GHexCoordinate cell) { return GetValidCells().Contains(cell); }
+    public bool IsValidCell(GHexCoordinate cell) { return validCells.Contains(cell); }
     
 }

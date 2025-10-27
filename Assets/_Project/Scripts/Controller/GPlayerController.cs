@@ -28,9 +28,6 @@ public class GPlayerController : GController
     [SerializeField, Tooltip("Layer Mask for the Cell Raycast")]
     private LayerMask _cellLayerMask;
 
-    [SerializeField]
-    Button _endTurnButton;
-    
     InputAction _leftClickInput;
     InputAction _rightClickInput;
     private GCell _targetCell;
@@ -163,7 +160,7 @@ public class GPlayerController : GController
         _playerHudManager = GHudManager.Instance.playerHudManager;
         _leftClickInput = InputSystem.actions.FindAction("Select");
         _rightClickInput = InputSystem.actions.FindAction("Switch");
-        _endTurnButton.onClick.AddListener(StopTurn);
+        GHudManager.Instance.mainHudManager.endTurnButton.onClick.AddListener(StopTurn);
     }
 
     private void Update()
@@ -398,12 +395,12 @@ public class GPlayerController : GController
     protected override void StopTurn()
     {
         base.StopTurn();
-        _endTurnButton.interactable = false;
+        GHudManager.Instance.mainHudManager.endTurnButton.interactable = false;
     }
 
     public override void StartTurn()
     {
         base.StartTurn();
-        _endTurnButton.interactable = true;
+        GHudManager.Instance.mainHudManager.endTurnButton.interactable = true;
     }
 }

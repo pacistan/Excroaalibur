@@ -1295,6 +1295,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _crownDamageTxt: {fileID: 6077976626247131571}
+  <endTurnButton>k__BackingField: {fileID: 2846134113315183221}
 --- !u!1 &5349786262086359739
 GameObject:
   m_ObjectHideFlags: 0
@@ -2822,6 +2823,14 @@ PrefabInstance:
     - target: {fileID: 3607271261067835767, guid: a6668a0ff4abd0b4fa5cdfafec8c28f3, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5495061336831855965, guid: a6668a0ff4abd0b4fa5cdfafec8c28f3, type: 3}
+      propertyPath: _inMovementDuration
+      value: 0.1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5495061336831855965, guid: a6668a0ff4abd0b4fa5cdfafec8c28f3, type: 3}
+      propertyPath: _outMovementDuration
+      value: 0.2
       objectReference: {fileID: 0}
     - target: {fileID: 5495061336831855965, guid: a6668a0ff4abd0b4fa5cdfafec8c28f3, type: 3}
       propertyPath: <actionList>k__BackingField
