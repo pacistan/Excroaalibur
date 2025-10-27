@@ -171,10 +171,10 @@ public class GPlayerController : GController
 
     private void Update()
     {
+        HandlePlayerHover();
         if (GTurnBaseManager.Instance.currentTurnController != this) return;
         DebugTools();
 
-        HandlePlayerHover();
         HandlePlayerLeftClick();
     }
 
@@ -354,6 +354,7 @@ public class GPlayerController : GController
     public override void StartAction()
     {
         if (!_validCells.Contains(_targetCell.hexCoordinates) &&  _selectedPlayer.remainingActionToken <= 0) return;
+        if(_selectedPlayer.IsStunned) return;
         _selectedAction.targetCell = _targetCell;
         if (_selectedPlayer.RequestAction(_selectedAction))
         {
@@ -416,5 +417,17 @@ public class GPlayerController : GController
         {
             GHudManager.Instance.mainHudManager.endTurnButton.interactable = true;
         }
+    }
+
+    public override void EndTurn()
+    {
+        base.EndTurn();
+        /*foreach (var gHexCoordinate in _validCells)
+        {
+            GCell cell = GGridManager.Instance.GetCell(gHexCoordinate);
+            cell.visuals.isPrevisualized = false;
+            cell.visuals.isPrevisualized = false;
+            cell.visuals.isSelected = false;
+        }*/
     }
 }

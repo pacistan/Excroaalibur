@@ -287,7 +287,7 @@ public class GPawn : GGridObject
         {
             aiController.RegisterPawn(this);
         }
-        else
+        else if(isPlayer)
         {
             GPlayerController controller = FindFirstObjectByType<GPlayerController>();
             visuals.OnUpdateActionsToken();
