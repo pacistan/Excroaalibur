@@ -7,13 +7,13 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;
 using UnityEngine.Serialization;
+using UnityEngine.UI;
 
 public class GPlayerController : GController
 {
     public event Action<GPawn> SelectedPlayerChanged;
     public GAction[] availableActions = new GAction[] { };
     
-    [SerializeField]
     private GPlayerHudManager _playerHudManager;
 
     [SerializeField, ReadOnly, HideInEditorMode] 
@@ -27,6 +27,9 @@ public class GPlayerController : GController
     
     [SerializeField, Tooltip("Layer Mask for the Cell Raycast")]
     private LayerMask _cellLayerMask;
+
+    [SerializeField]
+    Button _endTurnButton;
     
     InputAction _leftClickInput;
     InputAction _rightClickInput;
@@ -157,8 +160,10 @@ public class GPlayerController : GController
     
     private void Start()
     {
+        _playerHudManager = GHudManager.Instance.playerHudManager;
         _leftClickInput = InputSystem.actions.FindAction("Select");
         _rightClickInput = InputSystem.actions.FindAction("Switch");
+        _endTurnButton.onClick.AddListener(StopTurn);
     }
 
     private void Update()
@@ -388,5 +393,17 @@ public class GPlayerController : GController
         }
         foreach (GCell cell in previsuCell)
             cell.visuals.isPrevisualized = false;
+    }
+
+    protected override void StopTurn()
+    {
+        base.StopTurn();
+        _endTurnButton.interactable = false;
+    }
+
+    public override void StartTurn()
+    {
+        base.StartTurn();
+        _endTurnButton.interactable = true;
     }
 }

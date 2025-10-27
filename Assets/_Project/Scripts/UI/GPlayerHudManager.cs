@@ -178,8 +178,6 @@ public class GPlayerHudManager : MonoBehaviour
         
 
     }
-    
-    
 
     public void UpdateGridObjectHoveredInfo(GGridObject gridObject)
     {

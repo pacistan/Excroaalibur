@@ -131,6 +131,7 @@ public class GPawnVisualsController : SerializedMonoBehaviour
 
     public void OnUpdateHealthPoints()
     {
+        if (_pawn.isPlayer || _pawn is GAltar) return;
         string text = "";
         
         if (_pawn.hp >= 0 && _pawn.hp != _previousHpNumber) 

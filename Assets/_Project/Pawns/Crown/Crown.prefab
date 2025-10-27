@@ -189,7 +189,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &2181171515916646933
 RectTransform:
   m_ObjectHideFlags: 0
@@ -487,6 +487,7 @@ MonoBehaviour:
   coordinate:
     x: 0
     z: 0
+  visualToCopy: {fileID: 0}
   <headerSprite>k__BackingField: {fileID: 21300000, guid: 7f56bf6553fbd35408d7f407648ed3b5, type: 3}
   <cadreSprite>k__BackingField: {fileID: 0}
   <headerObjectIconSprite>k__BackingField: {fileID: 21300000, guid: 0ce17d0c589726c48bd368e84ef62245, type: 3}
