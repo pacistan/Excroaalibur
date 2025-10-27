@@ -1,4 +1,5 @@
 using Sirenix.OdinInspector;
+using Sirenix.Utilities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -21,6 +22,9 @@ public class GGridManager : GSingleton<GGridManager>
     
     [HideInInspector]
     public Dictionary<Vector2Int, int> _stepMap;
+
+    //[HideInInspector]
+    //public int[] stepMap;
 
     public GCell GetCell(GHexCoordinate coordinate)
     {
@@ -204,13 +208,12 @@ public class GGridManager : GSingleton<GGridManager>
                     cell.visuals.UpdateCellDebugNum(stepNum.ToString());
                     StepRecursion(cell, stepNum + 1, ref walkableTypes);
                 }
-                else if(_stepMap[coordinates] >= stepNum)
+                else if(_stepMap[coordinates] > stepNum)
                 {
                     _stepMap[coordinates] = stepNum;
                     cell.visuals.UpdateCellDebugNum(stepNum.ToString());
                     StepRecursion(cell, stepNum + 1, ref walkableTypes);
                 }
-
             }
         }
 
@@ -274,6 +277,12 @@ public class GGridManager : GSingleton<GGridManager>
             }
         }
         return cellsOfType;
+    }
+
+    void Start()
+    {
+        //stepMap = new int[_grid.Length];
+        //stepMap.Populate(-1);
     }
 }
 
