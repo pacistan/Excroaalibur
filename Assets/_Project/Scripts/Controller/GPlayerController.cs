@@ -268,7 +268,7 @@ public class GPlayerController : GController
             GPawn cellPawn = _targetCell.GetGridObject<GPawn>();
 
             
-            if (_selectedPlayer && _selectedAction.IsValidCell(_targetCell.hexCoordinates))
+            if (_selectedPlayer && _selectedAction.IsValidCell(_targetCell.hexCoordinates) && _selectedPlayer.remainingActionToken > 0)
             {
                 ResetHighlight();
                 StartAction();
@@ -329,6 +329,7 @@ public class GPlayerController : GController
         }
         else if (_rightClickInput.WasPressedThisFrame())
         {
+            if (_selectedPlayer == null) return;
             SwitchAction();
             _playerHudManager.actionList.SwitchActionIndex();
         }
@@ -342,17 +343,15 @@ public class GPlayerController : GController
     
     public override void StartAction()
     {
-        if (!_validCells.Contains(_targetCell.hexCoordinates)) return;
+        if (!_validCells.Contains(_targetCell.hexCoordinates) &&  _selectedPlayer.remainingActionToken <= 0) return;
         _selectedAction.targetCell = _targetCell;
         if (_selectedPlayer.RequestAction(_selectedAction))
         {
             _selectedPlayer.remainingActionToken--;
             _selectedPlayer.visuals.OnUpdateActionsToken();
-            /*availableActions = GetAvailableActions();
-            foreach (var action in availableActions)
-                action.GetValidCells();
-            SelectAction(0);*/
             _playerHudManager.UpdateGridObjectHoveredInfo(_selectedPlayer);
+            SetSelectedPlayer(null);
+            SelectAction(null);
         }
     }
 

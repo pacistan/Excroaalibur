@@ -21,7 +21,7 @@ public class GThrowAction : GAction
     float _throwCrownSpeed = 20f;
     
     [SerializeField, BoxGroup("Animation/Throw"), Tooltip("Animation curve, When the crown is thrown")]
-    private AnimationCurve _speedThrowCurve = AnimationCurve.Linear(0, 0, 1, 1);
+    private AnimationCurve _throwSpeedCurve = AnimationCurve.Linear(0, 0, 1, 1);
     
     [SerializeField, Min(0), BoxGroup("Animation/Pass"), Tooltip("Height of the mid point of the curve when the crown is passed to another pawn")]
     private float _passMidPointHeight = 0f;
@@ -30,7 +30,7 @@ public class GThrowAction : GAction
     float _passCrownSpeed = 25f;
     
     [SerializeField, BoxGroup("Animation/Pass"), Tooltip("Animation curve, When the crown is thrown")]
-    private AnimationCurve _speedPassCurve = AnimationCurve.Linear(0, 0, 1, 1);
+    private AnimationCurve _passSpeedCurve = AnimationCurve.Linear(0, 0, 1, 1);
     
     [SerializeField, Min(0), BoxGroup("Animation/Return"), Tooltip("Height of the mid point of the curve when the crown return")]
     private float _returnMidPointHeight = 2f;
@@ -39,7 +39,7 @@ public class GThrowAction : GAction
     float _returnCrownSpeed = 10f;
     
     [SerializeField, BoxGroup("Animation/Return"), Tooltip("Animation curve, When the crown return to the owner")]
-    private AnimationCurve _speedReturnCurve = AnimationCurve.Linear(0, 0, 1, 1);
+    private AnimationCurve _returnSpeedCurve = AnimationCurve.Linear(0, 0, 1, 1);
     
     [SerializeField, Min(0), BoxGroup("Animation/Land"), Tooltip("Height of the mid point of the curve when the crown land")]
     private  float _landMidPointHeight = 2f;
@@ -48,7 +48,7 @@ public class GThrowAction : GAction
     float _landCrownSpeed = 10f;
     
     [SerializeField, BoxGroup("Animation/Land"), Tooltip("Animation curve When the crown fall on the cell in front of the target")]
-    private AnimationCurve _speedLandCurve = AnimationCurve.Linear(0, 0, 1, 1);
+    private AnimationCurve _landSpeedCurve = AnimationCurve.Linear(0, 0, 1, 1);
     
     GCrown _crown;
     GAction _impactReaction;
@@ -237,7 +237,7 @@ public class GThrowAction : GAction
         
         Vector3[] ThrowPath = new Vector3[] { _startPos, throwMidPoint , _hitPos };
         _seq.Append(_crown.transform.DOPath(ThrowPath, outDur, PathType.CatmullRom)
-                .SetEase(_playerCatch ?_speedPassCurve : _speedThrowCurve)
+                .SetEase(_playerCatch ?_passSpeedCurve : _throwSpeedCurve)
                 .SetOptions(false)
         );
 
@@ -275,7 +275,7 @@ public class GThrowAction : GAction
         
             Vector3[] returnPath = new Vector3[] { _hitPos, returnMidPoint, _returnPos};
             _seq.Append(_crown.transform.DOPath(returnPath, backDur, PathType.CatmullRom)
-                .SetEase(_speedReturnCurve)
+                .SetEase(_returnSpeedCurve)
                 .SetOptions(false)
             );
         }
@@ -302,7 +302,7 @@ public class GThrowAction : GAction
         
             Vector3[] path = new Vector3[] { _hitPos, midPoint, _landingPos};
             _seq.Append(_crown.transform.DOPath(path, outDur, PathType.CatmullRom)
-                .SetEase(_speedLandCurve)
+                .SetEase(_landSpeedCurve)
                 .SetOptions(false)
             );
             
@@ -369,9 +369,10 @@ public class GThrowAction : GAction
 
                 if (!cell || cell.GetTileType == ETileType.Wall) break;
                 if (cell.GetTileType == ETileType.Hole) continue;
+                if (cell.GetGridObject<GPawn>() is GAltar) continue;
                     
                 newValidCells.Add(cell.hexCoordinates);
-                if (cell.GetGridObject<GPawn>() && cell.GetGridObject<GPawn>() is not GAltar) break;
+                if (cell.GetGridObject<GPawn>()) break;
             }
         }
 
@@ -386,13 +387,16 @@ public class GThrowAction : GAction
         clonedAction._maxThrowDistance = _maxThrowDistance;
         clonedAction._throwCrownSpeed = _throwCrownSpeed;
         clonedAction._throwMidPointHeight = _throwMidPointHeight;
-        clonedAction._speedThrowCurve = _speedThrowCurve;
+        clonedAction._throwSpeedCurve = _throwSpeedCurve;
+        clonedAction._passCrownSpeed = _passCrownSpeed;
+        clonedAction._passMidPointHeight = _passMidPointHeight;
+        clonedAction._passSpeedCurve = _passSpeedCurve;
         clonedAction._returnCrownSpeed = _returnCrownSpeed;
         clonedAction._returnMidPointHeight = _returnMidPointHeight;
-        clonedAction._speedReturnCurve = _speedReturnCurve;
+        clonedAction._returnSpeedCurve = _returnSpeedCurve;
         clonedAction._landCrownSpeed = _landCrownSpeed;
         clonedAction._landMidPointHeight = _landMidPointHeight;
-        clonedAction._speedLandCurve = _speedLandCurve;
+        clonedAction._landSpeedCurve = _landSpeedCurve;
         return clonedAction;
     }
 }

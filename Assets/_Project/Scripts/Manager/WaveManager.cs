@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using UnityEngine.Events;
 
 
 /* Manage the Wave and Spawn of Ennemies */
@@ -51,7 +52,6 @@ public class WaveManager : GSingleton<WaveManager>
             return list;
         }
     }
-    
     [field: SerializeField, Tooltip("List of waves to spawn")]
     public List<SWave> waves { get; private set; } = new List<SWave>();
     

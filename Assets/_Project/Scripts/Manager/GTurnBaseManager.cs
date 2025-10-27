@@ -156,15 +156,18 @@ public class GTurnBaseManager : GSingleton<GTurnBaseManager>
     /** Start the Turn of the first Entity in the Queue */
     private void StartTurn()
     {
-        if (_turnOrderControllerQueue.Count == 0)
+        if (_turnOrderControllerQueue.Count == 0 && WaveManager.Instance.waves.Count <= 0)
         {
-            Debug.LogWarning("Turn Order Queue is empty. Force Disable the Turn Base Manager.");
+            Debug.LogWarning("Turn Order Queue is empty and WaveManager Has no Wave. Force Disable the Turn Base Manager.");
             enabled = false;
             return;
         }
-        
-        currentTurnController = _turnOrderControllerQueue.First();
-        _turnOrderControllerQueue.RemoveAt(0);
+
+        if (_turnOrderControllerQueue.Count >= 0)  // if Queue Is empty, keep the currentTurnController 
+        {
+            currentTurnController = _turnOrderControllerQueue.First();
+            _turnOrderControllerQueue.RemoveAt(0);
+        }
         
         currentTurnController.StartTurn();
         _currentTurnState = ETurnState.InProgress;
@@ -226,32 +229,25 @@ public class GTurnBaseManager : GSingleton<GTurnBaseManager>
         yield return null;
     }
     
-    // ReSharper disable Unity.PerformanceAnalysis
+    
     IEnumerator ProcessEndTurn()
     {
-        float startTime = Time.time;
-        /*while (isActionPlaying && Time.time <= startTime + _safeTimeHandle)
-        {
-            yield return null;
-        }*/
-        yield return _waitForTurn; /*=> !isActionPlaying || Time.time > startTime + _safeTimeHandle);*/
+        yield return _waitForTurn; 
         
         _currentTurnState = ETurnState.Finished;
         
-        if (_turnOrderControllerQueue.First() is GPlayerController) // Before Player Turn
-        {
-            CreateQueue();
-            _turnCount++;
-            WaveManager.Instance.CheckNextWave(_turnCount);
-        }
-        else if (currentTurnController is GPlayerController) // After Player Turn
+        if (currentTurnController is GPlayerController) // After Player Turn
         {
             if (WaveManager.Instance.HasNextWave())
-            {
                 WaveManager.Instance.SpawnNextWave();
-            }
             
             CreateQueue(true);
+        }
+        
+        if (_turnOrderControllerQueue.First() is GPlayerController) // Before Player Turn
+        {
+            _turnCount++;
+            WaveManager.Instance.CheckNextWave(_turnCount);
         }
         
         StartTurn();
