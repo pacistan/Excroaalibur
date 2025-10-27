@@ -14,6 +14,10 @@ public abstract class GAIBehavior : ScriptableObject
     public virtual void Init(GAIController controller)
     {
         _controller = controller;
+        foreach (GAction action in actions)
+        {
+            action.linkedPawn = controller.pawn;
+        }
     }
     
     public virtual  void OnTurnStart()

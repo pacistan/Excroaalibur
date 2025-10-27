@@ -26,12 +26,12 @@ public class GSentryBehavior : GAIBehavior
     
     public override void Init(GAIController controller)
     {
-        base.Init(controller);
         actions = new List<GAction>()        {
             _moveAction,
             _pushAction,
             _placeOnAltarAction
         };
+        base.Init(controller);
 
         controller.pawn.OnEquip += OnReceivedEquipment;
     }

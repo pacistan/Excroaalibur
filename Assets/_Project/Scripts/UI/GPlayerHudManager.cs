@@ -131,8 +131,8 @@ public class GPlayerHudManager : MonoBehaviour
                 {
                     for (int i = 0; i < _actionTokenImgArray.Length; i++)
                     {
-                        _actionTokenImgArray[i].gameObject.SetActive(i <= pawn.actionTokens);
-                        bool isActionTokenOn = i <= pawn.remainingActionToken;
+                        //_actionTokenImgArray[i].gameObject.SetActive(i <= pawn.actionTokens);
+                        bool isActionTokenOn = i < pawn.remainingActionToken;
                         _actionTokenImgArray[i].sprite = isActionTokenOn ? _actionTokenOnSprite : _actionTokenOffSprite;
                         _actionTokenImgArray[i].color = isActionTokenOn ? _actionTokenOnColor : _actionTokenOffColor;
                     }
@@ -195,8 +195,8 @@ public class GPlayerHudManager : MonoBehaviour
             {
                 for (int i = 0; i < _actionTokenImgArray.Length; i++)
                 {
-                    _actionTokenImgArray[i].gameObject.SetActive(i <= pawn.actionTokens);
-                    bool isActionTokenOn = i <= pawn.remainingActionToken;
+                    _actionTokenImgArray[i].gameObject.SetActive(i < pawn.actionTokens);
+                    bool isActionTokenOn = i < pawn.remainingActionToken;
                     _actionTokenImgArray[i].sprite = isActionTokenOn ?
                         _actionTokenOnSprite : _actionTokenOffSprite;
                     _actionTokenImgArray[i].color = isActionTokenOn ?
