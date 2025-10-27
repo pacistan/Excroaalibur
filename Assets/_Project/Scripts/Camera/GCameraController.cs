@@ -48,7 +48,7 @@ public class GCameraController : MonoBehaviour
         _quartTurnRight = InputSystem.actions.FindAction("QuartTurnRight");
         _horizontalRot = InputSystem.actions.FindAction("HorizontalTurn");
         _height = InputSystem.actions.FindAction("MoveUpDown");
-        _camMove = InputSystem.actions.FindAction("CamMove");
+        //_camMove = InputSystem.actions.FindAction("CamMove");
         _targetPos = _cameraTargetTr.position;
         _currentHeight = follow.FollowOffset.y;
     }
@@ -66,7 +66,7 @@ public class GCameraController : MonoBehaviour
         if (_height.IsPressed())
             MoveHeight();
 
-        Move();
+        // Move();
         
         _cameraTargetTr.rotation = Quaternion.Euler(0f, _horizontalRotationOffset, 0f);
         _cameraTargetTr.position = Vector3.Lerp(_cameraTargetTr.position, _targetPos, Time.deltaTime * _moveSpeed);

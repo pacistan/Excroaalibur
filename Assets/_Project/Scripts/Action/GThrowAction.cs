@@ -301,7 +301,7 @@ public class GThrowAction : GAction
             midPoint.y += _landMidPointHeight;
         
             Vector3[] path = new Vector3[] { _hitPos, midPoint, _landingPos};
-            _seq.Append(_crown.transform.DOPath(path, outDur, PathType.CatmullRom)
+            _seq.Append(_crown.transform.DOPath(path, landDur, PathType.CatmullRom)
                 .SetEase(_landSpeedCurve)
                 .SetOptions(false)
             );
