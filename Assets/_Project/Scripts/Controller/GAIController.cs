@@ -11,7 +11,7 @@ public class GAIController : GController
     public  GPawn pawn;
     [SerializeReference]
     [InlineEditor(InlineEditorObjectFieldModes.Boxed)]
-    GAIBehavior _aiBehavior;
+    public GAIBehavior _aiBehavior;
     
     public override void StartTurn()
     {

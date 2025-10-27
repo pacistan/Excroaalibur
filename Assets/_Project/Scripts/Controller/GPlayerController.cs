@@ -79,7 +79,10 @@ public class GPlayerController : GController
         foreach (var coordinate in _validCells)
         {
             GCell cell = GGridManager.Instance.GetCell(coordinate);
-            cell.visuals.SetHighlightActionType(_selectedAction.GetHighlightActionType());
+            ETileHighlightActionType highlightActionType = _selectedAction.linkedPawn.isPlayer
+                ? _selectedAction.GetHighlightActionType()
+                : ETileHighlightActionType.EnnemyAction;
+            cell.visuals.SetHighlightActionType(highlightActionType);
         }
     }
 
@@ -131,6 +134,7 @@ public class GPlayerController : GController
         }
         else if (target.TryGetComponent<GAIController>(out GAIController controller))
         {
+            newAvailableActions.Add(target.actions[0]);
             // TODO : Get Default Action from AI Controller
         }
         

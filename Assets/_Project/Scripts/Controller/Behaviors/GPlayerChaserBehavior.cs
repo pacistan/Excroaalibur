@@ -11,10 +11,10 @@ public class GPlayerChaserBehavior : GAIBehavior
     
     public override void Init(GAIController controller)
     {
-        base.Init(controller);
         actions = new List<GAction>()        {
             _moveAction
         };
+        base.Init(controller);
     }
     
     public override GAction GetAction()
