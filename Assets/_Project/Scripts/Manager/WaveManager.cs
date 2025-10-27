@@ -9,6 +9,12 @@ using UnityEngine.Events;
 /* Manage the Wave and Spawn of Ennemies */
 public class WaveManager : GSingleton<WaveManager>
 {
+    private enum EWaveType
+    {
+        Finite,
+        Endless
+    }
+    
     [Serializable]
     public class EnemySpawnEntry
     {
@@ -52,6 +58,10 @@ public class WaveManager : GSingleton<WaveManager>
             return list;
         }
     }
+    
+    [SerializeField, Tooltip("Type of wave spawning")]
+    private EWaveType _waveType = EWaveType.Finite;
+     
     [field: SerializeField, Tooltip("List of waves to spawn")]
     public List<SWave> waves { get; private set; } = new List<SWave>();
     
@@ -61,21 +71,33 @@ public class WaveManager : GSingleton<WaveManager>
     private readonly List<GCell> _cachedNextSpawnCells = new List<GCell>();
     private SWave _cachedNextWave = null;
     
+    // Endless wave 
+    private int _endlessWaveCount = 0;
+    
+    
     public bool HasNextWave() => _cachedNextWave != null && _cachedNextSpawnCells.Count > 0;
 
     public void CheckNextWave(int turnCount)
     {
         if (HasNextWave()) return; // already have a wave cached
-        
-        for (int i = 0; i < waves.Count; i++)
-        {
-            var wave = waves[i];
-            if (wave == null || wave.hasSpawned) continue;
-            if (turnCount < wave.turn) continue;
 
-            PrepareWave(wave);
-            Debug.Log($"[WaveManager] Prepared wave at turn {wave.turn}");
-            break; // Only one wave per turn
+        if (_waveType == EWaveType.Endless) // Endless wave logic
+        {
+            
+        }
+
+        if (_waveType == EWaveType.Finite) // Finite wave logic
+        {
+            for (int i = 0; i < waves.Count; i++)
+            {
+                var wave = waves[i];
+                if (wave == null || wave.hasSpawned) continue;
+                if (turnCount < wave.turn) continue;
+
+                PrepareWave(wave);
+                Debug.Log($"[WaveManager] Prepared wave at turn {wave.turn}");
+                break; // Only one wave per turn
+            }
         }
     }
     
