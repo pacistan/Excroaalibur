@@ -15,7 +15,6 @@ public class GPawnVisualsController : SerializedMonoBehaviour
     [SerializeField, FoldoutGroup("Components")]
     GPawn _pawn;
     
-    
     [SerializeField, FoldoutGroup("Components")]
     [BoxGroup("Components/World Canvas"), HideIf("_isPlayerAccessor")]
     TextMeshProUGUI _txtCurrentHp;
@@ -132,6 +131,7 @@ public class GPawnVisualsController : SerializedMonoBehaviour
 
     public void OnUpdateHealthPoints()
     {
+        if (_pawn.isPlayer || _pawn is GAltar) return;
         string text = "";
         
         if (_pawn.hp >= 0 && _pawn.hp != _previousHpNumber) 

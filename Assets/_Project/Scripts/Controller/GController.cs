@@ -30,7 +30,7 @@ public abstract class GController : MonoBehaviour
     
     public virtual void EndTurn() { OnEndTurn?.Invoke(); }
     
-    protected void StopTurn()
+    protected virtual void StopTurn()
     {
         GTurnBaseManager.Instance.RequestEndTurn(this);
     }
