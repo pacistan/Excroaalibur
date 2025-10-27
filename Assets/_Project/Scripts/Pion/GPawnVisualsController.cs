@@ -52,6 +52,14 @@ public class GPawnVisualsController : SerializedMonoBehaviour
     [BoxGroup("Components/World Canvas"), HideIf("_isPlayerAccessor")]
     Sprite _spriteDeath;
     
+    [SerializeField, FoldoutGroup("Components")]
+    [BoxGroup("Components/World Canvas"), ShowIf("_isPlayerAccessor")]
+    List<Image> _imgListActionTokens;
+    
+    [SerializeField, FoldoutGroup("Components")]
+    [BoxGroup("Components/World Canvas"), ShowIf("_isPlayerAccessor")]
+    Sprite _spriteActionTokenOn, _spriteActionTokenOff;
+    
     [SerializeField, FoldoutGroup("Components") ]
     private GCommonInstantiationData _instantiationData;
     
@@ -155,6 +163,12 @@ public class GPawnVisualsController : SerializedMonoBehaviour
 
     public void OnUpdateActionsToken()
     {
+        _imgListActionTokens[0].sprite = _pawn.remainingActionToken >= 1 ?
+            _spriteActionTokenOn : _spriteActionTokenOff;
+        
+        _imgListActionTokens[1].sprite = _pawn.remainingActionToken >= 2 ?
+            _spriteActionTokenOn : _spriteActionTokenOff;
+        
         //string text = "";
         //_txtCurrentHp.text = $"{_pawn.remainingActionToken}";
     }
