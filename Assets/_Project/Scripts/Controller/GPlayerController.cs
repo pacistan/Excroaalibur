@@ -149,7 +149,7 @@ public class GPlayerController : GController
     //TODO : Change to Button or other interface
     private void DebugTools()
     {
-        if (Input.GetKeyDown(KeyCode.L))
+        if (Input.GetKeyDown(KeyCode.L) && !_isFirstAction)
         {
             StopTurn();
         }
@@ -166,6 +166,7 @@ public class GPlayerController : GController
         _leftClickInput = InputSystem.actions.FindAction("Select");
         _rightClickInput = InputSystem.actions.FindAction("Switch");
         GHudManager.Instance.mainHudManager.endTurnButton.onClick.AddListener(StopTurn);
+        GHudManager.Instance.mainHudManager.endTurnButton.interactable = false;
     }
 
     private void Update()
@@ -185,7 +186,7 @@ public class GPlayerController : GController
             GPawn cellPawn = newCell.GetGridObject<GPawn>();
             DisablePrevisualisation();
             
-            if (_selectedPlayer && _selectedAction != null && newCell != _hoverCell && _selectedAction.IsValidCell(newCell.hexCoordinates))
+            if (_selectedPlayer && _selectedPlayer.remainingActionToken > 0 && !_selectedPlayer.IsStunned && _selectedAction != null && newCell != _hoverCell && _selectedAction.IsValidCell(newCell.hexCoordinates))
             {
                 ActivatePrevisualisation(newCell, cellPawn);
             }
@@ -356,7 +357,11 @@ public class GPlayerController : GController
         _selectedAction.targetCell = _targetCell;
         if (_selectedPlayer.RequestAction(_selectedAction))
         {
-            _isFirstAction = false;
+            if (_isFirstAction)
+            {
+                _isFirstAction = false;
+                GHudManager.Instance.mainHudManager.endTurnButton.interactable = true;
+            }
             _selectedPlayer.remainingActionToken--;
             _selectedPlayer.visuals.OnUpdateActionsToken();
             _playerHudManager.UpdateGridObjectHoveredInfo(_selectedPlayer, _isFirstAction);
@@ -407,6 +412,9 @@ public class GPlayerController : GController
     public override void StartTurn()
     {
         base.StartTurn();
-        GHudManager.Instance.mainHudManager.endTurnButton.interactable = true;
+        if (!_isFirstAction)
+        {
+            GHudManager.Instance.mainHudManager.endTurnButton.interactable = true;
+        }
     }
 }
