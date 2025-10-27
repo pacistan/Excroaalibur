@@ -6,6 +6,7 @@ using System.Linq;
 using TMPro;
 using UnityEditor;
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.Serialization;
 using UnityEngine.UI;
 
@@ -72,6 +73,9 @@ public class GPawnVisualsController : SerializedMonoBehaviour
     [SerializeField, HideInInspector]
     bool _isPlayerAccessor {get{return _pawn ? _pawn.isPlayer : true;}}
 
+    [SerializeField]
+    UnityEvent OnStunUnityEvent, OnDamagedUnityEvent;
+    
     Material _defaultMaterial;
     
     int _previousHpNumber;
@@ -138,6 +142,7 @@ public class GPawnVisualsController : SerializedMonoBehaviour
         { 
             text += $"{_pawn.hp}";
             //TODO : Start Take Damage Feedbacks
+            OnDamagedUnityEvent?.Invoke();
 
             RuntimeManager.PlayOneShotAttached("event:/Pawn/Damaged", gameObject);
         }
@@ -163,6 +168,7 @@ public class GPawnVisualsController : SerializedMonoBehaviour
             _mainRenderer.SetMaterials(materials);
             _imgStatus.sprite = _spriteStun;
             _imgStatus.enabled = true;
+            OnStunUnityEvent?.Invoke();
             //TODO : Start Stun Feedbacks
         }
         else if (!_pawn.IsStunned && _previousStunTurn != _pawn.stunTurn)

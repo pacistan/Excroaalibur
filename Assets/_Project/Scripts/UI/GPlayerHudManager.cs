@@ -93,7 +93,7 @@ public class GPlayerHudManager : MonoBehaviour
     
     private Sequence _tweenSequence;
 
-    public void OnGridObjectHovered(GGridObject gridObject)
+    public void OnGridObjectHovered(GGridObject gridObject, bool  isFirstAction)
     {
         if ((!gridObject && !_previousGridObject) || _previousGridObject == gridObject) return;
         
@@ -113,7 +113,7 @@ public class GPlayerHudManager : MonoBehaviour
             _cadreImage.gameObject.SetActive(gridObject.cadreSprite != null);
 
             GPawn pawn = gridObject as GPawn;
-            actionList.UpdateButtons(pawn);
+            actionList.UpdateButtons(pawn, isFirstAction);
             _panelRmbIndicator.SetActive(pawn && pawn.isPlayer);
 
             _headerHasCrownIconImage.sprite = pawn && pawn.equipment && pawn.equipment is GCrown
@@ -179,10 +179,15 @@ public class GPlayerHudManager : MonoBehaviour
 
     }
 
-    public void UpdateGridObjectHoveredInfo(GGridObject gridObject)
+    public void UpdateActionList()
+    {
+        
+    }
+    
+    public void UpdateGridObjectHoveredInfo(GGridObject gridObject, bool isFirstAction)
     {
         GPawn pawn = gridObject as GPawn;
-        actionList.UpdateButtons(pawn);
+        actionList.UpdateButtons(pawn, isFirstAction);
         
         _headerHasCrownIconImage.sprite = pawn && pawn.equipment && pawn.equipment is GCrown ?
             _headerCrownIconSprite : _headerNoCrownIconSprite;
