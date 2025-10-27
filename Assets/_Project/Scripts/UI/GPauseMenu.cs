@@ -3,7 +3,7 @@ using System;
 using UnityEngine;
 
 [RequireComponent(typeof(CanvasGroup))]
-public class PauseMenu : MonoBehaviour
+public class GPauseMenu : MonoBehaviour
 {
     CanvasGroup _canvasGroup;
 

@@ -97,6 +97,6 @@ public abstract class GAIBehavior : ScriptableObject
         return GGridObjectRegistry.GetClosestObjectOfTypeWithPredicate<GPawn>
                 (startCell: _controller.pawn.GetCell(), 
                 out distance, 
-                predicate: player => player.isPlayer);
+                predicate: player => player.isPlayer && player.GetCell().data.tileType != ETileType.Hole);
     }
 }

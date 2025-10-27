@@ -14,9 +14,6 @@ public class GameManager: GSingleton<GameManager>
     InputAction _menuInput;
     
     [SerializeField]
-    PauseMenu _menu;
-    
-    [SerializeField]
     EventReference musicEvent;
     EventInstance musicInstance;
     EventInstance pauseSnapshot;
@@ -41,17 +38,16 @@ public class GameManager: GSingleton<GameManager>
 
     void OpenMenu()
     {
-        if (!_menu) return;
         PauseGame();
         
-        _menu.Open();
+        GHudManager.Instance.pauseMenu.Open();
     }
 
     void CloseMenu()
     {
-        if (!_menu) return;
+        if (!GHudManager.Instance.pauseMenu) return;
         PauseGame(true);
-        _menu.Close();
+        GHudManager.Instance.pauseMenu.Close();
     }
 
     void Start()
@@ -64,7 +60,7 @@ public class GameManager: GSingleton<GameManager>
     {
         if (_menuInput.WasPressedThisFrame())
         {
-            if (_menu.IsOpen)
+            if (GHudManager.Instance.pauseMenu.IsOpen)
                 CloseMenu();
             else
                 OpenMenu();
