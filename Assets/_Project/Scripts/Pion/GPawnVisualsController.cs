@@ -15,7 +15,6 @@ public class GPawnVisualsController : SerializedMonoBehaviour
     [SerializeField, FoldoutGroup("Components")]
     GPawn _pawn;
     
-    
     [SerializeField, FoldoutGroup("Components")]
     [BoxGroup("Components/World Canvas"), HideIf("_isPlayerAccessor")]
     TextMeshProUGUI _txtCurrentHp;
