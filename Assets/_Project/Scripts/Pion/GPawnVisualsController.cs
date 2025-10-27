@@ -6,6 +6,8 @@ using System.Linq;
 using TMPro;
 using UnityEditor;
 using UnityEngine;
+using UnityEngine.Serialization;
+using UnityEngine.UI;
 
 [RequireComponent(typeof(GPawn))]
 public class GPawnVisualsController : SerializedMonoBehaviour
@@ -14,7 +16,44 @@ public class GPawnVisualsController : SerializedMonoBehaviour
     GPawn _pawn;
     
     [SerializeField, FoldoutGroup("Components")]
-    TextMeshProUGUI _debugTxt;
+    [BoxGroup("Components/World Canvas")]
+    GameObject _hpBarPanel;
+    
+    [SerializeField, FoldoutGroup("Components")]
+    [BoxGroup("Components/World Canvas")]
+    TextMeshProUGUI _txtCurrentHp;
+    
+    [SerializeField, FoldoutGroup("Components")]
+    [BoxGroup("Components/World Canvas")]
+    TextMeshProUGUI _txtMaxHp;
+    
+    [SerializeField, FoldoutGroup("Components")]
+    [BoxGroup("Components/World Canvas")]
+    Color _txtHpNormalColor;
+    
+    [SerializeField, FoldoutGroup("Components")]
+    [BoxGroup("Components/World Canvas")]
+    Color _txtHpPrevisualisationColor;
+    
+    [SerializeField, FoldoutGroup("Components")]
+    [BoxGroup("Components/World Canvas")]
+    Image _imgHpBarForeground;
+    
+    [SerializeField, FoldoutGroup("Components")]
+    [BoxGroup("Components/World Canvas")]
+    Image _imgHpBarPrevisualisation;
+    
+    [SerializeField, FoldoutGroup("Components")]
+    [BoxGroup("Components/World Canvas")]
+    Image _imgStatus;
+    
+    [SerializeField, FoldoutGroup("Components")]
+    [BoxGroup("Components/World Canvas")]
+    Sprite _spriteStun;
+    
+    [SerializeField, FoldoutGroup("Components")]
+    [BoxGroup("Components/World Canvas")]
+    Sprite _spriteDeath;
     
     [SerializeField, FoldoutGroup("Components") ]
     private GCommonInstantiationData _instantiationData;
@@ -44,7 +83,14 @@ public class GPawnVisualsController : SerializedMonoBehaviour
     {
         if (!_pawn.isPlayer && !(_pawn is GAltar))
         {
-            _debugTxt.text = $"{_pawn.hp}";
+            _txtCurrentHp.text = $"{_pawn.hp}";
+            _txtMaxHp.text = $"/{_pawn.hp}";
+            _imgHpBarForeground.fillAmount = 1;
+            _imgHpBarPrevisualisation.fillAmount = 1;
+        }
+        else
+        {
+            _hpBarPanel.SetActive(false);
         }
         _stunMaterialIndex = Mathf.Min(_mainRenderer.materials.Length, _stunMaterialIndex);
         _defaultMaterial = _mainRenderer.materials[_stunMaterialIndex];
@@ -102,13 +148,15 @@ public class GPawnVisualsController : SerializedMonoBehaviour
         }
         
         _previousHpNumber = _pawn.hp;
-        _debugTxt.text = text;
+        _txtCurrentHp.text = text;
+        _imgHpBarForeground.fillAmount = _pawn.hp / _pawn.startHp;
+        _imgHpBarPrevisualisation.fillAmount = _pawn.hp / _pawn.startHp;
     }
 
     public void OnUpdateActionsToken()
     {
         string text = "";
-        _debugTxt.text = $"{_pawn.remainingActionToken}";
+        _txtCurrentHp.text = $"{_pawn.remainingActionToken}";
     }
     
     public void OnUpdateStunTurn()
@@ -118,6 +166,8 @@ public class GPawnVisualsController : SerializedMonoBehaviour
             List<Material> materials = _mainRenderer.materials.ToList();
             materials[_stunMaterialIndex] = _stunnedMaterial;
             _mainRenderer.SetMaterials(materials);
+            _imgStatus.sprite = _spriteStun;
+            _imgStatus.enabled = true;
             //TODO : Start Stun Feedbacks
         }
         else if (!_pawn.IsStunned && _previousStunTurn != _pawn.stunTurn)
@@ -125,22 +175,63 @@ public class GPawnVisualsController : SerializedMonoBehaviour
             List<Material> materials = _mainRenderer.materials.ToList();
             materials[_stunMaterialIndex] = _defaultMaterial;
             _mainRenderer.SetMaterials(materials);
+            _imgStatus.sprite = _spriteStun;
+            _imgStatus.enabled = false;
             //TODO : Start UnStun Feedbacks            
         }
         
         _previousStunTurn = _pawn.stunTurn;
     }
 
+    public void OnPrevisualisation(int damage, int stunTurns)
+    {
+        int tempHp = Mathf.Max(0, _pawn.hp - damage);
+        int tempStun = _pawn.stunTurn + stunTurns;
+        _imgHpBarForeground.fillAmount = tempHp / _pawn.startHp;
+        _txtCurrentHp.text = $"{tempHp}";
+        if (tempHp != _pawn.hp)
+        {
+            _txtCurrentHp.color = _txtHpPrevisualisationColor;
+        }
+        if (tempHp == 0)
+        {
+            _imgStatus.sprite = _spriteDeath;
+            _imgStatus.enabled = true;
+        }
+        else if (tempStun > 0)
+        {
+            _imgStatus.sprite = _spriteStun;
+            _imgStatus.enabled = true;
+        }
+        
+    }
+
+    public void OnDisablePrevisualisation()
+    {
+        _imgHpBarForeground.fillAmount = _pawn.hp / _pawn.startHp;
+        _txtCurrentHp.text = $"{_pawn.hp}";
+        _txtCurrentHp.color = _txtHpNormalColor;
+        if (_pawn.stunTurn > 0)
+        {
+            _imgStatus.sprite = _spriteStun;
+            _imgStatus.enabled = true;
+        }
+        else
+        {
+            _imgStatus.enabled = false;
+        }
+    }
+    
     #if UNITY_EDITOR
     public void SetClickable(SceneVisibilityManager manager, bool value)
     {
         if (value)
         {
-            manager.EnablePicking(_debugTxt.transform.parent.gameObject, true);
+            manager.EnablePicking(_txtCurrentHp.transform.parent.gameObject, true);
         }
         else
         {
-            manager.DisablePicking(_debugTxt.transform.parent.gameObject, true);
+            manager.DisablePicking(_txtCurrentHp.transform.parent.gameObject, true);
         }
     }   
     #endif
