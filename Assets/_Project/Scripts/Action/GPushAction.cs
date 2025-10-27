@@ -135,6 +135,7 @@ public class GPushAction : GAction
             if (!cell
                 || !cell.GetGridObject<GPawn>()
                 || cell.GetGridObject<GPawn>() == linkedPawn
+                || (cell.GetGridObject<GPawn>() is GAltar && cell.GetGridObject<GPawn>().equipment == null)
                 || cell.GetTileType == ETileType.Hole)
             {
                 continue;
