@@ -158,8 +158,15 @@ public class GCellVisualsController : SerializedMonoBehaviour
         UpdateHighlightSprite();
         if (_wasPrevisualized != isPrevisualized)
         {
-            _wasPrevisualized = isPrevisualized; 
-            _highlight.color = isPrevisualized ? cellCommonData.previsualizedColor : cellCommonData.tileHighlightActionData[_currentHighlightActionType];
+            _wasPrevisualized = isPrevisualized;
+            if (isPrevisualized)
+            {
+                _highlight.color = cellCommonData.previsualizedColor;
+            }
+            else
+            {
+                SetHighlightActionType(_currentHighlightActionType);
+            }
         }
     }
 

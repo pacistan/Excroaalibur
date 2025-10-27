@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.SceneManagement;
 using UnityEngine.Serialization;
 
 public class GPlayerController : GController
@@ -137,11 +138,16 @@ public class GPlayerController : GController
     }
 
     //TODO : Change to Button or other interface
-    private void DebugEndTurn()
+    private void DebugTools()
     {
         if (Input.GetKeyDown(KeyCode.L))
         {
             StopTurn();
+        }
+
+        if (Input.GetKeyDown(KeyCode.R))
+        {
+            SceneManager.LoadScene(SceneManager.GetActiveScene().name);
         }
     }
     
@@ -154,10 +160,10 @@ public class GPlayerController : GController
     private void Update()
     {
         if (GTurnBaseManager.Instance.currentTurnController != this) return;
-        DebugEndTurn();
+        DebugTools();
 
         HandlePlayerHover();
-        HandlePlayerClick();
+        HandlePlayerLeftClick();
     }
 
     void HandlePlayerHover()
@@ -165,21 +171,12 @@ public class GPlayerController : GController
         GCell newCell = GetCellUnderMouse();
         if (newCell && newCell != _hoverCell)
         {
-            foreach (GCell cell in previsuCell)
-                cell.visuals.isPrevisualized = false;
+            GPawn cellPawn = newCell.GetGridObject<GPawn>();
+            DisablePrevisualisation();
             
             if (_selectedPlayer && _selectedAction != null && newCell != _hoverCell && _selectedAction.IsValidCell(newCell.hexCoordinates))
             {
-                GActionContext context = new GActionContext();
-                _selectedAction.targetCell = newCell;
-                
-                previsuCell = _selectedAction.Previsualisation(context);
-                foreach (GCell cell in previsuCell)
-                {
-                    cell.visuals.isPrevisualized = true;
-                }
-                
-                // TODO : Here recup Stun and Damage Value 
+                ActivatePrevisualisation(newCell, cellPawn);
             }
             
             newCell.visuals.isHovered = true;
@@ -199,7 +196,6 @@ public class GPlayerController : GController
                 _playerHudManager.OnGridObjectHovered(null);
             }
             
-            GPawn cellPawn = newCell.GetGridObject<GPawn>();
             
             // Handle Hover Sounds
             if (cellPawn && !cellPawn.hoverSound.IsNull)
@@ -246,7 +242,7 @@ public class GPlayerController : GController
         }
     }
 
-    void HandlePlayerClick()
+    void HandlePlayerLeftClick()
     {
         if (_leftClickInput.WasPressedThisFrame())
         {
@@ -271,6 +267,7 @@ public class GPlayerController : GController
             if (_selectedPlayer && _selectedAction.IsValidCell(_targetCell.hexCoordinates) && _selectedPlayer.remainingActionToken > 0)
             {
                 ResetHighlight();
+                DisablePrevisualisation();
                 StartAction();
                 SetSelectedPlayer(null);
                 SelectAction(null);
@@ -337,6 +334,7 @@ public class GPlayerController : GController
 
     private void SwitchAction()
     {
+        DisablePrevisualisation();
         _currentActionIndex = (_currentActionIndex + 1) % 2;
         SelectAction(_currentActionIndex);
     }
@@ -358,5 +356,33 @@ public class GPlayerController : GController
     public override void OnActionOver()
     {
         base.OnActionOver();
+    }
+
+    private void ActivatePrevisualisation(GCell hoveredCell, GPawn hoveredPawn)
+    {
+        GActionContext context = new GActionContext();
+        _selectedAction.targetCell = hoveredCell;
+                
+        previsuCell = _selectedAction.Previsualisation(context);
+                
+        foreach (GCell cell in previsuCell)
+            cell.visuals.isPrevisualized = true;
+        
+        context.TryGet(GActionContext.DAMAGE_STRING, out int damage);
+        context.TryGet(GActionContext.STUN_STRING, out int stun);
+        if (hoveredPawn)
+            hoveredPawn.visuals.OnPrevisualisation(damage, stun);
+    }
+
+    private void DisablePrevisualisation()
+    {
+        if (_selectedAction == null || !_selectedAction.targetCell) return;
+        GPawn targetPawn = _selectedAction.targetCell.GetGridObject<GPawn>();
+        if (_selectedAction != null && targetPawn)
+        {
+            targetPawn.visuals.OnDisablePrevisualisation();
+        }
+        foreach (GCell cell in previsuCell)
+            cell.visuals.isPrevisualized = false;
     }
 }
