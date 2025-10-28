@@ -3,10 +3,11 @@ using UnityEngine;
 
 public class GEquipment : GGridObject
 {
-    [SerializeField, ReadOnly]
+    [SerializeField, ReadOnly, BoxGroup("Important Info")]
     public GPawn owner;
 
-    [field: SerializeField, FoldoutGroup("Components")]
+    [FoldoutGroup("Other", false)]
+    [field: SerializeField, FoldoutGroup("Other/Components")]
     public GEquipmentVisuals visuals { get; private set; }
     
     public override GCell GetCell()

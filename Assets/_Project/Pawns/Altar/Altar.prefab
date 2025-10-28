@@ -259,129 +259,28 @@ MonoBehaviour:
     Prefab: {fileID: 0}
     PrefabModificationsReferencedUnityObjects: []
     PrefabModifications: []
-    SerializationNodes:
-    - Name: overrideReactionByType
-      Entry: 7
-      Data: 0|System.Collections.Generic.Dictionary`2[[SerializableType`1[[GAction,
-        Assembly-CSharp]], Assembly-CSharp],[GAction, Assembly-CSharp]], mscorlib
-    - Name: comparer
-      Entry: 7
-      Data: 1|System.Collections.Generic.GenericEqualityComparer`1[[SerializableType`1[[GAction,
-        Assembly-CSharp]], Assembly-CSharp]], mscorlib
-    - Name: 
-      Entry: 8
-      Data: 
-    - Name: 
-      Entry: 12
-      Data: 1
-    - Name: 
-      Entry: 7
-      Data: 
-    - Name: $k
-      Entry: 7
-      Data: 2|SerializableType`1[[GAction, Assembly-CSharp]], Assembly-CSharp
-    - Name: assemblyQualifiedName
-      Entry: 1
-      Data: GPushAction, Assembly-CSharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
-    - Name: fullName
-      Entry: 1
-      Data: GPushAction
-    - Name: 
-      Entry: 8
-      Data: 
-    - Name: $v
-      Entry: 7
-      Data: 3|GPushedReaction, Assembly-CSharp
-    - Name: <actionLabel>k__BackingField
-      Entry: 6
-      Data: 
-    - Name: <actionIcon>k__BackingField
-      Entry: 6
-      Data: 
-    - Name: linkedPawn
-      Entry: 6
-      Data: 
-    - Name: targetCell
-      Entry: 6
-      Data: 
-    - Name: validCells
-      Entry: 7
-      Data: 4|GHexCoordinate[], Assembly-CSharp
-    - Name: 
-      Entry: 12
-      Data: 0
-    - Name: 
-      Entry: 13
-      Data: 
-    - Name: 
-      Entry: 8
-      Data: 
-    - Name: _isPushable
-      Entry: 5
-      Data: false
-    - Name: _DamageRelatedToPushForce
-      Entry: 5
-      Data: false
-    - Name: _damage
-      Entry: 3
-      Data: 1
-    - Name: _stun
-      Entry: 3
-      Data: 0
-    - Name: 
-      Entry: 8
-      Data: 
-    - Name: 
-      Entry: 8
-      Data: 
-    - Name: 
-      Entry: 13
-      Data: 
-    - Name: 
-      Entry: 8
-      Data: 
+    SerializationNodes: []
   _currentCell: {fileID: 0}
   coordinate:
     x: 0
     z: 0
-  visualToCopy: {fileID: 0}
   <headerSprite>k__BackingField: {fileID: 21300000, guid: 4a1b46b2953e99247b022a45b8f57d8a, type: 3}
   <cadreSprite>k__BackingField: {fileID: 0}
   <headerObjectIconSprite>k__BackingField: {fileID: 21300000, guid: a7a01ffd4262a0f4686ffa90767e3248, type: 3}
   <pawnColor>k__BackingField: {r: 1, g: 1, b: 1, a: 1}
   <headerName>k__BackingField: Altar
   <className>k__BackingField: 
+  data: {fileID: 11400000, guid: 71c5007204ff57d4d8ee99c87565e661, type: 2}
+  <hasCrown>k__BackingField: 0
+  equipment: {fileID: 0}
   _OnDeath:
     m_PersistentCalls:
       m_Calls: []
-  <actionTokens>k__BackingField: 0
-  remainingActionToken: 0
-  <hasCrown>k__BackingField: 0
-  isPlayer: 0
-  actions: []
-  baseReactionData: {fileID: 11400000, guid: 3d2f439763d27cc4488c148c9d11360b, type: 2}
-  equipment: {fileID: 0}
   <visuals>k__BackingField: {fileID: 1528920753647014634}
+  <equipmentParentTr>k__BackingField: {fileID: 6677674562615435608}
+  remainingActionToken: 0
   stunTurn: 0
   <hp>k__BackingField: 3
-  <equipmentParentTr>k__BackingField: {fileID: 6677674562615435608}
-  hoverSound:
-    Guid:
-      Data1: 0
-      Data2: 0
-      Data3: 0
-      Data4: 0
-    Path: 
-  SelectSound:
-    Guid:
-      Data1: 0
-      Data2: 0
-      Data3: 0
-      Data4: 0
-    Path: 
-  references:
-    version: 2
-    RefIds: []
 --- !u!114 &1528920753647014634 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 5047510769810583256, guid: 48d2615fd829feb4a9c7bfb377fa75cc, type: 3}

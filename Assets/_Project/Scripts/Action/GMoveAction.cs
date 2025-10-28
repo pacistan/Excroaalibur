@@ -113,9 +113,11 @@ public class GMoveAction : GAction
     {
         base.Update_Action(delta);
         _progress += delta * _speed;
-        float animatedProgress = _speedCurve.Evaluate(_progress);
-        
-        if (_progress > _currentWayPoint)
+
+        float animatedProgress = _speedCurve.Evaluate(_progress / _wayPoints.Length) * _wayPoints.Length;
+
+
+        if (animatedProgress > _currentWayPoint)
         {
             if (_EquipementPickUpIndex == _currentWayPoint)
             { 
@@ -131,13 +133,13 @@ public class GMoveAction : GAction
             }
         }
 
-        if (_progress > _wayPoints.Length - 1) 
+        if (animatedProgress > _wayPoints.Length - 1) 
         {
             End_Action();
             return;
         }
-        int id = Mathf.FloorToInt(_progress);
-        linkedPawn.transform.position = Vector3.Lerp(_wayPoints[id], _wayPoints[id+1], Mathf.Repeat(_progress, 1));
+        int id = Mathf.FloorToInt(animatedProgress);
+        linkedPawn.transform.position = Vector3.Lerp(_wayPoints[id], _wayPoints[id+1], Mathf.Repeat(animatedProgress, 1));
     }
 
     public override void End_Action()

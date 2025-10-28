@@ -35,7 +35,10 @@ public class GThrowAction : GAction
     
     [SerializeField, Min(0), BoxGroup("Animation/Return"), Tooltip("Height of the mid point of the curve when the crown return")]
     private float _returnMidPointHeight = 2f;
-    
+
+    [SerializeField, BoxGroup("Animation/Return"), Tooltip("Speed of the Crown when returning")]
+    float _impactDelayOnKill = 0f;
+
     [SerializeField, BoxGroup("Animation/Return"), Tooltip("Speed of the Crown when returning")]
     float _returnCrownSpeed = 10f;
     
@@ -50,6 +53,18 @@ public class GThrowAction : GAction
     
     [SerializeField, BoxGroup("Animation/Land"), Tooltip("Animation curve When the crown fall on the cell in front of the target")]
     private AnimationCurve _landSpeedCurve = AnimationCurve.Linear(0, 0, 1, 1);
+
+    [SerializeField, BoxGroup("Animation/Throw"), Tooltip("Rotation Amount by each tile crossed while moving towards its initial target")]
+    float _crownRotationAmountByTileOnThrowToTarget;
+
+    [SerializeField, BoxGroup("Animation/Throw"), Tooltip("Rotation AnimationCruve while moving towards its initial target")]
+    AnimationCurve _crownRotationAnimationCurveOnThrowToTarget;
+    
+    [SerializeField, BoxGroup("Animation/Throw"), Tooltip("Rotation Amount by each tile crossed while moving back toward the thrower")]
+    float _crownRotationAmountByTileOnReturnToOrigin;
+
+    [SerializeField, BoxGroup("Animation/Throw"), Tooltip("Rotation AnimationCruve while moving back toward the thrower")]
+    AnimationCurve _crownRotationAnimationCurveOnThrowToOrigin;
     
     GCrown _crown;
     GAction _impactReaction;
@@ -83,11 +98,11 @@ public class GThrowAction : GAction
         _targetPawn = targetCell.GetGridObject<GPawn>();
         List<GCell> previewCells = new List<GCell>();
         
-        if (_targetPawn && _targetPawn.isPlayer)
+        if (_targetPawn && _targetPawn.data.isPlayer)
         {
             previewCells.Add(targetCell);  // Target Cell
         } 
-        else if (_targetPawn && !_targetPawn.isPlayer)
+        else if (_targetPawn && !_targetPawn.data.isPlayer)
         {
             GAction impactReaction = _targetPawn.GetReaction(this);
             previsuContext.Set(GActionContext.DAMAGE_STRING, _crown._currentDamage);
@@ -134,14 +149,14 @@ public class GThrowAction : GAction
         
         _targetPawn = targetCell.GetGridObject<GPawn>();
         
-        if (_targetPawn && _targetPawn.isPlayer)
+        if (_targetPawn && _targetPawn.data.isPlayer)
         {
             _playerCatch = true;
             
             linkedPawn.ReleaseEquipement(false);
             _targetPawn.GiveEquipement(_crown, false, false);
         } 
-        else if (_targetPawn && !_targetPawn.isPlayer)
+        else if (_targetPawn && !_targetPawn.data.isPlayer)
         {
             // TODO : Take damage here or in reaction ? 
             _targetPawn.TakeDamage(_crown._currentDamage);
@@ -273,13 +288,18 @@ public class GThrowAction : GAction
         clonedAction._landCrownSpeed = _landCrownSpeed;
         clonedAction._landMidPointHeight = _landMidPointHeight;
         clonedAction._landSpeedCurve = _landSpeedCurve;
+        clonedAction._impactDelayOnKill = _impactDelayOnKill;
+        clonedAction._crownRotationAmountByTileOnReturnToOrigin = _crownRotationAmountByTileOnReturnToOrigin;
+        clonedAction._crownRotationAmountByTileOnThrowToTarget = _crownRotationAmountByTileOnThrowToTarget;
         return clonedAction;
     }
     
     IEnumerator StartReactionsCoroutine()
     {
         yield return new WaitUntil(() => _isThrowAnimationOver);
+        
         linkedPawn.OnAnimationThrow -= OnAnimationThrowCallback;
+        
         _crown.transform.parent = null;
         _startPos  = linkedPawn.equipmentParentTr.position;
         _hitPos    =  _targetPawn ? _targetPawn.equipmentParentTr.position : targetCell.transform.position;
@@ -324,6 +344,11 @@ public class GThrowAction : GAction
                 .SetOptions(false)
         );
 
+        Vector3 angleAxisRotation = Vector3.right * _crownRotationAmountByTileOnThrowToTarget * ThrowPath.Length;
+        
+        _seq.Join(_crown.transform.DORotate(angleAxisRotation, outDur, RotateMode.LocalAxisAdd))
+            .SetEase(_playerCatch ?_passSpeedCurve : _throwSpeedCurve);
+
         ThrowSoundInstance.start();
         // Impact callback: Fire the reaction of the target pawn
         _seq.AppendCallback(() =>
@@ -337,7 +362,7 @@ public class GThrowAction : GAction
             if (_targetPawn)
             {
                 _targetPawn.UpdateHpNumber();
-                if (!_targetPawn.isPlayer)
+                if (!_targetPawn.data.isPlayer)
                     RuntimeManager.PlayOneShotAttached("event:/Crown/Hit", _crown.gameObject);
             }
             ThrowSoundInstance.stop(STOP_MODE.ALLOWFADEOUT);
@@ -345,6 +370,7 @@ public class GThrowAction : GAction
 
         if (_killTarget)
         {
+            _seq.PrependInterval(_impactDelayOnKill);
             // Sequence Return to Owner
             _seq.AppendCallback(() =>
             {
@@ -361,6 +387,10 @@ public class GThrowAction : GAction
                 .SetEase(_returnSpeedCurve)
                 .SetOptions(false)
             );
+            Vector3 angleAxisRotationReturn = Vector3.right * _crownRotationAmountByTileOnThrowToTarget * ThrowPath.Length;
+        
+            _seq.Join(_crown.transform.DORotate(angleAxisRotation, outDur, RotateMode.LocalAxisAdd))
+                .SetEase(_playerCatch ?_passSpeedCurve : _throwSpeedCurve);
             _seq.AppendCallback(() => linkedPawn.GiveEquipement(_crown, true, true));
         }
         else if (_playerCatch)
@@ -416,16 +446,16 @@ public class GThrowAction : GAction
         {
             _seq.AppendCallback(() =>
             {
-                frontCell.SetGridObject(_crown, true);
+                targetCell.SetGridObject(_crown, true);
             });
         }
         
         _seq.OnComplete(() =>
         {
-            if (_killTarget)          _crown.transform.position = _returnPos;
-            else if (_playerCatch)    _crown.transform.position = _hitPos;
-            else if (_targetPawn)      _crown.transform.position = _landingPos;
-            else                      _crown.transform.position = _hitPos;
+            //if (_killTarget)          _crown.transform.position = _returnPos;
+            //else if (_playerCatch)    _crown.transform.position = _hitPos;
+            //else if (_targetPawn)      _crown.transform.position = _landingPos;
+            //else                      _crown.transform.position = _hitPos;
 
             End_Action();
         });

@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.Events;
+using Sirenix.OdinInspector.Editor;
 
 public class GPawn : GGridObject
 {
@@ -25,54 +26,42 @@ public class GPawn : GGridObject
     public const string ThrowAnimationName = "Throw";
     public const string PushedStartAnimationName = "Pushed_Start";
     public const string PushedEndAnimationName = "Pushed_End";
-    
-    [SerializeField, FoldoutGroup("Events"), HideIf("@hp < 0")]
-    private UnityEvent _OnDeath;
-    
-    [field : SerializeField, Min(1)]
-    public int actionTokens { get; set; }
 
-    [SerializeField, ReadOnly]
-    public int remainingActionToken;
-    
+    [SerializeReference]
+    public GPawnData data;
+
     [field: SerializeField]
     public bool hasCrown { get; private set; } = false;
-    
-    [SerializeField]
-    public bool isPlayer;
-    
-    [SerializeReference, ShowIf("isPlayer")]
-    public List<GAction> actions = new List<GAction>();
-    
-    [SerializeField, FormerlySerializedAs("BaseReactionData")]
-    public GReactionData baseReactionData;
-    
-    // Cache in _overrideCache at Awake and OnValidate
-    [OdinSerialize, DictionaryDrawerSettings(KeyLabel = "Action Type", ValueLabel = "Reaction"), Tooltip("Dictionary mapping action types to reaction actions that override both base reactions and default reactions.")] 
-    public Dictionary<SerializableType<GAction>, GAction> overrideReactionByType = new();
-    
-    [SerializeField, ReadOnly, FoldoutGroup("Components")]
+
+    [SerializeField, ReadOnly, BoxGroup("Important Info")]
     public GEquipment equipment;
 
-    [field : SerializeField, FoldoutGroup("Components")]
+
+
+    [FoldoutGroup("Other", false)]
+    [SerializeField, FoldoutGroup("Other/Events"), HideIf("@hp < 0")]
+    private UnityEvent _OnDeath;
+
+    [FoldoutGroup("Other", false)]
+    [field : SerializeField, FoldoutGroup("Other/Components")]
     public GPawnVisualsController visuals { get; private set; }
+
+    [FoldoutGroup("Other", false)]
+    [field : SerializeField, FoldoutGroup("Other/Components")]
+    public Transform equipmentParentTr { get; private set; }
+
+
+
+    [SerializeField, ReadOnly, HideInEditorMode]
+    public int remainingActionToken;
     
     [SerializeField, ReadOnly, HideInEditorMode, FormerlySerializedAs("_stunTurn")] 
     public int stunTurn = 0;
     
-    public bool IsStunned => stunTurn > 0;
-
-    [field: SerializeField, HideIf("@hp == -1")]
+    [field: SerializeField, HideIf("@hp == -1"), HideInEditorMode]
     public int hp { get; protected set; } = 3;
-    
-    public int startHp { get; protected set; } 
 
-    [field : SerializeField, FoldoutGroup("Components")]
-    public Transform equipmentParentTr { get; private set; }
-
-    public EventReference hoverSound;
-    public EventReference SelectSound;
-    
+    public bool IsStunned => stunTurn > 0;
     // Cache for quick look-up of override reactions
     private Dictionary<Type, GAction> _overrideCache;
     
@@ -99,8 +88,8 @@ public class GPawn : GGridObject
         }
         
         // Fallback to base reaction data
-        if (baseReactionData && baseReactionData.HasReaction(action))
-            return baseReactionData.GetReaction(action);
+        if (data.baseReactionData && data.baseReactionData.HasReaction(action))
+            return data.baseReactionData.GetReaction(action);
 
         return null;
     }
@@ -159,10 +148,11 @@ public class GPawn : GGridObject
     }
 
     public bool IsAlive => !(hp == 0);
+   
     
     public void TakeDamage(int damage = 1)
     {
-        if (hp <= 0 || isPlayer) return;
+        if (hp <= 0 || data.isPlayer) return;
         
         hp = Mathf.Max(0, hp - damage);
         OnHealthChanged?.Invoke();
@@ -183,7 +173,7 @@ public class GPawn : GGridObject
 
     public void Fall()
     {
-        if (isPlayer)
+        if (data.isPlayer)
         {
             Stun(1);
         }
@@ -210,13 +200,13 @@ public class GPawn : GGridObject
     
     public void OnStartTurn()
     {
-        remainingActionToken = actionTokens;
-        if (stunTurn > 0 && !isPlayer)
+        remainingActionToken = data.actionTokens;
+        if (stunTurn > 0 && !data.isPlayer)
         {
             stunTurn--;
             visuals.OnUpdateStunTurn();
         }
-        else if (isPlayer)
+        else if (data.isPlayer)
         {
             visuals.OnUpdateActionsToken();
         }
@@ -239,7 +229,7 @@ public class GPawn : GGridObject
     
     public void OnEndTurn()
     {
-        if (stunTurn > 0 && isPlayer)
+        if (stunTurn > 0 && data.isPlayer)
         {
             stunTurn--;
             visuals.OnUpdateStunTurn();
@@ -266,9 +256,9 @@ public class GPawn : GGridObject
     {
         _overrideCache = new Dictionary<Type, GAction>();
 
-        if (overrideReactionByType == null) return;
+        if (data == null || data.overrideReactionByType == null) return;
 
-        foreach (var kv in overrideReactionByType)
+        foreach (var kv in data.overrideReactionByType)
         {
             var key = kv.Key;   // SerializableType<GAction>
             var val = kv.Value; // GAction
@@ -289,26 +279,27 @@ public class GPawn : GGridObject
 
     protected virtual void Awake()
     {
-        if (isPlayer) hp = -1; // Player has infinite HP
-        _currentCell.SetGridObject(this);
+        if (data.isPlayer) hp = -1; // Player has infinite HP
         RebuildOverrideCache();
+        data = ScriptableObject.Instantiate(data);
     }
 
     protected virtual void Start()
     {
-        remainingActionToken = actionTokens;
-        startHp = hp;
-        if (!isPlayer && TryGetComponent(out GController aiController))
+        _currentCell.SetGridObject(this);
+        remainingActionToken = data.actionTokens;
+        hp = data.startHp;
+        if (!data.isPlayer && TryGetComponent(out GController aiController))
         {
             aiController.RegisterPawn(this);
         }
-        else if(isPlayer)
+        else if(data.isPlayer)
         {
             GPlayerController controller = FindFirstObjectByType<GPlayerController>();
             visuals.OnUpdateActionsToken();
             if (controller)
             {
-                foreach (var action in actions)
+                foreach (var action in data.actions)
                 {
                     action.linkedPawn = this;
                     controller.RegisterPawn(this);
