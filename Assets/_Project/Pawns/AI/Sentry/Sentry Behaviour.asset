@@ -19,13 +19,15 @@ MonoBehaviour:
   _placeOnAltarAction:
     rid: 3108424154922877075
   _isFouteurDeMerde: 1
-  _isDirtyStealer: 0
+  _isDirtyStealer: 1
   references:
     version: 2
     RefIds:
     - rid: 3108424149014413392
       type: {class: GMoveAction, ns: , asm: Assembly-CSharp}
       data:
+        <actionLabel>k__BackingField: 
+        <actionIcon>k__BackingField: {fileID: 0}
         linkedPawn: {fileID: 0}
         targetCell: {fileID: 0}
         validCells: []
@@ -57,9 +59,12 @@ MonoBehaviour:
           m_PreInfinity: 2
           m_PostInfinity: 2
           m_RotationOrder: 4
+        moveAnimationName: Move
     - rid: 3108424154922877060
       type: {class: GPushAction, ns: , asm: Assembly-CSharp}
       data:
+        <actionLabel>k__BackingField: 
+        <actionIcon>k__BackingField: {fileID: 0}
         linkedPawn: {fileID: 0}
         targetCell: {fileID: 0}
         validCells: []
@@ -68,6 +73,8 @@ MonoBehaviour:
     - rid: 3108424154922877075
       type: {class: GPlaceOnAltarAction, ns: , asm: Assembly-CSharp}
       data:
+        <actionLabel>k__BackingField: 
+        <actionIcon>k__BackingField: {fileID: 0}
         linkedPawn: {fileID: 0}
         targetCell: {fileID: 0}
         validCells: []
