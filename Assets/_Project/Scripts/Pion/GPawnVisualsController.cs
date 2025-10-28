@@ -17,6 +17,10 @@ public class GPawnVisualsController : SerializedMonoBehaviour
     GPawn _pawn;
     
     [SerializeField, FoldoutGroup("Components")]
+    [BoxGroup("Components/World Canvas")]
+    Canvas _worldCanvas;
+    
+    [SerializeField, FoldoutGroup("Components")]
     [BoxGroup("Components/World Canvas"), HideIf("_isPlayerAccessor")]
     TextMeshProUGUI _txtCurrentHp;
     
@@ -79,7 +83,11 @@ public class GPawnVisualsController : SerializedMonoBehaviour
     int _stunMaterialIndex = 0;
 
     [SerializeField, HideInInspector]
-    bool _isPlayerAccessor {get{return _pawn ? _pawn.isPlayer : true;}}
+    bool _isPlayerAccessor {
+    get
+    {
+        return _pawn ? _pawn.isPlayer : true;
+    }}
 
     [SerializeField]
     UnityEvent OnStunUnityEvent, OnDamagedUnityEvent;
@@ -251,11 +259,11 @@ public class GPawnVisualsController : SerializedMonoBehaviour
     {
         if (value)
         {
-            manager.EnablePicking(_txtCurrentHp.transform.parent.gameObject, true);
+            manager.EnablePicking(_worldCanvas.gameObject, true);
         }
         else
         {
-            manager.DisablePicking(_txtCurrentHp.transform.parent.gameObject, true);
+            manager.DisablePicking(_worldCanvas.gameObject, true);
         }
     }   
     #endif

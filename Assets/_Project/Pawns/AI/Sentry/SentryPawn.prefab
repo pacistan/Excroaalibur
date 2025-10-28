@@ -763,6 +763,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 5f37d33f41e61f8449a2bee6c506a15f, type: 3}
       insertIndex: -1
       addedObject: {fileID: 1040391126161326477}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 5f37d33f41e61f8449a2bee6c506a15f, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1288812614241358112}
   m_SourcePrefab: {fileID: 100100000, guid: 5f37d33f41e61f8449a2bee6c506a15f, type: 3}
 --- !u!1 &1171303122620131097 stripped
 GameObject:
@@ -791,6 +794,18 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
+--- !u!114 &1288812614241358112
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1171303122620131097}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 388a52d89b27462b80a5cffe718948af, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!4 &1948542787635150243 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 5f37d33f41e61f8449a2bee6c506a15f, type: 3}
@@ -799,6 +814,11 @@ Transform:
 --- !u!137 &7516610742094995414 stripped
 SkinnedMeshRenderer:
   m_CorrespondingSourceObject: {fileID: 8417361359673230750, guid: 5f37d33f41e61f8449a2bee6c506a15f, type: 3}
+  m_PrefabInstance: {fileID: 2053681193158253128}
+  m_PrefabAsset: {fileID: 0}
+--- !u!4 &8719004640285418716 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 7313850933696855700, guid: 5f37d33f41e61f8449a2bee6c506a15f, type: 3}
   m_PrefabInstance: {fileID: 2053681193158253128}
   m_PrefabAsset: {fileID: 0}
 --- !u!1001 &8947550560613377680
@@ -908,7 +928,7 @@ PrefabInstance:
     - target: {fileID: 20667597376880823, guid: 48d2615fd829feb4a9c7bfb377fa75cc, type: 3}
       propertyPath: <equipmentParentTr>k__BackingField
       value: 
-      objectReference: {fileID: 8339616926874549242}
+      objectReference: {fileID: 8719004640285418716}
     - target: {fileID: 20667597376880823, guid: 48d2615fd829feb4a9c7bfb377fa75cc, type: 3}
       propertyPath: serializationData.SerializedFormat
       value: 2
@@ -2405,10 +2425,5 @@ RectTransform:
 --- !u!4 &6506729825089119590 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 2765379055339783158, guid: 48d2615fd829feb4a9c7bfb377fa75cc, type: 3}
-  m_PrefabInstance: {fileID: 8947550560613377680}
-  m_PrefabAsset: {fileID: 0}
---- !u!4 &8339616926874549242 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 1121485079055703402, guid: 48d2615fd829feb4a9c7bfb377fa75cc, type: 3}
   m_PrefabInstance: {fileID: 8947550560613377680}
   m_PrefabAsset: {fileID: 0}

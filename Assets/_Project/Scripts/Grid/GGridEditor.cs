@@ -75,6 +75,7 @@ public class GGridEditor : MonoBehaviour
         EditorUtility.SetDirty(_gridData);
         EditorUtility.SetDirty(_cellsParent);
         EditorUtility.SetDirty(_cellsCanvas);
+        EnablePickingUIGrid();
     }
 
     [HorizontalGroup("Split", 0.5f)]
@@ -180,6 +181,9 @@ public class GGridEditor : MonoBehaviour
         {
             cell.visuals.OnCreateVisualPreset(visualPreset, false);
         }
+        
+        EditorUtility.SetDirty(cell);
+        EditorUtility.SetDirty(cell.visuals);
     }
 
     // Creates a new ScriptableObject of type GGridData in the referenced Folder with the data of the active grid

@@ -1,5 +1,6 @@
 ﻿using FMODUnity;
 using Sirenix.OdinInspector;
+using Sirenix.Utilities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,9 +14,11 @@ public class GPlayerController : GController
 {
     public event Action<GPawn> SelectedPlayerChanged;
     public GAction[] availableActions = new GAction[] { };
-    
-    private GPlayerHudManager _playerHudManager;
 
+    [SerializeField]
+    bool _endTurnWhenNoActionsLeft;
+    
+    
     [SerializeField, ReadOnly, HideInEditorMode] 
     GPawn _selectedPlayer;
 
@@ -28,6 +31,7 @@ public class GPlayerController : GController
     [SerializeField, Tooltip("Layer Mask for the Cell Raycast")]
     private LayerMask _cellLayerMask;
 
+    private GPlayerHudManager _playerHudManager;
     InputAction _leftClickInput;
     InputAction _rightClickInput;
     private GCell _targetCell;
@@ -184,6 +188,7 @@ public class GPlayerController : GController
         if (newCell && newCell != _hoverCell)
         {
             GPawn cellPawn = newCell.GetGridObject<GPawn>();
+            
             DisablePrevisualisation();
             
             if (_selectedPlayer && _selectedPlayer.remainingActionToken > 0 && !_selectedPlayer.IsStunned && _selectedAction != null && newCell != _hoverCell && _selectedAction.IsValidCell(newCell.hexCoordinates))
@@ -220,7 +225,7 @@ public class GPlayerController : GController
             }
             
             // Handle Action Highlight on Hover
-            if (cellPawn && _hoverCell != newCell && !_selectedPlayer)
+            if (cellPawn && _hoverCell != newCell && !_selectedPlayer && !(cellPawn.isPlayer && (cellPawn.remainingActionToken == 0 || cellPawn.IsStunned) ))
             {
                 var tempAvailableActions = GetAvailableActions(cellPawn);
                 if (tempAvailableActions.Length > 0)
@@ -289,13 +294,14 @@ public class GPlayerController : GController
             {
                 if (cellPawn)
                 {
+                    bool isSelectable = cellPawn.isPlayer && cellPawn.remainingActionToken > 0 && !cellPawn.IsStunned;
                     // No Selected player and Clicked on not Player Pawn
                     if (!_selectedPlayer && !cellPawn.isPlayer)
                     {
                         
                     }
                     // No Selected player and Clicked on Player Pawn
-                    else if (!_selectedPlayer && cellPawn.isPlayer)
+                    else if (!_selectedPlayer && cellPawn.isPlayer && isSelectable)
                     {
                         _targetCell.visuals.isSelected = true;
                         SetSelectedPlayer(cellPawn);
@@ -306,17 +312,20 @@ public class GPlayerController : GController
                         SetSelectedPlayer(null);
                     }
                     // Other Player Selected
-                    else if (_selectedPlayer != cellPawn && _selectedPlayer.isPlayer)
+                    else if (_selectedPlayer != cellPawn && isSelectable)
                     {
                         _targetCell.visuals.isSelected = true;
                         SetSelectedPlayer(cellPawn);
                         _playerHudManager.OnGridObjectHovered(cellPawn, _isFirstAction);
                     }
                     // Not Player Pawn
-                    else if (_selectedPlayer != cellPawn && !_selectedPlayer.isPlayer)
+                    else if (_selectedPlayer != cellPawn && !isSelectable)
                     {
                         SetSelectedPlayer(null);
-                        _playerHudManager.OnGridObjectHovered(cellPawn, _isFirstAction);
+                        if (!cellPawn.isPlayer)
+                        {
+                            _playerHudManager.OnGridObjectHovered(cellPawn, _isFirstAction);
+                        }
                     }
                 }
                 // No Pawn on Cell
@@ -374,6 +383,19 @@ public class GPlayerController : GController
     public override void OnActionOver()
     {
         base.OnActionOver();
+        if (_endTurnWhenNoActionsLeft)
+        {
+            bool isTurnOver = true;
+            pawns.ForEach(p =>
+            {
+                if (p.remainingActionToken > 0 && !p.IsStunned) isTurnOver = false;
+            });
+
+            if (isTurnOver)
+            {
+                StopTurn();
+            }
+        }
     }
 
     private void ActivatePrevisualisation(GCell hoveredCell, GPawn hoveredPawn)

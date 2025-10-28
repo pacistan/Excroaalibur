@@ -4,6 +4,7 @@ using FMODUnity;
 using Sirenix.OdinInspector;
 using Sirenix.Utilities;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using STOP_MODE = FMOD.Studio.STOP_MODE;
@@ -69,6 +70,7 @@ public class GThrowAction : GAction
     private float _progress;
 
     EventInstance ThrowSoundInstance;
+    bool _isThrowAnimationOver;
 
     public override List<GCell> Previsualisation(in GActionContext previsuContext)
     {
@@ -120,7 +122,6 @@ public class GThrowAction : GAction
         
         return previewCells;
     }
-    
     
     public override void PreProcess(GActionContext context = null)
     {
@@ -174,7 +175,7 @@ public class GThrowAction : GAction
                 }
                 else
                 {
-                    targetCell.GetNeighbor(direction.Opposite()).gridObject = _crown;
+                    targetCell.GetNeighbor(direction.Opposite()).SetGridObject(_crown, false);
                     _crown.SetCell(targetCell.GetNeighbor(direction.Opposite()));
                 }
             }
@@ -184,7 +185,7 @@ public class GThrowAction : GAction
             }
             else
             {
-                targetCell.gridObject = _crown;
+                targetCell.SetGridObject(_crown, false);;
                 _crown.SetCell(targetCell);
             }
         }
@@ -198,6 +199,88 @@ public class GThrowAction : GAction
     {
         base.Start_Action();
         
+        Vector3 lookAtPosition = targetCell.transform.position;
+        lookAtPosition.y = linkedPawn.transform.position.y;
+        linkedPawn.transform.LookAt(lookAtPosition);
+        
+        linkedPawn.OnAnimationThrow += OnAnimationThrowCallback;
+        linkedPawn.visuals.SetAnimationState(GPawn.ThrowAnimationName);
+        linkedPawn.StartCoroutine(StartReactionsCoroutine());
+    }
+
+    public override void Update_Action(float delta)
+    {
+        base.Update_Action(delta);
+        
+        // Manually update the DOTween sequence
+        if (_seq != null && _seq.IsActive() && _seq.IsPlaying())
+        {
+            DOTween.ManualUpdate(delta, delta);
+        }
+        
+    }
+
+    public override void End_Action()
+    {
+        if (_seq != null && _seq.IsActive()) _seq.Kill();
+        _crown.transform.localRotation = Quaternion.identity;
+        _seq = null;
+        base.End_Action();
+    }
+
+    public override GHexCoordinate[] GetValidCells()
+    {
+        if (!linkedPawn.equipment || linkedPawn.equipment is not GCrown)
+            return validCells = new GHexCoordinate[]{};
+        
+        List<GHexCoordinate> newValidCells = new List<GHexCoordinate>();
+        GCell startCell = linkedPawn.GetCell();
+        
+        foreach (EHexDirection direction in Enum.GetValues(typeof(EHexDirection)))
+        {
+            GCell cell = startCell;
+            for (int i = 0; i < _maxThrowDistance; i++)
+            {
+                cell = cell.GetNeighbor(direction);
+
+                if (!cell || cell.GetTileType == ETileType.Wall) break;
+                if (cell.GetTileType == ETileType.Hole) continue;
+                if (cell.GetGridObject<GPawn>() is GAltar) continue;
+                    
+                newValidCells.Add(cell.hexCoordinates);
+                if (cell.GetGridObject<GPawn>()) break;
+            }
+        }
+
+        return validCells = newValidCells.ToArray();
+    }
+
+    public override ETileHighlightActionType GetHighlightActionType() => ETileHighlightActionType.Throw;
+
+    public override GAction CloneAction()
+    {
+        GThrowAction clonedAction = base.CloneAction() as GThrowAction;
+        clonedAction._maxThrowDistance = _maxThrowDistance;
+        clonedAction._throwCrownSpeed = _throwCrownSpeed;
+        clonedAction._throwMidPointHeight = _throwMidPointHeight;
+        clonedAction._throwSpeedCurve = _throwSpeedCurve;
+        clonedAction._passCrownSpeed = _passCrownSpeed;
+        clonedAction._passMidPointHeight = _passMidPointHeight;
+        clonedAction._passSpeedCurve = _passSpeedCurve;
+        clonedAction._returnCrownSpeed = _returnCrownSpeed;
+        clonedAction._returnMidPointHeight = _returnMidPointHeight;
+        clonedAction._returnSpeedCurve = _returnSpeedCurve;
+        clonedAction._landCrownSpeed = _landCrownSpeed;
+        clonedAction._landMidPointHeight = _landMidPointHeight;
+        clonedAction._landSpeedCurve = _landSpeedCurve;
+        return clonedAction;
+    }
+    
+    IEnumerator StartReactionsCoroutine()
+    {
+        yield return new WaitUntil(() => _isThrowAnimationOver);
+        linkedPawn.OnAnimationThrow -= OnAnimationThrowCallback;
+        _crown.transform.parent = null;
         _startPos  = linkedPawn.equipmentParentTr.position;
         _hitPos    =  _targetPawn ? _targetPawn.equipmentParentTr.position : targetCell.transform.position;
         _returnPos = _startPos;
@@ -278,6 +361,7 @@ public class GThrowAction : GAction
                 .SetEase(_returnSpeedCurve)
                 .SetOptions(false)
             );
+            _seq.AppendCallback(() => linkedPawn.GiveEquipement(_crown, true, true));
         }
         else if (_playerCatch)
         {
@@ -313,6 +397,13 @@ public class GThrowAction : GAction
                     landPawn.GiveEquipement(_crown, true, true);
                 });
             }
+            else
+            {
+                _seq.AppendCallback(() =>
+                {
+                    frontCell.SetGridObject(_crown, true);
+                });
+            }
         }
         else if (_targetPawn)
         {
@@ -320,6 +411,13 @@ public class GThrowAction : GAction
             {
                 _targetPawn.GiveEquipement(_crown, true, true);
             }); 
+        }
+        else if (!_targetPawn)
+        {
+            _seq.AppendCallback(() =>
+            {
+                frontCell.SetGridObject(_crown, true);
+            });
         }
         
         _seq.OnComplete(() =>
@@ -332,71 +430,7 @@ public class GThrowAction : GAction
             End_Action();
         });
     }
-
-    public override void Update_Action(float delta)
-    {
-        base.Update_Action(delta);
-        
-        // Manually update the DOTween sequence
-        if (_seq != null && _seq.IsActive() && _seq.IsPlaying())
-        {
-            DOTween.ManualUpdate(delta, delta);
-        }
-        
-    }
-
-    public override void End_Action()
-    {
-        if (_seq != null && _seq.IsActive()) _seq.Kill();
-        _seq = null;
-        base.End_Action();
-    }
-
-    public override GHexCoordinate[] GetValidCells()
-    {
-        if (!linkedPawn.equipment || linkedPawn.equipment is not GCrown)
-            return validCells = new GHexCoordinate[]{};
-        
-        List<GHexCoordinate> newValidCells = new List<GHexCoordinate>();
-        GCell startCell = linkedPawn.GetCell();
-        
-        foreach (EHexDirection direction in Enum.GetValues(typeof(EHexDirection)))
-        {
-            GCell cell = startCell;
-            for (int i = 0; i < _maxThrowDistance; i++)
-            {
-                cell = cell.GetNeighbor(direction);
-
-                if (!cell || cell.GetTileType == ETileType.Wall) break;
-                if (cell.GetTileType == ETileType.Hole) continue;
-                if (cell.GetGridObject<GPawn>() is GAltar) continue;
-                    
-                newValidCells.Add(cell.hexCoordinates);
-                if (cell.GetGridObject<GPawn>()) break;
-            }
-        }
-
-        return validCells = newValidCells.ToArray();
-    }
-
-    public override ETileHighlightActionType GetHighlightActionType() => ETileHighlightActionType.Throw;
-
-    public override GAction CloneAction()
-    {
-        GThrowAction clonedAction = base.CloneAction() as GThrowAction;
-        clonedAction._maxThrowDistance = _maxThrowDistance;
-        clonedAction._throwCrownSpeed = _throwCrownSpeed;
-        clonedAction._throwMidPointHeight = _throwMidPointHeight;
-        clonedAction._throwSpeedCurve = _throwSpeedCurve;
-        clonedAction._passCrownSpeed = _passCrownSpeed;
-        clonedAction._passMidPointHeight = _passMidPointHeight;
-        clonedAction._passSpeedCurve = _passSpeedCurve;
-        clonedAction._returnCrownSpeed = _returnCrownSpeed;
-        clonedAction._returnMidPointHeight = _returnMidPointHeight;
-        clonedAction._returnSpeedCurve = _returnSpeedCurve;
-        clonedAction._landCrownSpeed = _landCrownSpeed;
-        clonedAction._landMidPointHeight = _landMidPointHeight;
-        clonedAction._landSpeedCurve = _landSpeedCurve;
-        return clonedAction;
-    }
+    
+    private void OnAnimationThrowCallback() 
+        => _isThrowAnimationOver = true;
 }

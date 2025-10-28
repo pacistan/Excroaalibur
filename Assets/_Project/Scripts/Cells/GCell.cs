@@ -35,32 +35,24 @@ public class GCell : SerializedMonoBehaviour
     
     public ETileType GetTileType => data.tileType;
 
-    public GGridObject gridObject
+    [SerializeField, ReadOnly, FoldoutGroup("PersistantData")]
+    public GGridObject gridObject { get; private set; }
+
+
+    public void SetGridObject(GGridObject inGridObject, bool updateTransform = true)
     {
-        get {
-            return _gridObject;
-        }
+        gridObject = inGridObject;
+        if (!updateTransform || !inGridObject) return;
         
-        set {
-            if (value != null)
-                value.transform.parent = pawnSpawnPoint;
-            _gridObject = value;
-        }
+        gridObject.transform.parent = pawnSpawnPoint;
+        gridObject.transform.localPosition = Vector3.zero; 
+        gridObject.transform.localRotation = Quaternion.identity;
     }
     
-    [SerializeField, ReadOnly, FoldoutGroup("PersistantData")]
-    private GGridObject _gridObject;
-
     /** Update the position of the grid object to be centered in the cell */
     public void UpdateGridObject()
     {
         gridObject.transform.localPosition = Vector3.zero;
-    }
-    
-    /** Remove the grid object from the cell */
-    public void RemoveGridObject()
-    {
-        gridObject = null;
     }
     
     /** Generic method to get the grid object as a specific type */
