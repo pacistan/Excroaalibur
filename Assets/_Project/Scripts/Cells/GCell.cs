@@ -101,7 +101,10 @@ public class GCell : SerializedMonoBehaviour
     {
         RegisterGridObject(pawn);
         UpdateGridObject();
+        
+        // TODO : Call When the Spawn Process is finished (Animation, VFX, etc.) !! 
         _OnSpawnedPawnFinished?.Invoke();
+        GWaveManager.Instance.OnEnemySpawned();
     }
 
     public bool IsWalkable(bool ignorePawn = false)

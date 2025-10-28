@@ -289,12 +289,21 @@ MonoBehaviour:
   _imgStatus: {fileID: 908801027468328297}
   _spriteStun: {fileID: 21300000, guid: 0ce17d0c589726c48bd368e84ef62245, type: 3}
   _spriteDeath: {fileID: 0}
+  _imgListActionTokens: []
+  _spriteActionTokenOn: {fileID: 0}
+  _spriteActionTokenOff: {fileID: 0}
   _instantiationData: {fileID: 11400000, guid: 4b4fcf36089c3bb4eba6e330bdef62cf, type: 2}
   _previousHasCrown: 0
   _mainRenderer: {fileID: 4480093834970791966}
   _stunnedMaterial: {fileID: 2100000, guid: 11b585646af13c54d82c2c8ee7d9c139, type: 2}
   _animator: {fileID: 0}
   _stunMaterialIndex: 0
+  OnStunUnityEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  OnDamagedUnityEvent:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!1 &5266738516767918478
 GameObject:
   m_ObjectHideFlags: 0
