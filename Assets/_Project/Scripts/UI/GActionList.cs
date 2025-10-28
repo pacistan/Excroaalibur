@@ -27,26 +27,26 @@ public class GActionList : MonoBehaviour
         
         _images.Clear();
 
-        if (pawn && pawn.isPlayer && pawn.actions != null)
+        if (pawn && pawn.data.isPlayer && pawn.data.actions != null)
         {
             if (isFirstAction)
             {
-                CreateActionSlot(pawn.actions[1],false);
+                CreateActionSlot(pawn.data.actions[1],false);
             }
             else if (pawn.GetCell().data.tileType == ETileType.Hole)
             {
-                CreateActionSlot(pawn.actions[3], true);
+                CreateActionSlot(pawn.data.actions[3], true);
             }
             else
             {
-                CreateActionSlot(pawn.actions[0], true);
+                CreateActionSlot(pawn.data.actions[0], true);
                 if (pawn.equipment && pawn.equipment is GCrown)
                 {
-                    CreateActionSlot(pawn.actions[2], false);
+                    CreateActionSlot(pawn.data.actions[2], false);
                 }
                 else
                 {
-                    CreateActionSlot(pawn.actions[1],false);
+                    CreateActionSlot(pawn.data.actions[1],false);
                 }
             }
             _currentActionIndex = 0;

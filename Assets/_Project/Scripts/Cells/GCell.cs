@@ -8,13 +8,12 @@ using UnityEngine.Serialization;
 [SelectionBase]
 public class GCell : SerializedMonoBehaviour
 {
-    [SerializeField, FoldoutGroup("Events")]
-    private UnityEvent _OnPreviewSpawnedPawn;
     
-    [SerializeField, FoldoutGroup("Events")]
-    private UnityEvent _OnSpawnedPawnFinished;
-    
+    [field : SerializeField, ReadOnly]
+    public GGridObject gridObject { get; private set; }
+
     [SerializeField][FormerlySerializedAs("_data")]
+    [InlineProperty, HideLabel, BoxGroup("Data")]
     public GCellData data;
     
     [field: SerializeField, FoldoutGroup("PersistantData/Components"), ReadOnly][FormerlySerializedAs("_ui")]
@@ -33,10 +32,14 @@ public class GCell : SerializedMonoBehaviour
     [field : SerializeField, ReadOnly, FoldoutGroup("PersistantData")][field: FormerlySerializedAs("<_neighbors>k__BackingField")]
     public GCell[] neighbors {get; private set;}
     
+    [SerializeField, FoldoutGroup("Events")]
+    private UnityEvent _OnPreviewSpawnedPawn;
+    
+    [SerializeField, FoldoutGroup("Events")]
+    private UnityEvent _OnSpawnedPawnFinished;
+
     public ETileType GetTileType => data.tileType;
 
-    [SerializeField, ReadOnly, FoldoutGroup("PersistantData")]
-    public GGridObject gridObject { get; private set; }
 
 
     public void SetGridObject(GGridObject inGridObject, bool updateTransform = true)
@@ -79,7 +82,7 @@ public class GCell : SerializedMonoBehaviour
     
     public void RegisterGridObject(GGridObject inGridObject)
     {
-        gridObject = inGridObject;
+        SetGridObject(inGridObject, true);
         inGridObject.SetCell(this);
     }
 

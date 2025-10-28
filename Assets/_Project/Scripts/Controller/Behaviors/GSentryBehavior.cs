@@ -75,7 +75,7 @@ public class GSentryBehavior : GAIBehavior
         {
             GCrown crown = GGridObjectRegistry.GetClosestObjectOfTypeWithPredicate<GCrown>(
                 pawnCell, out int crownDistance, 
-                crown=> (!crown.owner || !(crown.owner is GAltar)) && (_isDirtyStealer || (!crown.owner || crown.owner.isPlayer)));
+                crown=> (!crown.owner || !(crown.owner is GAltar)) && (_isDirtyStealer || (!crown.owner || crown.owner.data.isPlayer)));
             
             if (crown && crownDistance == 1 && crown.owner)
             {

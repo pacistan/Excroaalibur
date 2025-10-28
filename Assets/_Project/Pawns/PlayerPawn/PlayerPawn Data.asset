@@ -1,0 +1,350 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a28fce449d8602e448d69ce4c591985a, type: 3}
+  m_Name: PlayerPawn Data
+  m_EditorClassIdentifier: 
+  serializationData:
+    SerializedFormat: 2
+    SerializedBytes: 
+    ReferencedUnityObjects: []
+    SerializedBytesString: 
+    Prefab: {fileID: 0}
+    PrefabModificationsReferencedUnityObjects: []
+    PrefabModifications: []
+    SerializationNodes:
+    - Name: overrideReactionByType
+      Entry: 7
+      Data: 0|System.Collections.Generic.Dictionary`2[[SerializableType`1[[GAction,
+        Assembly-CSharp]], Assembly-CSharp],[GAction, Assembly-CSharp]], mscorlib
+    - Name: comparer
+      Entry: 7
+      Data: 1|System.Collections.Generic.GenericEqualityComparer`1[[SerializableType`1[[GAction,
+        Assembly-CSharp]], Assembly-CSharp]], mscorlib
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 12
+      Data: 0
+    - Name: 
+      Entry: 13
+      Data: 
+    - Name: 
+      Entry: 8
+      Data: 
+  <actionTokens>k__BackingField: 2
+  <isPlayer>k__BackingField: 1
+  <startHp>k__BackingField: -1
+  actions:
+  - rid: 3108424474244939852
+  - rid: 3108424474244939854
+  - rid: 3108424474244939853
+  - rid: 3108424474244939855
+  baseReactionData: {fileID: 11400000, guid: 3d2f439763d27cc4488c148c9d11360b, type: 2}
+  hoverSound:
+    Guid:
+      Data1: 0
+      Data2: 0
+      Data3: 0
+      Data4: 0
+    Path: 
+  SelectSound:
+    Guid:
+      Data1: 0
+      Data2: 0
+      Data3: 0
+      Data4: 0
+    Path: 
+  references:
+    version: 2
+    RefIds:
+    - rid: 3108424474244939852
+      type: {class: GMoveAction, ns: , asm: Assembly-CSharp}
+      data:
+        <actionLabel>k__BackingField: Move
+        <actionIcon>k__BackingField: {fileID: 21300000, guid: bedbdbdfd22faed4b94289c70058e100, type: 3}
+        linkedPawn: {fileID: 0}
+        targetCell: {fileID: 0}
+        validCells:
+        - x: 4
+          z: 6
+        - x: 5
+          z: 5
+        - x: 6
+          z: 5
+        - x: 6
+          z: 4
+        - x: 5
+          z: 4
+        - x: 5
+          z: 3
+        - x: 4
+          z: 3
+        - x: 4
+          z: 4
+        - x: 3
+          z: 4
+        - x: 3
+          z: 5
+        - x: 2
+          z: 5
+        _maxMoveDistance: 2
+        _walkingTileType: 00000000
+        _endMovementTileType: 00000000
+        _speed: 3
+        _speedCurve:
+          serializedVersion: 2
+          m_Curve:
+          - serializedVersion: 3
+            time: 0
+            value: 0
+            inSlope: 0
+            outSlope: 0
+            tangentMode: 0
+            weightedMode: 0
+            inWeight: 0
+            outWeight: 0
+          - serializedVersion: 3
+            time: 1
+            value: 1
+            inSlope: 0
+            outSlope: 0
+            tangentMode: 0
+            weightedMode: 0
+            inWeight: 0
+            outWeight: 0
+          m_PreInfinity: 2
+          m_PostInfinity: 2
+          m_RotationOrder: 4
+        moveAnimationName: Move
+    - rid: 3108424474244939853
+      type: {class: GThrowAction, ns: , asm: Assembly-CSharp}
+      data:
+        <actionLabel>k__BackingField: Throw
+        <actionIcon>k__BackingField: {fileID: 21300000, guid: 4343b554cc3a747478185bc9f94543ac, type: 3}
+        linkedPawn: {fileID: 0}
+        targetCell: {fileID: 0}
+        validCells:
+        - x: 4
+          z: 6
+        - x: 4
+          z: 8
+        - x: 4
+          z: 9
+        - x: 4
+          z: 10
+        - x: 5
+          z: 5
+        - x: 6
+          z: 5
+        - x: 5
+          z: 4
+        - x: 4
+          z: 4
+        - x: 4
+          z: 3
+        - x: 4
+          z: 2
+        - x: 4
+          z: 1
+        - x: 3
+          z: 5
+        - x: 2
+          z: 5
+        - x: 1
+          z: 5
+        - x: 0
+          z: 5
+        - x: -1
+          z: 5
+        - x: -2
+          z: 5
+        - x: 2
+          z: 7
+        - x: 1
+          z: 8
+        - x: 0
+          z: 9
+        _maxThrowDistance: 100
+        _throwMidPointHeight: 0
+        _throwCrownSpeed: 70
+        _throwSpeedCurve:
+          serializedVersion: 2
+          m_Curve:
+          - serializedVersion: 3
+            time: 0
+            value: 0
+            inSlope: 1
+            outSlope: 1
+            tangentMode: 34
+            weightedMode: 0
+            inWeight: 0
+            outWeight: 0
+          - serializedVersion: 3
+            time: 1
+            value: 1
+            inSlope: 1
+            outSlope: 1
+            tangentMode: 34
+            weightedMode: 0
+            inWeight: 0
+            outWeight: 0
+          m_PreInfinity: 2
+          m_PostInfinity: 2
+          m_RotationOrder: 4
+        _passMidPointHeight: 0
+        _passCrownSpeed: 70
+        _passSpeedCurve:
+          serializedVersion: 2
+          m_Curve:
+          - serializedVersion: 3
+            time: 0
+            value: 0
+            inSlope: 1
+            outSlope: 1
+            tangentMode: 34
+            weightedMode: 0
+            inWeight: 0
+            outWeight: 0
+          - serializedVersion: 3
+            time: 1
+            value: 1
+            inSlope: 1
+            outSlope: 1
+            tangentMode: 34
+            weightedMode: 0
+            inWeight: 0
+            outWeight: 0
+          m_PreInfinity: 2
+          m_PostInfinity: 2
+          m_RotationOrder: 4
+        _returnMidPointHeight: 5
+        _impactDelayOnKill: 0.3
+        _returnCrownSpeed: 20
+        _returnSpeedCurve:
+          serializedVersion: 2
+          m_Curve:
+          - serializedVersion: 3
+            time: 0
+            value: 0
+            inSlope: 1
+            outSlope: 1
+            tangentMode: 34
+            weightedMode: 0
+            inWeight: 0
+            outWeight: 0
+          - serializedVersion: 3
+            time: 1
+            value: 1
+            inSlope: 1
+            outSlope: 1
+            tangentMode: 34
+            weightedMode: 0
+            inWeight: 0
+            outWeight: 0
+          m_PreInfinity: 2
+          m_PostInfinity: 2
+          m_RotationOrder: 4
+        _landMidPointHeight: 0
+        _landCrownSpeed: 30
+        _landSpeedCurve:
+          serializedVersion: 2
+          m_Curve:
+          - serializedVersion: 3
+            time: 0
+            value: 0
+            inSlope: 1
+            outSlope: 1
+            tangentMode: 34
+            weightedMode: 0
+            inWeight: 0
+            outWeight: 0
+          - serializedVersion: 3
+            time: 1
+            value: 1
+            inSlope: 1
+            outSlope: 1
+            tangentMode: 34
+            weightedMode: 0
+            inWeight: 0
+            outWeight: 0
+          m_PreInfinity: 2
+          m_PostInfinity: 2
+          m_RotationOrder: 4
+        _crownRotationAmountByTileOnThrowToTarget: -300
+        _crownRotationAnimationCurveOnThrowToTarget:
+          serializedVersion: 2
+          m_Curve:
+          - serializedVersion: 3
+            time: 0
+            value: 0
+            inSlope: 0
+            outSlope: 0
+            tangentMode: 0
+            weightedMode: 0
+            inWeight: 0
+            outWeight: 0
+          - serializedVersion: 3
+            time: 1
+            value: 1
+            inSlope: 0
+            outSlope: 0
+            tangentMode: 0
+            weightedMode: 0
+            inWeight: 0
+            outWeight: 0
+          m_PreInfinity: 2
+          m_PostInfinity: 2
+          m_RotationOrder: 4
+        _crownRotationAmountByTileOnReturnToOrigin: -30
+        _crownRotationAnimationCurveOnThrowToOrigin:
+          serializedVersion: 2
+          m_Curve:
+          - serializedVersion: 3
+            time: 0
+            value: 0
+            inSlope: 0
+            outSlope: 0
+            tangentMode: 0
+            weightedMode: 0
+            inWeight: 0
+            outWeight: 0
+          - serializedVersion: 3
+            time: 1
+            value: 1
+            inSlope: 0
+            outSlope: 0
+            tangentMode: 0
+            weightedMode: 0
+            inWeight: 0
+            outWeight: 0
+          m_PreInfinity: 2
+          m_PostInfinity: 2
+          m_RotationOrder: 4
+    - rid: 3108424474244939854
+      type: {class: GPushAction, ns: , asm: Assembly-CSharp}
+      data:
+        <actionLabel>k__BackingField: Push
+        <actionIcon>k__BackingField: {fileID: 21300000, guid: 27e8fab003f993449a17bb55575cf502, type: 3}
+        linkedPawn: {fileID: 0}
+        targetCell: {fileID: 0}
+        validCells: []
+        _pushForce: 1
+        _followDistance: 1
+    - rid: 3108424474244939855
+      type: {class: GMoveOutOfHoleAction, ns: , asm: Assembly-CSharp}
+      data:
+        <actionLabel>k__BackingField: Move
+        <actionIcon>k__BackingField: {fileID: 21300000, guid: bedbdbdfd22faed4b94289c70058e100, type: 3}
+        linkedPawn: {fileID: 0}
+        targetCell: {fileID: 0}
+        validCells: []

@@ -5,33 +5,37 @@ using UnityEngine;
 [SelectionBase]
 public class GGridObject : SerializedMonoBehaviour
 {
-    [SerializeField, ReadOnly]
+    [SerializeField, ReadOnly, BoxGroup("Important Info")]
     protected GCell _currentCell;
-    
+
+    [FoldoutGroup("Other", false)]
     [SerializeField, ReadOnly]
     public GHexCoordinate coordinate;
-
-    [SerializeField, Tooltip("Visual GameObject to copy for caching purposes")]
-    public GameObject visualToCopy;
     
     public bool isMarkedForDestruction { get; set; } = false;
-    
-    [field: SerializeField, FoldoutGroup("Persistant Data")]
+
+    [FoldoutGroup("Other", false)]
+    [field: SerializeField, FoldoutGroup("Other/Persistant Data")]
     public Sprite headerSprite { get; private set; }
-    
-    [field: SerializeField, FoldoutGroup("Persistant Data")]
+
+    [FoldoutGroup("Other", false)]
+    [field: SerializeField, FoldoutGroup("Other/Persistant Data")]
     public Sprite cadreSprite { get; private set; }
-    
-    [field: SerializeField, FoldoutGroup("Persistant Data")]
+
+    [FoldoutGroup("Other", false)] 
+    [field: SerializeField, FoldoutGroup("Other/Persistant Data")]
     public Sprite headerObjectIconSprite { get; private set; }
-    
-    [field: SerializeField, FoldoutGroup("Persistant Data")]
+
+    [FoldoutGroup("Other", false)]
+    [field: SerializeField, FoldoutGroup("Other/Persistant Data")]
     public Color pawnColor { get; private set; }
-    
-    [field: SerializeField, FoldoutGroup("Persistant Data")]
+
+    [FoldoutGroup("Other", false)]
+    [field: SerializeField, FoldoutGroup("Other/Persistant Data")]
     public string headerName { get; private set; }
-    
-    [field: SerializeField, FoldoutGroup("Persistant Data")]
+
+    [FoldoutGroup("Other", false)]
+    [field: SerializeField, FoldoutGroup("Other/Persistant Data")]
     public string className { get; private set; }
     
     

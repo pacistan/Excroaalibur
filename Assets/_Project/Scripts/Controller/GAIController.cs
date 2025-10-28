@@ -22,14 +22,14 @@ public class GAIController : GController
             StopTurn();
             return;
         }
-        pawn.remainingActionToken = pawn.actionTokens;
+        pawn.remainingActionToken = pawn.data.actionTokens;
         _aiBehavior.OnTurnStart();
         StartAction();
     }
 
     public void ResetTurn()
     {
-        pawn.remainingActionToken = pawn.actionTokens;
+        pawn.remainingActionToken = pawn.data.actionTokens;
     }
 
     public override void StartAction()
@@ -84,7 +84,7 @@ public class GAIController : GController
         pawn = GetComponent<GPawn>();
         _aiBehavior = ScriptableObject.Instantiate(_aiBehavior);
         _aiBehavior.Init(this);
-        pawn.actions = _aiBehavior.actions;
+        pawn.data.actions = _aiBehavior.actions;
         pawn.OnKill += OnKilled;
     }
     

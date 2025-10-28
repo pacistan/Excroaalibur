@@ -21,27 +21,27 @@ public class GPawnVisualsController : SerializedMonoBehaviour
     Canvas _worldCanvas;
     
     [SerializeField, FoldoutGroup("Components")]
-    [BoxGroup("Components/World Canvas"), HideIf("_isPlayerAccessor")]
+    [BoxGroup("Components/World Canvas"), HideIf("isPlayerAccessor")]
     TextMeshProUGUI _txtCurrentHp;
     
     [SerializeField, FoldoutGroup("Components")]
-    [BoxGroup("Components/World Canvas"), HideIf("_isPlayerAccessor")]
+    [BoxGroup("Components/World Canvas"), HideIf("isPlayerAccessor")]
     TextMeshProUGUI _txtMaxHp;
     
     [SerializeField, FoldoutGroup("Components")]
-    [BoxGroup("Components/World Canvas"), HideIf("_isPlayerAccessor")]
+    [BoxGroup("Components/World Canvas"), HideIf("isPlayerAccessor")]
     Color _txtHpNormalColor;
     
     [SerializeField, FoldoutGroup("Components")]
-    [BoxGroup("Components/World Canvas"), HideIf("_isPlayerAccessor")]
+    [BoxGroup("Components/World Canvas"), HideIf("isPlayerAccessor")]
     Color _txtHpPrevisualisationColor;
     
     [SerializeField, FoldoutGroup("Components")]
-    [BoxGroup("Components/World Canvas"), HideIf("_isPlayerAccessor")]
+    [BoxGroup("Components/World Canvas"), HideIf("isPlayerAccessor")]
     Image _imgHpBarForeground;
     
     [SerializeField, FoldoutGroup("Components")]
-    [BoxGroup("Components/World Canvas"), HideIf("_isPlayerAccessor")]
+    [BoxGroup("Components/World Canvas"), HideIf("isPlayerAccessor")]
     Image _imgHpBarPrevisualisation;
     
     [SerializeField, FoldoutGroup("Components")]
@@ -53,15 +53,15 @@ public class GPawnVisualsController : SerializedMonoBehaviour
     Sprite _spriteStun;
     
     [SerializeField, FoldoutGroup("Components")]
-    [BoxGroup("Components/World Canvas"), HideIf("_isPlayerAccessor")]
+    [BoxGroup("Components/World Canvas"), HideIf("isPlayerAccessor")]
     Sprite _spriteDeath;
     
     [SerializeField, FoldoutGroup("Components")]
-    [BoxGroup("Components/World Canvas"), ShowIf("_isPlayerAccessor")]
-    List<Image> _imgListActionTokens;
+    [BoxGroup("Components/World Canvas"), ShowIf("isPlayerAccessor")]
+    List<Image> _imgListactionTokens;
     
     [SerializeField, FoldoutGroup("Components")]
-    [BoxGroup("Components/World Canvas"), ShowIf("_isPlayerAccessor")]
+    [BoxGroup("Components/World Canvas"), ShowIf("isPlayerAccessor")]
     Sprite _spriteActionTokenOn, _spriteActionTokenOff;
     
     [SerializeField, FoldoutGroup("Components") ]
@@ -82,11 +82,10 @@ public class GPawnVisualsController : SerializedMonoBehaviour
     [SerializeField]
     int _stunMaterialIndex = 0;
 
-    [SerializeField, HideInInspector]
-    bool _isPlayerAccessor {
+    bool isPlayerAccessor {
     get
     {
-        return _pawn ? _pawn.isPlayer : true;
+        return _pawn ? _pawn.data.isPlayer : true;
     }}
 
     [SerializeField]
@@ -99,7 +98,7 @@ public class GPawnVisualsController : SerializedMonoBehaviour
 
     void Start()
     {
-        if (!_pawn.isPlayer && !(_pawn is GAltar))
+        if (!_pawn.data.isPlayer && !(_pawn is GAltar))
         {
             _txtCurrentHp.text = $"{_pawn.hp}";
             _txtMaxHp.text = $"/{_pawn.hp}";
@@ -151,7 +150,7 @@ public class GPawnVisualsController : SerializedMonoBehaviour
 
     public void OnUpdateHealthPoints()
     {
-        if (_pawn.isPlayer || _pawn is GAltar) return;
+        if (_pawn.data.isPlayer || _pawn is GAltar) return;
         string text = "";
         
         if (_pawn.hp >= 0 && _pawn.hp != _previousHpNumber) 
@@ -165,16 +164,16 @@ public class GPawnVisualsController : SerializedMonoBehaviour
         
         _previousHpNumber = _pawn.hp;
         _txtCurrentHp.text = text;
-        _imgHpBarForeground.fillAmount = (float)_pawn.hp / (float)_pawn.startHp;
-        _imgHpBarPrevisualisation.fillAmount = (float)_pawn.hp / (float)_pawn.startHp;
+        _imgHpBarForeground.fillAmount = (float)_pawn.hp / (float)_pawn.data.startHp;
+        _imgHpBarPrevisualisation.fillAmount = (float)_pawn.hp / (float)_pawn.data.startHp;
     }
 
     public void OnUpdateActionsToken()
     {
-        _imgListActionTokens[0].sprite = _pawn.remainingActionToken >= 1 ?
+        _imgListactionTokens[0].sprite = _pawn.remainingActionToken >= 1 ?
             _spriteActionTokenOn : _spriteActionTokenOff;
         
-        _imgListActionTokens[1].sprite = _pawn.remainingActionToken >= 2 ?
+        _imgListactionTokens[1].sprite = _pawn.remainingActionToken >= 2 ?
             _spriteActionTokenOn : _spriteActionTokenOff;
         
         //string text = "";
@@ -211,10 +210,10 @@ public class GPawnVisualsController : SerializedMonoBehaviour
         if (_pawn is GAltar) return;
         int tempStun = _pawn.stunTurn + stunTurns;
         bool isDead = false;
-        if (!_pawn.isPlayer)
+        if (!_pawn.data.isPlayer)
         {
             int tempHp = Mathf.Max(0, _pawn.hp - damage);
-            _imgHpBarForeground.fillAmount = (float)tempHp / (float)_pawn.startHp;
+            _imgHpBarForeground.fillAmount = (float)tempHp / (float)_pawn.data.startHp;
             _txtCurrentHp.text = $"{tempHp}";
             if (tempHp != _pawn.hp)
             {
@@ -237,9 +236,9 @@ public class GPawnVisualsController : SerializedMonoBehaviour
     public void OnDisablePrevisualisation()
     {
         if (_pawn is GAltar) return;
-        if (!_pawn.isPlayer)
+        if (!_pawn.data.isPlayer)
         {
-            _imgHpBarForeground.fillAmount = (float)_pawn.hp / (float)_pawn.startHp;
+            _imgHpBarForeground.fillAmount = (float)_pawn.hp / (float)_pawn.data.startHp;
             _txtCurrentHp.text = $"{_pawn.hp}";
             _txtCurrentHp.color = _txtHpNormalColor;
         }

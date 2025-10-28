@@ -114,7 +114,7 @@ public class GPlayerHudManager : MonoBehaviour
 
             GPawn pawn = gridObject as GPawn;
             actionList.UpdateButtons(pawn, isFirstAction);
-            _panelRmbIndicator.SetActive(pawn && pawn.isPlayer);
+            _panelRmbIndicator.SetActive(pawn && pawn.data.isPlayer);
 
             _headerHasCrownIconImage.sprite = pawn && pawn.equipment && pawn.equipment is GCrown
                 ? _headerCrownIconSprite
@@ -127,16 +127,16 @@ public class GPlayerHudManager : MonoBehaviour
 
             foreach (var image in _actionTokenImgArray)
             {
-                image.gameObject.SetActive(pawn && pawn.isPlayer);
+                image.gameObject.SetActive(pawn && pawn.data.isPlayer);
             }
             
             if (pawn)
             {
-                if (pawn.isPlayer)
+                if (pawn.data.isPlayer)
                 {
                     for (int i = 0; i < _actionTokenImgArray.Length; i++)
                     {
-                        //_actionTokenImgArray[i].gameObject.SetActive(i <= pawn.actionTokens);
+                        //_actionTokenImgArray[i].gameObject.SetActive(i <= pawn.data.actionTokens);
                         bool isActionTokenOn = i < pawn.remainingActionToken;
                         _actionTokenImgArray[i].sprite = isActionTokenOn ? _actionTokenOnSprite : _actionTokenOffSprite;
                         _actionTokenImgArray[i].color = isActionTokenOn ? _actionTokenOnColor : _actionTokenOffColor;
@@ -150,7 +150,7 @@ public class GPlayerHudManager : MonoBehaviour
                         image.gameObject.SetActive(false);
                     }
                     _aiHpNumberText.gameObject.SetActive(true);
-                    _aiHpNumberText.text = $"{pawn.hp}/{pawn.startHp} HPs";
+                    _aiHpNumberText.text = $"{pawn.hp}/{pawn.data.startHp} HPs";
                 }
             }
         };
@@ -199,15 +199,15 @@ public class GPlayerHudManager : MonoBehaviour
 
         foreach (var image in _actionTokenImgArray)
         {
-            image.gameObject.SetActive(pawn && pawn.isPlayer);
+            image.gameObject.SetActive(pawn && pawn.data.isPlayer);
         }
         if (pawn)
         {
-            if (pawn.isPlayer)
+            if (pawn.data.isPlayer)
             {
                 for (int i = 0; i < _actionTokenImgArray.Length; i++)
                 {
-                    //_actionTokenImgArray[i].gameObject.SetActive(i < pawn.actionTokens);
+                    //_actionTokenImgArray[i].gameObject.SetActive(i < pawn.data.actionTokens);
                     bool isActionTokenOn = i < pawn.remainingActionToken;
                     _actionTokenImgArray[i].sprite = isActionTokenOn ?
                         _actionTokenOnSprite : _actionTokenOffSprite;
@@ -217,7 +217,7 @@ public class GPlayerHudManager : MonoBehaviour
             }
             else
             {
-                _aiHpNumberText.text = $"{pawn.hp}/{pawn.startHp} HPs";
+                _aiHpNumberText.text = $"{pawn.hp}/{pawn.data.startHp} HPs";
             }
         }
     }
