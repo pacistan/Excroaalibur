@@ -6,6 +6,7 @@ using System;
 using System.Collections;
 using System.Linq;
 using UnityEngine;
+using UnityEngine.Serialization;
 using UnityEngine.Splines;
 using STOP_MODE = FMOD.Studio.STOP_MODE;
 
@@ -26,6 +27,9 @@ public class GMoveAction : GAction
     
     [SerializeField]
     protected AnimationCurve _speedCurve = AnimationCurve.EaseInOut(0, 0, 1, 1);
+
+    [FormerlySerializedAs("animationName")]
+    public string moveAnimationName = GPawn.MoveAnimationName;
     
     private EHexDirection[] _path = new EHexDirection[] { };
     private Vector3[] _wayPoints = new Vector3[] { };
@@ -92,7 +96,14 @@ public class GMoveAction : GAction
         _progress = 0;
         _currentWayPoint = 0;
 
-        linkedPawn.visuals.SetAnimationState("Walking");
+        if (moveAnimationName == GPawn.PushedStartAnimationName)
+        {
+            Vector3 lookAtPosition = targetCell.transform.position - (2 * (targetCell.transform.position - linkedPawn.transform.position));
+            lookAtPosition.y = linkedPawn.transform.position.y;
+            linkedPawn.transform.LookAt(lookAtPosition);
+        }
+
+        linkedPawn.visuals.SetAnimationState(moveAnimationName);
         MoveEventInstance = RuntimeManager.CreateInstance(MoveEvent);
         MoveEventInstance.set3DAttributes(RuntimeUtils.To3DAttributes(linkedPawn.gameObject));
         MoveEventInstance.start();
@@ -112,7 +123,7 @@ public class GMoveAction : GAction
             }
             _currentWayPoint++;
 
-            if (_wayPoints.Length > 0)
+            if (_wayPoints.Length > 0 && moveAnimationName != GPawn.PushedStartAnimationName)
             {
                 Vector3 lookAtPosition = _wayPoints[Mathf.Min(_currentWayPoint + 1, _wayPoints.Length - 1)];
                 lookAtPosition.y = linkedPawn.transform.position.y;
@@ -135,6 +146,11 @@ public class GMoveAction : GAction
         linkedPawn.visuals.SetAnimationState("Idle");
         MoveEventInstance.stop(STOP_MODE.ALLOWFADEOUT);
         if (!linkedPawn.IsAlive) linkedPawn.Kill();
+
+        if (moveAnimationName == GPawn.PushedStartAnimationName)
+        {
+            linkedPawn.visuals.SetAnimationState(GPawn.PushedEndAnimationName);
+        }
         base.End_Action();
     }
 

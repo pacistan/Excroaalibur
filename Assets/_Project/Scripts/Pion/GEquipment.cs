@@ -18,7 +18,7 @@ public class GEquipment : GGridObject
     {
         if (GetCell() && GetCell().GetGridObject<GEquipment>())
         {
-            GetCell().gridObject = null;
+            GetCell().SetGridObject(null);
         }
         owner = newOwner;
     }

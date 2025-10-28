@@ -82,6 +82,7 @@ public class GCellVisualsController : SerializedMonoBehaviour
         EGridObjectType newObjectType = _cell.data.objectType;
         if(_previousObjectSpawnType != newObjectType)
         {
+            Debug.Log("D");
             if (_cell.GetGridObject<GPawn>())
             {
                 DestroyImmediate(_cell.gridObject.gameObject);
@@ -89,7 +90,15 @@ public class GCellVisualsController : SerializedMonoBehaviour
             GGridObject objectPrefab = instantiationCommonData.objectTypeData[newObjectType];
             if (objectPrefab)
             {
-                _cell.gridObject = PrefabUtility.InstantiatePrefab(objectPrefab, _cell.pawnSpawnPoint) as GGridObject;
+                
+                //GameObject gridObjectObj = PrefabUtility.InstantiatePrefab(objectPrefab, _cell.pawnSpawnPoint) as GameObject;
+                //GGridObject gridObject = gridObjectObj.GetComponent<GGridObject>();
+                
+                GGridObject gridObject = PrefabUtility.InstantiatePrefab(objectPrefab, _cell.pawnSpawnPoint) as GGridObject;
+                gridObject.SetCell(_cell);
+                gridObject.coordinate = _cell.hexCoordinates;
+                _cell.SetGridObject(gridObject, true);
+                EditorUtility.SetDirty(gridObject);
             }
             _previousObjectSpawnType = newObjectType;
         }

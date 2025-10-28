@@ -42,7 +42,7 @@ public class GGridObject : SerializedMonoBehaviour
     
     public virtual void SetCell(GCell newCell)
     {
-        if (_currentCell && _currentCell != newCell && _currentCell.gridObject == this) _currentCell.gridObject = null;
+        if (_currentCell && _currentCell != newCell && _currentCell.gridObject == this) _currentCell.SetGridObject(null);
         _currentCell = newCell;
         if (!newCell) return;
         coordinate = newCell.hexCoordinates;

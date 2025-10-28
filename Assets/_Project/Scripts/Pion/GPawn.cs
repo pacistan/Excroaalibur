@@ -16,6 +16,15 @@ public class GPawn : GGridObject
     public event Action OnStunned;
     public event Action OnUnstunned;
     public event Action OnHealthChanged;
+    public event Action OnAnimationPush;
+    public event Action OnAnimationThrow;
+        
+    public const string MoveAnimationName = "Move";
+    public const string IdlenimationName = "Idle";
+    public const string PushAnimationName = "Push";
+    public const string ThrowAnimationName = "Throw";
+    public const string PushedStartAnimationName = "Pushed_Start";
+    public const string PushedEndAnimationName = "Pushed_End";
     
     [SerializeField, FoldoutGroup("Events"), HideIf("@hp < 0")]
     private UnityEvent _OnDeath;
@@ -103,6 +112,7 @@ public class GPawn : GGridObject
         {
             equipment.transform.parent = equipmentParentTr;
             equipment.transform.localPosition = Vector3.zero; 
+            equipment.transform.localRotation = Quaternion.identity;
             if (equipment is GCrown)
             {
                 RuntimeManager.PlayOneShotAttached("event:/Crown/Grab", gameObject);
@@ -124,8 +134,9 @@ public class GPawn : GGridObject
             crown.visuals.OnUpdateDebugTextContent(crown._currentDamage);
         }
         
+        // TODO : This used to give parenting to the cell. Not anymore, might cause bugs !!!
         if (giveToCell) 
-            GetCell().gridObject = equipment;
+            GetCell().SetGridObject(equipment, false);
         
         equipment = null;
     }
@@ -155,7 +166,7 @@ public class GPawn : GGridObject
         
         if (hp == 0 && GetCell().gridObject == this)
         {
-            GetCell().gridObject = null;
+            GetCell().SetGridObject(null);
         } 
     }
     
@@ -244,7 +255,8 @@ public class GPawn : GGridObject
         {
             Fall();
         }
-        GetCell().gridObject = this;
+        // TODO : This used to give parenting to the cell. Not anymore, might cause bugs !!!
+        GetCell().SetGridObject(this, false);
     }
     
     private void RebuildOverrideCache()
@@ -272,10 +284,10 @@ public class GPawn : GGridObject
     #endif
     }
 
-
     protected virtual void Awake()
     {
         if (isPlayer) hp = -1; // Player has infinite HP
+        _currentCell.SetGridObject(this);
         RebuildOverrideCache();
     }
 
@@ -297,11 +309,22 @@ public class GPawn : GGridObject
                 {
                     action.linkedPawn = this;
                     controller.RegisterPawn(this);
+                    action.OnActionFinished += controller.OnActionOver;
                 }
             }
         }
     }
 
+    public void OnPushEvent()
+    {
+        OnAnimationPush?.Invoke();
+    }
+
+    public void OnThrowEvent()
+    {
+        OnAnimationThrow?.Invoke();
+    }
+    
 #if UNITY_EDITOR
     void OnValidate()
     {

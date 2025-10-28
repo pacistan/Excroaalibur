@@ -163,6 +163,7 @@ public class GPushedReaction : GAction
             _moveAction._maxMoveDistance = _distance;
             _moveAction._walkingTileType = new ETileType[] { ETileType.Normal, ETileType.Hole };
             _moveAction._endMovementTileType = new ETileType[] { ETileType.Normal, ETileType.Hole };
+            _moveAction.moveAnimationName = GPawn.PushedStartAnimationName;
             GTurnBaseManager.Instance.PreProcessReaction(_moveAction, new GActionContext());
         }
         

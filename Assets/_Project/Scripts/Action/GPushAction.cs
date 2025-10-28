@@ -1,6 +1,7 @@
 ﻿using FMODUnity;
 using Sirenix.OdinInspector;
 using Sirenix.Utilities;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
@@ -19,6 +20,8 @@ public class GPushAction : GAction
     GAction _reaction;
     GMoveAction _followAction = null;
 
+    bool _isPushAnimationOver = false;
+    
     public override List<GCell> Previsualisation(in GActionContext previsuContext)
     {
         _direction = linkedPawn.coordinate.GetLineDirection(targetCell.hexCoordinates);
@@ -101,11 +104,15 @@ public class GPushAction : GAction
     public override void Start_Action()
     {
         base.Start_Action();
+
+        Vector3 lookAtPosition = targetCell.transform.position;
+        lookAtPosition.y = linkedPawn.transform.position.y;
+        linkedPawn.transform.LookAt(lookAtPosition);
         
-        // TODO Check the need to replace the tryStartReaction with an event queue for all preprocessed callbacks
-        GTurnBaseManager.Instance.TryStartReaction(_reaction);
-        GTurnBaseManager.Instance.TryStartReaction(_followAction);
-        RuntimeManager.PlayOneShotAttached("event:/Pawn/Push", linkedPawn.gameObject);
+        linkedPawn.OnAnimationPush += OnAnimationPushCallback;
+        linkedPawn.visuals.SetAnimationState(GPawn.PushAnimationName);
+        linkedPawn.StartCoroutine(StartReactionsCoroutine());
+        
     }
 
     public override void Update_Action(float delta)
@@ -156,5 +163,18 @@ public class GPushAction : GAction
         pushAction._followDistance = _followDistance;
         return pushAction;
     }
+
+    IEnumerator StartReactionsCoroutine()
+    {
+        yield return new WaitUntil(() => _isPushAnimationOver);
+        linkedPawn.OnAnimationPush -= OnAnimationPushCallback;
+        GTurnBaseManager.Instance.TryStartReaction(_reaction);
+        GTurnBaseManager.Instance.TryStartReaction(_followAction);
+        RuntimeManager.PlayOneShotAttached("event:/Pawn/Push", linkedPawn.gameObject);
+
+    }
+    
+    private void OnAnimationPushCallback() 
+        => _isPushAnimationOver = true;
     
 }
