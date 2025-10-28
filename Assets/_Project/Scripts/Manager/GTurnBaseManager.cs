@@ -27,6 +27,10 @@ public class GTurnBaseManager : GSingleton<GTurnBaseManager>
         get => _actionsInProgress.Count > 0;
     }
     
+    public ETurnState _currentTurnState { get; private set; }
+
+    public int EnemiesCount => _turnOrderControllerQueue.Count(entity => entity is GAIController);
+    
     /** Queue Order of The Entity currently in fight */ 
     [SerializeField, ReadOnly, HideInEditorMode, BoxGroup("Actions")]
     private List<GAction> _actionsInProgress = new List<GAction>();
@@ -49,8 +53,6 @@ public class GTurnBaseManager : GSingleton<GTurnBaseManager>
     
     private WaitUntil _waitForTurn = null;
     
-    public ETurnState _currentTurnState { get; private set; }
-
     /** Register an Controller to the Turn Base Manager */
     public void RegisterController(GController Controller)
     {
@@ -156,7 +158,7 @@ public class GTurnBaseManager : GSingleton<GTurnBaseManager>
     /** Start the Turn of the first Entity in the Queue */
     private void StartTurn()
     {
-        if (_turnOrderControllerQueue.Count == 0 && WaveManager.Instance.waves.Count <= 0)
+        if (_turnOrderControllerQueue.Count == 0 && GWaveManager.Instance.waves.Count <= 0)
         {
             Debug.LogWarning("Turn Order Queue is empty and WaveManager Has no Wave. Force Disable the Turn Base Manager.");
             enabled = false;
@@ -217,14 +219,13 @@ public class GTurnBaseManager : GSingleton<GTurnBaseManager>
         _actionsInProgress.Clear();
     }
     
-    // TODO : Check 
     private IEnumerator StartFight()
     {
         yield return new WaitForEndOfFrame(); // Wait for all Awake / Start to be called
         
         _turnCount = 1; // Reset Turn Count ! 
         CreateQueue();
-        WaveManager.Instance.CheckNextWave(_turnCount);
+        GWaveManager.Instance.CheckNextWave(_turnCount);
         StartTurn();
         yield return null;
     }
@@ -238,16 +239,17 @@ public class GTurnBaseManager : GSingleton<GTurnBaseManager>
         
         if (currentTurnController is GPlayerController) // After Player Turn
         {
-            if (WaveManager.Instance.HasNextWave())
-                WaveManager.Instance.SpawnNextWave();
-            
+            GWaveManager.Instance.CheckNextWave(_turnCount); // Needed for Endless Mode
+            GWaveManager.Instance.SpawnNextWave();
             CreateQueue(true);
+            
+            yield return new WaitUntil(() => !GWaveManager.Instance.IsSpawningInProgress());
         }
         
         if (_turnOrderControllerQueue.First() is GPlayerController) // Before Player Turn
         {
+            GWaveManager.Instance.CheckNextWave(_turnCount); // Needed for Finite Mode
             _turnCount++;
-            WaveManager.Instance.CheckNextWave(_turnCount);
         }
         
         StartTurn();
