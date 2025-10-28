@@ -82,17 +82,20 @@ public class GPawn : GGridObject
       
         var t = action.GetType();
         
-        // Exact type 
-        if (_overrideCache != null && _overrideCache.TryGetValue(t, out var overExact) && overExact != null)
-            return overExact.CloneAction();
-
-        // Parent type
-        var bt = t.BaseType;
-        while (bt != null && typeof(GAction).IsAssignableFrom(bt))
+        if (_overrideCache != null)
         {
-            if (_overrideCache.TryGetValue(bt, out var overBase) && overBase != null)
-                return overBase.CloneAction();
-            bt = bt.BaseType;
+            // Exact type 
+            if (_overrideCache.TryGetValue(t, out var overExact) && overExact != null)
+                return overExact.CloneAction();
+
+            // Parent type
+            Type bt = t.BaseType;
+            while (bt != null && typeof(GAction).IsAssignableFrom(bt))
+            {
+                if (_overrideCache.TryGetValue(bt, out GAction overBase) && overBase != null)
+                    return overBase.CloneAction();
+                bt = bt.BaseType;
+            }
         }
         
         // Fallback to base reaction data
