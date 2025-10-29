@@ -72,7 +72,6 @@ public class GPlayerController : GController
         
         if (_selectedAction != null) 
             _selectedAction.OnUnselectedAction();
-        
         _selectedAction = action;
         
         if (_selectedAction == null) return;
