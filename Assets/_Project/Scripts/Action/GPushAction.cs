@@ -83,7 +83,7 @@ public class GPushAction : GAction
             {
                 GCell neighbor = pathCell.GetNeighbor(_direction);
                 
-                if (!neighbor || neighbor.GetGridObject<GPawn>() || neighbor.GetTileType == ETileType.Wall) break;
+                if (!neighbor || neighbor.GetGridObject<GPawn>() || neighbor.GetTileType == ETileType.Wall || neighbor.GetTileType == ETileType.Spawner) break;
 
                 pathCell = neighbor;
                 if (neighbor.GetTileType == ETileType.Hole) break;
