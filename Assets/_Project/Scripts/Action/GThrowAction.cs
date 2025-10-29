@@ -119,9 +119,10 @@ public class GThrowAction : GAction
             }
             else
             {
-                if (_targetPawn && targetCell.GetNeighbor(direction.Opposite()).IsWalkable(true))
+                GCell frontCell = targetCell.GetNeighbor(direction.Opposite());
+                if (_targetPawn && frontCell.IsWalkable(true))
                 {
-                    previewCells.Add(targetCell.GetNeighbor(direction.Opposite())); // Cell in front of target
+                    previewCells.Add(frontCell); // Cell in front of target
                 }
                 else
                 {
@@ -181,28 +182,19 @@ public class GThrowAction : GAction
         if (!_playerCatch)
         {
             linkedPawn.ReleaseEquipement(false, true);
-            if (_targetPawn && targetCell.GetNeighbor(direction.Opposite()).IsWalkable(true))
+            GCell frontCell = targetCell.GetNeighbor(direction.Opposite());
+            if (_targetPawn && frontCell.IsWalkable(true))
             {
-                GPawn neighborPawn = targetCell.GetNeighbor(direction.Opposite()).GetGridObject<GPawn>();
+                GPawn neighborPawn = frontCell.GetGridObject<GPawn>();
                 if (neighborPawn)
-                {
                     neighborPawn.GiveEquipement(_crown, false, false);
-                }
                 else
-                {
-                    targetCell.GetNeighbor(direction.Opposite()).SetGridObject(_crown, false);
-                    _crown.SetCell(targetCell.GetNeighbor(direction.Opposite()));
-                }
+                    frontCell.SetGridObject(_crown, false);
             }
             else if (_targetPawn) // can give to non-player target if cell in front is not Available
-            {
                 _targetPawn.GiveEquipement(_crown, false, false);
-            }
             else
-            {
                 targetCell.SetGridObject(_crown, false);;
-                _crown.SetCell(targetCell);
-            }
         }
         else
         {
@@ -377,7 +369,6 @@ public class GThrowAction : GAction
             {
                 _targetPawn.Kill();
                 RuntimeManager.PlayOneShotAttached("event:/Crown/Catch", _crown.gameObject);
-                _crown.visuals.OnUpdateDebugTextContent(_crown._currentDamage);
             }); 
             
             Vector3 returnMidPoint = Vector3.Lerp(_hitPos, _returnPos, 0.5f);
@@ -400,7 +391,6 @@ public class GThrowAction : GAction
            _seq.AppendCallback(() =>
            {
                _targetPawn.GiveEquipement(_crown, true, true);
-               _crown.visuals.OnUpdateDebugTextContent(_crown._currentDamage);
            }); 
         }
         else if (canLandInFrontOf && _targetPawn)

@@ -16,13 +16,14 @@ public class GMoveOutOfHoleAction : GAction
     public override void PreProcess(GActionContext context = null)
     {
         if (!targetCell || targetCell.GetGridObject<GPawn>() || targetCell.GetGridObject<GPawn>() == linkedPawn) return;
-        //validate
+        // validate
+        // TODO Start New Action Move ! 
     }
 
     public override void Start_Action()
     {
         base.Start_Action();
-        linkedPawn.SetCell(targetCell);
+        targetCell.SetGridObject(linkedPawn, false);
         linkedPawn.transform.DOMove(targetCell.transform.position, .5f).SetEase(Ease.OutBack).onComplete = End_Action;
     }
 

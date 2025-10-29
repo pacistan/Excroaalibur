@@ -38,18 +38,37 @@ public class GGridObject : SerializedMonoBehaviour
     [field: SerializeField, FoldoutGroup("Other/Persistant Data")]
     public string className { get; private set; }
     
-    
-    public virtual void SetCell(GHexCoordinate newCoordinate)
+    public virtual void TrySetCell(GHexCoordinate newCoordinate)
     {
-        SetCell(GGridManager.Instance.GetCell(newCoordinate));
+        TrySetCell(GGridManager.Instance.GetCell(newCoordinate));
     }
     
-    public virtual void SetCell(GCell newCell)
+    /** Need to be Call by the new Owner (Do Not Call this directly if you are not the new Owner */
+    public virtual bool TrySetCell(GCell newCell)
     {
-        if (_currentCell && _currentCell != newCell && _currentCell.gridObject == this) _currentCell.SetGridObject(null);
+        if (_currentCell == newCell)  return true; // Already assigned to this cell
+        
+        ClearCell();
+        if (_currentCell != null)
+        {
+             Debug.LogError("Trying to set cell on a GridObject that already has a cell assigned. Clear the current cell first.");
+             return false;
+        }
+        
         _currentCell = newCell;
-        if (!newCell) return;
-        coordinate = newCell.hexCoordinates;
+        if (_currentCell != null) 
+            coordinate = _currentCell.hexCoordinates;
+        
+        return true;
+    }
+    
+    /** Clear the Current Cell reference from both sides **/
+    public virtual void ClearCell()
+    {
+        if (_currentCell && _currentCell.gridObject == this) 
+            _currentCell.SetGridObject(null);
+        
+        _currentCell = null;
     }
 
     public virtual GCell GetCell()

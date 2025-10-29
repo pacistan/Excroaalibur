@@ -87,7 +87,7 @@ public class GMoveAction : GAction
             wayPoints.Add(cell.transform.position);
         }
         _wayPoints = wayPoints.ToArray();
-        linkedPawn.SetCell(targetCell);
+        targetCell.SetGridObject(linkedPawn, false);
     }
 
     public override void Start_Action()

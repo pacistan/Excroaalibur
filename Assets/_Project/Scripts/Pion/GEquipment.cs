@@ -15,29 +15,18 @@ public class GEquipment : GGridObject
         return owner ? owner.GetCell() : _currentCell;
     }
     
-    public void SetOwner(GPawn newOwner)
+    public override bool TrySetCell(GCell newCell)
     {
-        if (GetCell() && GetCell().GetGridObject<GEquipment>())
-        {
-            GetCell().SetGridObject(null);
-        }
-        owner = newOwner;
-    }
-
-    public void OnReleased()
-    {
-        owner = null;
-    }
-
-    public override void SetCell(GCell newCell)
-    {
-        base.SetCell(newCell);
-        if(owner)
+        if (!base.TrySetCell(newCell)) return false;
+        
+        if(owner != null)
             owner.ReleaseEquipement(false);
+        
+        return true;
     }
 
-    public override void SetCell(GHexCoordinate coordinate)
+    public override void TrySetCell(GHexCoordinate coordinate)
     {
-        base.SetCell(coordinate);
+        base.TrySetCell(coordinate);
     }
 }

@@ -123,7 +123,6 @@ public class GPawn : GGridObject
         {
             GCrown crown = (GCrown)equipment;
             crown.ResetCrown();
-            crown.visuals.OnUpdateDebugTextContent(crown._currentDamage);
         }
         
         // TODO : This used to give parenting to the cell. Not anymore, might cause bugs !!!
@@ -236,20 +235,14 @@ public class GPawn : GGridObject
         }
     }
     
-    public override void SetCell(GHexCoordinate newCoordinate)
-    {
-        base.SetCell(GGridManager.Instance.GetCell(newCoordinate));
-    }
     
-    public override void SetCell(GCell newCell)
+    public override bool TrySetCell(GCell newCell)
     {
-        base.SetCell(newCell);
-        if (newCell.GetTileType == ETileType.Hole)
-        {
+        if (!base.TrySetCell(newCell)) return false;
+        if (newCell.GetTileType == ETileType.Hole) 
             Fall();
-        }
-        // TODO : This used to give parenting to the cell. Not anymore, might cause bugs !!!
-        GetCell().SetGridObject(this, false);
+
+        return true;
     }
     
     private void RebuildOverrideCache()
