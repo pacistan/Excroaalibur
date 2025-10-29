@@ -7,10 +7,6 @@ public class GGridObject : SerializedMonoBehaviour
 {
     [SerializeField, ReadOnly, BoxGroup("Important Info")]
     protected GCell _currentCell;
-
-    [FoldoutGroup("Other", false)]
-    [SerializeField, ReadOnly]
-    public GHexCoordinate coordinate;
     
     public bool isMarkedForDestruction { get; set; } = false;
 
@@ -38,6 +34,8 @@ public class GGridObject : SerializedMonoBehaviour
     [field: SerializeField, FoldoutGroup("Other/Persistant Data")]
     public string className { get; private set; }
     
+    public GHexCoordinate GetHexCoordinate() => _currentCell ? _currentCell.hexCoordinates : throw new Exception("This GridObject is not assigned to any Cell.");
+    
     public virtual void TrySetCell(GHexCoordinate newCoordinate)
     {
         TrySetCell(GGridManager.Instance.GetCell(newCoordinate));
@@ -56,8 +54,6 @@ public class GGridObject : SerializedMonoBehaviour
         }
         
         _currentCell = newCell;
-        if (_currentCell != null) 
-            coordinate = _currentCell.hexCoordinates;
         
         return true;
     }

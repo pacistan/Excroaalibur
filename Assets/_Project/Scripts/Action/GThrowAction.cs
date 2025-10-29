@@ -92,8 +92,8 @@ public class GThrowAction : GAction
         if (!linkedPawn.equipment || linkedPawn.equipment is not GCrown) return null;
         _crown = (GCrown)linkedPawn.equipment;
         
-        EHexDirection direction = linkedPawn.coordinate.GetLineDirection(base.targetCell.hexCoordinates);
-        _distance = linkedPawn.coordinate.DistanceTo(base.targetCell.hexCoordinates);
+        EHexDirection direction = linkedPawn.GetHexCoordinate().GetLineDirection(base.targetCell.hexCoordinates);
+        _distance = linkedPawn.GetHexCoordinate().DistanceTo(base.targetCell.hexCoordinates);
         
         _targetPawn = targetCell.GetGridObject<GPawn>();
         List<GCell> previewCells = new List<GCell>();
@@ -145,8 +145,8 @@ public class GThrowAction : GAction
         if (!linkedPawn.equipment || linkedPawn.equipment is not GCrown) return;
         _crown = (GCrown)linkedPawn.equipment;
         
-        EHexDirection direction = linkedPawn.coordinate.GetLineDirection(base.targetCell.hexCoordinates);
-        _distance = linkedPawn.coordinate.DistanceTo(base.targetCell.hexCoordinates);
+        EHexDirection direction = linkedPawn.GetHexCoordinate().GetLineDirection(base.targetCell.hexCoordinates);
+        _distance = linkedPawn.GetHexCoordinate().DistanceTo(base.targetCell.hexCoordinates);
         
         _targetPawn = targetCell.GetGridObject<GPawn>();
         
@@ -298,7 +298,7 @@ public class GThrowAction : GAction
         _hitPos    =  _targetPawn ? _targetPawn.equipmentParentTr.position : targetCell.transform.position;
         _returnPos = _startPos;
         
-        var direction = linkedPawn.coordinate.GetLineDirection(targetCell.hexCoordinates);
+        var direction = linkedPawn.GetHexCoordinate().GetLineDirection(targetCell.hexCoordinates);
         var frontCell  = targetCell.GetNeighbor(direction.Opposite());
         bool canLandInFrontOf = (frontCell && frontCell.IsWalkable(true));
         if (_playerCatch || _killTarget || !canLandInFrontOf)

@@ -36,8 +36,6 @@ public class GPawn : GGridObject
     [SerializeField, ReadOnly, BoxGroup("Important Info")]
     public GEquipment equipment;
 
-
-
     [FoldoutGroup("Other", false)]
     [SerializeField, FoldoutGroup("Other/Events"), HideIf("@hp < 0")]
     private UnityEvent _OnDeath;
@@ -49,8 +47,6 @@ public class GPawn : GGridObject
     [FoldoutGroup("Other", false)]
     [field : SerializeField, FoldoutGroup("Other/Components")]
     public Transform equipmentParentTr { get; private set; }
-
-
 
     [SerializeField, ReadOnly, HideInEditorMode]
     public int remainingActionToken;
