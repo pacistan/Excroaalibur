@@ -12,8 +12,11 @@
 		</relationship>
 	</object>
 	<object class="GameParameter" id="{4ff0ab80-15dd-4367-a9f5-94dfc796cdb0}">
+		<property name="parameterType">
+			<value>1</value>
+		</property>
 		<property name="maximum">
-			<value>10</value>
+			<value>11</value>
 		</property>
 		<property name="isGlobal">
 			<value>true</value>
@@ -31,9 +34,6 @@
 	<object class="SeekModulator" id="{a174bf96-f1d9-4e47-a24a-074962e23eb8}">
 		<property name="nameOfPropertyBeingModulated">
 			<value>cursorPosition</value>
-		</property>
-		<property name="speedAscending">
-			<value>0.099999994039535522</value>
 		</property>
 	</object>
 </objects>
