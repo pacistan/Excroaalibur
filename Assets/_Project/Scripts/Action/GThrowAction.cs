@@ -240,6 +240,7 @@ public class GThrowAction : GAction
         if (_seq != null && _seq.IsActive()) _seq.Kill();
         _crown.transform.localRotation = Quaternion.identity;
         _seq = null;
+        linkedPawn.visuals.SetAnimationState(GPawn.IdleAnimationName);
         base.End_Action();
     }
 
