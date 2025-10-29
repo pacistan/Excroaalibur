@@ -21,7 +21,7 @@ public class GPawn : GGridObject
     public event Action OnAnimationThrow;
         
     public const string MoveAnimationName = "Move";
-    public const string IdlenimationName = "Idle";
+    public const string IdleAnimationName = "Idle";
     public const string PushAnimationName = "Push";
     public const string ThrowAnimationName = "Throw";
     public const string PushedStartAnimationName = "Pushed_Start";

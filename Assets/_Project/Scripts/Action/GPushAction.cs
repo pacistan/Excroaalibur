@@ -128,6 +128,7 @@ public class GPushAction : GAction
     public override void End_Action()
     {
         base.End_Action();
+        linkedPawn.visuals.SetAnimationState(GPawn.IdleAnimationName);
     }
     
     public override GHexCoordinate[] GetValidCells()
