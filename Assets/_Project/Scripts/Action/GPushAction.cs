@@ -83,7 +83,7 @@ public class GPushAction : GAction
             {
                 GCell neighbor = pathCell.GetNeighbor(_direction);
                 
-                if (!neighbor || neighbor.GetGridObject<GPawn>() || neighbor.GetTileType == ETileType.Wall || neighbor.GetTileType == ETileType.Spawner) break;
+                if (!neighbor || neighbor.GetGridObject<GPawn>() || !linkedPawn.data._walkingTileType.Contains(neighbor.GetTileType)) break;
 
                 pathCell = neighbor;
                 if (neighbor.GetTileType == ETileType.Hole) break;
@@ -93,11 +93,9 @@ public class GPushAction : GAction
         if (pathCell == linkedPawn.GetCell())  return; // No valid cell to follow
         
         _followAction = new GMoveAction();
+        _followAction.InitAction(linkedPawn);
         _followAction.targetCell = pathCell;
-        _followAction.linkedPawn = linkedPawn;
         _followAction._maxMoveDistance = _followDistance;
-        _followAction._walkingTileType = new ETileType[] { ETileType.Normal, ETileType.Hole };
-        _followAction._endMovementTileType = new ETileType[] { ETileType.Normal, ETileType.Hole };
         GTurnBaseManager.Instance.PreProcessReaction(_followAction, new GActionContext());
     }
 

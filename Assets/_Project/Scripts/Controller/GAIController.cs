@@ -84,7 +84,7 @@ public class GAIController : GController
         pawn = GetComponent<GPawn>();
         _aiBehavior = ScriptableObject.Instantiate(_aiBehavior);
         _aiBehavior.Init(this);
-        pawn.data.actions = _aiBehavior.actions;
+        pawn.data.actionList = _aiBehavior.actions;
         pawn.OnKill += OnKilled;
     }
     

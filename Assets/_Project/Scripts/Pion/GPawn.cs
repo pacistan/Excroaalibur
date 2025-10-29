@@ -26,6 +26,8 @@ public class GPawn : GGridObject
     public const string ThrowAnimationName = "Throw";
     public const string PushedStartAnimationName = "Pushed_Start";
     public const string PushedEndAnimationName = "Pushed_End";
+    public const string ReadyToCatchAnimationName = "ReadyToCatch";
+    public const string GetOutOfHoleAnimationName = "GetOutOfHole";
 
     [SerializeReference]
     public GPawnData data;
@@ -58,6 +60,7 @@ public class GPawn : GGridObject
     public int hp { get; protected set; } = 3;
 
     public bool IsStunned => stunTurn > 0;
+    
     // Cache for quick look-up of override reactions
     private Dictionary<Type, GAction> _overrideCache;
     
@@ -106,7 +109,6 @@ public class GPawn : GGridObject
                 RuntimeManager.PlayOneShotAttached("event:/Crown/Grab", gameObject);
             }
         }
-
     }
     
     public void ReleaseEquipement(bool giveToCell, bool resetCrownPassCount = false)
@@ -121,7 +123,6 @@ public class GPawn : GGridObject
             crown.ResetCrown();
         }
         
-        // TODO : This used to give parenting to the cell. Not anymore, might cause bugs !!!
         if (giveToCell) 
             GetCell().SetGridObject(equipment, false);
         
@@ -131,8 +132,7 @@ public class GPawn : GGridObject
     public bool RequestAction(GAction action)
     {
         if (action == null) return false;
-        action.linkedPawn = this;
-        print("Request " + action.ToString());
+        print($"Request {action} by {action.linkedPawn}");
         if (!GTurnBaseManager.Instance.TryPlayAction(action))
         {
             print("Action Failed");
@@ -143,7 +143,6 @@ public class GPawn : GGridObject
     }
 
     public bool IsAlive => !(hp == 0);
-   
     
     public void TakeDamage(int damage = 1)
     {
@@ -288,10 +287,11 @@ public class GPawn : GGridObject
             visuals.OnUpdateActionsToken();
             if (controller)
             {
-                foreach (var action in data.actions)
+                controller.RegisterPawn(this);
+                if(data.actionList == null) return;
+                foreach (var action in data.actionList)
                 {
-                    action.linkedPawn = this;
-                    controller.RegisterPawn(this);
+                    action.InitAction(this);
                     action.OnActionFinished += controller.OnActionOver;
                 }
             }

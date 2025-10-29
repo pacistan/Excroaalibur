@@ -12,6 +12,9 @@ public class GPushedReaction : GAction
     [SerializeField]
     bool _DamageRelatedToPushForce = false;
     
+    [SerializeField, Tooltip("Tile types on which the pawn can be pushed")]
+    private ETileType[] _pushedTileType = new ETileType[] { ETileType.Normal, ETileType.Hole };
+    
     [SerializeField, HideIf("_DamageRelatedToPushForce"), Tooltip("Damage inflicted if we hit Something while being pushed")]
     int _damage = 1;
     
@@ -158,11 +161,10 @@ public class GPushedReaction : GAction
             }
             
             _moveAction = new GMoveAction();
+            _moveAction.InitAction(linkedPawn);
+            _moveAction.OverrideTileType(_pushedTileType, _pushedTileType);
             _moveAction.targetCell = cell;
-            _moveAction.linkedPawn = linkedPawn;
             _moveAction._maxMoveDistance = _distance;
-            _moveAction._walkingTileType = new ETileType[] { ETileType.Normal, ETileType.Hole };
-            _moveAction._endMovementTileType = new ETileType[] { ETileType.Normal, ETileType.Hole };
             _moveAction.moveAnimationName = GPawn.PushedStartAnimationName;
             GTurnBaseManager.Instance.PreProcessReaction(_moveAction, new GActionContext());
         }
