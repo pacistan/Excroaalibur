@@ -39,11 +39,11 @@ public class GCell : SerializedMonoBehaviour
     private UnityEvent _OnSpawnedPawnFinished;
 
     public ETileType GetTileType => data.tileType;
-
-
-
+    
     public void SetGridObject(GGridObject inGridObject, bool updateTransform = true)
     {
+        if (inGridObject && !inGridObject.TrySetCell(this)) return;
+        
         gridObject = inGridObject;
         if (!updateTransform || !inGridObject) return;
         
@@ -82,8 +82,8 @@ public class GCell : SerializedMonoBehaviour
     
     public void RegisterGridObject(GGridObject inGridObject)
     {
-        SetGridObject(inGridObject, true);
-        inGridObject.SetCell(this);
+        gridObject = inGridObject;
+        inGridObject.TrySetCell(this);
     }
 
     public void PreviewSpawnPawn()
@@ -115,7 +115,7 @@ public class GCell : SerializedMonoBehaviour
     public void Start()
     {
         if (gridObject)
-            gridObject.SetCell(this);
+            gridObject.TrySetCell(this);
     }
     
 #if UNITY_EDITOR

@@ -24,7 +24,7 @@ public class GPushAction : GAction
     
     public override List<GCell> Previsualisation(in GActionContext previsuContext)
     {
-        _direction = linkedPawn.coordinate.GetLineDirection(targetCell.hexCoordinates);
+        _direction = linkedPawn.GetHexCoordinate().GetLineDirection(targetCell.hexCoordinates);
         _targetPawn = targetCell.GetGridObject<GPawn>();
         if (!_targetPawn) return null; 
 
@@ -61,7 +61,7 @@ public class GPushAction : GAction
     public override void PreProcess(GActionContext context = null)
     {
         base.PreProcess(context);
-        _direction = linkedPawn.coordinate.GetLineDirection(targetCell.hexCoordinates);
+        _direction = linkedPawn.GetCell().hexCoordinates.GetLineDirection(targetCell.hexCoordinates);
         _targetPawn = targetCell.GetGridObject<GPawn>();
         if (!_targetPawn) return;
 

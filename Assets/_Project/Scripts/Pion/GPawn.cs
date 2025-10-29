@@ -36,8 +36,6 @@ public class GPawn : GGridObject
     [SerializeField, ReadOnly, BoxGroup("Important Info")]
     public GEquipment equipment;
 
-
-
     [FoldoutGroup("Other", false)]
     [SerializeField, FoldoutGroup("Other/Events"), HideIf("@hp < 0")]
     private UnityEvent _OnDeath;
@@ -49,8 +47,6 @@ public class GPawn : GGridObject
     [FoldoutGroup("Other", false)]
     [field : SerializeField, FoldoutGroup("Other/Components")]
     public Transform equipmentParentTr { get; private set; }
-
-
 
     [SerializeField, ReadOnly, HideInEditorMode]
     public int remainingActionToken;
@@ -123,7 +119,6 @@ public class GPawn : GGridObject
         {
             GCrown crown = (GCrown)equipment;
             crown.ResetCrown();
-            crown.visuals.OnUpdateDebugTextContent(crown._currentDamage);
         }
         
         // TODO : This used to give parenting to the cell. Not anymore, might cause bugs !!!
@@ -236,20 +231,14 @@ public class GPawn : GGridObject
         }
     }
     
-    public override void SetCell(GHexCoordinate newCoordinate)
-    {
-        base.SetCell(GGridManager.Instance.GetCell(newCoordinate));
-    }
     
-    public override void SetCell(GCell newCell)
+    public override bool TrySetCell(GCell newCell)
     {
-        base.SetCell(newCell);
-        if (newCell.GetTileType == ETileType.Hole)
-        {
+        if (!base.TrySetCell(newCell)) return false;
+        if (newCell.GetTileType == ETileType.Hole) 
             Fall();
-        }
-        // TODO : This used to give parenting to the cell. Not anymore, might cause bugs !!!
-        GetCell().SetGridObject(this, false);
+
+        return true;
     }
     
     private void RebuildOverrideCache()

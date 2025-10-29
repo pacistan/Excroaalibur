@@ -6,13 +6,5 @@ using UnityEngine;
 public class GEquipmentVisuals : MonoBehaviour
 {
     [SerializeField, FoldoutGroup("Components")]
-    TextMeshProUGUI _debugText;
-
-    [SerializeField, FoldoutGroup("Components")]
     GEquipment _equipment;
-    
-    public void OnUpdateDebugTextContent(int damage)
-    {
-        _debugText.text = $"{damage}";
-    }
 }

@@ -10,8 +10,6 @@ public class GCrown : GEquipment
 
     [SerializeField, HideInEditorMode]
     public int _currentDamage { get; private set; }
-
-    
     
     void Start()
     {

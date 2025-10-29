@@ -132,10 +132,8 @@ public class GPushedReaction : GAction
         } 
         else 
         {
-            if (linkedPawn.equipment)
-            {
+            if (linkedPawn.equipment) 
                 linkedPawn.ReleaseEquipement(true, true);
-            }
             
             GCell cell = linkedPawn.GetCell();
             for (int i = 0; i < _distance; i++)
@@ -190,10 +188,6 @@ public class GPushedReaction : GAction
         {
             GTurnBaseManager.Instance.TryStartReaction(_moveAction);
         }
-        else
-        {
-            //End_Action();
-        } 
     }
 
     public override void Update_Action(float delta)
@@ -203,17 +197,15 @@ public class GPushedReaction : GAction
         if (_moveAction == null || _moveAction.CurrentState == GAction.EActionState.Finished)
         {
             if (linkedPawn && !linkedPawn.IsAlive && !linkedPawn.isMarkedForDestruction)
-            {
                 linkedPawn.Kill();
-            }
+            
             End_Action();
         }
     }
 
     public override void End_Action()
     {
-        // TODO : check error null here !
-        if (CachedEquipment)
+        if (CachedEquipment) // Need For the case where we are pushed into a wall and have to give back the equipment 
             CachedEquipment.owner.GiveEquipement(CachedEquipment, true, true);
         base.End_Action();
     }
