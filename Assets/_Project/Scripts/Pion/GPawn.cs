@@ -55,6 +55,7 @@ public class GPawn : GGridObject
     public int hp { get; protected set; } = 3;
 
     public bool IsStunned => stunTurn > 0;
+
     public bool IsAlive => !(hp == 0);
     
     [FoldoutGroup("Other", false)]

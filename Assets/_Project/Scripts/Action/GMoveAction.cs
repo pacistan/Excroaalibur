@@ -46,7 +46,6 @@ public class GMoveAction : GAction
         foreach (var validCell in validCells)
         { 
             GPawn pawn =  GGridManager.Instance.GetCell(validCell).GetGridObject<GPawn>();
-            
             pawn?.visuals.SetAnimationState(GPawn.ReadyToCatchAnimationName);
         }
     }
