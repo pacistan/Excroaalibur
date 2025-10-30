@@ -80,6 +80,8 @@ public class GWaveManager : GSingleton<GWaveManager>
 
     private int SpawningInProcess = 0; 
     
+    public int GetScore() => _waveType == EWaveType.Endless ? _endlessWaveCount : -1;
+    
     public bool IsSpawningInProgress() => HasEnemiesToSpawn() && SpawningInProcess > 0;
     public void OnEnemySpawned() => SpawningInProcess = Mathf.Max(0, SpawningInProcess - 1);
     
