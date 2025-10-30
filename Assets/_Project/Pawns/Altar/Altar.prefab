@@ -261,9 +261,6 @@ MonoBehaviour:
     PrefabModifications: []
     SerializationNodes: []
   _currentCell: {fileID: 0}
-  coordinate:
-    x: 0
-    z: 0
   <headerSprite>k__BackingField: {fileID: 21300000, guid: 4a1b46b2953e99247b022a45b8f57d8a, type: 3}
   <cadreSprite>k__BackingField: {fileID: 0}
   <headerObjectIconSprite>k__BackingField: {fileID: 21300000, guid: a7a01ffd4262a0f4686ffa90767e3248, type: 3}
@@ -273,14 +270,14 @@ MonoBehaviour:
   data: {fileID: 11400000, guid: 71c5007204ff57d4d8ee99c87565e661, type: 2}
   <hasCrown>k__BackingField: 0
   equipment: {fileID: 0}
-  _OnDeath:
-    m_PersistentCalls:
-      m_Calls: []
   <visuals>k__BackingField: {fileID: 1528920753647014634}
   <equipmentParentTr>k__BackingField: {fileID: 6677674562615435608}
   remainingActionToken: 0
   stunTurn: 0
   <hp>k__BackingField: 3
+  _OnDeath:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!114 &1528920753647014634 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 5047510769810583256, guid: 48d2615fd829feb4a9c7bfb377fa75cc, type: 3}

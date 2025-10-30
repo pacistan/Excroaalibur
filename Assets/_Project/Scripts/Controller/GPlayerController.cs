@@ -66,11 +66,14 @@ public class GPlayerController : GController
     {
         if (_selectedAction == action) return;
         ResetHighlight();
-        if (_selectedAction != null)
+        
+        if (_selectedAction != null) 
             _selectedAction.OnUnselectedAction();
+        
         _selectedAction = action;
-        _selectedAction.OnSelectedAction();
         if (_selectedAction == null) return;
+        
+        _selectedAction.OnSelectedAction();
         ShowHighlight();
     }
     

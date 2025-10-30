@@ -83,6 +83,18 @@ MonoBehaviour:
     - Name: _DamageRelatedToPushForce
       Entry: 5
       Data: false
+    - Name: _pushedTileType
+      Entry: 7
+      Data: 5|ETileType[], Assembly-CSharp
+    - Name: 
+      Entry: 12
+      Data: 0
+    - Name: 
+      Entry: 13
+      Data: 
+    - Name: 
+      Entry: 8
+      Data: 
     - Name: _damage
       Entry: 3
       Data: 1
@@ -104,7 +116,9 @@ MonoBehaviour:
   <actionTokens>k__BackingField: 0
   <isPlayer>k__BackingField: 0
   <startHp>k__BackingField: -1
-  actions: []
+  _walkingTileType: 
+  _endMovementTileType: 
+  actionList: []
   baseReactionData: {fileID: 11400000, guid: 3d2f439763d27cc4488c148c9d11360b, type: 2}
   hoverSound:
     Guid:

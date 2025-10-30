@@ -34,7 +34,88 @@ MonoBehaviour:
       Data: 
     - Name: 
       Entry: 12
+      Data: 1
+    - Name: 
+      Entry: 7
+      Data: 
+    - Name: $k
+      Entry: 7
+      Data: 2|SerializableType`1[[GAction, Assembly-CSharp]], Assembly-CSharp
+    - Name: assemblyQualifiedName
+      Entry: 1
+      Data: GPushAction, Assembly-CSharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+    - Name: fullName
+      Entry: 1
+      Data: GPushAction
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: $v
+      Entry: 7
+      Data: 3|GPushedReaction, Assembly-CSharp
+    - Name: <actionLabel>k__BackingField
+      Entry: 6
+      Data: 
+    - Name: <actionIcon>k__BackingField
+      Entry: 6
+      Data: 
+    - Name: linkedPawn
+      Entry: 6
+      Data: 
+    - Name: targetCell
+      Entry: 6
+      Data: 
+    - Name: validCells
+      Entry: 7
+      Data: 4|GHexCoordinate[], Assembly-CSharp
+    - Name: 
+      Entry: 12
       Data: 0
+    - Name: 
+      Entry: 13
+      Data: 
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: _isPushable
+      Entry: 5
+      Data: true
+    - Name: _DamageRelatedToPushForce
+      Entry: 5
+      Data: false
+    - Name: _damage
+      Entry: 3
+      Data: 1
+    - Name: _stun
+      Entry: 3
+      Data: 1
+    - Name: _pushedTileType
+      Entry: 7
+      Data: 5|ETileType[], Assembly-CSharp
+    - Name: 
+      Entry: 12
+      Data: 3
+    - Name: 
+      Entry: 3
+      Data: 0
+    - Name: 
+      Entry: 3
+      Data: 2
+    - Name: 
+      Entry: 3
+      Data: 3
+    - Name: 
+      Entry: 13
+      Data: 
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 8
+      Data: 
     - Name: 
       Entry: 13
       Data: 
@@ -44,8 +125,24 @@ MonoBehaviour:
   <actionTokens>k__BackingField: 2
   <isPlayer>k__BackingField: 0
   <startHp>k__BackingField: 3
-  actions: []
+  _walkingTileType: 0000000003000000
+  _endMovementTileType: 0000000003000000
+  actionList: []
   baseReactionData: {fileID: 11400000, guid: 3d2f439763d27cc4488c148c9d11360b, type: 2}
+  hoverSound:
+    Guid:
+      Data1: 0
+      Data2: 0
+      Data3: 0
+      Data4: 0
+    Path: 
+  SelectSound:
+    Guid:
+      Data1: 0
+      Data2: 0
+      Data3: 0
+      Data4: 0
+    Path: 
   references:
     version: 2
     RefIds: []

@@ -22,6 +22,8 @@ public class GPushAction : GAction
 
     bool _isPushAnimationOver = false;
     
+    // TODO : Add What tile types we can push ! (Like walls, holes, Spawner)
+    
     public override List<GCell> Previsualisation(in GActionContext previsuContext)
     {
         _direction = linkedPawn.GetHexCoordinate().GetLineDirection(targetCell.hexCoordinates);
@@ -130,7 +132,7 @@ public class GPushAction : GAction
     }
     
     public override GHexCoordinate[] GetValidCells()
-    {
+    { 
         if (linkedPawn.equipment || linkedPawn.equipment is GCrown)
             return validCells = new GHexCoordinate[]{};
         
@@ -140,8 +142,8 @@ public class GPushAction : GAction
         {
             if (!cell
                 || !cell.GetGridObject<GPawn>()
-                || cell.GetGridObject<GPawn>() == linkedPawn
                 || (cell.GetGridObject<GPawn>() is GAltar && cell.GetGridObject<GPawn>().equipment == null)
+                || (linkedPawn.data.isPlayer && cell.GetTileType == ETileType.Spawner)
                 || cell.GetTileType == ETileType.Hole)
             {
                 continue;

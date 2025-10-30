@@ -1,13 +1,12 @@
 using FMODUnity;
 using Sirenix.OdinInspector;
-using Sirenix.Serialization;
 using UnityEngine.Serialization;
 using System;
 using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.Events;
-using Sirenix.OdinInspector.Editor;
+
 
 public class GPawn : GGridObject
 {
@@ -39,10 +38,6 @@ public class GPawn : GGridObject
     public GEquipment equipment;
 
     [FoldoutGroup("Other", false)]
-    [SerializeField, FoldoutGroup("Other/Events"), HideIf("@hp < 0")]
-    private UnityEvent _OnDeath;
-
-    [FoldoutGroup("Other", false)]
     [field : SerializeField, FoldoutGroup("Other/Components")]
     public GPawnVisualsController visuals { get; private set; }
 
@@ -60,6 +55,11 @@ public class GPawn : GGridObject
     public int hp { get; protected set; } = 3;
 
     public bool IsStunned => stunTurn > 0;
+    public bool IsAlive => !(hp == 0);
+    
+    [FoldoutGroup("Other", false)]
+    [SerializeField, FoldoutGroup("Other/Events"), HideIf("@hp < 0")]
+    private UnityEvent _OnDeath;
     
     // Cache for quick look-up of override reactions
     private Dictionary<Type, GAction> _overrideCache;
@@ -141,8 +141,6 @@ public class GPawn : GGridObject
         
         return true;
     }
-
-    public bool IsAlive => !(hp == 0);
     
     public void TakeDamage(int damage = 1)
     {
@@ -189,7 +187,6 @@ public class GPawn : GGridObject
 
     public void OnStartAction()
     {
-        
     }
     
     public void OnStartTurn()
@@ -230,7 +227,6 @@ public class GPawn : GGridObject
         }
     }
     
-    
     public override bool TrySetCell(GCell newCell)
     {
         if (!base.TrySetCell(newCell)) return false;
@@ -238,6 +234,16 @@ public class GPawn : GGridObject
             Fall();
 
         return true;
+    }
+    
+    public void OnPushEvent()
+    {
+        OnAnimationPush?.Invoke();
+    }
+
+    public void OnThrowEvent()
+    {
+        OnAnimationThrow?.Invoke();
     }
     
     private void RebuildOverrideCache()
@@ -259,9 +265,7 @@ public class GPawn : GGridObject
         }
     #if UNITY_EDITOR
         if (!Application.isPlaying)
-        {
             EditorUtility.SetDirty(this);
-        }
     #endif
     }
 
@@ -296,16 +300,6 @@ public class GPawn : GGridObject
                 }
             }
         }
-    }
-
-    public void OnPushEvent()
-    {
-        OnAnimationPush?.Invoke();
-    }
-
-    public void OnThrowEvent()
-    {
-        OnAnimationThrow?.Invoke();
     }
     
 #if UNITY_EDITOR

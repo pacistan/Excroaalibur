@@ -43,7 +43,6 @@ public class GMoveAction : GAction
 
     public override void OnSelectedAction()
     {
-        
         foreach (var validCell in validCells)
         { 
             GPawn pawn =  GGridManager.Instance.GetCell(validCell).GetGridObject<GPawn>();
