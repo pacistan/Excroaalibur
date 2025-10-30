@@ -12,7 +12,7 @@ public class GPauseMenu : MonoBehaviour
     {
         _continueBtn.onClick.AddListener(()=> GGameManager.Instance.ChangeState(EMacroStates.Play));
         _optionsBtn.onClick.AddListener(()=> GGameManager.Instance.ChangeState(EMacroStates.Options));
-        _restartBtn.onClick.AddListener(()=> GGameManager.Instance.ReloadScene());
+        _restartBtn.onClick.AddListener(()=> GGameManager.Instance.ChangeState(EMacroStates.LoadingScreen));
         _mainMenuBtn.onClick.AddListener(()=> GGameManager.Instance.ChangeState(EMacroStates.Start));
     }
 }

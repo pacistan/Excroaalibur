@@ -77,11 +77,27 @@ public partial class GMenuManager : GSingleton<GMenuManager>
         newMenu.menuFolder.SetActive(true);
 
         newMenu.menuFolder.transform.SetSiblingIndex(0);
-        
-        if(oldMenu.menu != EMacroStates.None && newMenu.menu != EMacroStates.Options) // No closing Transitions when opening Options
-            StartCoroutine(DoTransitions(oldMenu, false, () => DisableMenu(oldMenu.menuFolder)));
-        if(oldMenu.menu != EMacroStates.Options) // No opening Transitions when closing Options
-            StartCoroutine(DoTransitions(newMenu, true));
+
+
+
+        if (oldMenu.menu != EMacroStates.None && newMenu.menu != EMacroStates.Options) // No closing Transitions when opening Options
+        {
+            Action action = () => DisableMenu(oldMenu.menuFolder);
+
+            StartCoroutine(DoTransitions(oldMenu, false, action));
+        }
+
+        if (oldMenu.menu != EMacroStates.Options) // No opening Transitions when closing Options
+        {
+            Action action = () =>
+            {
+                if (newMenu.menu == EMacroStates.LoadingScreen)
+                {
+                    GGameManager.Instance.LoadScene();
+                }
+            };
+            StartCoroutine(DoTransitions(newMenu, true, action));
+        }
 
         if (oldMenu.virtualCamera) newMenu.virtualCamera.Priority = 0;
         if (newMenu.virtualCamera) newMenu.virtualCamera.Priority = 0;

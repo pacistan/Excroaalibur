@@ -339,6 +339,7 @@ public class GPlayerController : GController
                 else
                 {
                     SetSelectedPlayer(null);
+                    SelectAction(null);
                     _targetHud.OnGridObjectHovered(null, _isFirstAction);
                 }
             }

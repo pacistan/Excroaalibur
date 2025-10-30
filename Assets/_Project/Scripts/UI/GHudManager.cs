@@ -5,6 +5,7 @@
     public GPauseMenu pauseMenu { get; private set; }
     public GStartMenu startMenu { get; private set; } 
     public GGameOverMenu gameOverMenu { get; private set; }
+    public GLoadingScreenMenu loadingScreenMenu { get; private set; }
 
     protected override void Awake()
     {
@@ -14,5 +15,6 @@
         playMenu = GetComponentInChildren<GPlayMenu>(true);
         pauseMenu = GetComponentInChildren<GPauseMenu>(true);
         gameOverMenu = GetComponentInChildren<GGameOverMenu>(true);
+        loadingScreenMenu = GetComponentInChildren<GLoadingScreenMenu>(true);
     }
 }

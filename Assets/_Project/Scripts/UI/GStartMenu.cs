@@ -14,13 +14,13 @@ public class GStartMenu : MonoBehaviour
         _startButton.onClick.AddListener(() =>
         {
             GGameManager.Instance.isLoadingTutorial = false;
-            GGameManager.Instance.ChangeState(EMacroStates.Play);
+            GGameManager.Instance.ChangeState(EMacroStates.LoadingScreen);
         });
 
         _tutorialButton.onClick.AddListener(() =>
         {
             GGameManager.Instance.isLoadingTutorial = true;
-            GGameManager.Instance.ChangeState(EMacroStates.Play);
+            GGameManager.Instance.ChangeState(EMacroStates.LoadingScreen);
         });
 
         _optionsButton.onClick.AddListener(()=>GGameManager.Instance.ChangeState(EMacroStates.Options));
@@ -34,3 +34,4 @@ public class GStartMenu : MonoBehaviour
         _gameOverValidationPanel.SetActive(toActivate);
     }
 }
+
