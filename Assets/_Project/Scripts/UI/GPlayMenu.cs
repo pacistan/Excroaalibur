@@ -1,0 +1,29 @@
+﻿using System;
+using TMPro;
+using UnityEngine;
+using UnityEngine.Serialization;
+using UnityEngine.UI;
+
+public class GPlayMenu : MonoBehaviour
+{
+    [SerializeField]
+    TextMeshProUGUI _crownDamageTxt;
+    
+    [field : SerializeField]
+    public Button endTurnButton { get; private set; }
+
+    [SerializeField]
+    Button _pauseButton;
+
+    [SerializeField]
+    TextMeshProUGUI _waveNumberTxt;
+    
+    public void SetCrownDamageText(int damage) => _crownDamageTxt.text = $"{damage.ToString()}";
+
+    public void SetWaveNumberText(int waveNumber) => _waveNumberTxt.text = $"Wave {waveNumber}";
+    
+    void Start()
+    {
+        _pauseButton.onClick.AddListener(()=> GGameManager.Instance.ChangeState(EMacroStates.Pause));
+    }
+}

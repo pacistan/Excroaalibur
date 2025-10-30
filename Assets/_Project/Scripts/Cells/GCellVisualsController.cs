@@ -1,4 +1,5 @@
 ﻿using Sirenix.OdinInspector;
+using Sirenix.Utilities;
 using System;
 using System.Collections.Generic;
 using TMPro;
@@ -57,6 +58,12 @@ public class GCellVisualsController : SerializedMonoBehaviour
     [SerializeField, HideInInspector, ReadOnly]
     public ETileHighlightType _currentHighlightType = ETileHighlightType.CellSelect;
 
+    [SerializeField, HideInInspector]
+    float _previousPositionY;
+
+    [SerializeField, ReadOnly, Tooltip("Work In Progress")]
+    bool _isPullingNeighbors;
+    
 #if UNITY_EDITOR
     public void UpdateCellVisuals()
     {
@@ -206,4 +213,74 @@ public class GCellVisualsController : SerializedMonoBehaviour
             _highlight.color = cellCommonData.tileHighlightActionData[highlightActionType];
         }
     }
+
+    /*void OnDrawGizmos()
+    {
+        if (transform.position.y != _previousPositionY)
+        {
+            Vector3 pos = transform.position;
+            pos.y = Mathf.Min(pos.y, cellCommonData.maxHeight);
+            pos.y = Mathf.Max(pos.y, -cellCommonData.maxHeight);
+            transform.position = pos;
+            
+            float diff = _previousPositionY - transform.position.y;
+            Vector3 uiPos = _cell.ui.position;
+            uiPos.y -= diff;
+            _cell.ui.position = uiPos;
+
+            if (!_isPullingNeighbors)
+            {
+                GGridManager gridManager = GGridManager.Instance ?? FindFirstObjectByType<GGridManager>(); 
+                gridManager.grid.ForEach(a => a.visuals._previousPositionY = a.transform.position.y);
+                _previousPositionY = transform.position.y;
+                return;
+            }
+            int i = 0;
+            foreach (var neighbor in _cell.neighbors)
+            {
+                if(!neighbor || neighbor.data.tileType != ETileType.Normal) continue;
+                if (Mathf.Abs(transform.position.y - neighbor.transform.position.y) > cellCommonData.maxOffsetHeight)
+                {
+                    neighbor.visuals.UpdateYPosGizmo(transform.position.y);
+                }
+            }
+            
+            _previousPositionY = transform.position.y;
+#if UNITY_EDITOR
+            EditorUtility.SetDirty(this);            
+#endif
+        }
+    }
+
+    bool isCheckedThisFrame;
+    
+    public void UpdateYPosGizmo(float neighborHeight)
+    {
+        float diff = neighborHeight - transform.position.y;
+        float newHeight = transform.position.y + Mathf.Min(Mathf.Abs(diff), cellCommonData.maxOffsetHeight) * diff / Mathf.Abs(diff);
+        Vector3 pos = transform.position;
+        pos.y = newHeight;
+        transform.position = pos;
+        
+        float diffe = _previousPositionY - transform.position.y;
+        Vector3 uiPos = _cell.ui.position;
+        uiPos.y -= diffe;
+        _cell.ui.position = uiPos;
+
+        
+        _previousPositionY = transform.position.y;
+        
+        foreach (var neighbor in _cell.neighbors)
+        {
+            
+            if (!neighbor || neighbor.data.tileType != ETileType.Normal) continue;
+            if (Mathf.Abs(transform.position.y - neighbor.transform.position.y) > cellCommonData.maxOffsetHeight)
+            {
+                neighbor.visuals.UpdateYPosGizmo(transform.position.y);
+            }
+        }
+#if UNITY_EDITOR
+        EditorUtility.SetDirty(this);            
+#endif
+    }*/
 }

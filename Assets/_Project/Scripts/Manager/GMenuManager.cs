@@ -93,6 +93,9 @@ public partial class GMenuManager : GSingleton<GMenuManager>
 
         switch (newState)
         {
+            case EMacroStates.End : 
+                GHudManager.Instance.gameOverMenu.OnPanelOpen();
+                break;
             default: break;
         }
     }

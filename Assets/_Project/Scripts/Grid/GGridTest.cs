@@ -46,7 +46,7 @@ public class GGridTest : MonoBehaviour
     private void ClearDebug()
     {
         GGridManager gridManager = GGridManager.Instance ? GGridManager.Instance : GameObject.FindFirstObjectByType<GGridManager>();
-        foreach (var cell in gridManager._grid)
+        foreach (var cell in gridManager.grid)
         {
             cell.visuals.UpdateCellDebugNum("");
         }
@@ -57,7 +57,7 @@ public class GGridTest : MonoBehaviour
     {
         GGridManager gridManager = GGridManager.Instance ? GGridManager.Instance : GameObject.FindFirstObjectByType<GGridManager>();
         gridManager.GetCell(_testCoordinates);
-        Debug.Log(_testCoordinates + " || " + gridManager._grid[_testCoordinates.x + _testCoordinates.y * _testCoordinates.x].data.gridCoordinates);
+        Debug.Log(_testCoordinates + " || " + gridManager.grid[_testCoordinates.x + _testCoordinates.y * _testCoordinates.x].data.gridCoordinates);
 
     }
 }

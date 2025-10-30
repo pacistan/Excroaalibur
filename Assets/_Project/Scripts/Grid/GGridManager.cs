@@ -4,12 +4,14 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 
 public class GGridManager : GSingleton<GGridManager>
 {
+    [FormerlySerializedAs("_grid")]
     [SerializeReference, ReadOnly, FoldoutGroup("Grid Data")]
-    public GCell[] _grid;
+    public GCell[] grid;
 
     [field: SerializeReference, ReadOnly, FoldoutGroup("Grid Data")]
     public Vector2Int _currentGridSize;
@@ -29,7 +31,7 @@ public class GGridManager : GSingleton<GGridManager>
     public GCell GetCell(GHexCoordinate coordinate)
     {
         int id = coordinate.X + coordinate.Z *  _currentGridSize.y + coordinate.Z / 2;
-        return _grid.Length <= id ? null : _grid[id];
+        return grid.Length <= id ? null : grid[id];
     }
 
     public GCell GetCell(Vector3 position)
@@ -39,7 +41,7 @@ public class GGridManager : GSingleton<GGridManager>
 
     public GCell GetCell(Vector2Int gridCoordinate)
     {
-        return _grid[gridCoordinate.x + gridCoordinate.y * _currentGridSize.y ];
+        return grid[gridCoordinate.x + gridCoordinate.y * _currentGridSize.y ];
     }
     
     public EHexDirection[] GetPath(GCell from, GCell to, ETileType[] possibleEndTypes, bool reloadStepMap = false, int maxNumberOfSteps = -1)
@@ -269,7 +271,7 @@ public class GGridManager : GSingleton<GGridManager>
     public List<GCell> GetAllCellsOfType(ETileType tileType)
     {
         List<GCell> cellsOfType = new List<GCell>();
-        foreach (GCell cell in _grid)
+        foreach (GCell cell in grid)
         {
             if (cell.data.tileType == tileType)
             {

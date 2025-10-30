@@ -20,7 +20,7 @@ public class GGameManager: GSingleton<GGameManager>
 {
     public event Action<EMacroStates, EMacroStates> OnChangeMacroStateEvent;
     public event Action<bool> OnPauseEvent;
-
+    
     [field: HideInPlayMode, SerializeField]
     private EMacroStates _startState;
 
@@ -133,6 +133,7 @@ public class GGameManager: GSingleton<GGameManager>
                 PauseGameTime(false);
                 break;
             case EMacroStates.End:
+                StartGameOver();
                 PauseGameTime(false, true, 2);
                 break;
         }
@@ -216,9 +217,6 @@ public class GGameManager: GSingleton<GGameManager>
         Debug.Log("Game Over !");
         GTurnBaseManager.Instance.enabled = false; // Disable turn ! 
         // TODO : Disable Game Controls on grid ? 
-        // TODO : Save Progress ? Wave Numbers ? etc../
-        // TODO : Register In leaderboards ? 
-        // TODO : Open Game Over Menu 
     }
     
     protected override void Awake()
@@ -236,6 +234,10 @@ public class GGameManager: GSingleton<GGameManager>
     void Update()
     {
         HandlePauseInput();
+        if (Input.GetKeyDown(KeyCode.V))
+        {
+            ChangeState(EMacroStates.End);
+        }
     }
     
 #if UNITY_EDITOR

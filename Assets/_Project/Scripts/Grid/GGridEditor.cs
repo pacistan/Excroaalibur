@@ -47,7 +47,7 @@ public class GGridEditor : MonoBehaviour
         gridManager._isOffsetOnPairs = _gridData.isOffsetOnPairs;
         gridManager._hexSize = _gridData.hexSize;
         int size = rows * columns;
-        gridManager._grid = new GCell[size];
+        gridManager.grid = new GCell[size];
 
         try
         {
@@ -62,7 +62,7 @@ public class GGridEditor : MonoBehaviour
             
                 for (int row = 0; row < rows; row++)
                 {
-                    CreateCell(row, column, i++, ref gridManager._grid);
+                    CreateCell(row, column, i++, ref gridManager.grid);
                 }
             }
         }
@@ -83,7 +83,7 @@ public class GGridEditor : MonoBehaviour
     public void ClearCells()
     {
         GGridManager gridManager = GGridManager.Instance ? GGridManager.Instance : GameObject.FindFirstObjectByType<GGridManager>();
-        GCell[] grid = gridManager._grid;
+        GCell[] grid = gridManager.grid;
         if (grid != null)
         {
             for (int i = grid.Length - 1; i >= 0; i--)
@@ -192,7 +192,7 @@ public class GGridEditor : MonoBehaviour
     {
         GGridManager gridManager = GGridManager.Instance ? GGridManager.Instance : GameObject.FindFirstObjectByType<GGridManager>();
         GGridData newAsset = ScriptableObject.CreateInstance<GGridData>();
-        newAsset.GenerateCellData(gridManager._grid, gridManager._currentGridSize, gridManager._hexSize, gridManager._isOffsetOnPairs);
+        newAsset.GenerateCellData(gridManager.grid, gridManager._currentGridSize, gridManager._hexSize, gridManager._isOffsetOnPairs);
         UnityEditor.AssetDatabase.CreateAsset(newAsset, $"{pathToGridLayoutFolders}/{_gridDataFileName}.asset");
         UnityEditor.AssetDatabase.SaveAssets();
         _gridData = newAsset;
@@ -206,7 +206,7 @@ public class GGridEditor : MonoBehaviour
         {
             manager.EnablePicking(_cellsCanvas.gameObject, true);
             manager.EnablePicking(_hudTransform.gameObject, true);
-            foreach (var cell in gridManager._grid)
+            foreach (var cell in gridManager.grid)
             {
                 var owningPawn = cell.GetGridObject<GPawn>();
                 if (owningPawn)
@@ -219,7 +219,7 @@ public class GGridEditor : MonoBehaviour
         {
             manager.DisablePicking(_cellsCanvas.gameObject, true);
             manager.DisablePicking(_hudTransform.gameObject, true);
-            foreach (var cell in gridManager._grid)
+            foreach (var cell in gridManager.grid)
             {
                 var owningPawn = cell.GetGridObject<GPawn>();
                 if (owningPawn)
