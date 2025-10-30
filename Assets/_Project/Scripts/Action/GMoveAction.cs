@@ -3,11 +3,8 @@ using FMOD.Studio;
 using FMODUnity;
 using System.Collections.Generic;
 using System;
-using System.Collections;
-using System.Linq;
 using UnityEngine;
 using UnityEngine.Serialization;
-using UnityEngine.Splines;
 using STOP_MODE = FMOD.Studio.STOP_MODE;
 
 
@@ -15,12 +12,6 @@ public class GMoveAction : GAction
 {
     [SerializeField]
     public int _maxMoveDistance = 2;
-
-    [SerializeField]
-    public ETileType[] _walkingTileType = new[]{ETileType.Normal};
-
-    [SerializeField]
-    public ETileType[] _endMovementTileType = new[]{ETileType.Normal};
     
     [SerializeField]
     protected float _speed = 1f;
@@ -30,6 +21,9 @@ public class GMoveAction : GAction
 
     [FormerlySerializedAs("animationName")]
     public string moveAnimationName = GPawn.MoveAnimationName;
+    
+    private ETileType[] _walkingTileType;
+    private ETileType[] _endMovementTileType;
     
     private EHexDirection[] _path = new EHexDirection[] { };
     private Vector3[] _wayPoints = new Vector3[] { };
@@ -47,9 +41,38 @@ public class GMoveAction : GAction
     {
     }
 
+    public override void OnSelectedAction()
+    {
+        foreach (var validCell in validCells)
+        { 
+            GPawn pawn =  GGridManager.Instance.GetCell(validCell).GetGridObject<GPawn>();
+            
+            pawn?.visuals.SetAnimationState(GPawn.ReadyToCatchAnimationName);
+        }
+    }
+
+    public override void OnUnselectedAction()
+    {
+        foreach (var validCell in validCells)
+            GGridManager.Instance.GetCell(validCell).GetGridObject<GPawn>()?.visuals.SetAnimationState(GPawn.IdleAnimationName);
+    }
+
+    public void OverrideTileType(ETileType[] inWalkingTileType, ETileType[] inEndMovementTileType)
+    {
+        _walkingTileType = inWalkingTileType;
+        _endMovementTileType = inEndMovementTileType;
+    }
+
+    public override void InitAction(GPawn inLinkedPawn)
+    {
+        base.InitAction(inLinkedPawn);
+        _walkingTileType = inLinkedPawn.data._walkingTileType;
+        _endMovementTileType = inLinkedPawn.data._endMovementTileType;
+    }
+
     public override List<GCell> Previsualisation(in GActionContext previsuContext)
     {
-        GGridManager.Instance.GenerateStepMap(linkedPawn.GetCell(), _walkingTileType);
+        GGridManager.Instance.GenerateStepMap(linkedPawn.GetCell(), _walkingTileType );
         _path = GGridManager.Instance.GetPath(linkedPawn.GetCell() ,targetCell, _endMovementTileType,false);
         if (_path == null || _path.Length == 0 || _path.Length > _maxMoveDistance) return null;
         
@@ -145,7 +168,7 @@ public class GMoveAction : GAction
     public override void End_Action()
     {
         linkedPawn.transform.position = targetCell.transform.position;
-        linkedPawn.visuals.SetAnimationState("Idle");
+        linkedPawn.visuals.SetAnimationState(GPawn.IdleAnimationName);
         MoveEventInstance.stop(STOP_MODE.ALLOWFADEOUT);
         if (!linkedPawn.IsAlive) linkedPawn.Kill();
 

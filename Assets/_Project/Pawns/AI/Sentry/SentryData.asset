@@ -44,8 +44,24 @@ MonoBehaviour:
   <actionTokens>k__BackingField: 2
   <isPlayer>k__BackingField: 0
   <startHp>k__BackingField: 3
-  actions: []
+  _walkingTileType: 0000000003000000
+  _endMovementTileType: 0000000003000000
+  actionList: []
   baseReactionData: {fileID: 11400000, guid: 3d2f439763d27cc4488c148c9d11360b, type: 2}
+  hoverSound:
+    Guid:
+      Data1: 0
+      Data2: 0
+      Data3: 0
+      Data4: 0
+    Path: 
+  SelectSound:
+    Guid:
+      Data1: 0
+      Data2: 0
+      Data3: 0
+      Data4: 0
+    Path: 
   references:
     version: 2
     RefIds: []

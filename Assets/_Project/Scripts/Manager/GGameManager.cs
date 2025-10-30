@@ -62,6 +62,12 @@ public class GGameManager: GSingleton<GGameManager>
     [HideInInspector]
     public bool isGamePaused;
     
+    private int _intensity = 0;
+    private int _maxIntensity = 10;
+    
+    [SerializeField, Tooltip("Number of waves for intensity increases")]
+    private int _intensityWaveFactor = 1;
+    
     public bool IsMenuActive(EMacroStates menu) => menu == currentState;
 
     public void ChangeState(EMacroStates newMenuState)
@@ -195,20 +201,31 @@ public class GGameManager: GSingleton<GGameManager>
             }
         }
     }
-
+    
+    // TODO : CallBack this ! 
+    void UpdateIntensity(int waveNumber)
+    {
+        if (waveNumber < 1) return; 
+        _intensity = Mathf.Min(waveNumber / _intensityWaveFactor, _maxIntensity);
+        FMODUnity.RuntimeManager.StudioSystem.setParameterByName("Intensity", _intensity);
+    }
+    
+    /** Start the game over sequence */
+    public void StartGameOver()
+    {
+        Debug.Log("Game Over !");
+        GTurnBaseManager.Instance.enabled = false; // Disable turn ! 
+        // TODO : Disable Game Controls on grid ? 
+        // TODO : Save Progress ? Wave Numbers ? etc../
+        // TODO : Register In leaderboards ? 
+        // TODO : Open Game Over Menu 
+    }
     
     protected override void Awake()
     {
         _pauseAction = InputSystem.actions.FindAction("Pause");
         base.Awake();
     }
-
-    void Update()
-    {
-        HandlePauseInput();
-    }
-
-
     void Start()
     {
         _menuInput = InputSystem.actions.FindAction("Menu");
@@ -216,6 +233,11 @@ public class GGameManager: GSingleton<GGameManager>
         ChangeState(_startState); 
     }
 
+    void Update()
+    {
+        HandlePauseInput();
+    }
+    
 #if UNITY_EDITOR
     private void OnValidate()
     {

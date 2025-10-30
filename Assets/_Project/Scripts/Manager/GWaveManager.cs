@@ -1,4 +1,5 @@
-﻿using Sirenix.OdinInspector;
+﻿using Stanpac.Utilities;
+using Sirenix.OdinInspector;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -78,6 +79,8 @@ public class GWaveManager : GSingleton<GWaveManager>
     private List<GCell> _spawnCells = new List<GCell>();
 
     private int SpawningInProcess = 0; 
+    
+    public int GetScore() => _waveType == EWaveType.Endless ? _endlessWaveCount : -1;
     
     public bool IsSpawningInProgress() => HasEnemiesToSpawn() && SpawningInProcess > 0;
     public void OnEnemySpawned() => SpawningInProcess = Mathf.Max(0, SpawningInProcess - 1);

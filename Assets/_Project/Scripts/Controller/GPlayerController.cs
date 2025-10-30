@@ -66,9 +66,14 @@ public class GPlayerController : GController
     {
         if (_selectedAction == action) return;
         ResetHighlight();
+        
+        if (_selectedAction != null) 
+            _selectedAction.OnUnselectedAction();
+        
         _selectedAction = action;
         if (_selectedAction == null) return;
-        //_selectedAction.linkedPawn = _selectedPlayer;
+        
+        _selectedAction.OnSelectedAction();
         ShowHighlight();
     }
     
@@ -122,28 +127,28 @@ public class GPlayerController : GController
         {
             if (_isFirstAction)
             {
-                newAvailableActions.Add(target.data.actions[1]);
+                newAvailableActions.Add(target.data.actionList[1]);
             }
             else if (target.GetCell().data.tileType == ETileType.Hole)
             {
-                newAvailableActions.Add(target.data.actions[3]);
+                newAvailableActions.Add(target.data.actionList[3]);
             }
             else
             {
-                newAvailableActions.Add(target.data.actions[0]);
+                newAvailableActions.Add(target.data.actionList[0]);
                 if (target.equipment && target.equipment is GCrown)
                 {
-                    newAvailableActions.Add(target.data.actions[2]);
+                    newAvailableActions.Add(target.data.actionList[2]);
                 }
                 else
                 {
-                    newAvailableActions.Add(target.data.actions[1]);
+                    newAvailableActions.Add(target.data.actionList[1]);
                 }
             }
         }
         else if (target.TryGetComponent<GAIController>(out GAIController controller))
         {
-            newAvailableActions.Add(target.data.actions[0]);
+            newAvailableActions.Add(target.data.actionList[0]);
             // TODO : Get Default Action from AI Controller
         }
         

@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class GMoveOutOfHoleAction : GAction
 {
+    GMoveAction _moveAction = null; 
+    
     public override ETileHighlightActionType GetHighlightActionType() => ETileHighlightActionType.Move;
     
     public override List<GCell> Previsualisation(in GActionContext previsuContext)
@@ -16,25 +18,37 @@ public class GMoveOutOfHoleAction : GAction
     public override void PreProcess(GActionContext context = null)
     {
         if (!targetCell || targetCell.GetGridObject<GPawn>() || targetCell.GetGridObject<GPawn>() == linkedPawn) return;
-        // validate
-        // TODO Start New Action Move ! 
+        
+        ETileType[] overrideTileType = new ETileType[] { ETileType.Normal, ETileType.Hole };
+        
+        _moveAction = new GMoveAction();
+        _moveAction.InitAction(linkedPawn);
+        _moveAction.OverrideTileType(overrideTileType, overrideTileType);
+        _moveAction.targetCell = targetCell;
+        _moveAction.moveAnimationName = GPawn.GetOutOfHoleAnimationName;
+        GTurnBaseManager.Instance.PreProcessReaction(_moveAction, new GActionContext());
     }
 
     public override void Start_Action()
     {
         base.Start_Action();
-        targetCell.SetGridObject(linkedPawn, false);
-        linkedPawn.transform.DOMove(targetCell.transform.position, .5f).SetEase(Ease.OutBack).onComplete = End_Action;
+        
+        if (_moveAction != null)
+            GTurnBaseManager.Instance.TryStartReaction(_moveAction);
     }
 
     public override void Update_Action(float delta)
     {
         base.Update_Action(delta);
+        
+        if (_moveAction == null || _moveAction.CurrentState == GAction.EActionState.Finished)
+            End_Action();
     }
 
     public override void End_Action()
     {
         base.End_Action();
+        linkedPawn.visuals.SetAnimationState(GPawn.IdleAnimationName);
     }
 
     public override GHexCoordinate[] GetValidCells()

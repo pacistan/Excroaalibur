@@ -1,6 +1,7 @@
 ﻿using DG.Tweening;
 using Sirenix.OdinInspector;
 using System.Collections.Generic;
+using System.Linq;
 using System.Runtime.CompilerServices;
 using UnityEngine;
 
@@ -17,6 +18,9 @@ public class GPushedReaction : GAction
     
     [SerializeField, Tooltip("Stun inflicted if we hit Something while being pushed")]
     int _stun = 1;
+    
+    [SerializeField, Tooltip("Tile types on which the pawn can be pushed")]
+    ETileType[] _pushedTileType = new ETileType[] { ETileType.Normal, ETileType.Hole };
     
     int _distance;
     
@@ -42,8 +46,7 @@ public class GPushedReaction : GAction
         
         if (_isPushable) // Check initial param
         {
-            if (linkedPawn.GetCell().GetNeighbor(_direction).GetTileType == ETileType.Wall 
-                || linkedPawn.GetCell().GetNeighbor(_direction).GetTileType == ETileType.Spawner
+            if (!_pushedTileType.Contains(linkedPawn.GetCell().GetNeighbor(_direction).GetTileType)
                 || linkedPawn.GetCell().GetNeighbor(_direction).GetGridObject<GPawn>())
             {
                 _isPushable = false;
@@ -105,8 +108,7 @@ public class GPushedReaction : GAction
         
         if (_isPushable) // Check initial param
         {
-            if (linkedPawn.GetCell().GetNeighbor(_direction).GetTileType == ETileType.Wall 
-                || linkedPawn.GetCell().GetNeighbor(_direction).GetTileType == ETileType.Spawner
+            if (!_pushedTileType.Contains(linkedPawn.GetCell().GetNeighbor(_direction).GetTileType)
                 || linkedPawn.GetCell().GetNeighbor(_direction).GetGridObject<GPawn>())
             {
                 _isPushable = false;
@@ -158,11 +160,10 @@ public class GPushedReaction : GAction
             }
             
             _moveAction = new GMoveAction();
+            _moveAction.InitAction(linkedPawn);
+            _moveAction.OverrideTileType(_pushedTileType, _pushedTileType);
             _moveAction.targetCell = cell;
-            _moveAction.linkedPawn = linkedPawn;
             _moveAction._maxMoveDistance = _distance;
-            _moveAction._walkingTileType = new ETileType[] { ETileType.Normal, ETileType.Hole };
-            _moveAction._endMovementTileType = new ETileType[] { ETileType.Normal, ETileType.Hole };
             _moveAction.moveAnimationName = GPawn.PushedStartAnimationName;
             GTurnBaseManager.Instance.PreProcessReaction(_moveAction, new GActionContext());
         }
@@ -222,6 +223,7 @@ public class GPushedReaction : GAction
         reaction._DamageRelatedToPushForce = _DamageRelatedToPushForce;
         reaction._damage = _damage;
         reaction._stun = _stun;
+        reaction._pushedTileType = _pushedTileType;
         return reaction;
     }
 }

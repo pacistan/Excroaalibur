@@ -16,7 +16,7 @@ public abstract class GAIBehavior : ScriptableObject
         _controller = controller;
         foreach (GAction action in actions)
         {
-            action.linkedPawn = controller.pawn;
+            action.InitAction(_controller.pawn);
         }
     }
     
@@ -61,7 +61,6 @@ public abstract class GAIBehavior : ScriptableObject
     {
         GetAction<GPushAction>(out GPushAction action);
         GPushAction pushAction = action.CloneAction() as GPushAction;
-        pushAction.linkedPawn = _controller.pawn;
         pushAction.targetCell = targetCell;
         pushAction.OnActionFinished += OnActionOver;
         pushAction.OnActionFinished += inOnActionFinished;
@@ -72,7 +71,6 @@ public abstract class GAIBehavior : ScriptableObject
     {
         GetAction<GPlaceOnAltarAction>(out GPlaceOnAltarAction action);
         GPlaceOnAltarAction placeOnAltarAction = action.CloneAction() as GPlaceOnAltarAction;
-        placeOnAltarAction.linkedPawn = _controller.pawn;
         placeOnAltarAction.targetCell = targetCell;
         placeOnAltarAction.OnActionFinished += OnActionOver;
         placeOnAltarAction.OnActionFinished += inOnActionFinished;

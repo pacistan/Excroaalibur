@@ -68,7 +68,6 @@ public abstract class GAction
     [ReadOnly, HideInEditorMode] 
     public GHexCoordinate[] validCells = Array.Empty<GHexCoordinate>();
     [ReadOnly] public EActionState CurrentState { get; protected set; } = EActionState.None;
-
     
     // Safe handle to avoid infinite action state !
     float safehandle = 10f;
@@ -85,7 +84,6 @@ public abstract class GAction
     }
 
     public abstract ETileHighlightActionType GetHighlightActionType();
-    
     
     /// <summary>
     /// Create a new instance of the action with the same parameters, Override this for Add Params
@@ -104,19 +102,28 @@ public abstract class GAction
         return clone;
     }
     
-    
     public virtual GAction SetTargetCell(GCell inTargetCell)
     {
         targetCell = inTargetCell;
         return this;
     }
 
-    public abstract List<GCell> Previsualisation(in GActionContext previsuContext);
-    
-    public virtual void ClearPrevisualisation()
+    /** Call When the Player Selects the Action */
+    public virtual void OnSelectedAction()
     {
-        if (!linkedPawn) return;
     }
+    
+    /** Call When the Player Unselects the Action */
+    public virtual void OnUnselectedAction()
+    {
+    }
+    
+    public virtual void InitAction(GPawn inLinkedPawn)
+    {
+        linkedPawn = inLinkedPawn;
+    }
+    
+    public abstract List<GCell> Previsualisation(in GActionContext previsuContext);
     
     /// <summary>
     /// pre-process all the logic of the action. This will update the grid before any visuals. This will also trigger the pre-process of any reaction if any are needed.
