@@ -279,6 +279,12 @@ public class GPawn : GGridObject
         _currentCell.SetGridObject(this);
         remainingActionToken = data.actionTokens;
         hp = data.startHp;
+
+    }
+
+    protected override void OnEnable()
+    {
+        base.OnEnable();
         if (!data.isPlayer && TryGetComponent(out GController aiController))
         {
             aiController.RegisterPawn(this);
@@ -299,7 +305,28 @@ public class GPawn : GGridObject
             }
         }
     }
-    
+
+    protected override void OnDisable()
+    {
+        if (!data.isPlayer && TryGetComponent(out GController aiController))
+        {
+            aiController.UnregisterPawn(this);
+        }
+        else if(data.isPlayer)
+        {
+            GPlayerController controller = FindFirstObjectByType<GPlayerController>();
+            if (controller)
+            {
+                controller.UnregisterPawn(this);
+                if(data.actionList == null) return;
+                foreach (var action in data.actionList)
+                {
+                    action.OnActionFinished -= controller.OnActionOver;
+                }
+            }
+        }
+    }
+
 #if UNITY_EDITOR
     void OnValidate()
     {

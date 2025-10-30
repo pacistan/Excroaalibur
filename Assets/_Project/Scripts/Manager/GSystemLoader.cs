@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using UnityEngine;
 using UnityEngine.Serialization;
 
@@ -13,5 +14,11 @@ public class GSystemLoader : MonoBehaviour
         {
             Instantiate(_systemPrefab);
         }
+    }
+
+    IEnumerator Start()
+    {
+        yield return new WaitForEndOfFrame();
+        GGameManager.Instance.ChangeState(EMacroStates.Play);
     }
 }

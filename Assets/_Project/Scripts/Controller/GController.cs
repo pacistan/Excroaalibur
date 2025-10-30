@@ -17,7 +17,20 @@ public abstract class GController : MonoBehaviour
         OnStartTurn += pawn.OnStartTurn;
         OnEndTurn += pawn.OnEndTurn;
         OnStartAction += pawn.OnStartAction;
-    } 
+    }
+
+    public void UnregisterPawn(GPawn pawn)
+    {
+        if (!pawns.Contains(pawn))
+        {
+            Debug.LogError($"Trying to unregister not registered Pawn", pawn);
+            return;
+        }
+        pawns.Remove(pawn);
+        OnStartTurn -= pawn.OnStartTurn;
+        OnEndTurn -= pawn.OnEndTurn;
+        OnStartAction -= pawn.OnStartAction;
+    }
 
     public virtual void StartTurn()
     {

@@ -6,7 +6,7 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.UI;
 
-public class GCameraController : MonoBehaviour 
+public class GCameraController : GSingleton<GCameraController> 
 {
     [SerializeField]
     float TopHeight = 50;
@@ -24,8 +24,8 @@ public class GCameraController : MonoBehaviour
     [SerializeField] 
     private AnimationCurve _rotationCurve;
 
-    [SerializeField, FoldoutGroup("Components")]
-    private CinemachineFollow follow;
+    [field : SerializeField, FoldoutGroup("Components")]
+    public CinemachineFollow follow { get; private set; }
 
     [SerializeField, FoldoutGroup("Components")]
     Transform _cameraTargetTr;
@@ -122,5 +122,27 @@ public class GCameraController : MonoBehaviour
         }
         _horizontalRotationOffset = targetRotation;
         _rotationEnum = null;
+    }
+}
+
+public static class CinemachineExtensions
+{
+    public static void DoScreenShake(this CinemachineCamera cam, float shakeIntensity = 5f, float shakeTime = .5f)
+    {
+        cam.StartCoroutine(ProcessShake(cam, shakeIntensity, shakeTime));
+    }
+    
+    private static IEnumerator ProcessShake(CinemachineCamera cam, float shakeIntensity = 5f, float shakeTiming = 0.5f)
+    {
+        Noise(cam, 1, shakeIntensity);
+        yield return new WaitForSeconds(shakeTiming);
+        Noise(cam, 0, 0);
+    }
+
+    private static void Noise(CinemachineCamera cam, float amplitudeGain, float frequencyGain)
+    {
+        CinemachineBasicMultiChannelPerlin noise = cam.GetComponent<CinemachineBasicMultiChannelPerlin>();
+        noise.AmplitudeGain = amplitudeGain;
+        noise.FrequencyGain = frequencyGain;
     }
 }

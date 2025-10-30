@@ -12,7 +12,7 @@ using UnityEngine.SceneManagement;
 using UnityEngine.Serialization;
 using STOP_MODE = FMOD.Studio.STOP_MODE;
 
-public enum EMacroStates { Start, Options, Pause, Play, End, None }
+public enum EMacroStates { Start, Options, Pause, Play, End, LoadingScreen, None }
 
 
 /* Responsable de la gestion globale du Jeu, de l'activation de potentiel Manager etc...*/
@@ -67,32 +67,34 @@ public class GGameManager: GSingleton<GGameManager>
     
     [SerializeField, Tooltip("Number of waves for intensity increases")]
     private int _intensityWaveFactor = 1;
+
+    [SerializeField]
+    float _loadSceneForceDuration = 2f;
     
     public bool IsMenuActive(EMacroStates menu) => menu == currentState;
 
-    public void ChangeState(EMacroStates newMenuState)
+    public void ChangeState(EMacroStates newState)
     {
-        if (newMenuState == currentState)
+        if (newState == currentState)
         {
             Debug.LogWarning("Called to change to already active menu");
             return;
         }
-        StartCoroutine(ChangeStateCoroutine(newMenuState)); 
-    }
-
-    public void ReloadScene()
-    {
-        StartCoroutine(ChangeStateCoroutine(EMacroStates.Play, true)); 
-    }
-
-    public IEnumerator ChangeStateCoroutine(EMacroStates newState, bool reloadScene = false)
-    {
         previousState = currentState;
         currentState = newState;
         OnMenuExit();
         OnMenuEnter();
         OnChangeMacroStateEvent?.Invoke(currentState, previousState);
-        if (((previousState == EMacroStates.End || previousState == EMacroStates.Start) && newState == EMacroStates.Play) || reloadScene)
+    }
+
+    public void LoadScene()
+    {
+        StartCoroutine(LoadSceneCoroutine());
+    }
+
+    private IEnumerator LoadSceneCoroutine(bool reloadScene = false)
+    {
+        if (currentState == EMacroStates.LoadingScreen)
         {
             string sceneName = reloadScene ? SceneManager.GetActiveScene().name : // Is Reload ?
                 isLoadingTutorial ?  // Is Tutorial ?
@@ -101,9 +103,11 @@ public class GGameManager: GSingleton<GGameManager>
             
             AsyncOperation asyncOperation = SceneManager.LoadSceneAsync(sceneName);
             asyncOperation.allowSceneActivation = false;
-            while (!asyncOperation.isDone)
+            float forcedTimer = 0;
+            while (!asyncOperation.isDone || forcedTimer < 1f)
             {
-
+                GHudManager.Instance.loadingScreenMenu.UpdateProgress(asyncOperation.progress);
+                forcedTimer += Time.unscaledDeltaTime / _loadSceneForceDuration;
                 if (asyncOperation.progress >= 0.9f)
                 {
                     asyncOperation.allowSceneActivation = true;
@@ -111,7 +115,7 @@ public class GGameManager: GSingleton<GGameManager>
 
                 yield return null;
             }
-            yield return new WaitForSecondsRealtime(1);
+            ChangeState(EMacroStates.Play);
         }
 
     }
@@ -135,6 +139,9 @@ public class GGameManager: GSingleton<GGameManager>
             case EMacroStates.End:
                 StartGameOver();
                 PauseGameTime(false, true, 2);
+                break;
+            case EMacroStates.LoadingScreen:
+                GHudManager.Instance.loadingScreenMenu.ResetProgress();
                 break;
         }
     }

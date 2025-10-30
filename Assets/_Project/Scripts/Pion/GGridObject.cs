@@ -72,12 +72,12 @@ public class GGridObject : SerializedMonoBehaviour
         return _currentCell;
     }
     
-    void OnEnable()
+    protected virtual void OnEnable()
     {
         GGridObjectRegistry.Instance.Register(this);
     }
 
-    void OnDisable()
+    protected virtual void OnDisable()
     {
         GGridObjectRegistry.Instance.Unregister(this);
     }

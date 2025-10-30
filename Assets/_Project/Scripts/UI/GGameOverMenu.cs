@@ -70,7 +70,7 @@ public class GGameOverMenu : MonoBehaviour
             _profils[i] = Instantiate(_profilPrefab,  _profilFolder);
         }
         
-        _replayButton.onClick.AddListener(() => GGameManager.Instance.ChangeState(EMacroStates.Play));
+        _replayButton.onClick.AddListener(() => GGameManager.Instance.ChangeState(EMacroStates.LoadingScreen));
         _mainMenuButton.onClick.AddListener(() => GGameManager.Instance.ChangeState(EMacroStates.Start));
         _newHighscoreButton.onClick.AddListener(UploadEntry);
     }

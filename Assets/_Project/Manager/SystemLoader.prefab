@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 5981074494695806294}
   - component: {fileID: 1649359951423900124}
+  - component: {fileID: 2057896593449719317}
   m_Layer: 0
   m_Name: SystemLoader
   m_TagString: Untagged
@@ -45,3 +46,20 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _systemPrefab: {fileID: 2880959369405473362, guid: 7b0d25a7cfbbfd447a8d772e3ddfe79b, type: 3}
+--- !u!114 &2057896593449719317
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6423012596806459794}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ce61d699749140e8bfb1c03d47506bf6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  <currentTurnController>k__BackingField: {fileID: 0}
+  _turnOrderControllerQueue: []
+  _safeTimeHandle: 5
+  _actionSpeed: 1
+  _turnCount: 0
