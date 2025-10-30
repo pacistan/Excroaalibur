@@ -16,8 +16,8 @@ public class GPlayerController : GController
     public GAction[] availableActions = new GAction[] { };
 
     [SerializeField]
-    bool _endTurnWhenNoActionsLeft;
-    
+    public bool _endTurnWhenNoActionsLeft;
+    public void SetEndTurnWhenNoActionsLeft(bool endTurnWhenNoActionsLeft) => _endTurnWhenNoActionsLeft = endTurnWhenNoActionsLeft;
     
     [SerializeField, ReadOnly, HideInEditorMode] 
     GPawn _selectedPlayer;
@@ -31,7 +31,7 @@ public class GPlayerController : GController
     [SerializeField, Tooltip("Layer Mask for the Cell Raycast")]
     private LayerMask _cellLayerMask;
 
-    private GPlayerHudManager _playerHudManager;
+    private GTargetHud _targetHud;
     InputAction _leftClickInput;
     InputAction _rightClickInput;
     private GCell _targetCell;
@@ -58,8 +58,8 @@ public class GPlayerController : GController
         SelectAction(0);
 
         
-        if (_playerHudManager) 
-            _playerHudManager.actionList.UpdateButtons(_selectedPlayer, _isFirstAction);
+        if (_targetHud) 
+            _targetHud.actionList.UpdateButtons(_selectedPlayer, _isFirstAction);
     }
 
     public void SelectAction(GAction action)
@@ -166,7 +166,7 @@ public class GPlayerController : GController
     
     private void Start()
     {
-        _playerHudManager = GHudManager.Instance.playerHudManager;
+        _targetHud = GHudManager.Instance.TargetHud;
         _leftClickInput = InputSystem.actions.FindAction("Select");
         _rightClickInput = InputSystem.actions.FindAction("Switch");
         GHudManager.Instance.mainHudManager.endTurnButton.onClick.AddListener(StopTurn);
@@ -175,6 +175,7 @@ public class GPlayerController : GController
 
     private void Update()
     {
+        if (GTurnBaseManager.Instance == null || GGameManager.Instance.isGamePaused) return;
         HandlePlayerHover();
         if (GTurnBaseManager.Instance.currentTurnController != this) return;
         DebugTools();
@@ -205,12 +206,12 @@ public class GPlayerController : GController
             // Hover New Tile with no Selection
             if (!_selectedPlayer && newCell.gridObject)
             {
-                _playerHudManager.OnGridObjectHovered(newCell.gridObject, _isFirstAction);
+                _targetHud.OnGridObjectHovered(newCell.gridObject, _isFirstAction);
             }
             // Hover New Tile with no Selection and No Object
             else if (!_selectedPlayer && !newCell.gridObject)
             {
-                _playerHudManager.OnGridObjectHovered(null, _isFirstAction);
+                _targetHud.OnGridObjectHovered(null, _isFirstAction);
             }
             
             
@@ -254,7 +255,7 @@ public class GPlayerController : GController
             _hoverCell = null;
             if (!_selectedPlayer)
             {
-                _playerHudManager.OnGridObjectHovered(null, _isFirstAction);
+                _targetHud.OnGridObjectHovered(null, _isFirstAction);
             }
         }
     }
@@ -316,7 +317,7 @@ public class GPlayerController : GController
                     {
                         _targetCell.visuals.isSelected = true;
                         SetSelectedPlayer(cellPawn);
-                        _playerHudManager.OnGridObjectHovered(cellPawn, _isFirstAction);
+                        _targetHud.OnGridObjectHovered(cellPawn, _isFirstAction);
                     }
                     // Not Player Pawn
                     else if (_selectedPlayer != cellPawn && !isSelectable)
@@ -324,7 +325,7 @@ public class GPlayerController : GController
                         SetSelectedPlayer(null);
                         if (!cellPawn.data.isPlayer)
                         {
-                            _playerHudManager.OnGridObjectHovered(cellPawn, _isFirstAction);
+                            _targetHud.OnGridObjectHovered(cellPawn, _isFirstAction);
                         }
                     }
                 }
@@ -332,7 +333,7 @@ public class GPlayerController : GController
                 else
                 {
                     SetSelectedPlayer(null);
-                    _playerHudManager.OnGridObjectHovered(null, _isFirstAction);
+                    _targetHud.OnGridObjectHovered(null, _isFirstAction);
                 }
             }
             
@@ -349,7 +350,7 @@ public class GPlayerController : GController
         {
             if (_selectedPlayer == null && availableActions.Length <= 1) return;
             SwitchAction();
-            _playerHudManager.actionList.SwitchActionIndex();
+            _targetHud.actionList.SwitchActionIndex();
         }
     }
 
@@ -374,7 +375,7 @@ public class GPlayerController : GController
             }
             _selectedPlayer.remainingActionToken--;
             _selectedPlayer.visuals.OnUpdateActionsToken();
-            _playerHudManager.UpdateGridObjectHoveredInfo(_selectedPlayer, _isFirstAction);
+            _targetHud.UpdateGridObjectHoveredInfo(_selectedPlayer, _isFirstAction);
             SetSelectedPlayer(null);
             SelectAction(null);
         }

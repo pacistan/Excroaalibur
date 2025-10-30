@@ -10,7 +10,7 @@ using UnityEngine.Serialization;
 using UnityEngine.UI;
 
 [ BoxGroup("Components")]
-public class GPlayerHudManager : MonoBehaviour
+public class GTargetHud : MonoBehaviour
 {
     [field: SerializeField,  BoxGroup("Components")]
     public GActionList actionList { get; private set; }

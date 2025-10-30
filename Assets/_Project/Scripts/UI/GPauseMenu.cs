@@ -1,35 +1,18 @@
 ﻿using DG.Tweening;
 using System;
 using UnityEngine;
+using UnityEngine.UI;
 
-[RequireComponent(typeof(CanvasGroup))]
 public class GPauseMenu : MonoBehaviour
 {
-    CanvasGroup _canvasGroup;
+    [SerializeField]
+    Button _continueBtn, _optionsBtn, _restartBtn, _mainMenuBtn;
 
-    public bool IsOpen =>  _canvasGroup.interactable;
-    
-    public void Open()
+    void Start()
     {
-        _canvasGroup.interactable = true;
-        _canvasGroup.blocksRaycasts = true;
-        _canvasGroup.DOFade(1, .5f).SetEase(Ease.OutCirc);
-    }
-
-    public void Close()
-    {
-        _canvasGroup.interactable = false;
-        _canvasGroup.blocksRaycasts = false;
-        _canvasGroup.DOFade(0, .5f).SetEase(Ease.OutCirc);
-    }
-
-    public void QuitGame()
-    {
-        Application.Quit();
-    }
-
-    void Awake()
-    {
-        _canvasGroup = gameObject.GetComponent<CanvasGroup>();
+        _continueBtn.onClick.AddListener(()=> GGameManager.Instance.ChangeState(EMacroStates.Play));
+        _optionsBtn.onClick.AddListener(()=> GGameManager.Instance.ChangeState(EMacroStates.Options));
+        _restartBtn.onClick.AddListener(()=> GGameManager.Instance.ReloadScene());
+        _mainMenuBtn.onClick.AddListener(()=> GGameManager.Instance.ChangeState(EMacroStates.Start));
     }
 }
