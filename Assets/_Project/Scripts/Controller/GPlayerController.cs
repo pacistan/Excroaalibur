@@ -77,6 +77,7 @@ public class GPlayerController : GController
             _selectedAction.OnUnselectedAction();
         
         GPawn targetPawn = _hoverCell ? _hoverCell.GetGridObject<GPawn>() : null;
+
         _selectedAction = action;
         
         int index = action != null && action.GetType() != typeof(GThrowAction) ? 0 :
