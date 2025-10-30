@@ -104,7 +104,7 @@ public class GPawn : GGridObject
             equipment.transform.parent = equipmentParentTr;
             equipment.transform.localPosition = Vector3.zero; 
             equipment.transform.localRotation = Quaternion.identity;
-            if (equipment is GCrown)
+            if (equipment is GCrown && this is not GAltar)
             {
                 RuntimeManager.PlayOneShotAttached("event:/Crown/Grab", gameObject);
             }
@@ -173,8 +173,6 @@ public class GPawn : GGridObject
         {
             TakeDamage(hp); // instant kill
         }
-        
-        RuntimeManager.PlayOneShotAttached("event:/Pawn/Fall", gameObject);
     }
 
     public void Kill()

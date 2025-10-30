@@ -61,8 +61,11 @@
 		</relationship>
 	</object>
 	<object class="EventAutomatableProperties" id="{b4b4af8c-3ae9-4a2f-8cef-20113602b16b}">
+		<property name="minimumDistance">
+			<value>0</value>
+		</property>
 		<property name="maximumDistance">
-			<value>1400</value>
+			<value>700</value>
 		</property>
 	</object>
 	<object class="MarkerTrack" id="{5a7d15d3-cf30-4974-b023-abd8b4b1dfcd}" />
@@ -135,13 +138,13 @@
 	</object>
 	<object class="SingleSound" id="{c1d8a840-2c96-4500-abbe-71f4c3fdcf3b}">
 		<property name="length">
-			<value>0.46489583333333317</value>
+			<value>0.41020833333333317</value>
 		</property>
 		<property name="timelockedOffset">
-			<value>0.14000000000000001</value>
+			<value>0.19468750000000001</value>
 		</property>
 		<property name="volume">
-			<value>-29.5</value>
+			<value>-23.5</value>
 		</property>
 		<relationship name="modulators">
 			<destination>{8dfb040f-9045-4226-a711-30cc5c08fbd5}</destination>
@@ -169,7 +172,7 @@
 	</object>
 	<object class="LoopRegion" id="{6022e6a5-3040-4e3f-81cd-62a0ef4a0317}">
 		<property name="position">
-			<value>0.099999999999999908</value>
+			<value>0.045312499999999908</value>
 		</property>
 		<property name="length">
 			<value>0.14000000000000001</value>
@@ -325,7 +328,7 @@
 	</object>
 	<object class="AutomationPoint" id="{ac6c2dba-5338-4a7e-b0c3-ec7b61d10d25}">
 		<property name="position">
-			<value>0.079999999999999946</value>
+			<value>0.0390625</value>
 		</property>
 		<property name="value">
 			<value>1</value>

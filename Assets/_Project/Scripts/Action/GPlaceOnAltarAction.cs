@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using FMODUnity;
+using System.Collections.Generic;
 
 public class GPlaceOnAltarAction : GAction
 {
@@ -34,6 +35,7 @@ public class GPlaceOnAltarAction : GAction
         {
             _crown.owner.ReleaseEquipement(false, true);
             _altar.GiveEquipement(_crown, true, true);
+            RuntimeManager.PlayOneShot("event:/Map/Restore_Sword", _altar.transform.position);
         }
         End_Action();
     }

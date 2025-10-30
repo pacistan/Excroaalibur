@@ -1,4 +1,5 @@
-﻿using Sirenix.OdinInspector;
+﻿using FMODUnity;
+using Sirenix.OdinInspector;
 using System;
 using System.Linq;
 using UnityEngine;
@@ -97,7 +98,8 @@ public class GCell : SerializedMonoBehaviour
         RegisterGridObject(pawn);
         UpdateGridObject();
         
-        // TODO : Call When the Spawn Process is finished (Animation, VFX, etc.) !! 
+        RuntimeManager.PlayOneShotAttached("event:/Pawn/Enemy/Spawn", pawn.gameObject);
+        // TODO : Call When the Spawn Process is finished (Animation, VFX, etc.) !!
         _OnSpawnedPawnFinished?.Invoke();
         GWaveManager.Instance.OnEnemySpawned();
     }

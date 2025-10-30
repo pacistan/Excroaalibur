@@ -59,8 +59,11 @@
 		</relationship>
 	</object>
 	<object class="EventAutomatableProperties" id="{f81040f0-ecbe-418a-9c1b-0f789b7b0fd5}">
+		<property name="minimumDistance">
+			<value>0</value>
+		</property>
 		<property name="maximumDistance">
-			<value>850</value>
+			<value>750</value>
 		</property>
 	</object>
 	<object class="MarkerTrack" id="{e2452e50-9ae6-4cdc-a1c8-80496a4b9c5a}" />

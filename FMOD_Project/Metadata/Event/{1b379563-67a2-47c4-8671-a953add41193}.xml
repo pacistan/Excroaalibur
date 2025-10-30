@@ -58,8 +58,11 @@
 		</relationship>
 	</object>
 	<object class="EventAutomatableProperties" id="{81e4d51b-8e1b-469a-8c9d-cfbc3a111088}">
+		<property name="minimumDistance">
+			<value>0</value>
+		</property>
 		<property name="maximumDistance">
-			<value>550</value>
+			<value>750</value>
 		</property>
 	</object>
 	<object class="MarkerTrack" id="{377fbfd5-3e00-466e-a5fc-29f0ec6515d6}" />
@@ -159,7 +162,7 @@
 			<value>0.61202677165232755</value>
 		</property>
 		<property name="volume">
-			<value>-20.5</value>
+			<value>-9.5</value>
 		</property>
 		<property name="pitch">
 			<value>-7</value>
