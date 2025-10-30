@@ -4,16 +4,11 @@ using FMODUnity;
 using Sirenix.OdinInspector;
 using System;
 using System.Collections;
-using System.Collections.Generic;
-using UnityEditor;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;
-using UnityEngine.Serialization;
-using STOP_MODE = FMOD.Studio.STOP_MODE;
 
 public enum EMacroStates { Start, Options, Pause, Play, End, LoadingScreen, None }
-
 
 /* Responsable de la gestion globale du Jeu, de l'activation de potentiel Manager etc...*/
 public class GGameManager: GSingleton<GGameManager>
