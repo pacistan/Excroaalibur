@@ -1,4 +1,6 @@
 using Dan.Main;
+using Sirenix.OdinInspector;
+using Sirenix.Utilities;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -10,43 +12,67 @@ public class GGameOverMenu : MonoBehaviour
 
     [SerializeField]
     TextMeshProUGUI _waveNumberValueTxt;
+
+    [SerializeField, BoxGroup("Leaderboard")]
+    int _maxNumberOfLeaderboardProfils;
     
-    [SerializeField] 
-    TMP_Text[] _entryTextObjects;
-    [SerializeField] 
-    TMP_InputField _usernameInputField;
+    [SerializeField, BoxGroup("Leaderboard")]
+    GLeaderboardProfilEntry _profilPrefab;
 
-    private void Start()
-    {
-        _replayButton.onClick.AddListener(() => GGameManager.Instance.ChangeState(EMacroStates.Play));
-        _mainMenuButton.onClick.AddListener(() => GGameManager.Instance.ChangeState(EMacroStates.Start));
-    }
+    [SerializeField, BoxGroup("Leaderboard")]
+    Transform _profilFolder;
 
-    public void SetWaveNumberValue(int waveNumberValue)
+    [SerializeField, BoxGroup("Leaderboard")]
+    TMP_InputField _newHighscoreInputField;
+    
+    [SerializeField, BoxGroup("Leaderboard")]
+    Button _newHighscoreButton;
+
+    GLeaderboardProfilEntry[] _profils;
+    
+    public void OnPanelOpen()
     {
-        _waveNumberValueTxt.text = waveNumberValue.ToString();
+        LoadEntries();
+        _waveNumberValueTxt.text = $"Number of waves completed : {GWaveManager.Instance.GetScore()}";
     }
     
     public void LoadEntries()
     {
+        _profils.ForEach(a=>a.gameObject.SetActive(false));
         Leaderboards.Croawn.GetEntries((entries) =>
         {
-            foreach (var t in _entryTextObjects)
-                t.text = "";
-
-            var length = Mathf.Min(_entryTextObjects.Length, entries.Length);
+            var length = Mathf.Min(_profils.Length, entries.Length);
             for (int i = 0; i < length; i++)
-                _entryTextObjects[i].text += $"{entries[i].Rank}. {entries[i].Username} - {entries[i].Score}";
+            {
+                _profils[i].gameObject.SetActive(true);
+                _profils[i].rankTxt.text = entries[i].Rank.ToString();
+                _profils[i].usernameTxt.text = entries[i].Username;
+                _profils[i].waveNbrTxt.text = entries[i].Score.ToString();
+            }
         });
     }
 
     public void UploadEntry()
     {
         int Score = GWaveManager.Instance.GetScore();
-        Leaderboards.Croawn.UploadNewEntry(_usernameInputField.text, Score , isSuccessful =>
+        Leaderboards.Croawn.UploadNewEntry(_newHighscoreInputField.text, Score , isSuccessful =>
         {
             if (isSuccessful)
                 LoadEntries();
         });
     }
+
+    private void Start()
+    {
+        _profils = new GLeaderboardProfilEntry[_maxNumberOfLeaderboardProfils];
+        for (int i = 0; i < _maxNumberOfLeaderboardProfils; i++)
+        {
+            _profils[i] = Instantiate(_profilPrefab,  _profilFolder);
+        }
+        
+        _replayButton.onClick.AddListener(() => GGameManager.Instance.ChangeState(EMacroStates.Play));
+        _mainMenuButton.onClick.AddListener(() => GGameManager.Instance.ChangeState(EMacroStates.Start));
+        _newHighscoreButton.onClick.AddListener(UploadEntry);
+    }
+
 }

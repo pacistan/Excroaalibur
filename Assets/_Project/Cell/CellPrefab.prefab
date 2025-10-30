@@ -869,7 +869,6 @@ GameObject:
   - component: {fileID: 1637061997344567758}
   - component: {fileID: 8962405803899580738}
   - component: {fileID: 3577346378785680272}
-  - component: {fileID: 6044818382770711880}
   m_Layer: 6
   m_Name: CellPrefab
   m_TagString: Untagged
@@ -916,18 +915,25 @@ MonoBehaviour:
     PrefabModificationsReferencedUnityObjects: []
     PrefabModifications: []
     SerializationNodes: []
+  <gridObject>k__BackingField: {fileID: 0}
   data:
     gridCoordinates: {x: 0, y: 0}
     tileType: 0
     objectType: 0
+    paintedVisuals: []
   ui: {fileID: 0}
-  cellVisualsController: {fileID: 3577346378785680272}
+  visuals: {fileID: 3577346378785680272}
   pawnSpawnPoint: {fileID: 2896100592653209241}
   hexCoordinates:
     x: 0
     z: 0
   <neighbors>k__BackingField: []
-  _gridObject: {fileID: 0}
+  _OnPreviewSpawnedPawn:
+    m_PersistentCalls:
+      m_Calls: []
+  _OnSpawnedPawnFinished:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!114 &3577346378785680272
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -958,20 +964,15 @@ MonoBehaviour:
   _highlight: {fileID: 0}
   _visualsParent: {fileID: 3405757221322417798}
   _collidersParent: {fileID: 5859894880692463213}
-  _visualPreset: {fileID: 0}
+  _visualPresetInstances: []
   _previousObjectSpawnType: 0
---- !u!114 &6044818382770711880
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4888261979057291567}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: eeb5238a0afc4b79890d719b3c424199, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
+  isHovered: 0
+  isSelected: 0
+  isPrevisualized: 0
+  _currentHighlightActionType: 0
+  _currentHighlightType: 2
+  _previousPositionY: 0
+  _isPullingNeighbors: 0
 --- !u!1 &6125602842311227078
 GameObject:
   m_ObjectHideFlags: 0

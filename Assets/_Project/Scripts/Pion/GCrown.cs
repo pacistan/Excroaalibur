@@ -14,19 +14,19 @@ public class GCrown : GEquipment
     void Start()
     {
         _currentDamage = _baseDamage;
-        GHudManager.Instance.mainHudManager.SetCrownDamageText(_currentDamage);
+        GHudManager.Instance.playMenu.SetCrownDamageText(_currentDamage);
     }
 
     public void ResetCrown()
     {
         _currentDamage = _baseDamage;
-        GHudManager.Instance.mainHudManager.SetCrownDamageText(_currentDamage);
+        GHudManager.Instance.playMenu.SetCrownDamageText(_currentDamage);
     }
 
     public void OnPass()
     {
         _currentDamage += _bonusPassDamage;
-        GHudManager.Instance.mainHudManager.SetCrownDamageText(_currentDamage);
+        GHudManager.Instance.playMenu.SetCrownDamageText(_currentDamage);
     }
     
 }

@@ -80,7 +80,7 @@ public class GWaveManager : GSingleton<GWaveManager>
 
     private int SpawningInProcess = 0; 
     
-    public int GetScore() => _waveType == EWaveType.Endless ? _endlessWaveCount : -1;
+    public int GetScore() => _waveType == EWaveType.Endless ? _endlessWaveCount - 2 : -1; // 
     
     public bool IsSpawningInProgress() => HasEnemiesToSpawn() && SpawningInProcess > 0;
     public void OnEnemySpawned() => SpawningInProcess = Mathf.Max(0, SpawningInProcess - 1);
@@ -130,7 +130,8 @@ public class GWaveManager : GSingleton<GWaveManager>
         SpawningInProcess = 0;
         int spawnable = Mathf.Min(_ennemiesPool.Count, _spawnCells.Count);
         Debug.Log($"[WaveManager] Spawning {spawnable} enemies.");
-        
+        GHudManager.Instance.playMenu.SetWaveNumberText(_endlessWaveCount - 1);
+
         for (int i = spawnable - 1; i >= 0; i--)
         {
             var controllerPrefab = _ennemiesPool[i];

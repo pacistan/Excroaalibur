@@ -174,13 +174,14 @@ public class GPlayerController : GController
         _targetHud = GHudManager.Instance.TargetHud;
         _leftClickInput = InputSystem.actions.FindAction("Select");
         _rightClickInput = InputSystem.actions.FindAction("Switch");
-        GHudManager.Instance.mainHudManager.endTurnButton.onClick.AddListener(StopTurn);
-        GHudManager.Instance.mainHudManager.endTurnButton.interactable = false;
+        GHudManager.Instance.playMenu.endTurnButton.onClick.AddListener(StopTurn);
+        GHudManager.Instance.playMenu.endTurnButton.interactable = false;
+        GGameManager.Instance.OnChangeMacroStateEvent += OnChangeMacroStateCallback;
     }
 
     private void Update()
     {
-        if (GTurnBaseManager.Instance == null || GGameManager.Instance.isGamePaused) return;
+        if (GTurnBaseManager.Instance == null || GGameManager.Instance.isGamePaused || !GTurnBaseManager.Instance.enabled) return;
         HandlePlayerHover();
         if (GTurnBaseManager.Instance.currentTurnController != this) return;
         DebugTools();
@@ -376,7 +377,7 @@ public class GPlayerController : GController
             if (_isFirstAction)
             {
                 _isFirstAction = false;
-                GHudManager.Instance.mainHudManager.endTurnButton.interactable = true;
+                GHudManager.Instance.playMenu.endTurnButton.interactable = true;
             }
             _selectedPlayer.remainingActionToken--;
             _selectedPlayer.visuals.OnUpdateActionsToken();
@@ -435,7 +436,7 @@ public class GPlayerController : GController
     protected override void StopTurn()
     {
         base.StopTurn();
-        GHudManager.Instance.mainHudManager.endTurnButton.interactable = false;
+        GHudManager.Instance.playMenu.endTurnButton.interactable = false;
     }
 
     public override void StartTurn()
@@ -443,7 +444,7 @@ public class GPlayerController : GController
         base.StartTurn();
         if (!_isFirstAction)
         {
-            GHudManager.Instance.mainHudManager.endTurnButton.interactable = true;
+            GHudManager.Instance.playMenu.endTurnButton.interactable = true;
         }
     }
 
@@ -457,5 +458,14 @@ public class GPlayerController : GController
             cell.visuals.isPrevisualized = false;
             cell.visuals.isSelected = false;
         }*/
+    }
+
+    private void OnChangeMacroStateCallback(EMacroStates oldState, EMacroStates newState)
+    {
+        if (newState == EMacroStates.Play)
+        {
+            _isFirstAction = true;
+            
+        }
     }
 }

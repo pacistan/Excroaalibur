@@ -34,6 +34,10 @@ public class GCellCommonData : SerializedScriptableObject
     public Dictionary<ETileHighlightActionType, Color> tileHighlightActionData;
     
     public Color previsualizedColor = Color.green;
+
+    public float maxHeight;
+    public float maxOffsetHeight;
+    public float maxRangeOfPullingEffect;
     
     #if UNITY_EDITOR
     [OnInspectorInit]

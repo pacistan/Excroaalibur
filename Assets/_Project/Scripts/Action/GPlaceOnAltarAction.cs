@@ -41,7 +41,7 @@ public class GPlaceOnAltarAction : GAction
     public override void End_Action()
     {
         base.End_Action();
-        GGameManager.Instance.StartGameOver();
+        GGameManager.Instance.ChangeState(EMacroStates.End);
     }
 
 }
