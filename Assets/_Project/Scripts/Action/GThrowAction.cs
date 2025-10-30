@@ -87,6 +87,27 @@ public class GThrowAction : GAction
     EventInstance ThrowSoundInstance;
     bool _isThrowAnimationOver;
 
+    public override void OnSelectedAction()
+    {
+        base.OnSelectedAction();
+        
+        if (validCells.Length == 0) return;
+        foreach (var validCell in validCells)
+        { 
+            GPawn pawn =  GGridManager.Instance.GetCell(validCell).GetGridObject<GPawn>();
+            if (!pawn) continue;
+            pawn.RotateTowards(linkedPawn.transform.position, 0.5f);
+            pawn.visuals.SetAnimationState(GPawn.ReadyToCatchAnimationName);
+        }
+    }
+
+    public override void OnUnselectedAction()
+    {
+        base.OnUnselectedAction();
+        foreach (var validCell in validCells)
+            GGridManager.Instance.GetCell(validCell).GetGridObject<GPawn>()?.visuals.SetAnimationState(GPawn.IdleAnimationName);
+    }
+
     public override List<GCell> Previsualisation(in GActionContext previsuContext)
     {
         if (!linkedPawn.equipment || linkedPawn.equipment is not GCrown) return null;

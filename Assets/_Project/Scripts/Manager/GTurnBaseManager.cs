@@ -230,7 +230,6 @@ public class GTurnBaseManager : GSingleton<GTurnBaseManager>
         yield return null;
     }
     
-    
     IEnumerator ProcessEndTurn()
     {
         yield return _waitForTurn; 

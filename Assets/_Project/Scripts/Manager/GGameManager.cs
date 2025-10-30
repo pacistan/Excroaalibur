@@ -205,11 +205,10 @@ public class GGameManager: GSingleton<GGameManager>
         }
     }
     
-    // TODO : CallBack this ! 
-    void UpdateIntensity(int waveNumber)
+    public void UpdateIntensity(int newIntensity)
     {
-        if (waveNumber < 1) return; 
-        _intensity = Mathf.Min(waveNumber / _intensityWaveFactor, _maxIntensity);
+        if (newIntensity < 1) return; 
+        _intensity = Mathf.Min(newIntensity / _intensityWaveFactor, _maxIntensity);
         FMODUnity.RuntimeManager.StudioSystem.setParameterByName("Intensity", _intensity);
     }
     
@@ -218,7 +217,6 @@ public class GGameManager: GSingleton<GGameManager>
     {
         Debug.Log("Game Over !");
         GTurnBaseManager.Instance.enabled = false; // Disable turn ! 
-        // TODO : Disable Game Controls on grid ? 
     }
     
     protected override void Awake()

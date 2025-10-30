@@ -2,6 +2,7 @@ using FMODUnity;
 using Sirenix.OdinInspector;
 using UnityEngine.Serialization;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
@@ -65,6 +66,30 @@ public class GPawn : GGridObject
     // Cache for quick look-up of override reactions
     private Dictionary<Type, GAction> _overrideCache;
     
+    // TODO : move with Timer Utils !
+    public void RotateTowards(Vector3 Position, float duration)
+    {
+        Vector3 directionToLook = (Position - transform.position).normalized;
+        directionToLook.y = 0; // Keep only horizontal direction
+        Quaternion targetRotation = Quaternion.LookRotation(directionToLook, Vector3.up);
+        if (Quaternion.Angle(transform.rotation, targetRotation) < 1f)
+            return;
+        StartCoroutine(RotateTowardsCouroutine(targetRotation, duration));
+    }
+    
+    IEnumerator RotateTowardsCouroutine(Quaternion targetRotation , float duration = 0.2f)
+    {
+        Quaternion startRotation = transform.rotation;
+        float elapsedTime = 0f;
+        while (elapsedTime < duration)
+        {
+            transform.rotation = Quaternion.Slerp(startRotation, targetRotation, (elapsedTime / duration));
+            elapsedTime += Time.deltaTime;
+            yield return null;
+        }
+        transform.rotation = targetRotation;
+        
+    }
     public GAction GetReaction(GAction action)
     {
         if (action == null) return null;
