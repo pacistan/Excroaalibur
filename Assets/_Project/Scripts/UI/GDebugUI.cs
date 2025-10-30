@@ -12,8 +12,8 @@ public class GDebugUI : MonoBehaviour
 
     void Awake()
     {
-        GTurnBaseManager.Instance.actionPlayed += OnAct;
-        GTurnBaseManager.Instance.startControllerTurn += SetTurnController;
+        //GTurnBaseManager.Instance.actionPlayed += OnAct;
+        //GTurnBaseManager.Instance.startControllerTurn += SetTurnController;
     }
 
     public void OnAct(GAction action, GController controller)

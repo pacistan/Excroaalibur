@@ -11,6 +11,8 @@ GameObject:
   - component: {fileID: 6253313290371511700}
   - component: {fileID: 6358619119133223923}
   - component: {fileID: 6610908280659176654}
+  - component: {fileID: 7651828138839633993}
+  - component: {fileID: 89563958978698612}
   m_Layer: 0
   m_Name: Grid
   m_TagString: Untagged
@@ -49,6 +51,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _grid: []
   _currentGridSize: {x: 0, y: 0}
+  _hexSize: 0
+  _isOffsetOnPairs: 0
 --- !u!114 &6610908280659176654
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -66,8 +70,36 @@ MonoBehaviour:
   _cellsCanvas: {fileID: 699275846877622127}
   _cellPrefab: {fileID: 8962405803899580738, guid: ea08067a6a7f16e46a2a7007c2355b2e, type: 3}
   _cellUiPrefab: {fileID: 1694930933310197699, guid: 9ba9504904d0e3b4387c8b9502693c3f, type: 3}
+  _hudTransform: {fileID: 0}
   _gridDataFileName: LayoutTest_1
   _isUIGridPickable: 0
+--- !u!114 &7651828138839633993
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4055392255285988590}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8c8c6b8b69b64571b9b0b803a5cd6ad4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &89563958978698612
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4055392255285988590}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3371b832a5c6486e8942b81295d0ebee, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  <waves>k__BackingField: []
+  _waveType: 1
+  enemyPrefab: {fileID: 3539483301687403083, guid: 05d949de3c2a4aa4eb1df7f5d5a2e8ac, type: 3}
 --- !u!1 &6229668815744158599
 GameObject:
   m_ObjectHideFlags: 0

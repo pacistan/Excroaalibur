@@ -1,14 +1,17 @@
 ﻿public class GHudManager : GSingleton<GHudManager>
 {
-    public GPlayerHudManager playerHudManager { get; private set; }
+    public GTargetHud TargetHud { get; private set; }
     public GMainHudManager mainHudManager { get; private set; }
     public GPauseMenu pauseMenu { get; private set; }
+
+    public GStartMenu startMenu { get; private set; } 
 
     protected override void Awake()
     {
         base.Awake();
-        playerHudManager = GetComponentInChildren<GPlayerHudManager>();
-        mainHudManager = GetComponentInChildren<GMainHudManager>();
-        pauseMenu = GetComponentInChildren<GPauseMenu>();
+        startMenu = GetComponentInChildren<GStartMenu>(true);
+        TargetHud = GetComponentInChildren<GTargetHud>(true);
+        mainHudManager = GetComponentInChildren<GMainHudManager>(true);
+        pauseMenu = GetComponentInChildren<GPauseMenu>(true);
     }
 }
