@@ -289,6 +289,7 @@ public class GThrowAction : GAction
     
     IEnumerator StartReactionsCoroutine()
     {
+        RuntimeManager.PlayOneShotAttached("event:/Pawn/Throw", linkedPawn.gameObject);
         yield return new WaitUntil(() => _isThrowAnimationOver);
         
         linkedPawn.OnAnimationThrow -= OnAnimationThrowCallback;
@@ -321,7 +322,6 @@ public class GThrowAction : GAction
         float outDur   = Vector3.Distance(_startPos, _hitPos)   / Mathf.Max(0.01f, _playerCatch ? _passCrownSpeed : _throwCrownSpeed);
         float backDur  = Vector3.Distance(_hitPos, _returnPos)  / Mathf.Max(0.01f, _returnCrownSpeed);
         float landDur  = Vector3.Distance(_hitPos, _landingPos) / Mathf.Max(0.01f, _landCrownSpeed);
-
         ThrowSoundInstance = RuntimeManager.CreateInstance("event:/Crown/Throw");
         ThrowSoundInstance.set3DAttributes(RuntimeUtils.To3DAttributes(_crown.gameObject));
 
@@ -438,6 +438,7 @@ public class GThrowAction : GAction
             _seq.AppendCallback(() =>
             {
                 targetCell.SetGridObject(_crown, true);
+                RuntimeManager.PlayOneShotAttached("event:/Crown/Fall", _crown.gameObject);
             });
         }
         

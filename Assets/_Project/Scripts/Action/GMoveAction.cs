@@ -130,6 +130,8 @@ public class GMoveAction : GAction
         MoveEventInstance = RuntimeManager.CreateInstance(MoveEvent);
         MoveEventInstance.set3DAttributes(RuntimeUtils.To3DAttributes(linkedPawn.gameObject));
         MoveEventInstance.start();
+        if (targetCell.GetTileType == ETileType.Hole)
+            RuntimeManager.PlayOneShotAttached("event:/Pawn/Fall", linkedPawn.gameObject);
     }
 
     public override void Update_Action(float delta)
@@ -170,7 +172,12 @@ public class GMoveAction : GAction
         linkedPawn.transform.position = targetCell.transform.position;
         linkedPawn.visuals.SetAnimationState(GPawn.IdleAnimationName);
         MoveEventInstance.stop(STOP_MODE.ALLOWFADEOUT);
-        if (!linkedPawn.IsAlive) linkedPawn.Kill();
+        if (!linkedPawn.IsAlive)
+        {
+            if (targetCell.GetTileType == ETileType.Hole)
+                RuntimeManager.PlayOneShotAttached("event:/Pawn/Enemy/Drown", linkedPawn.gameObject);
+            linkedPawn.Kill();
+        }
 
         if (moveAnimationName == GPawn.PushedStartAnimationName)
         {

@@ -63,7 +63,7 @@
 			<value>0</value>
 		</property>
 		<property name="maximumDistance">
-			<value>850</value>
+			<value>750</value>
 		</property>
 	</object>
 	<object class="MarkerTrack" id="{786f260e-350b-4537-8f34-4bce3849d270}" />
@@ -104,6 +104,9 @@
 		</relationship>
 	</object>
 	<object class="EventMixerMaster" id="{3f21ce3f-08c1-4d75-a8fb-a78a685302b8}">
+		<property name="volume">
+			<value>-2.5</value>
+		</property>
 		<relationship name="modulators">
 			<destination>{09c7fda6-f92a-4bef-83be-8a28c8d8b87f}</destination>
 		</relationship>
@@ -152,6 +155,9 @@
 	<object class="MultiSound" id="{47917144-d95c-4daf-bd1b-59c9585f1310}">
 		<property name="length">
 			<value>0.25</value>
+		</property>
+		<property name="volume">
+			<value>-5.5</value>
 		</property>
 		<relationship name="sounds">
 			<destination>{6d8779c9-cc1e-4c78-bc26-0f52ff19ad84}</destination>
@@ -227,7 +233,7 @@
 	</object>
 	<object class="EventMixerGroup" id="{f17134e7-a4da-4f66-9c1f-1831028cebf4}">
 		<property name="volume">
-			<value>-27.5</value>
+			<value>-28</value>
 		</property>
 		<property name="name">
 			<value>Audio 3</value>

@@ -93,12 +93,20 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _startState: 0
   <currentState>k__BackingField: 4
+  <previousState>k__BackingField: 5
+  isLoadingTutorial: 0
+  _loadableSceneAssets: []
+  _tutorialSceneAssets: []
   _loadableScenes: []
   _currentSceneToLoadIndex: 0
+  _loadableTutorialScenes: []
+  _currentTutorialSceneToLoadIndex: 0
   _musicEvent:
     Guid:
-      Data1: 0
-      Data2: 0
-      Data3: 0
-      Data4: 0
-    Path: 
+      Data1: -1790422121
+      Data2: 1171781365
+      Data3: 1726052739
+      Data4: 638072658
+    Path: event:/Music/Music
+  isGamePaused: 0
+  _intensityWaveFactor: 1

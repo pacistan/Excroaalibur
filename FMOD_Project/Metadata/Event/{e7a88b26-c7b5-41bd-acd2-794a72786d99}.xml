@@ -60,8 +60,11 @@
 		</relationship>
 	</object>
 	<object class="EventAutomatableProperties" id="{a0b1ab22-6249-484e-858e-dca04bf18869}">
+		<property name="minimumDistance">
+			<value>0</value>
+		</property>
 		<property name="maximumDistance">
-			<value>850</value>
+			<value>750</value>
 		</property>
 	</object>
 	<object class="MarkerTrack" id="{33eed48a-ac0b-408e-abc3-c488316fd2cb}" />
@@ -109,6 +112,9 @@
 		</relationship>
 	</object>
 	<object class="EventMixerMaster" id="{a4d76416-4f4d-49ec-abce-744de43ee79a}">
+		<property name="volume">
+			<value>-3.5</value>
+		</property>
 		<relationship name="effectChain">
 			<destination>{6a54c4ba-a30e-4b76-aafa-b3792060fecb}</destination>
 		</relationship>
@@ -132,10 +138,10 @@
 	</object>
 	<object class="SoundScatterer" id="{72eb3607-9f2e-46d0-a098-d5ffec78a111}">
 		<property name="length">
-			<value>0.32000000000000001</value>
+			<value>0.4375</value>
 		</property>
 		<property name="volume">
-			<value>-9.5</value>
+			<value>-2</value>
 		</property>
 		<property name="minimumTimeBetweenSounds">
 			<value>97</value>
@@ -164,7 +170,7 @@
 	</object>
 	<object class="EventMixerGroup" id="{a06ea412-6c84-45ea-9a76-70830ae4566f}">
 		<property name="volume">
-			<value>-5.5</value>
+			<value>-5</value>
 		</property>
 		<property name="name">
 			<value>Audio 1</value>
@@ -193,7 +199,7 @@
 	</object>
 	<object class="EventMixerGroup" id="{0626aad3-e2b1-4f17-8147-32ab1898ca0d}">
 		<property name="volume">
-			<value>-2</value>
+			<value>-4</value>
 		</property>
 		<property name="name">
 			<value>Audio 2</value>
@@ -221,7 +227,7 @@
 	</object>
 	<object class="EventMixerGroup" id="{923219db-009f-4980-bec4-3eb8b743a5d7}">
 		<property name="volume">
-			<value>-3.5</value>
+			<value>-9.5</value>
 		</property>
 		<property name="name">
 			<value>Audio 3</value>
@@ -249,7 +255,7 @@
 	</object>
 	<object class="EventMixerGroup" id="{612b18f7-b750-40b3-b5e9-564862987dd7}">
 		<property name="volume">
-			<value>-15</value>
+			<value>-13</value>
 		</property>
 		<property name="name">
 			<value>Audio 4</value>
@@ -353,18 +359,18 @@
 	</object>
 	<object class="AutomationPoint" id="{38cc1eed-be8f-4639-9e97-19c2abaf7d4f}">
 		<property name="position">
-			<value>0</value>
+			<value>0.03125</value>
 		</property>
 		<property name="value">
 			<value>1</value>
 		</property>
 		<property name="curveShape">
-			<value>-0.0503297374</value>
+			<value>0.272450358</value>
 		</property>
 	</object>
 	<object class="AutomationPoint" id="{c41db99d-7222-4c31-be1f-8cf872303a17}">
 		<property name="position">
-			<value>0.32000000000000001</value>
+			<value>0.4375</value>
 		</property>
 		<property name="value">
 			<value>0</value>
