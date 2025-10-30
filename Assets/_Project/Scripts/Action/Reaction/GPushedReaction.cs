@@ -14,9 +14,6 @@ public class GPushedReaction : GAction
     [SerializeField]
     bool _DamageRelatedToPushForce = false;
     
-    [SerializeField, Tooltip("Tile types on which the pawn can be pushed")]
-    private ETileType[] _pushedTileType = new ETileType[] { ETileType.Normal, ETileType.Hole };
-    
     [SerializeField, HideIf("_DamageRelatedToPushForce"), Tooltip("Damage inflicted if we hit Something while being pushed")]
     int _damage = 1;
     
