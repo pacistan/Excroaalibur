@@ -20,6 +20,7 @@ public class GTurnBaseManager : GSingleton<GTurnBaseManager>
     public event Action<GController> OnStartControllerTurn;
     public event Action<int> OnPrePlayerTurn;
     public event Action<int> OnPostPlayerTurn;
+    public event Action<GController> OnUnregisterController;
     
     /** Manager The Turn Order */
     [field: SerializeField, ReadOnly, HideInEditorMode, BoxGroup("Turn")]

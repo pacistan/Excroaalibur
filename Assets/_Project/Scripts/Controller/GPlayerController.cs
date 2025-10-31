@@ -17,6 +17,9 @@ public class GPlayerController : GController
 
     [SerializeField]
     public bool _endTurnWhenNoActionsLeft;
+    
+    [SerializeField]
+    private float _speedRotateTowardsActionValidsCell = 0.1f;
     public void SetEndTurnWhenNoActionsLeft(bool endTurnWhenNoActionsLeft) => _endTurnWhenNoActionsLeft = endTurnWhenNoActionsLeft;
     
     [SerializeField, ReadOnly, HideInEditorMode] 
@@ -248,6 +251,12 @@ public class GPlayerController : GController
             else if (!_selectedPlayer && _hoverCell != newCell && _selectedAction != null)
             {
                 SelectAction(null);
+            }
+            
+            if (_selectedAction != null && _selectedAction.IsValidCell(newCell.hexCoordinates))
+            {
+                if (_selectedPlayer != null)
+                    _selectedPlayer.RotateTowards(newCell.transform.position, _speedRotateTowardsActionValidsCell);
             }
             
             _hoverCell = newCell;

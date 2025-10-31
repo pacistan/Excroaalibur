@@ -7,6 +7,10 @@ using UnityEngine;
 using UnityEngine.Events;
 
 
+// TODO : Create Wave Data In Scriptable Object ! 
+// Creat this in Turn Base Manager ?
+// Set the Data for Wave expose in the turn Base manager ?
+// Remove Singleton From this Script 
 /* Manage the Wave and Spawn of Ennemies */
 public class GWaveManager : GSingleton<GWaveManager>
 {

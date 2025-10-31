@@ -1,11 +1,12 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
 /* Use this for Displaying Tutorial Information to the Player */
-public class GTutorialInfos : MonoBehaviour
+public class GTutorialHandler : MonoBehaviour
 {
     [Serializable]
     public struct STutorialInfo
@@ -13,6 +14,10 @@ public class GTutorialInfos : MonoBehaviour
         /** GameObject to activate */
         [SerializeField]
         public GameObject CanvasObject;
+        
+        /** Tutorial Text Object to Activate at End of timer */
+        [SerializeField]
+        public TextMeshProUGUI TextObject;
         
         /** Time the Game is Stopped to Show the Info */
         [SerializeField]
@@ -25,7 +30,6 @@ public class GTutorialInfos : MonoBehaviour
     
     [SerializeField, Tooltip("List of Tutorial Infos to Show to the Player")]
     private List<STutorialInfo> tutorialInfos = new List<STutorialInfo>();
-    
     
     /** Get the Tutorial Info at a Specific Wave */
     public STutorialInfo? GetTutorialInfoAtWave(int wave)
@@ -41,6 +45,15 @@ public class GTutorialInfos : MonoBehaviour
     void Awake()
     {
         GTurnBaseManager.Instance.OnPrePlayerTurn += HandlePrePlayerTurn;
+        GTurnBaseManager.Instance.OnUnregisterController += HandleUnregisterController;
+    }
+
+    void HandleUnregisterController(GController controller)
+    {
+        if (controller is GPlayerController) return;
+        
+        GGameManager.Instance._currentTutorialSceneToLoadIndex++;
+        GGameManager.Instance.LoadScene();
     }
 
     void HandlePrePlayerTurn(int TurnCount)
@@ -49,17 +62,18 @@ public class GTutorialInfos : MonoBehaviour
         if (!info.HasValue) return;
             
         info.Value.CanvasObject.gameObject.SetActive(true);
-        StartCoroutine(WaitAndHideInfo(info.Value.CanvasObject, info.Value.stopTime));
+        StartCoroutine(WaitAndHideInfo(info.Value));
     }
     
-    IEnumerator WaitAndHideInfo(GameObject infoPicture, int waitTime)
+    IEnumerator WaitAndHideInfo(STutorialInfo info)
     {
         GGameManager.Instance._playerController.enabled = false; 
-        yield return new WaitForSeconds(waitTime);
+        yield return new WaitForSeconds(info.stopTime);
         
+        info.TextObject.gameObject.SetActive(false);
         GGameManager.Instance._playerController.enabled = true;
         yield return new WaitUntil(() => Input.anyKeyDown);
         
-        infoPicture.gameObject.SetActive(false);
+        info.CanvasObject.SetActive(false);
     }
 }

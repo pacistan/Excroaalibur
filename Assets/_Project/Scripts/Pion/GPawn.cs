@@ -80,6 +80,8 @@ public class GPawn : GGridObject
     // Cache for quick look-up of override reactions
     private Dictionary<Type, GAction> _overrideCache;
     
+    Coroutine RotateTowardsCouroutineHandle;
+    
     // TODO : move with Timer Utils !
     public void RotateTowards(Vector3 Position, float duration)
     {
@@ -88,7 +90,9 @@ public class GPawn : GGridObject
         Quaternion targetRotation = Quaternion.LookRotation(directionToLook, Vector3.up);
         if (Quaternion.Angle(transform.rotation, targetRotation) < 1f)
             return;
-        StartCoroutine(RotateTowardsCouroutine(targetRotation, duration));
+        if (RotateTowardsCouroutineHandle != null)
+            StopCoroutine(RotateTowardsCouroutineHandle);
+        RotateTowardsCouroutineHandle = StartCoroutine(RotateTowardsCouroutine(targetRotation, duration));
     }
     
     IEnumerator RotateTowardsCouroutine(Quaternion targetRotation , float duration = 0.2f)

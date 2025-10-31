@@ -43,8 +43,9 @@ public class GGameManager: GSingleton<GGameManager>
     [Space(10), LabelText("Tutorial")]
     [SerializeField, FoldoutGroup("SceneToLoad"), ReadOnly]
     private string[] _loadableTutorialScenes;
+    
     [SerializeField, FoldoutGroup("SceneToLoad"), ReadOnly]
-    private int _currentTutorialSceneToLoadIndex = 0;
+    public int _currentTutorialSceneToLoadIndex = 0 ;
 
     [SerializeField]
     EventReference _musicEvent;
@@ -67,7 +68,7 @@ public class GGameManager: GSingleton<GGameManager>
     float _loadSceneForceDuration = 2f;
     
     public GPlayerController _playerController;
-
+    
     public void SetSceneToLoad(string sceneToLoadName)
     {
         _loadableScenes[_currentSceneToLoadIndex] = sceneToLoadName;
