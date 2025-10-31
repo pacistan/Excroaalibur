@@ -84,7 +84,8 @@ public class GThrowAction : GAction
     private float _distance;
     private float _progress;
 
-    EventInstance ThrowSoundInstance;
+    EventInstance _pawnThrowSoundInstance;
+    EventInstance _throwSoundInstance;
     bool _isThrowAnimationOver;
 
     public override void OnSelectedAction()
@@ -310,7 +311,13 @@ public class GThrowAction : GAction
     
     IEnumerator StartReactionsCoroutine()
     {
-        RuntimeManager.PlayOneShotAttached("event:/Pawn/Throw", linkedPawn.gameObject);
+        int crownPower = Mathf.Clamp(_crown._currentDamage, 0, 5);
+        _pawnThrowSoundInstance = RuntimeManager.CreateInstance("event:/Pawn/Throw");
+        _pawnThrowSoundInstance.set3DAttributes(linkedPawn.gameObject.To3DAttributes());
+        _pawnThrowSoundInstance.setParameterByName("Power", crownPower);
+        _pawnThrowSoundInstance.start();
+        _pawnThrowSoundInstance.release();
+        
         yield return new WaitUntil(() => _isThrowAnimationOver);
         
         linkedPawn.OnAnimationThrow -= OnAnimationThrowCallback;
@@ -343,8 +350,9 @@ public class GThrowAction : GAction
         float outDur   = Vector3.Distance(_startPos, _hitPos)   / Mathf.Max(0.01f, _playerCatch ? _passCrownSpeed : _throwCrownSpeed);
         float backDur  = Vector3.Distance(_hitPos, _returnPos)  / Mathf.Max(0.01f, _returnCrownSpeed);
         float landDur  = Vector3.Distance(_hitPos, _landingPos) / Mathf.Max(0.01f, _landCrownSpeed);
-        ThrowSoundInstance = RuntimeManager.CreateInstance("event:/Crown/Throw");
-        ThrowSoundInstance.set3DAttributes(RuntimeUtils.To3DAttributes(_crown.gameObject));
+        _throwSoundInstance = RuntimeManager.CreateInstance("event:/Crown/Throw");
+        _throwSoundInstance.set3DAttributes(_crown.gameObject.To3DAttributes());
+        _throwSoundInstance.setParameterByName("Power", crownPower);
 
         _seq = DOTween.Sequence()
             .SetUpdate(UpdateType.Manual, false); // Manual update mode
@@ -363,7 +371,7 @@ public class GThrowAction : GAction
         _seq.Join(_crown.transform.DORotate(angleAxisRotation, outDur, RotateMode.LocalAxisAdd))
             .SetEase(_playerCatch ?_passSpeedCurve : _throwSpeedCurve);
 
-        ThrowSoundInstance.start();
+        _throwSoundInstance.start();
         // Impact callback: Fire the reaction of the target pawn
         _seq.AppendCallback(() =>
         {
@@ -379,7 +387,8 @@ public class GThrowAction : GAction
                 if (!_targetPawn.data.isPlayer)
                     RuntimeManager.PlayOneShotAttached("event:/Crown/Hit", _crown.gameObject);
             }
-            ThrowSoundInstance.stop(STOP_MODE.ALLOWFADEOUT);
+            _throwSoundInstance.stop(STOP_MODE.ALLOWFADEOUT);
+            _throwSoundInstance.release();
         });
 
         if (_killTarget)
