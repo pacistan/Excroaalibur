@@ -65,6 +65,8 @@ public class GGameManager: GSingleton<GGameManager>
 
     [SerializeField]
     float _loadSceneForceDuration = 2f;
+    
+    public GPlayerController _playerController;
 
     public void SetSceneToLoad(string sceneToLoadName)
     {

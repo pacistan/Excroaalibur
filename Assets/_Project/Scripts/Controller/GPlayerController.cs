@@ -469,4 +469,9 @@ public class GPlayerController : GController
             _isFirstAction = true;
         }
     }
+
+    void Awake() 
+    {
+        GGameManager.Instance._playerController = this;
+    }
 }
