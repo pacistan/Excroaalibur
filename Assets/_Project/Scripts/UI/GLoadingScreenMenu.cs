@@ -1,3 +1,5 @@
+using Sirenix.Utilities;
+using System;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -10,6 +12,14 @@ public class GLoadingScreenMenu : MonoBehaviour
     [SerializeField]
     TextMeshProUGUI _progressText;
 
+    [SerializeField]
+    RectTransform _loadingDiscParent;
+
+    [SerializeField]
+    float[] _loadingDiscRotationSpeed;
+    
+    RectTransform[]  _loadingDiscs;
+    
     float _oldValue;
 
     public void ResetProgress()
@@ -25,5 +35,20 @@ public class GLoadingScreenMenu : MonoBehaviour
         _oldValue = newValue;
         _progressFill.fillAmount = newValue;
         _progressText.text = Mathf.RoundToInt(newValue * 100).ToString() + "%";
+    }
+
+    void Update()
+    {
+        _loadingDiscs.ForEach(disc => disc.Rotate(0, 0, 
+            _loadingDiscRotationSpeed[Mathf.Min(disc.GetSiblingIndex(), _loadingDiscRotationSpeed.Length - 1)] * Time.unscaledDeltaTime));
+    }
+
+    void Start()
+    {
+        _loadingDiscs = new RectTransform[_loadingDiscParent.childCount];
+        for (int i = 0; i < _loadingDiscParent.childCount; i++)
+        {
+            _loadingDiscs[i] = _loadingDiscParent.GetChild(i) as RectTransform;
+        }
     }
 }

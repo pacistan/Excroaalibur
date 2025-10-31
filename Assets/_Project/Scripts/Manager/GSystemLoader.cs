@@ -9,10 +9,13 @@ public class GSystemLoader : MonoBehaviour
     [FormerlySerializedAs("_pawnPrefab")]
     [SerializeField]
     private GameObject _systemPrefab;
+    bool _hasLoaded = false;
+    
     void Awake()
     {
         if (!GGameManager.Instance)
         {
+            _hasLoaded = true;
             Instantiate(_systemPrefab);
         }
     }
@@ -20,7 +23,10 @@ public class GSystemLoader : MonoBehaviour
     IEnumerator Start()
     {
         yield return new WaitForEndOfFrame();
-        GGameManager.Instance.SetSceneToLoad(SceneManager.GetActiveScene().name);
-        GGameManager.Instance.ChangeState(EMacroStates.Play);
+        if (_hasLoaded)
+        {
+            GGameManager.Instance.SetSceneToLoad(SceneManager.GetActiveScene().name);
+            GGameManager.Instance.ChangeState(EMacroStates.Play);
+        }
     }
 }

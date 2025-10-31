@@ -80,6 +80,7 @@ public class GGameManager: GSingleton<GGameManager>
             Debug.LogWarning("Called to change to already active menu");
             return;
         }
+        Debug.Log(newState.ToString());
         previousState = currentState;
         currentState = newState;
         OnMenuExit();
@@ -115,6 +116,7 @@ public class GGameManager: GSingleton<GGameManager>
 
                 yield return null;
             }
+            Debug.Log(forcedTimer);
             ChangeState(EMacroStates.Play);
         }
 

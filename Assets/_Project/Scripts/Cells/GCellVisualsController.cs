@@ -161,7 +161,7 @@ public class GCellVisualsController : MonoBehaviour
     public void ChangeSprite(ETileHighlightType highlightType)
     {
         var highlightSprite = cellCommonData.tileHighlightData[highlightType];
-        if (highlightSprite && _currentHighlightActionType != ETileHighlightActionType.Normal)
+        if (highlightSprite && (isHovered || isSelected || _currentHighlightActionType != ETileHighlightActionType.Normal))
         {
             _highlight.enabled = true; 
             _highlight.sprite = cellCommonData.tileHighlightData[highlightType];
