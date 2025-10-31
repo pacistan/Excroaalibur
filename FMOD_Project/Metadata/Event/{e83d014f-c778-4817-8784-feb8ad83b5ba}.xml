@@ -97,6 +97,7 @@
 			<destination>{669a2269-54a6-49eb-8631-50d015330d7e}</destination>
 			<destination>{6d4df426-4460-43ff-9983-7e0a2f3fc161}</destination>
 			<destination>{6dd2e63e-133e-4ad0-885b-1dbd5a0c17dc}</destination>
+			<destination>{913dd13c-1991-48fb-ac56-fb736ab1aa27}</destination>
 		</relationship>
 		<relationship name="mixerGroup">
 			<destination>{e0d840a3-b94c-4629-9845-aa183f57d6d4}</destination>
@@ -116,6 +117,7 @@
 			<destination>{669a2269-54a6-49eb-8631-50d015330d7e}</destination>
 			<destination>{6d4df426-4460-43ff-9983-7e0a2f3fc161}</destination>
 			<destination>{6dd2e63e-133e-4ad0-885b-1dbd5a0c17dc}</destination>
+			<destination>{913dd13c-1991-48fb-ac56-fb736ab1aa27}</destination>
 		</relationship>
 		<relationship name="preset">
 			<destination>{2edff86b-21ea-4e58-9d52-f7ed6857d9d9}</destination>
@@ -177,6 +179,9 @@
 		</relationship>
 	</object>
 	<object class="EventMixerGroup" id="{2a7e7f1f-648b-49aa-9dfb-bc7024388410}">
+		<property name="volume">
+			<value>-5.5</value>
+		</property>
 		<property name="name">
 			<value>Audio 1</value>
 		</property>
@@ -227,6 +232,9 @@
 		<property name="start">
 			<value>1</value>
 		</property>
+		<property name="volume">
+			<value>5</value>
+		</property>
 		<relationship name="audioFile">
 			<destination>{fc86ea03-77c6-418b-ad70-707247762aa9}</destination>
 		</relationship>
@@ -234,6 +242,9 @@
 	<object class="SingleSound" id="{b1be4a7f-e00f-4b40-b6f9-95fa68dae26b}">
 		<property name="start">
 			<value>2</value>
+		</property>
+		<property name="volume">
+			<value>0.5</value>
 		</property>
 		<relationship name="audioFile">
 			<destination>{99405100-0b99-48bc-a47b-d0bcae3cffba}</destination>
@@ -251,6 +262,9 @@
 		<property name="start">
 			<value>4</value>
 		</property>
+		<property name="volume">
+			<value>-3.5</value>
+		</property>
 		<relationship name="audioFile">
 			<destination>{90cdbf08-26f8-4db4-85d1-7da4b1f91c84}</destination>
 		</relationship>
@@ -259,8 +273,25 @@
 		<property name="start">
 			<value>5</value>
 		</property>
+		<property name="volume">
+			<value>-5</value>
+		</property>
 		<relationship name="audioFile">
 			<destination>{ac04e873-1dec-44d1-92ce-59bf9f01d639}</destination>
+		</relationship>
+	</object>
+	<object class="SingleSound" id="{913dd13c-1991-48fb-ac56-fb736ab1aa27}">
+		<property name="start">
+			<value>2</value>
+		</property>
+		<property name="volume">
+			<value>5</value>
+		</property>
+		<property name="pitch">
+			<value>6.5</value>
+		</property>
+		<relationship name="audioFile">
+			<destination>{fc86ea03-77c6-418b-ad70-707247762aa9}</destination>
 		</relationship>
 	</object>
 	<object class="EventMixerGroup" id="{e0d840a3-b94c-4629-9845-aa183f57d6d4}">
@@ -418,15 +449,17 @@
 		<relationship name="automationPoints">
 			<destination>{b6c9c054-99a5-40aa-8840-6068931c9622}</destination>
 			<destination>{d446370a-141e-45ca-abf4-ec0684b6b3e9}</destination>
+			<destination>{7c4ff92c-a316-4388-b6fc-c133c7c864e4}</destination>
+			<destination>{3bbb7832-ae09-4669-b5ec-241e92d65a49}</destination>
 		</relationship>
 	</object>
 	<object class="MixerBusFader" id="{2a04d6ee-e30f-4c0f-bb8c-30a22187e1e2}" />
 	<object class="AutomationPoint" id="{b6c9c054-99a5-40aa-8840-6068931c9622}">
 		<property name="position">
-			<value>0.65625</value>
+			<value>0.65000000000000002</value>
 		</property>
 		<property name="value">
-			<value>-11</value>
+			<value>-13</value>
 		</property>
 		<property name="curveShape">
 			<value>0.546487212</value>
@@ -438,6 +471,22 @@
 	<object class="AutomationPoint" id="{d446370a-141e-45ca-abf4-ec0684b6b3e9}">
 		<property name="position">
 			<value>0.90625</value>
+		</property>
+		<property name="value">
+			<value>-80</value>
+		</property>
+	</object>
+	<object class="AutomationPoint" id="{7c4ff92c-a316-4388-b6fc-c133c7c864e4}">
+		<property name="position">
+			<value>0.20000000000000001</value>
+		</property>
+		<property name="value">
+			<value>-14</value>
+		</property>
+	</object>
+	<object class="AutomationPoint" id="{3bbb7832-ae09-4669-b5ec-241e92d65a49}">
+		<property name="position">
+			<value>0</value>
 		</property>
 		<property name="value">
 			<value>-80</value>
