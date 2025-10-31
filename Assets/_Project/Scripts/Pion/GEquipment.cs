@@ -10,9 +10,22 @@ public class GEquipment : GGridObject
     [field: SerializeField, FoldoutGroup("Other/Components")]
     public GEquipmentVisuals visuals { get; private set; }
     
+    [ReadOnly, BoxGroup("Important Info")]
+    public GPawn transformOwner;
+    
     public override GCell GetCell()
     {
         return owner ? owner.GetCell() : _currentCell;
+    }
+
+    public void ResetTransformOwner()
+    {
+        if (transformOwner != null)
+        {
+            transformOwner.OnReleaseTransformEquipment();
+            transformOwner = null;
+            transform.parent = null;
+        }
     }
     
     public override bool TrySetCell(GCell newCell)

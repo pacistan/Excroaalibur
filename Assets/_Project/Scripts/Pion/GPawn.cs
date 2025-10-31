@@ -33,8 +33,8 @@ public class GPawn : GGridObject
 
     public const string AnimParam_IsStunned = "IsStunned";
     public const string AnimParam_HasSword = "HasSword";
-    public const string AnimParam_IsPreparedToCatch = "IsPreparedToCatch";
-    public const string AnimParam_IsPreparedToThrow = "IsPreparedToThrow";
+    public const string AnimParam_IsPreparedToCatch = "IsPrepareCatch";
+    public const string AnimParam_IsPreparedToThrow = "isPrepareThrow";
     
     [SerializeReference]
     public GPawnData data;
@@ -134,6 +134,13 @@ public class GPawn : GGridObject
 
         if (updateTransform)
         {
+            if (equipment.transformOwner && equipment.transformOwner != this)
+            {
+                equipment.transformOwner.OnReleaseTransformEquipment();
+            }
+            equipment.transformOwner = this;
+            // possessorTransform.OnReleaseVisuals
+            // possessortransofmr = newPosssessorTransform
             equipment.transform.parent = equipmentParentTr;
             equipment.transform.localPosition = Vector3.zero; 
             equipment.transform.localRotation = Quaternion.identity;
@@ -144,14 +151,18 @@ public class GPawn : GGridObject
             }
         }
     }
-    
+
+    public void OnReleaseTransformEquipment()
+    {
+        visuals.SetAnimationParameter(AnimParam_HasSword, false);
+    }
+
     public void ReleaseEquipement(bool giveToCell, bool resetCrownPassCount = false)
     {
         if (equipment == null) return;
         equipment.owner = null;
         OnUnequip?.Invoke(equipment);
 
-        visuals.SetAnimationParameter(AnimParam_HasSword, false);
         
         if (resetCrownPassCount && equipment && equipment is GCrown)
         {

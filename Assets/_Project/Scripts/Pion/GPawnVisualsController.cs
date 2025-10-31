@@ -126,14 +126,14 @@ public class GPawnVisualsController : SerializedMonoBehaviour
     }
 
     /** Walking / Idle / Push / Throw */
-    public void SetAnimationState(string animationStateName)
+    public void SetAnimationState(string animationStateName, float transitionDuration = .3f)
     {
         if (!_animator)
         {
             Debug.LogWarning("Animator is not set");
             return;
         }
-        _animator.CrossFade(animationStateName, .3f);
+        _animator.CrossFade(animationStateName, transitionDuration);
     }
 
     public void SetAnimationParameter(string animationParameterName, bool value)

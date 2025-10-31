@@ -33,6 +33,8 @@ public class GGridObject : SerializedMonoBehaviour
     [FoldoutGroup("Other", false)]
     [field: SerializeField, FoldoutGroup("Other/Persistant Data")]
     public string className { get; private set; }
+
+
     
     public GHexCoordinate GetHexCoordinate() => _currentCell ? _currentCell.hexCoordinates : throw new Exception("This GridObject is not assigned to any Cell.");
     

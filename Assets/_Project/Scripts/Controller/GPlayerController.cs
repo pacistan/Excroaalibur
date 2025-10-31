@@ -463,10 +463,9 @@ public class GPlayerController : GController
 
     private void OnChangeMacroStateCallback(EMacroStates oldState, EMacroStates newState)
     {
-        if (newState == EMacroStates.Play)
+        if (newState == EMacroStates.Play && oldState == EMacroStates.LoadingScreen)
         {
             _isFirstAction = true;
-            
         }
     }
 }
