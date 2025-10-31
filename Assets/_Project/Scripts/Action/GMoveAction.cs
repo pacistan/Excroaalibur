@@ -41,22 +41,6 @@ public class GMoveAction : GAction
     {
     }
 
-    public override void OnSelectedAction()
-    {
-        foreach (var validCell in validCells)
-        { 
-            GPawn pawn =  GGridManager.Instance.GetCell(validCell).GetGridObject<GPawn>();
-            
-            pawn?.visuals.SetAnimationState(GPawn.ReadyToCatchAnimationName);
-        }
-    }
-
-    public override void OnUnselectedAction()
-    {
-        foreach (var validCell in validCells)
-            GGridManager.Instance.GetCell(validCell).GetGridObject<GPawn>()?.visuals.SetAnimationState(GPawn.IdleAnimationName);
-    }
-
     public void OverrideTileType(ETileType[] inWalkingTileType, ETileType[] inEndMovementTileType)
     {
         _walkingTileType = inWalkingTileType;

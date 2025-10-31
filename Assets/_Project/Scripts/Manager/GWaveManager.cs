@@ -69,8 +69,8 @@ public class GWaveManager : GSingleton<GWaveManager>
     [SerializeField, ShowIf("@_waveType == EWaveType.Endless"), Tooltip("Enemy prefab for Endless wave spawning")]
     private GAIController enemyPrefab; 
     
-    [HideInEditorMode, ReadOnly, ShowIf("@_waveType == EWaveType.Endless"), Tooltip("Current Count of Enemies to Spawn in Endless Mode")]
-    private int _endlessWaveCount = 0;
+    [HideInEditorMode, ReadOnly, Tooltip("Number of completed waves")]
+    private int _WaveCount = 0;
     
     [HideInEditorMode, ReadOnly, Tooltip("Currrent Pool of Enemies to Spawn")]
     private List<GAIController> _ennemiesPool = new List<GAIController>();
@@ -80,21 +80,40 @@ public class GWaveManager : GSingleton<GWaveManager>
 
     private int SpawningInProcess = 0; 
     
-    public int GetScore() => _waveType == EWaveType.Endless ? _endlessWaveCount - 2 : -1; // 
+    /** Get the Current Score (Number of completed waves) */
+    public int GetScore() => _waveType == EWaveType.Endless ? GetWaveCount() - 1 : -1;
     
     public bool IsSpawningInProgress() => HasEnemiesToSpawn() && SpawningInProcess > 0;
-    public void OnEnemySpawned() => SpawningInProcess = Mathf.Max(0, SpawningInProcess - 1);
     
-    public void CheckNextWave(int turnCount)
+    private void OnEnemySpawned()
+    {
+        SpawningInProcess = Mathf.Max(0, SpawningInProcess - 1);
+        if (SpawningInProcess > 0) return;
+       
+        // TODO : Spawning process finish !
+    }
+    
+    private void OnPrePlayerTurn(int turnCount)
+    {
+        CheckNextWave(turnCount);
+    }
+    
+    private void OnPostPlayerTurn(int turnCount)
+    {
+        if (_waveType == EWaveType.Endless)
+            CheckNextWave(turnCount);
+       
+        SpawnNextWave();
+    }
+
+    private void CheckNextWave(int turnCount)
     {
         if (HasEnemiesToSpawn()) return; // already have enemies to spawn ! 
         
         if (_waveType == EWaveType.Endless) // Endless wave logic
         {
-            if (GTurnBaseManager.Instance.EnemiesCount > 0) return;
-            
-            _ennemiesPool.AddRange(Enumerable.Repeat(enemyPrefab, _endlessWaveCount)); 
-            _endlessWaveCount++;
+            if (GTurnBaseManager.Instance.EnemiesCount > 0) return; // Wait until all enemies are dead !
+            _ennemiesPool.AddRange(Enumerable.Repeat(enemyPrefab, _WaveCount + 1)); 
         }
         else if (_waveType == EWaveType.Finite) // Finite wave logic
         {
@@ -107,12 +126,14 @@ public class GWaveManager : GSingleton<GWaveManager>
             _ennemiesPool.AddRange(wave.GetEnemiesToSpawn());
             waves.RemoveAt(0);
         }
-        
-        if (_ennemiesPool.Count > 0 && _ennemiesPool.Count < _spawnCells.Count)
+
+        if (_ennemiesPool.Count > 0)
         {
-            _spawnCells.Shuffle();
+            UpdateWaveCount();
+            if (_ennemiesPool.Count < _spawnCells.Count)
+                _spawnCells.Shuffle();
         }
-       
+        
         if (_waveType == EWaveType.Endless) return; // Do not preview for endless mode
         
         // Preview Spawn
@@ -123,14 +144,14 @@ public class GWaveManager : GSingleton<GWaveManager>
         }
     }
 
-    public void SpawnNextWave()
+    private void SpawnNextWave()
     {
         if (!HasEnemiesToSpawn()) return;
         
         SpawningInProcess = 0;
         int spawnable = Mathf.Min(_ennemiesPool.Count, _spawnCells.Count);
         Debug.Log($"[WaveManager] Spawning {spawnable} enemies.");
-        GHudManager.Instance.playMenu.SetWaveNumberText(_endlessWaveCount - 1);
+        GHudManager.Instance.playMenu.SetWaveNumberText(_WaveCount - 1);
 
         for (int i = spawnable - 1; i >= 0; i--)
         {
@@ -151,7 +172,7 @@ public class GWaveManager : GSingleton<GWaveManager>
                 continue;
             }
             SpawningInProcess++;
-            _spawnCells[i].SpawnPawnFinish(pawn);
+            _spawnCells[i].SpawnPawnFinish(pawn, OnEnemySpawned);
             _ennemiesPool.RemoveAt(i);
         }
         
@@ -160,11 +181,27 @@ public class GWaveManager : GSingleton<GWaveManager>
         _ennemiesPool.Clear();    
     }
     
+    private void UpdateWaveCount()
+    {
+        _WaveCount++;
+        GGameManager.Instance.UpdateIntensity(GetWaveCount()); 
+    }
+    
     private bool HasEnemiesToSpawn() => _ennemiesPool.Count > 0;
+    
+    /* Get the Actual wave Count */
+    private int GetWaveCount() => _waveType == EWaveType.Endless ? _WaveCount - 1 : -1;
     
     protected override void Awake()
     {
         base.Awake(); 
         _spawnCells = GGridManager.Instance.GetAllCellsOfType(ETileType.Spawner);
+        GTurnBaseManager.Instance.OnPrePlayerTurn += OnPrePlayerTurn;
+        GTurnBaseManager.Instance.OnPostPlayerTurn += OnPostPlayerTurn;
+    }
+
+    void OnDisable()
+    {
+        GGameManager.Instance.UpdateIntensity(0); // Reset Intensity
     }
 }

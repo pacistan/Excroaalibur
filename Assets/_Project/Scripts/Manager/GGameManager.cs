@@ -4,16 +4,11 @@ using FMODUnity;
 using Sirenix.OdinInspector;
 using System;
 using System.Collections;
-using System.Collections.Generic;
-using UnityEditor;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;
-using UnityEngine.Serialization;
-using STOP_MODE = FMOD.Studio.STOP_MODE;
 
 public enum EMacroStates { Start, Options, Pause, Play, End, LoadingScreen, None }
-
 
 /* Responsable de la gestion globale du Jeu, de l'activation de potentiel Manager etc...*/
 public class GGameManager: GSingleton<GGameManager>
@@ -210,11 +205,10 @@ public class GGameManager: GSingleton<GGameManager>
         }
     }
     
-    // TODO : CallBack this ! 
-    void UpdateIntensity(int waveNumber)
+    public void UpdateIntensity(int newIntensity)
     {
-        if (waveNumber < 1) return; 
-        _intensity = Mathf.Min(waveNumber / _intensityWaveFactor, _maxIntensity);
+        if (newIntensity < 1) return; 
+        _intensity = Mathf.Min(newIntensity / _intensityWaveFactor, _maxIntensity);
         FMODUnity.RuntimeManager.StudioSystem.setParameterByName("Intensity", _intensity);
     }
     
@@ -223,7 +217,6 @@ public class GGameManager: GSingleton<GGameManager>
     {
         Debug.Log("Game Over !");
         GTurnBaseManager.Instance.enabled = false; // Disable turn ! 
-        // TODO : Disable Game Controls on grid ? 
     }
     
     protected override void Awake()

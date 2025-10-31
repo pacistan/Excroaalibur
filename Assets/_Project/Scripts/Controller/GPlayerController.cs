@@ -71,8 +71,8 @@ public class GPlayerController : GController
             _selectedAction.OnUnselectedAction();
         
         _selectedAction = action;
-        if (_selectedAction == null) return;
         
+        if (_selectedAction == null) return;
         _selectedAction.OnSelectedAction();
         ShowHighlight();
     }
