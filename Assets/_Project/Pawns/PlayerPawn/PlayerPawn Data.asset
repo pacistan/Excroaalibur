@@ -44,7 +44,9 @@ MonoBehaviour:
   <actionTokens>k__BackingField: 2
   <isPlayer>k__BackingField: 1
   <startHp>k__BackingField: -1
-  actions:
+  _walkingTileType: 00000000
+  _endMovementTileType: 00000000
+  actionList:
   - rid: 3108424474244939852
   - rid: 3108424474244939854
   - rid: 3108424474244939853
@@ -98,8 +100,6 @@ MonoBehaviour:
         - x: 2
           z: 5
         _maxMoveDistance: 2
-        _walkingTileType: 00000000
-        _endMovementTileType: 00000000
         _speed: 3
         _speedCurve:
           serializedVersion: 2
@@ -280,7 +280,7 @@ MonoBehaviour:
           m_PreInfinity: 2
           m_PostInfinity: 2
           m_RotationOrder: 4
-        _crownRotationAmountByTileOnThrowToTarget: -300
+        _crownRotationAmountByTileOnThrowToTarget: -200
         _crownRotationAnimationCurveOnThrowToTarget:
           serializedVersion: 2
           m_Curve:
