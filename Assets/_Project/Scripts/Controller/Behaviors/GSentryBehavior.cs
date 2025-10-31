@@ -14,8 +14,7 @@ public class GSentryBehavior : GAIBehavior
     
     [SerializeReference]
     GPlaceOnAltarAction _placeOnAltarAction;
-
-
+    
     [SerializeField, Tooltip("If true the sentry will try to go push player if crown is not an option")]
     protected bool _isFouteurDeMerde;
 
