@@ -74,142 +74,7 @@ MonoBehaviour:
   - menu: 0
     menuFolder: {fileID: 6032859070013548503}
     canvasGroup: {fileID: 5542247945697293498}
-    uiTransitions:
-    - transitionType: 2
-      rectTransform: {fileID: 2843531128771987535}
-      offsetDistance: {x: 0, y: -1500}
-      xCurve:
-        serializedVersion: 2
-        m_Curve:
-        - serializedVersion: 3
-          time: 0
-          value: 0
-          inSlope: 0
-          outSlope: 0
-          tangentMode: 0
-          weightedMode: 0
-          inWeight: 0
-          outWeight: 0
-        - serializedVersion: 3
-          time: 0.32143146
-          value: -0.06912792
-          inSlope: 1.8183987
-          outSlope: 1.8183987
-          tangentMode: 0
-          weightedMode: 0
-          inWeight: 0.33333334
-          outWeight: 0.18700361
-        - serializedVersion: 3
-          time: 1
-          value: 1
-          inSlope: 0
-          outSlope: 0
-          tangentMode: 0
-          weightedMode: 0
-          inWeight: 0
-          outWeight: 0
-        m_PreInfinity: 2
-        m_PostInfinity: 2
-        m_RotationOrder: 4
-      yCurve:
-        serializedVersion: 2
-        m_Curve:
-        - serializedVersion: 3
-          time: 0
-          value: 0
-          inSlope: 0
-          outSlope: 0
-          tangentMode: 0
-          weightedMode: 0
-          inWeight: 0
-          outWeight: 0
-        - serializedVersion: 3
-          time: 0.32143146
-          value: -0.06912792
-          inSlope: 1.8183987
-          outSlope: 1.8183987
-          tangentMode: 0
-          weightedMode: 0
-          inWeight: 0.33333334
-          outWeight: 0.18700361
-        - serializedVersion: 3
-          time: 1
-          value: 1
-          inSlope: 0
-          outSlope: 0
-          tangentMode: 0
-          weightedMode: 0
-          inWeight: 0
-          outWeight: 0
-        m_PreInfinity: 2
-        m_PostInfinity: 2
-        m_RotationOrder: 4
-      gizmosColor: {r: 1, g: 0, b: 0, a: 1}
-      fadeCanvas: {fileID: 0}
-      fadeCurve:
-        serializedVersion: 2
-        m_Curve: []
-        m_PreInfinity: 2
-        m_PostInfinity: 2
-        m_RotationOrder: 4
-      target: {fileID: 0}
-      duration: 2
-      delayOnActivation: 0
-      delayOnDeactivation: 0
-    - transitionType: 2
-      rectTransform: {fileID: 67492292089436238}
-      offsetDistance: {x: 0, y: 800}
-      xCurve:
-        serializedVersion: 2
-        m_Curve: []
-        m_PreInfinity: 2
-        m_PostInfinity: 2
-        m_RotationOrder: 4
-      yCurve:
-        serializedVersion: 2
-        m_Curve:
-        - serializedVersion: 3
-          time: 0
-          value: 0
-          inSlope: 0
-          outSlope: 0
-          tangentMode: 0
-          weightedMode: 0
-          inWeight: 0
-          outWeight: 0
-        - serializedVersion: 3
-          time: 0.32143146
-          value: -0.06912792
-          inSlope: 1.8183987
-          outSlope: 1.8183987
-          tangentMode: 0
-          weightedMode: 0
-          inWeight: 0.33333334
-          outWeight: 0.18700361
-        - serializedVersion: 3
-          time: 1
-          value: 1
-          inSlope: 0
-          outSlope: 0
-          tangentMode: 0
-          weightedMode: 0
-          inWeight: 0
-          outWeight: 0
-        m_PreInfinity: 2
-        m_PostInfinity: 2
-        m_RotationOrder: 4
-      gizmosColor: {r: 1, g: 0, b: 0, a: 1}
-      fadeCanvas: {fileID: 0}
-      fadeCurve:
-        serializedVersion: 2
-        m_Curve: []
-        m_PreInfinity: 2
-        m_PostInfinity: 2
-        m_RotationOrder: 4
-      target: {fileID: 0}
-      duration: 2
-      delayOnActivation: 0
-      delayOnDeactivation: 0
+    uiTransitions: []
     waitForTransitionsToEnableClicking: 0
     virtualCamera: {fileID: 0}
   - menu: 3
@@ -465,6 +330,12 @@ MonoBehaviour:
       duration: 1
       delayOnActivation: 0
       delayOnDeactivation: 0
+    waitForTransitionsToEnableClicking: 1
+    virtualCamera: {fileID: 0}
+  - menu: 6
+    menuFolder: {fileID: 0}
+    canvasGroup: {fileID: 0}
+    uiTransitions: []
     waitForTransitionsToEnableClicking: 1
     virtualCamera: {fileID: 0}
 --- !u!1001 &294713723245484046
@@ -1565,16 +1436,6 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: e85c2f685e58f0f4a969c5a76a370768, type: 3}
---- !u!224 &67492292089436238 stripped
-RectTransform:
-  m_CorrespondingSourceObject: {fileID: 4130136085601853706, guid: e85c2f685e58f0f4a969c5a76a370768, type: 3}
-  m_PrefabInstance: {fileID: 4161034697981524292}
-  m_PrefabAsset: {fileID: 0}
---- !u!224 &2843531128771987535 stripped
-RectTransform:
-  m_CorrespondingSourceObject: {fileID: 2218224559842865419, guid: e85c2f685e58f0f4a969c5a76a370768, type: 3}
-  m_PrefabInstance: {fileID: 4161034697981524292}
-  m_PrefabAsset: {fileID: 0}
 --- !u!224 &3353692438481814463 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 1672034496076856059, guid: e85c2f685e58f0f4a969c5a76a370768, type: 3}

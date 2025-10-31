@@ -16,7 +16,7 @@ public class GGameManager: GSingleton<GGameManager>
     public event Action<EMacroStates, EMacroStates> OnChangeMacroStateEvent;
     public event Action<bool> OnPauseEvent;
     
-    [field: HideInPlayMode, SerializeField]
+    [SerializeField, HideInPlayMode]
     private EMacroStates _startState;
 
     [field : HideInEditorMode, ReadOnly, SerializeField]
@@ -226,6 +226,7 @@ public class GGameManager: GSingleton<GGameManager>
     
     protected override void Awake()
     {
+        currentState = EMacroStates.None;
         _pauseAction = InputSystem.actions.FindAction("Pause");
         base.Awake();
     }
