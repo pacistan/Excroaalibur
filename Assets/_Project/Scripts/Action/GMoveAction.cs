@@ -110,7 +110,7 @@ public class GMoveAction : GAction
             linkedPawn.transform.LookAt(lookAtPosition);
         }
 
-        linkedPawn.visuals.SetAnimationState(moveAnimationName);
+        linkedPawn.visuals.SetAnimationState(moveAnimationName, 0.01f);
         MoveEventInstance = RuntimeManager.CreateInstance(MoveEvent);
         MoveEventInstance.set3DAttributes(RuntimeUtils.To3DAttributes(linkedPawn.gameObject));
         MoveEventInstance.start();

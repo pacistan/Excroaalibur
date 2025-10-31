@@ -126,14 +126,24 @@ public class GPawnVisualsController : SerializedMonoBehaviour
     }
 
     /** Walking / Idle / Push / Throw */
-    public void SetAnimationState(string animationStateName)
+    public void SetAnimationState(string animationStateName, float transitionDuration = .3f)
     {
         if (!_animator)
         {
             Debug.LogWarning("Animator is not set");
             return;
         }
-        _animator.CrossFade(animationStateName, .3f);
+        _animator.CrossFade(animationStateName, transitionDuration);
+    }
+
+    public void SetAnimationParameter(string animationParameterName, bool value)
+    {
+        if (!_animator)
+        {
+            Debug.LogWarning("Animator is not set");
+            return;
+        }
+        _animator.SetBool(animationParameterName, value);        
     }
     
     public void HealthChange()
@@ -170,8 +180,10 @@ public class GPawnVisualsController : SerializedMonoBehaviour
 
     public void OnUpdateActionsToken()
     {
+        
         _imgListactionTokens[0].sprite = _pawn.remainingActionToken >= 1 ?
             _spriteActionTokenOn : _spriteActionTokenOff;
+        
         
         _imgListactionTokens[1].sprite = _pawn.remainingActionToken >= 2 ?
             _spriteActionTokenOn : _spriteActionTokenOff;

@@ -24,11 +24,18 @@ public class GPawn : GGridObject
     public const string IdleAnimationName = "Idle";
     public const string PushAnimationName = "Push";
     public const string ThrowAnimationName = "Throw";
+    public const string PassCloseAnimationName = "Pass_Close";
+    public const string PassFarAnimationName = "Pass_Far";
     public const string PushedStartAnimationName = "Pushed_Start";
     public const string PushedEndAnimationName = "Pushed_End";
-    public const string ReadyToCatchAnimationName = "ReadyToCatch";
-    public const string GetOutOfHoleAnimationName = "GetOutOfHole";
+    public const string CatchAnimationName = "Catch";
+    public const string GetOutOfHoleAnimationName = "MoveOutOfHole";
 
+    public const string AnimParam_IsStunned = "IsStunned";
+    public const string AnimParam_HasSword = "HasSword";
+    public const string AnimParam_IsPreparedToCatch = "IsPrepareCatch";
+    public const string AnimParam_IsPreparedToThrow = "isPrepareThrow";
+    
     [SerializeReference]
     public GPawnData data;
 
@@ -127,22 +134,36 @@ public class GPawn : GGridObject
 
         if (updateTransform)
         {
+            if (equipment.transformOwner && equipment.transformOwner != this)
+            {
+                equipment.transformOwner.OnReleaseTransformEquipment();
+            }
+            equipment.transformOwner = this;
+            // possessorTransform.OnReleaseVisuals
+            // possessortransofmr = newPosssessorTransform
             equipment.transform.parent = equipmentParentTr;
             equipment.transform.localPosition = Vector3.zero; 
             equipment.transform.localRotation = Quaternion.identity;
             if (equipment is GCrown && this is not GAltar)
             {
+                visuals.SetAnimationParameter(AnimParam_HasSword, true);
                 RuntimeManager.PlayOneShotAttached("event:/Crown/Grab", gameObject);
             }
         }
     }
-    
+
+    public void OnReleaseTransformEquipment()
+    {
+        visuals.SetAnimationParameter(AnimParam_HasSword, false);
+    }
+
     public void ReleaseEquipement(bool giveToCell, bool resetCrownPassCount = false)
     {
         if (equipment == null) return;
         equipment.owner = null;
         OnUnequip?.Invoke(equipment);
 
+        
         if (resetCrownPassCount && equipment && equipment is GCrown)
         {
             GCrown crown = (GCrown)equipment;

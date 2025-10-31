@@ -92,21 +92,24 @@ public class GThrowAction : GAction
     {
         base.OnSelectedAction();
         
+        linkedPawn.visuals.SetAnimationParameter(GPawn.AnimParam_IsPreparedToThrow, true);
         if (validCells.Length == 0) return;
         foreach (var validCell in validCells)
         { 
             GPawn pawn =  GGridManager.Instance.GetCell(validCell).GetGridObject<GPawn>();
             if (!pawn) continue;
             pawn.RotateTowards(linkedPawn.transform.position, 0.5f);
-            pawn.visuals.SetAnimationState(GPawn.ReadyToCatchAnimationName);
+            pawn.visuals.SetAnimationParameter(GPawn.AnimParam_IsPreparedToCatch, true);
         }
     }
 
     public override void OnUnselectedAction()
     {
         base.OnUnselectedAction();
+        linkedPawn.visuals.SetAnimationParameter(GPawn.AnimParam_IsPreparedToThrow, false);
         foreach (var validCell in validCells)
-            GGridManager.Instance.GetCell(validCell).GetGridObject<GPawn>()?.visuals.SetAnimationState(GPawn.IdleAnimationName);
+            GGridManager.Instance.GetCell(validCell).GetGridObject<GPawn>()?.visuals.
+                SetAnimationParameter(GPawn.AnimParam_IsPreparedToCatch, false);
     }
 
     public override List<GCell> Previsualisation(in GActionContext previsuContext)
@@ -327,7 +330,7 @@ public class GThrowAction : GAction
         linkedPawn.OnAnimationThrow -= OnAnimationThrowCallback;
         _throwSoundInstance.start();
         
-        _crown.transform.parent = null;
+        _crown.ResetTransformOwner();
         _startPos  = linkedPawn.equipmentParentTr.position;
         _hitPos    =  _targetPawn ? _targetPawn.equipmentParentTr.position : targetCell.transform.position;
         _returnPos = _startPos;

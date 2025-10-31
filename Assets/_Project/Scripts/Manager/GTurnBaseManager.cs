@@ -1,4 +1,5 @@
 ﻿using Sirenix.OdinInspector;
+using Sirenix.Serialization;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -34,7 +35,7 @@ public class GTurnBaseManager : GSingleton<GTurnBaseManager>
     public int EnemiesCount => _turnOrderControllerQueue.Count(entity => entity is GAIController);
     
     /** Queue Order of The Entity currently in fight */ 
-    [SerializeField, ReadOnly, HideInEditorMode, BoxGroup("Actions")]
+    [SerializeReference, ReadOnly, HideInEditorMode, BoxGroup("Actions")]
     private List<GAction> _actionsInProgress = new List<GAction>();
     
     /** Queue Order of The Entity currently in fight */ 
@@ -180,9 +181,9 @@ public class GTurnBaseManager : GSingleton<GTurnBaseManager>
             _turnOrderControllerQueue.RemoveAt(0);
         }
         
-        currentTurnController.StartTurn();
         _currentTurnState = ETurnState.InProgress;
         OnStartControllerTurn?.Invoke(currentTurnController);
+        currentTurnController.StartTurn();
     }
     
     protected override void Awake()
@@ -219,6 +220,8 @@ public class GTurnBaseManager : GSingleton<GTurnBaseManager>
         {
             StartCoroutine(StartFight());
         } else Debug.LogWarning("No Controller to start the Turn Base Manager");
+        
+        GGameManager.Instance.OnChangeMacroStateEvent += OnChangeMacroStateCallback;
     }
 
     private void OnDisable()
@@ -226,6 +229,7 @@ public class GTurnBaseManager : GSingleton<GTurnBaseManager>
         _currentTurnState = ETurnState.NotStarted;
         _turnOrderControllerQueue.Clear();
         _actionsInProgress.Clear();
+        GGameManager.Instance.OnChangeMacroStateEvent -= OnChangeMacroStateCallback;
     }
     
     private IEnumerator StartFight()
@@ -257,5 +261,13 @@ public class GTurnBaseManager : GSingleton<GTurnBaseManager>
         yield return null;
     }
     
+    
+    private void OnChangeMacroStateCallback(EMacroStates newState, EMacroStates oldState)
+    {
+        if (newState == EMacroStates.Play && oldState == EMacroStates.LoadingScreen)
+        {
+            _actionsInProgress.Clear();
+        }
+    }
 }
 

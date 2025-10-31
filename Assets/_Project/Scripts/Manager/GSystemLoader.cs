@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.Serialization;
 
 public class GSystemLoader : MonoBehaviour
@@ -19,6 +20,7 @@ public class GSystemLoader : MonoBehaviour
     IEnumerator Start()
     {
         yield return new WaitForEndOfFrame();
+        GGameManager.Instance.SetSceneToLoad(SceneManager.GetActiveScene().name);
         GGameManager.Instance.ChangeState(EMacroStates.Play);
     }
 }
