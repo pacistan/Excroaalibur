@@ -81,7 +81,7 @@ public class GWaveManager : GSingleton<GWaveManager>
     private int SpawningInProcess = 0; 
     
     /** Get the Current Score (Number of completed waves) */
-    public int GetScore() => _waveType == EWaveType.Endless ? GetWaveCount() - 1 : -1;
+    public int GetScore() => _waveType == EWaveType.Endless ? GetWaveCount() - 1: -1;
     
     public bool IsSpawningInProgress() => HasEnemiesToSpawn() && SpawningInProcess > 0;
     
@@ -151,7 +151,7 @@ public class GWaveManager : GSingleton<GWaveManager>
         SpawningInProcess = 0;
         int spawnable = Mathf.Min(_ennemiesPool.Count, _spawnCells.Count);
         Debug.Log($"[WaveManager] Spawning {spawnable} enemies.");
-        GHudManager.Instance.playMenu.SetWaveNumberText(_WaveCount - 1);
+        GHudManager.Instance.playMenu.SetWaveNumberText(_WaveCount);
 
         for (int i = spawnable - 1; i >= 0; i--)
         {
@@ -190,7 +190,7 @@ public class GWaveManager : GSingleton<GWaveManager>
     private bool HasEnemiesToSpawn() => _ennemiesPool.Count > 0;
     
     /* Get the Actual wave Count */
-    private int GetWaveCount() => _waveType == EWaveType.Endless ? _WaveCount - 1 : -1;
+    private int GetWaveCount() => _waveType == EWaveType.Endless ? _WaveCount : -1;
     
     protected override void Awake()
     {
