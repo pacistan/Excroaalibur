@@ -19,8 +19,6 @@ public class GGridEditor : MonoBehaviour
     GCell _cellPrefab;
     [SerializeField, FoldoutGroup("Components")]
     RectTransform _cellUiPrefab;
-    [SerializeField, FoldoutGroup("Components")]
-    Transform _hudTransform;
     
     [SerializeField, FoldoutGroup("Serialization")]
     string _gridDataFileName;
@@ -205,7 +203,6 @@ public class GGridEditor : MonoBehaviour
         if (_isUIGridPickable)
         {
             manager.EnablePicking(_cellsCanvas.gameObject, true);
-            manager.EnablePicking(_hudTransform.gameObject, true);
             foreach (var cell in gridManager.grid)
             {
                 var owningPawn = cell.GetGridObject<GPawn>();
@@ -218,7 +215,6 @@ public class GGridEditor : MonoBehaviour
         else
         {
             manager.DisablePicking(_cellsCanvas.gameObject, true);
-            manager.DisablePicking(_hudTransform.gameObject, true);
             foreach (var cell in gridManager.grid)
             {
                 var owningPawn = cell.GetGridObject<GPawn>();

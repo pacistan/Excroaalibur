@@ -3,17 +3,19 @@ using Sirenix.Utilities;
 using System;
 using System.Collections.Generic;
 using TMPro;
-using UnityEditor;
 using UnityEngine;
 using UnityEngine.Serialization;
 using UnityEngine.UI;
+#if UNITY_EDITOR
+using UnityEditor;
+using UnityEditor.SceneManagement;
+#endif
 
 [RequireComponent(typeof(GCell))]
-public class GCellVisualsController : SerializedMonoBehaviour
+public class GCellVisualsController : MonoBehaviour
 {
-    [FormerlySerializedAs("_commonCellData")]
     [SerializeField]
-    GCellCommonData cellCommonData;
+    public GCellCommonData cellCommonData;
     
     [SerializeField]
     GCommonInstantiationData instantiationCommonData;
@@ -23,7 +25,7 @@ public class GCellVisualsController : SerializedMonoBehaviour
     [SerializeField, FoldoutGroup("Components")]
     MeshFilter _meshFilter;
     [SerializeField, FoldoutGroup("Components")]
-    GCell _cell;
+    public GCell _cell;
     [SerializeField, FoldoutGroup("Components")]
     TextMeshProUGUI _text;
     [SerializeField, FoldoutGroup("Components")]
@@ -59,7 +61,7 @@ public class GCellVisualsController : SerializedMonoBehaviour
     public ETileHighlightType _currentHighlightType = ETileHighlightType.CellSelect;
 
     [SerializeField, HideInInspector]
-    float _previousPositionY;
+    public float _previousPositionY;
 
     [SerializeField, ReadOnly, Tooltip("Work In Progress")]
     bool _isPullingNeighbors;
@@ -155,7 +157,16 @@ public class GCellVisualsController : SerializedMonoBehaviour
 
     public void ChangeSprite(ETileHighlightType highlightType)
     {
-        _highlight.sprite = cellCommonData.tileHighlightData[highlightType];
+        var highlightSprite = cellCommonData.tileHighlightData[highlightType];
+        if (highlightSprite)
+        {
+            _highlight.enabled = true; 
+            _highlight.sprite = cellCommonData.tileHighlightData[highlightType];
+        }
+        else
+        {
+            _highlight.enabled = false; 
+        }
     }
     
     public void UpdateScaling(float scale)
@@ -216,7 +227,27 @@ public class GCellVisualsController : SerializedMonoBehaviour
         }
     }
 
-    /*void OnDrawGizmos()
+    void OnValidate()
+    {
+        if (transform.position.y != _previousPositionY)
+        {
+            Vector3 pos = transform.position;
+            pos.y = Mathf.Clamp(pos.y, -cellCommonData.maxHeight, cellCommonData.maxHeight);
+            transform.position = pos;
+        
+            float diff = _previousPositionY - transform.position.y;
+            Vector3 uiPos = _cell.ui.position;
+            uiPos.y -= diff;
+            _cell.ui.position = uiPos;
+        
+            _previousPositionY = transform.position.y;
+        }       
+    }
+
+
+    
+    /*
+    void OnDrawGizmos()
     {
         if (transform.position.y != _previousPositionY)
         {
@@ -229,7 +260,22 @@ public class GCellVisualsController : SerializedMonoBehaviour
             Vector3 uiPos = _cell.ui.position;
             uiPos.y -= diff;
             _cell.ui.position = uiPos;
-
+            
+            _previousPositionY = transform.position.y;
+            
+#if UNITY_EDITOR
+            EditorUtility.SetDirty(this);
+            foreach (Transform child in transform)
+            {
+                
+                EditorUtility.SetDirty(child.gameObject);
+            }
+            EditorUtility.SetDirty(_cell.ui.gameObject);       
+            EditorSceneManager.MarkSceneDirty(gameObject.scene);
+            
+#endif
+            return;
+            
             if (!_isPullingNeighbors)
             {
                 GGridManager gridManager = GGridManager.Instance ?? FindFirstObjectByType<GGridManager>(); 
@@ -246,15 +292,11 @@ public class GCellVisualsController : SerializedMonoBehaviour
                     neighbor.visuals.UpdateYPosGizmo(transform.position.y);
                 }
             }
-            
-            _previousPositionY = transform.position.y;
-#if UNITY_EDITOR
-            EditorUtility.SetDirty(this);            
-#endif
         }
     }
 
     bool isCheckedThisFrame;
+    */
     
     public void UpdateYPosGizmo(float neighborHeight)
     {
@@ -282,7 +324,53 @@ public class GCellVisualsController : SerializedMonoBehaviour
             }
         }
 #if UNITY_EDITOR
-        EditorUtility.SetDirty(this);            
+        EditorUtility.SetDirty(gameObject);
 #endif
-    }*/
+    }
+}
+
+[CustomEditor(typeof(GCellVisualsController))]
+public class YourClassNameEditor : Editor
+{
+    
+    private SerializedProperty _previousPositionYProp;
+    private GCellVisualsController _target;
+
+    private void OnEnable()
+    {
+        _target = (GCellVisualsController)target;
+        _previousPositionYProp = serializedObject.FindProperty("_previousPositionY");
+    }
+
+    public override void OnInspectorGUI()
+    {
+        DrawDefaultInspector();
+
+        serializedObject.Update();
+
+        if (_target.transform.position.y != _previousPositionYProp.floatValue)
+        {
+            ApplyPositionClamping();
+        }
+    }
+
+    private void ApplyPositionClamping()
+    {
+        Vector3 pos = _target.transform.position;
+        pos.y = Mathf.Clamp(pos.y, -_target.cellCommonData.maxHeight, _target.cellCommonData.maxHeight);
+        _target.transform.position = pos;
+
+        float diff = _previousPositionYProp.floatValue - _target.transform.position.y;
+        if (_target._cell != null && _target._cell.ui != null)
+        {
+            Vector3 uiPos = _target._cell.ui.position;
+            uiPos.y -= diff;
+            _target._cell.ui.position = uiPos;
+        }
+
+        _previousPositionYProp.floatValue = _target.transform.position.y;
+        serializedObject.ApplyModifiedProperties();
+
+        EditorUtility.SetDirty(_target);
+    }
 }

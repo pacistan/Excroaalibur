@@ -15,6 +15,7 @@ public class GGridManipulation
     private static void OnSceneGUI(SceneView sv)
     {
         var e = Event.current;
+        return;
         if (e.type == EventType.KeyDown && e.keyCode == KeyCode.Keypad1)
         {
             OnChangeTileType();

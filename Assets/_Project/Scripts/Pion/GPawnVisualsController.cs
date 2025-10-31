@@ -135,6 +135,16 @@ public class GPawnVisualsController : SerializedMonoBehaviour
         }
         _animator.CrossFade(animationStateName, .3f);
     }
+
+    public void SetAnimationParameter(string animationParameterName, bool value)
+    {
+        if (!_animator)
+        {
+            Debug.LogWarning("Animator is not set");
+            return;
+        }
+        _animator.SetBool(animationParameterName, value);        
+    }
     
     public void HealthChange()
     {
