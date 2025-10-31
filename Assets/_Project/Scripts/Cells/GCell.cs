@@ -99,7 +99,7 @@ public class GCell : SerializedMonoBehaviour
         // TODO : Other debug here !
     }
     
-    public void SpawnPawnFinish(GPawn pawn)
+    public void SpawnPawnFinish(GPawn pawn, Action OnSpawnFinishCallback)
     {
         RegisterGridObject(pawn);
         UpdateGridObject();
@@ -107,7 +107,7 @@ public class GCell : SerializedMonoBehaviour
         RuntimeManager.PlayOneShotAttached("event:/Pawn/Enemy/Spawn", pawn.gameObject);
         // TODO : Call When the Spawn Process is finished (Animation, VFX, etc.) !!
         _OnSpawnedPawnFinished?.Invoke();
-        GWaveManager.Instance.OnEnemySpawned();
+        OnSpawnFinishCallback?.Invoke();
     }
 
     public bool IsWalkable(bool ignorePawn = false)

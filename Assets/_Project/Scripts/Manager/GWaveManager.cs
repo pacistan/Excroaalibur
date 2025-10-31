@@ -84,9 +84,29 @@ public class GWaveManager : GSingleton<GWaveManager>
     public int GetScore() => _waveType == EWaveType.Endless ? GetWaveCount() - 1 : -1;
     
     public bool IsSpawningInProgress() => HasEnemiesToSpawn() && SpawningInProcess > 0;
-    public void OnEnemySpawned() => SpawningInProcess = Mathf.Max(0, SpawningInProcess - 1);
     
-    public void CheckNextWave(int turnCount)
+    private void OnEnemySpawned()
+    {
+        SpawningInProcess = Mathf.Max(0, SpawningInProcess - 1);
+        if (SpawningInProcess > 0) return;
+       
+        // TODO : Spawning process finish !   
+    }
+    
+    private void OnPrePlayerTurn(int turnCount)
+    {
+        CheckNextWave(turnCount);
+    }
+    
+    private void OnPostPlayerTurn(int turnCount)
+    {
+        if (_waveType == EWaveType.Endless)
+            CheckNextWave(turnCount);
+       
+        SpawnNextWave();
+    }
+
+    private void CheckNextWave(int turnCount)
     {
         if (HasEnemiesToSpawn()) return; // already have enemies to spawn ! 
         
@@ -124,7 +144,7 @@ public class GWaveManager : GSingleton<GWaveManager>
         }
     }
 
-    public void SpawnNextWave()
+    private void SpawnNextWave()
     {
         if (!HasEnemiesToSpawn()) return;
         
@@ -152,7 +172,7 @@ public class GWaveManager : GSingleton<GWaveManager>
                 continue;
             }
             SpawningInProcess++;
-            _spawnCells[i].SpawnPawnFinish(pawn);
+            _spawnCells[i].SpawnPawnFinish(pawn, OnEnemySpawned);
             _ennemiesPool.RemoveAt(i);
         }
         
@@ -161,7 +181,7 @@ public class GWaveManager : GSingleton<GWaveManager>
         _ennemiesPool.Clear();    
     }
     
-    public void UpdateEndlessWaveCount()
+    private void UpdateEndlessWaveCount()
     {
         _endlessWaveCount++;
         GGameManager.Instance.UpdateIntensity(GetWaveCount()); 
@@ -176,6 +196,8 @@ public class GWaveManager : GSingleton<GWaveManager>
     {
         base.Awake(); 
         _spawnCells = GGridManager.Instance.GetAllCellsOfType(ETileType.Spawner);
+        GTurnBaseManager.Instance.OnPrePlayerTurn += OnPrePlayerTurn;
+        GTurnBaseManager.Instance.OnPostPlayerTurn += OnPostPlayerTurn;
     }
 
     void OnDisable()

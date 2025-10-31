@@ -15,8 +15,10 @@ public class GTurnBaseManager : GSingleton<GTurnBaseManager>
         Finished
     }
     
-    public event Action<GAction, GController> actionPlayed; 
-    public event Action<GController> startControllerTurn;
+    public event Action<GAction, GController> OnActionPlayed; 
+    public event Action<GController> OnStartControllerTurn;
+    public event Action<int> OnPrePlayerTurn;
+    public event Action<int> OnPostPlayerTurn;
     
     /** Manager The Turn Order */
     [field: SerializeField, ReadOnly, HideInEditorMode, BoxGroup("Turn")]
@@ -111,7 +113,7 @@ public class GTurnBaseManager : GSingleton<GTurnBaseManager>
         ActionInstance.PreProcess();
 
         ActionInstance.Start_Action();
-        actionPlayed?.Invoke(ActionInstance, currentTurnController);
+        OnActionPlayed?.Invoke(ActionInstance, currentTurnController);
         _actionsInProgress.Add(ActionInstance);
         return true;
     }
@@ -134,7 +136,7 @@ public class GTurnBaseManager : GSingleton<GTurnBaseManager>
         if (ReactionToStart.CurrentState != GAction.EActionState.PreProcessing) return;
         ReactionToStart.Start_Action();
         _actionsInProgress.Add(ReactionToStart);
-        actionPlayed?.Invoke(ReactionToStart, currentTurnController);
+        OnActionPlayed?.Invoke(ReactionToStart, currentTurnController);
     }
     
     /** Create the Queue based on Rule (Actually : player is first, then IA) */
@@ -164,6 +166,12 @@ public class GTurnBaseManager : GSingleton<GTurnBaseManager>
             enabled = false;
             return;
         }
+        
+        if (_turnOrderControllerQueue.First() is GPlayerController) // Before Player Turn
+        {
+            OnPrePlayerTurn?.Invoke(_turnCount);
+            _turnCount++;
+        }
 
         if (_turnOrderControllerQueue.Count >= 0)  // if Queue Is empty, keep the currentTurnController 
         {
@@ -173,7 +181,7 @@ public class GTurnBaseManager : GSingleton<GTurnBaseManager>
         
         currentTurnController.StartTurn();
         _currentTurnState = ETurnState.InProgress;
-        startControllerTurn?.Invoke(currentTurnController);
+        OnStartControllerTurn?.Invoke(currentTurnController);
     }
     
     protected override void Awake()
@@ -225,7 +233,6 @@ public class GTurnBaseManager : GSingleton<GTurnBaseManager>
         
         _turnCount = 1; // Reset Turn Count ! 
         CreateQueue();
-        GWaveManager.Instance.CheckNextWave(_turnCount);
         StartTurn();
         yield return null;
     }
@@ -238,21 +245,16 @@ public class GTurnBaseManager : GSingleton<GTurnBaseManager>
         
         if (currentTurnController is GPlayerController) // After Player Turn
         {
-            GWaveManager.Instance.CheckNextWave(_turnCount); // Needed for Endless Mode
-            GWaveManager.Instance.SpawnNextWave();
+            OnPostPlayerTurn?.Invoke(_turnCount);
             CreateQueue(true);
             
+            // TODO : Find a Way to Avoid this WaitUntil
             yield return new WaitUntil(() => !GWaveManager.Instance.IsSpawningInProgress());
-        }
-        
-        if (_turnOrderControllerQueue.First() is GPlayerController) // Before Player Turn
-        {
-            GWaveManager.Instance.CheckNextWave(_turnCount); // Needed for Finite Mode
-            _turnCount++;
         }
         
         StartTurn();
         yield return null;
     }
+    
 }
 
