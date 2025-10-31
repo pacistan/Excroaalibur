@@ -19,6 +19,9 @@ public class GOptionsMenu : MonoBehaviour
     [SerializeField]
     Button _exitOptionMenuBtn;
     
+    [SerializeField]
+    Button _exitOptionMenuBtn2;
+    
     FMOD.Studio.Bus _musicBus;
     FMOD.Studio.Bus _masterBus;
     FMOD.Studio.Bus _sfxBus;
@@ -65,6 +68,7 @@ public class GOptionsMenu : MonoBehaviour
     
         _skipTurnAutoToggle.onValueChanged.AddListener(playerController.SetEndTurnWhenNoActionsLeft);
         _exitOptionMenuBtn.onClick.AddListener(() => GGameManager.Instance.ChangeState(GGameManager.Instance.previousState));
+        _exitOptionMenuBtn2.onClick.AddListener(() => GGameManager.Instance.ChangeState(GGameManager.Instance.previousState));
         
         if (!_musicBus.isValid()) return;
     

@@ -355,7 +355,7 @@ public class GPlayerController : GController
         }
         else if (_rightClickInput.WasPressedThisFrame())
         {
-            if (_selectedPlayer == null && availableActions.Length <= 1) return;
+            if (_selectedPlayer == null || availableActions == null || availableActions.Length <= 1) return;
             SwitchAction();
             _targetHud.actionList.SwitchActionIndex();
         }
@@ -385,6 +385,7 @@ public class GPlayerController : GController
             _targetHud.UpdateGridObjectHoveredInfo(_selectedPlayer, _isFirstAction);
             SetSelectedPlayer(null);
             SelectAction(null);
+            availableActions = null;
         }
     }
 

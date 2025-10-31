@@ -9,24 +9,24 @@ public class GCrown : GEquipment
     public int _bonusPassDamage = 1;
 
     [SerializeField, HideInEditorMode]
-    public int _currentDamage { get; private set; }
+    public int currentDamage { get; private set; }
     
     void Start()
     {
-        _currentDamage = _baseDamage;
-        GHudManager.Instance.playMenu.SetCrownDamageText(_currentDamage);
+        currentDamage = _baseDamage;
+        GHudManager.Instance.playMenu.SetCrownDamageText(currentDamage);
     }
 
     public void ResetCrown()
     {
-        _currentDamage = _baseDamage;
-        GHudManager.Instance.playMenu.SetCrownDamageText(_currentDamage);
+        currentDamage = _baseDamage;
+       
     }
 
     public void OnPass()
     {
-        _currentDamage += _bonusPassDamage;
-        GHudManager.Instance.playMenu.SetCrownDamageText(_currentDamage);
+        currentDamage += _bonusPassDamage;
+        
     }
     
 }

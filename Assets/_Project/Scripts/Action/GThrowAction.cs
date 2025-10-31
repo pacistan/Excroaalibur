@@ -130,7 +130,7 @@ public class GThrowAction : GAction
         else if (_targetPawn && !_targetPawn.data.isPlayer)
         {
             GAction impactReaction = _targetPawn.GetReaction(this);
-            previsuContext.Set(GActionContext.DAMAGE_STRING, _crown._currentDamage);
+            previsuContext.Set(GActionContext.DAMAGE_STRING, _crown.currentDamage);
             if (impactReaction != null)
             {
                 previsuContext.Set(GActionContext.DIRECTION_STRING, direction);
@@ -185,7 +185,7 @@ public class GThrowAction : GAction
         else if (_targetPawn && !_targetPawn.data.isPlayer)
         {
             // TODO : Take damage here or in reaction ? 
-            _targetPawn.TakeDamage(_crown._currentDamage);
+            _targetPawn.TakeDamage(_crown.currentDamage);
             _impactReaction = _targetPawn.GetReaction(this);
             if (_impactReaction != null)
             {
@@ -197,7 +197,7 @@ public class GThrowAction : GAction
             }
             if (_targetPawn.hp == 0) _killTarget = true;
         }
-        _crownPower = Mathf.Clamp(_crown._currentDamage - 1, 0, 5);
+        _crownPower = Mathf.Clamp(_crown.currentDamage - 1, 0, 5);
         
         if (_killTarget)
         {
@@ -384,7 +384,7 @@ public class GThrowAction : GAction
                 GTurnBaseManager.Instance.TryStartReaction(_impactReaction);
                 _impactReaction = null;
             }
-
+            GHudManager.Instance.playMenu.SetCrownDamageText(_crown.currentDamage);
             if (_targetPawn)
             {
                 _targetPawn.UpdateHpNumber();
