@@ -365,6 +365,7 @@ public class GPainterWindow :  EditorWindow
                 GCellVisualPresetData presetData = new GCellVisualPresetData(currentBrush.prefab, rotation);
                 
                 GameObject instance = cell.visuals.OnCreateVisualPreset(presetData);
+                instance.transform.parent = gridManager.painterParent;
                 // Register undo
                 Undo.RegisterCreatedObjectUndo(instance, "Paint Prefab");
                 Selection.activeGameObject = instance;

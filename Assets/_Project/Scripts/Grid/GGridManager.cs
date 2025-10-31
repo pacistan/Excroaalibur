@@ -25,8 +25,8 @@ public class GGridManager : GSingleton<GGridManager>
     [HideInInspector]
     public Dictionary<Vector2Int, int> _stepMap;
 
-    //[HideInInspector]
-    //public int[] stepMap;
+    [field: SerializeField]
+    public Transform painterParent { get; private set; }
 
     public GCell GetCell(GHexCoordinate coordinate)
     {
