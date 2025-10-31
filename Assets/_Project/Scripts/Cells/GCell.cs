@@ -27,6 +27,11 @@ public class GCell : SerializedMonoBehaviour
     [SerializeField, FoldoutGroup("PersistantData/Components")][FormerlySerializedAs("_pawnSpawnPoint")]
     public Transform pawnSpawnPoint;
     
+    [FormerlySerializedAs("equipmentPoint")]
+    [FormerlySerializedAs("pawnEquipmentPoint")]
+    [SerializeField, FoldoutGroup("PersistantData/Components")][FormerlySerializedAs("_pawnSpawnPoint")]
+    public Transform equipmentSpawnPoint;
+    
     [SerializeField, ReadOnly, FoldoutGroup("PersistantData")][FormerlySerializedAs("_hexCoordinates")]
     public GHexCoordinate hexCoordinates;
     
@@ -48,7 +53,8 @@ public class GCell : SerializedMonoBehaviour
         gridObject = inGridObject;
         if (!updateTransform || !inGridObject) return;
         
-        gridObject.transform.parent = pawnSpawnPoint;
+        Transform parent = gridObject is GEquipment ? equipmentSpawnPoint : pawnSpawnPoint;
+        gridObject.transform.parent = parent;
         gridObject.transform.localPosition = Vector3.zero; 
         gridObject.transform.localRotation = Quaternion.identity;
     }

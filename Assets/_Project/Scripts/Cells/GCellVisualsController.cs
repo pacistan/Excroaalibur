@@ -97,7 +97,9 @@ public class GCellVisualsController : SerializedMonoBehaviour
             GGridObject objectPrefab = instantiationCommonData.objectTypeData[newObjectType];
             if (objectPrefab)
             {
-                GGridObject gridObject = PrefabUtility.InstantiatePrefab(objectPrefab, _cell.pawnSpawnPoint) as GGridObject;
+                GGridObject gridObject = PrefabUtility.InstantiatePrefab(objectPrefab) as GGridObject;
+                Transform parent = gridObject is GEquipment ? _cell.equipmentSpawnPoint : _cell.pawnSpawnPoint;
+                gridObject.transform.parent = parent;
                 _cell.SetGridObject(gridObject, true);
                 EditorUtility.SetDirty(gridObject);
             }
