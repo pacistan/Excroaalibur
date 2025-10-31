@@ -6,7 +6,6 @@ using System.Linq;
 using UnityEngine;
 using UnityEngine.Serialization;
 
-
 public class GGridManager : GSingleton<GGridManager>
 {
     [FormerlySerializedAs("_grid")]

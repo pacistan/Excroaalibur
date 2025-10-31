@@ -65,6 +65,11 @@ public class GGameManager: GSingleton<GGameManager>
 
     [SerializeField]
     float _loadSceneForceDuration = 2f;
+
+    public void SetSceneToLoad(string sceneToLoadName)
+    {
+        _loadableScenes[_currentSceneToLoadIndex] = sceneToLoadName;
+    }    
     
     public bool IsMenuActive(EMacroStates menu) => menu == currentState;
 

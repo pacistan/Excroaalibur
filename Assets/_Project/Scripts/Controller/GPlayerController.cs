@@ -165,7 +165,7 @@ public class GPlayerController : GController
 
         if (Input.GetKeyDown(KeyCode.R))
         {
-            SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+           GGameManager.Instance.ChangeState(EMacroStates.LoadingScreen);
         }
     }
     
@@ -461,7 +461,7 @@ public class GPlayerController : GController
         }*/
     }
 
-    private void OnChangeMacroStateCallback(EMacroStates oldState, EMacroStates newState)
+    private void OnChangeMacroStateCallback(EMacroStates newState, EMacroStates oldState)
     {
         if (newState == EMacroStates.Play && oldState == EMacroStates.LoadingScreen)
         {

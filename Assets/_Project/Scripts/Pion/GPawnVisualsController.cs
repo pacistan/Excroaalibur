@@ -180,8 +180,10 @@ public class GPawnVisualsController : SerializedMonoBehaviour
 
     public void OnUpdateActionsToken()
     {
+        
         _imgListactionTokens[0].sprite = _pawn.remainingActionToken >= 1 ?
             _spriteActionTokenOn : _spriteActionTokenOff;
+        
         
         _imgListactionTokens[1].sprite = _pawn.remainingActionToken >= 2 ?
             _spriteActionTokenOn : _spriteActionTokenOff;
