@@ -216,20 +216,17 @@ public class GPawn : GGridObject
     public void OnStartTurn()
     {
         remainingActionToken = data.actionTokens;
-        if (stunTurn > 0 && !data.isPlayer)
+        
+        if (data.isPlayer)
+            visuals.OnUpdateActionsToken();
+        else if (stunTurn > 0)
         {
             stunTurn--;
             visuals.OnUpdateStunTurn();
         }
-        else if (data.isPlayer)
-        {
-            visuals.OnUpdateActionsToken();
-        }
         
         if (stunTurn == 0)
-        {
             OnUnstunned?.Invoke();
-        }
     }
 
     public void UpdateStunTurn()

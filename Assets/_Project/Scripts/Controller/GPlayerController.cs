@@ -427,9 +427,9 @@ public class GPlayerController : GController
         if (_selectedAction == null || !_selectedAction.targetCell) return;
         GPawn targetPawn = _selectedAction.targetCell.GetGridObject<GPawn>();
         if (_selectedAction != null && targetPawn)
-        {
             targetPawn.visuals.OnDisablePrevisualisation();
-        }
+
+        if (previsuCell.Count <= 0) return;
         foreach (GCell cell in previsuCell)
             cell.visuals.isPrevisualized = false;
     }

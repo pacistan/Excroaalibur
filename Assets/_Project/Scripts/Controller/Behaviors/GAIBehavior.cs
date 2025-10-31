@@ -79,7 +79,7 @@ public abstract class GAIBehavior : ScriptableObject
 
     protected GCell GetClosestCellToTargetCell(GCell startCell, GCell endCell, int distance)
     {
-        var path = GGridManager.Instance.GetPath(startCell, GGridManager.Instance.GetLowestAdjacentCell(endCell), false, distance);
+        var path = GGridManager.Instance.GetPath(startCell,GGridManager.Instance.GetLowestAdjacentCell(endCell), _controller.pawn.data._walkingTileType,false, distance);
         GCell cell = startCell;
         foreach (EHexDirection direction in path)
         {

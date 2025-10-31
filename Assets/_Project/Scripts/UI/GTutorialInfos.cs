@@ -1,5 +1,5 @@
-﻿using Microsoft.Unity.VisualStudio.Editor;
-using UnityEngine;
+﻿using UnityEngine;
+using UnityEngine.UI;
 
 /* Use this for Diplaying Tutorial Information to the Player */
 public class GTutorialInfos : MonoBehaviour

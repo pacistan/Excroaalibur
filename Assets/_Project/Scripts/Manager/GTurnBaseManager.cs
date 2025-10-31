@@ -146,6 +146,7 @@ public class GTurnBaseManager : GSingleton<GTurnBaseManager>
         var orderedEntities = _controllerList.OrderBy(entity =>
         {
             if (entity is GPlayerController) return playerLast ? int.MaxValue : int.MinValue;
+            if (entity.GetComponent<GPawn>() == null) return int.MaxValue - 1;
             int closestCrownDistance;
             GGridObjectRegistry.GetClosestObjectOfType<GCrown>(entity.GetComponent<GPawn>().GetCell(), out closestCrownDistance, true);
             return closestCrownDistance;
