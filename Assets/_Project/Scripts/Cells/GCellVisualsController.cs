@@ -65,6 +65,9 @@ public class GCellVisualsController : MonoBehaviour
 
     [SerializeField, ReadOnly, Tooltip("Work In Progress")]
     bool _isPullingNeighbors;
+
+    [SerializeField, ReadOnly]
+    int _cadrillageNumber;
     
 #if UNITY_EDITOR
     public void UpdateCellVisuals()
@@ -158,7 +161,7 @@ public class GCellVisualsController : MonoBehaviour
     public void ChangeSprite(ETileHighlightType highlightType)
     {
         var highlightSprite = cellCommonData.tileHighlightData[highlightType];
-        if (highlightSprite)
+        if (highlightSprite && _currentHighlightActionType != ETileHighlightActionType.Normal)
         {
             _highlight.enabled = true; 
             _highlight.sprite = cellCommonData.tileHighlightData[highlightType];
@@ -196,6 +199,20 @@ public class GCellVisualsController : MonoBehaviour
     void Start()
     {
         SetHighlightActionType(ETileHighlightActionType.Normal);
+        int x = _cell.data.gridCoordinates.x;
+        int y = _cell.data.gridCoordinates.y;
+        
+        _cadrillageNumber = 1 + (((x % 3) + 1 + (y % 2) * 2) % 3);
+        
+        _cell.ui.GetComponentInChildren<TextMeshProUGUI>().text = _cadrillageNumber.ToString();
+        _cell.ui.GetComponentInChildren<TextMeshProUGUI>().enabled = true;
+        
+        Color color = _meshRenderer.material.color;
+        Color.RGBToHSV(color, out float h, out float s, out float v);
+        float tint = _cadrillageNumber == 1 ? cellCommonData.cadrillageTint1 : _cadrillageNumber == 2 ? cellCommonData.cadrillageTint2 : cellCommonData.cadrillageTint3;
+        v += tint;
+        color = Color.HSVToRGB(h, s, v);
+        _meshRenderer.material.color = color;
     }
 
     private void UpdateHighlightSprite()
@@ -217,16 +234,21 @@ public class GCellVisualsController : MonoBehaviour
     {
         _currentHighlightActionType = highlightActionType;
 
+        Color color = Color.white;
+
         if (highlightActionType == ETileHighlightActionType.Normal)
         {
-            _highlight.color = cellCommonData.tileTypeData[_cell.data.tileType].highlightColor;
+            color = cellCommonData.tileTypeData[_cell.data.tileType].highlightColor;
         }
         else
         {
-            _highlight.color = cellCommonData.tileHighlightActionData[highlightActionType];
+            color = cellCommonData.tileHighlightActionData[highlightActionType];
         }
-    }
 
+        _highlight.color = color;
+        ChangeSprite(_currentHighlightType);
+    }
+    
     void OnValidate()
     {
         if (transform.position.y != _previousPositionY)

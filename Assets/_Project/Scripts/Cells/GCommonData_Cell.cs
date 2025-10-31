@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 [CreateAssetMenu(fileName = "Cell Data", menuName = "CommonData/Cell Data")]
 public class GCellCommonData : SerializedScriptableObject
@@ -34,6 +35,19 @@ public class GCellCommonData : SerializedScriptableObject
     public Dictionary<ETileHighlightActionType, Color> tileHighlightActionData;
     
     public Color previsualizedColor = Color.green;
+
+    [FormerlySerializedAs("_cadrillageTint1")]
+    [SerializeField]
+    public float cadrillageTint1;
+
+    [FormerlySerializedAs("_cadrillageTint2")]
+    [SerializeField]
+    public float cadrillageTint2;
+
+    [FormerlySerializedAs("_cadrillageTint3")]
+    [SerializeField]
+    public float cadrillageTint3;
+
 
     public float maxHeight;
     public float maxOffsetHeight;

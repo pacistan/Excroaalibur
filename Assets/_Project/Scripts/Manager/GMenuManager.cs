@@ -35,7 +35,6 @@ public partial class GMenuManager : GSingleton<GMenuManager>
 
     private Dictionary<EMacroStates, GMenuSetting> _menuDictionary;
 
-
     protected override void Awake()
     {
         base.Awake();
@@ -159,8 +158,8 @@ public partial class GMenuManager : GSingleton<GMenuManager>
 
         foreach (var ms in menuSettings)
         {
-            if(ms.menuFolder.activeInHierarchy && _menuGizmos != ms.menu) ms.menuFolder.SetActive(false);
-            if(!ms.menuFolder.activeInHierarchy && _menuGizmos == ms.menu) ms.menuFolder.SetActive(true);
+            if(ms.menuFolder&& ms.menuFolder.activeInHierarchy && _menuGizmos != ms.menu) ms.menuFolder.SetActive(false);
+            if(ms.menuFolder && !ms.menuFolder.activeInHierarchy && _menuGizmos == ms.menu) ms.menuFolder.SetActive(true);
         }
         
         GMenuSetting menuSetting = menuSettings.Where(x => x.menu == _menuGizmos).First();
