@@ -67,11 +67,13 @@ public class GTutorialHandler : MonoBehaviour
     
     IEnumerator WaitAndHideInfo(STutorialInfo info)
     {
+
         GGameManager.Instance.playerController.enabled = false; 
         yield return new WaitForSeconds(info.stopTime);
         
         info.TextObject.gameObject.SetActive(false);
         GGameManager.Instance.playerController.enabled = true;
+        
         yield return new WaitUntil(() => Input.anyKeyDown);
         
         info.CanvasObject.SetActive(false);
