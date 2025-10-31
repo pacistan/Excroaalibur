@@ -126,7 +126,7 @@ public class GCellVisualsController : MonoBehaviour
         Image image;
     }
 
-    public GameObject OnCreateVisualPreset(GCellVisualPresetData brush, bool serialize = true)
+    public GameObject OnCreateVisualPreset(GCellVisualPresetData brush, Quaternion rot, bool serialize = true)
     {
         GameObject instance = (GameObject)PrefabUtility.InstantiatePrefab(brush.prefab);
         _visualPresetInstances.Add(instance);
@@ -139,7 +139,7 @@ public class GCellVisualsController : MonoBehaviour
         {
             instance.transform.parent = _visualsParent;
             instance.transform.localPosition = Vector3.zero;
-            instance.transform.localRotation = Quaternion.Euler(0, brush.rotation, 0);
+            instance.transform.localRotation = rot;
         }
         EditorUtility.SetDirty(this);
         return instance;

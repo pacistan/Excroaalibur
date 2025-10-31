@@ -12,12 +12,18 @@ public class GBrushData
     [FoldoutGroup("$brushName")]
     public Texture2D icon;
         
-    [Header("Placement Settings")]
     [FoldoutGroup("$brushName")]
+    [BoxGroup("$brushName/Rotation")]
+    public bool keepRotation = false;
+    
+    [FoldoutGroup("$brushName")]
+    [BoxGroup("$brushName/Rotation")]
     public bool randomRotation = false;
+    
     [FormerlySerializedAs("incrementalRotation")]
-    [FoldoutGroup("$brushName"), ShowIf("randomRotation")]
+    [BoxGroup("$brushName/Rotation"), ShowIf("randomRotation")]
     public bool isIncrementalRotation = false;
-    [FoldoutGroup("$brushName"),HideIf("randomRotation")]
+    
+    [FoldoutGroup("$brushName/Rotation"),HideIf("randomRotation")]
     public float rotationOffset = 0;
 }
