@@ -177,7 +177,7 @@ public class GGridEditor : MonoBehaviour
         cell.hexCoordinates = GHexCoordinate.FrommOffsetCoordinate(row, column);
         foreach (var visualPreset in cell.data.paintedVisuals)
         {
-            cell.visuals.OnCreateVisualPreset(visualPreset, false);
+            cell.visuals.OnCreateVisualPreset(visualPreset, visualPreset.rotation, false);
         }
         
         EditorUtility.SetDirty(cell);

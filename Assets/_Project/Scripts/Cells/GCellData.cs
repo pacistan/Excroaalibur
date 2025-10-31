@@ -60,13 +60,13 @@ public struct GCellData
 public class GCellVisualPresetData
 {
     public GameObject prefab;
-    public float rotation;
+    public Quaternion rotation;
 
     GCellVisualPresetData()
     {
     }
 
-    public GCellVisualPresetData(GameObject inPrefab, float inRotation)
+    public GCellVisualPresetData(GameObject inPrefab, Quaternion inRotation)
     {
         prefab = inPrefab;
         rotation = inRotation;

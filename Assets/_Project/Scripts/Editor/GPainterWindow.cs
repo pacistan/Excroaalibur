@@ -334,8 +334,9 @@ public class GPainterWindow :  EditorWindow
             return;
 
         // Calculate rotation
-        float rotation = 0;
-        
+        float rotation =  0;
+
+
         if (currentBrush.randomRotation)
         {
             rotation = currentBrush.isIncrementalRotation ? Random.Range(0, 6) * 60f : Random.Range(0f, 360f);
@@ -344,6 +345,7 @@ public class GPainterWindow :  EditorWindow
         {
             rotation += currentBrush.rotationOffset;
         }
+        
         
         var hits = Physics.OverlapSphere(hit.point, brushSize, paintLayerMask);
         
@@ -361,10 +363,10 @@ public class GPainterWindow :  EditorWindow
             if (currentBrush.prefab != null)
             {
                 // Instantiate prefab
-
-                GCellVisualPresetData presetData = new GCellVisualPresetData(currentBrush.prefab, rotation);
-                
-                GameObject instance = cell.visuals.OnCreateVisualPreset(presetData);
+                Vector3 eulerBaseRot = currentBrush.prefab.transform.eulerAngles;
+                Quaternion rot =  Quaternion.Euler(eulerBaseRot.x, eulerBaseRot.y, rotation + eulerBaseRot.z);
+                GCellVisualPresetData presetData = new GCellVisualPresetData(currentBrush.prefab, rot);
+                GameObject instance = cell.visuals.OnCreateVisualPreset(presetData, rot);
                 instance.transform.parent = gridManager.painterParent;
                 // Register undo
                 Undo.RegisterCreatedObjectUndo(instance, "Paint Prefab");
