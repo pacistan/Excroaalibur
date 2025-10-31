@@ -40,6 +40,7 @@ public class GWaveComponent : MonoBehaviour
     {
         SpawningInProcess = Mathf.Max(0, SpawningInProcess - 1);
         if (SpawningInProcess > 0) return;
+        
         // TODO : Spawning process finish !
     }
     
