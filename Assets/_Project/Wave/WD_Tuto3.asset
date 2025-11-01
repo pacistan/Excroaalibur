@@ -10,8 +10,12 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 899181a38a0c468887fe84cb55432d63, type: 3}
-  m_Name: WD_Tuto1
+  m_Name: WD_Tuto3
   m_EditorClassIdentifier: 
-  <waves>k__BackingField: []
+  <waves>k__BackingField:
+  - turn: 3
+    enemiesToSpawn:
+    - enemy: {fileID: 3265494034065435722, guid: e8c212854330abd4da2e486bfd2e30d8, type: 3}
+      count: 1
   _waveType: 0
   enemyPrefab: {fileID: 0}

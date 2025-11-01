@@ -51,7 +51,7 @@ public class GWaveComponent : MonoBehaviour
     
     private void OnPostPlayerTurn(int turnCount)
     {
-        if (_waveData._waveType == WaveData.EWaveType.Endless)
+        if (_waveData!= null && _waveData._waveType == WaveData.EWaveType.Endless)
             CheckNextWave(turnCount);
        
         SpawnNextWave();
@@ -59,6 +59,8 @@ public class GWaveComponent : MonoBehaviour
 
     private void CheckNextWave(int turnCount)
     {
+        if (!HasWave()) return; // No wave to process !
+        
         if (HasEnemiesToSpawn()) return; // already have enemies to spawn ! 
         
         if (_waveData._waveType == WaveData.EWaveType.Endless) // Endless wave logic
@@ -143,7 +145,10 @@ public class GWaveComponent : MonoBehaviour
         _spawnCells = GGridManager.Instance.GetAllCellsOfType(ETileType.Spawner);
         GTurnBaseManager.Instance.OnPrePlayerTurn += OnPrePlayerTurn;
         GTurnBaseManager.Instance.OnPostPlayerTurn += OnPostPlayerTurn;
-        _waveData = GTurnBaseManager.Instance.GetCurrentWaveData();
+        WaveData tempData = GTurnBaseManager.Instance.GetCurrentWaveData();
+        if (tempData != null)
+            _waveData = Instantiate(tempData);
+        // _waveData = GTurnBaseManager.Instance.GetCurrentWaveData().;
     }
 
     void OnDisable()

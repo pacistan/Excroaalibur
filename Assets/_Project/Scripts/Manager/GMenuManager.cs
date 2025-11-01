@@ -118,6 +118,10 @@ public partial class GMenuManager : GSingleton<GMenuManager>
     private void DisableMenu(GameObject menu)
     {
         menu.SetActive(false);
+        if (GGameManager.Instance.previousState == EMacroStates.LoadingScreen)
+        {
+            GTurnBaseManager.Instance.enabled = true;
+        }
     }
 
     public IEnumerator DoTransitions(GMenuSetting menuSetting, bool toActive, Action OnTransitionsOver = null)
