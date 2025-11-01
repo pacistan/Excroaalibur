@@ -1093,6 +1093,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Tuto2
       objectReference: {fileID: 0}
+    - target: {fileID: 1383114244720339652, guid: 1d6081f5ade087446add2ebf981b4170, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 2497421190171681707, guid: 1d6081f5ade087446add2ebf981b4170, type: 3}
       propertyPath: m_Pivot.x
       value: 0.5
@@ -1172,6 +1176,62 @@ PrefabInstance:
     - target: {fileID: 2497421190171681707, guid: 1d6081f5ade087446add2ebf981b4170, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2839666095199812158, guid: 1d6081f5ade087446add2ebf981b4170, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: ff146265ae197d7459acab335d09915d, type: 3}
+    - target: {fileID: 3600378517476369325, guid: 1d6081f5ade087446add2ebf981b4170, type: 3}
+      propertyPath: m_text
+      value: "Your character have various possible actions per turn : Moving, Pushing
+        (if you don\u2019t have the Sword) and Throwing the Sword.\n\r\nEach of your
+        characters can do 2 actions per turn. When every character of yours used
+        all their action points, your turn will end and the enemies will take their
+        turn."
+      objectReference: {fileID: 0}
+    - target: {fileID: 3600378517476369325, guid: 1d6081f5ade087446add2ebf981b4170, type: 3}
+      propertyPath: m_fontColor.b
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3600378517476369325, guid: 1d6081f5ade087446add2ebf981b4170, type: 3}
+      propertyPath: m_fontColor.g
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3600378517476369325, guid: 1d6081f5ade087446add2ebf981b4170, type: 3}
+      propertyPath: m_fontColor.r
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3600378517476369325, guid: 1d6081f5ade087446add2ebf981b4170, type: 3}
+      propertyPath: m_fontColor32.rgba
+      value: 4294967295
+      objectReference: {fileID: 0}
+    - target: {fileID: 3600378517476369325, guid: 1d6081f5ade087446add2ebf981b4170, type: 3}
+      propertyPath: m_HorizontalAlignment
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4148849100115544902, guid: 1d6081f5ade087446add2ebf981b4170, type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 260
+      objectReference: {fileID: 0}
+    - target: {fileID: 4148849100115544902, guid: 1d6081f5ade087446add2ebf981b4170, type: 3}
+      propertyPath: m_SizeDelta.y
+      value: 110
+      objectReference: {fileID: 0}
+    - target: {fileID: 4148849100115544902, guid: 1d6081f5ade087446add2ebf981b4170, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: -225
+      objectReference: {fileID: 0}
+    - target: {fileID: 8706553226191763757, guid: 1d6081f5ade087446add2ebf981b4170, type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 250
+      objectReference: {fileID: 0}
+    - target: {fileID: 8706553226191763757, guid: 1d6081f5ade087446add2ebf981b4170, type: 3}
+      propertyPath: m_SizeDelta.y
+      value: 70
+      objectReference: {fileID: 0}
+    - target: {fileID: 8706553226191763757, guid: 1d6081f5ade087446add2ebf981b4170, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 15
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -7988,6 +8048,55 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 134540935242368777, guid: 8ceb726ec6d92264eaf5e690f9c19af8, type: 3}
+      propertyPath: m_text
+      value: "Welcome to Excroaalibur\u2019s first demo !\n\r\nHere, your goal is
+        to get the Sword on the altar and to survive as much as possible waves of
+        enemies by killing them by throwing the Sword at them. But be careful not
+        loosing it, because the enemies will try to get it back to the altar, making
+        you loose the game.\n\r\nTo start your turn, push the altar to get the Sword
+        !"
+      objectReference: {fileID: 0}
+    - target: {fileID: 134540935242368777, guid: 8ceb726ec6d92264eaf5e690f9c19af8, type: 3}
+      propertyPath: m_margin.w
+      value: -29.364182
+      objectReference: {fileID: 0}
+    - target: {fileID: 134540935242368777, guid: 8ceb726ec6d92264eaf5e690f9c19af8, type: 3}
+      propertyPath: m_fontStyle
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 134540935242368777, guid: 8ceb726ec6d92264eaf5e690f9c19af8, type: 3}
+      propertyPath: m_fontColor.b
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 134540935242368777, guid: 8ceb726ec6d92264eaf5e690f9c19af8, type: 3}
+      propertyPath: m_fontColor.g
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 134540935242368777, guid: 8ceb726ec6d92264eaf5e690f9c19af8, type: 3}
+      propertyPath: m_fontColor.r
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 134540935242368777, guid: 8ceb726ec6d92264eaf5e690f9c19af8, type: 3}
+      propertyPath: m_fontColor32.rgba
+      value: 4294967295
+      objectReference: {fileID: 0}
+    - target: {fileID: 134540935242368777, guid: 8ceb726ec6d92264eaf5e690f9c19af8, type: 3}
+      propertyPath: m_HorizontalAlignment
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 700676074663096290, guid: 8ceb726ec6d92264eaf5e690f9c19af8, type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 260
+      objectReference: {fileID: 0}
+    - target: {fileID: 700676074663096290, guid: 8ceb726ec6d92264eaf5e690f9c19af8, type: 3}
+      propertyPath: m_SizeDelta.y
+      value: 110
+      objectReference: {fileID: 0}
+    - target: {fileID: 700676074663096290, guid: 8ceb726ec6d92264eaf5e690f9c19af8, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: -225
+      objectReference: {fileID: 0}
     - target: {fileID: 1333767236846470927, guid: 8ceb726ec6d92264eaf5e690f9c19af8, type: 3}
       propertyPath: m_AnchorMax.x
       value: 1
@@ -8012,13 +8121,17 @@ PrefabInstance:
       propertyPath: m_SizeDelta.y
       value: -368
       objectReference: {fileID: 0}
+    - target: {fileID: 1676012167161470618, guid: 8ceb726ec6d92264eaf5e690f9c19af8, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: ff146265ae197d7459acab335d09915d, type: 3}
     - target: {fileID: 2451305957931659993, guid: 8ceb726ec6d92264eaf5e690f9c19af8, type: 3}
       propertyPath: m_IsActive
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 2529666712046407264, guid: 8ceb726ec6d92264eaf5e690f9c19af8, type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3642558701428505050, guid: 8ceb726ec6d92264eaf5e690f9c19af8, type: 3}
       propertyPath: m_Pivot.x
@@ -8099,6 +8212,22 @@ PrefabInstance:
     - target: {fileID: 3642558701428505050, guid: 8ceb726ec6d92264eaf5e690f9c19af8, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5258240004480458121, guid: 8ceb726ec6d92264eaf5e690f9c19af8, type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 250
+      objectReference: {fileID: 0}
+    - target: {fileID: 5258240004480458121, guid: 8ceb726ec6d92264eaf5e690f9c19af8, type: 3}
+      propertyPath: m_SizeDelta.y
+      value: 70
+      objectReference: {fileID: 0}
+    - target: {fileID: 5258240004480458121, guid: 8ceb726ec6d92264eaf5e690f9c19af8, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5258240004480458121, guid: 8ceb726ec6d92264eaf5e690f9c19af8, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 15
       objectReference: {fileID: 0}
     - target: {fileID: 7168550001651111354, guid: 8ceb726ec6d92264eaf5e690f9c19af8, type: 3}
       propertyPath: m_Name
