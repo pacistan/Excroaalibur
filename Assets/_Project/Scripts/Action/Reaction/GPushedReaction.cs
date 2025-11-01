@@ -153,6 +153,7 @@ public class GPushedReaction : GAction
                 cell = neighbor;
                 if (neighbor.GetTileType == ETileType.Hole)
                 {
+                    targetCell = neighbor;
                     _inflictDamage = true;
                     _damage = 0;
                     _stun = 1;
@@ -198,7 +199,8 @@ public class GPushedReaction : GAction
         
         if (_moveAction == null || _moveAction.CurrentState == GAction.EActionState.Finished)
         {
-            if (linkedPawn && !linkedPawn.IsAlive && !linkedPawn.isMarkedForDestruction)
+            if (linkedPawn && !linkedPawn.IsAlive && !linkedPawn.isMarkedForDestruction &&
+                !(targetCell && targetCell.data.tileType == ETileType.Hole))
                 linkedPawn.Kill();
             
             End_Action();

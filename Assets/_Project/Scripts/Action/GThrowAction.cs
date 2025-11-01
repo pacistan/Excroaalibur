@@ -235,9 +235,16 @@ public class GThrowAction : GAction
         Vector3 lookAtPosition = targetCell.transform.position;
         lookAtPosition.y = linkedPawn.transform.position.y;
         linkedPawn.transform.LookAt(lookAtPosition);
+
+        string animName = GPawn.ThrowAnimationName;
+        if(_targetPawn.data.isPlayer)
+            animName = _targetPawn.GetCell().hexCoordinates.DistanceTo(linkedPawn.GetCell().hexCoordinates) == 1
+                ? GPawn.PassCloseAnimationName
+                : GPawn.PassFarAnimationName;
+        
         
         linkedPawn.OnAnimationThrow += OnAnimationThrowCallback;
-        linkedPawn.visuals.SetAnimationState(GPawn.ThrowAnimationName);
+        linkedPawn.visuals.SetAnimationState(animName);
         linkedPawn.StartCoroutine(StartReactionsCoroutine());
     }
 
@@ -331,8 +338,9 @@ public class GThrowAction : GAction
         _throwSoundInstance.start();
         
         _crown.ResetTransformOwner();
+        _crown.transform.DORotateQuaternion(Quaternion.identity, 0.2f);
         _startPos  = linkedPawn.equipmentParentTr.position;
-        _hitPos    =  _targetPawn ? _targetPawn.equipmentParentTr.position : targetCell.transform.position;
+        _hitPos    =  _targetPawn ? _targetPawn.equipmentParentTr.position : targetCell.equipmentSpawnPoint.position;
         _returnPos = _startPos;
         
         var direction = linkedPawn.GetHexCoordinate().GetLineDirection(targetCell.hexCoordinates);
@@ -395,7 +403,14 @@ public class GThrowAction : GAction
                     hitEvent.setParameterByName("Power", _crownPower);
                     hitEvent.start();
                     hitEvent.release();
-                    
+                    if (_targetPawn.IsAlive)
+                    {
+                        _targetPawn.visuals.SetAnimationState(GPawn.HitAnimationName);
+                    }
+                }
+                else
+                {
+                    _targetPawn.visuals.SetAnimationState(GPawn.CatchAnimationName);
                 }
             }
             _throwSoundInstance.stop(STOP_MODE.ALLOWFADEOUT);
