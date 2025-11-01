@@ -6,6 +6,8 @@ using UnityEngine.UI;
 
 public class GPlayMenu : MonoBehaviour
 {
+    public event Action<int> OnUpdateCrownUI;
+
     [SerializeField]
     TextMeshProUGUI _crownDamageTxt;
     
@@ -17,8 +19,11 @@ public class GPlayMenu : MonoBehaviour
 
     [SerializeField]
     TextMeshProUGUI _waveNumberTxt;
-    
-    public void SetCrownDamageText(int damage) => _crownDamageTxt.text = $"{damage.ToString()}";
+
+    public void SetCrownDamageText(int damage) { 
+        _crownDamageTxt.text = $"{damage.ToString()}";
+        OnUpdateCrownUI?.Invoke(damage);
+    }
 
     public void SetWaveNumberText(int waveNumber) => _waveNumberTxt.text = $"Wave {waveNumber}";
     

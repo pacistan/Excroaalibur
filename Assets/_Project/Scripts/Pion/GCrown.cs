@@ -26,7 +26,6 @@ public class GCrown : GEquipment
     public void OnPass()
     {
         currentDamage += _bonusPassDamage;
-        
     }
     
 }
