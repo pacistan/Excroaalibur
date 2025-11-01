@@ -181,6 +181,7 @@ public class GPlayerController : GController
     //TODO : Change to Button or other interface
     private void DebugTools()
     {
+        return;
         if (Input.GetKeyDown(KeyCode.L) && !_isFirstAction)
         {
             StopTurn();
