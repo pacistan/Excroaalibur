@@ -743,13 +743,13 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 9125295666834522612}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalRotation: {x: 0.68111545, y: -0.2284473, z: 0.23805623, w: 0.65362287}
+  m_LocalPosition: {x: -0.0002, y: -0.0004, z: -0.0001}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 1307099484629432992}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 92.36, y: -38.53, z: 0}
 --- !u!1001 &2053681193158253128
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -2488,11 +2488,11 @@ PrefabInstance:
     - target: {fileID: 5047510769810583256, guid: 48d2615fd829feb4a9c7bfb377fa75cc, type: 3}
       propertyPath: _spriteStun
       value: 
-      objectReference: {fileID: 21300000, guid: b42cd949e8c2af947b293ffc29234e45, type: 3}
+      objectReference: {fileID: 21300000, guid: a849045f256c1164987cb63ea408e43c, type: 3}
     - target: {fileID: 5047510769810583256, guid: 48d2615fd829feb4a9c7bfb377fa75cc, type: 3}
       propertyPath: _spriteDeath
       value: 
-      objectReference: {fileID: 21300000, guid: 5c521799bd7670e44befa1ada8a2d038, type: 3}
+      objectReference: {fileID: 21300000, guid: 733cf69d53b206e4788629535e6b9d21, type: 3}
     - target: {fileID: 5047510769810583256, guid: 48d2615fd829feb4a9c7bfb377fa75cc, type: 3}
       propertyPath: _mainRenderer
       value: 
