@@ -206,7 +206,7 @@ public class GTurnBaseManager : GSingleton<GTurnBaseManager>
     {
         base.Awake();
         // enabled = false;
-        //GHudManager.Instance.playMenu.SetWaveNumberText(GetScore());
+        // GHudManager.Instance.playMenu.SetWaveNumberText(GetScore());
         _waitForTurn = new WaitUntil(() => !isActionPlaying);
         _turnOrderControllerQueue.Clear();
         _actionsInProgress.Clear();
