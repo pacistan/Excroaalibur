@@ -17,6 +17,9 @@ public class GPlayerController : GController
 
     [SerializeField]
     public bool _endTurnWhenNoActionsLeft;
+    
+    [SerializeField]
+    private float _speedRotateTowardsActionValidsCell = 0.1f;
     public void SetEndTurnWhenNoActionsLeft(bool endTurnWhenNoActionsLeft) => _endTurnWhenNoActionsLeft = endTurnWhenNoActionsLeft;
     
     [SerializeField, ReadOnly, HideInEditorMode] 
@@ -250,6 +253,12 @@ public class GPlayerController : GController
                 SelectAction(null);
             }
             
+            if (_selectedAction != null && _selectedAction.IsValidCell(newCell.hexCoordinates))
+            {
+                if (_selectedPlayer != null)
+                    _selectedPlayer.RotateTowards(newCell.transform.position, _speedRotateTowardsActionValidsCell);
+            }
+            
             _hoverCell = newCell;
         }
         else if (!newCell)
@@ -468,5 +477,10 @@ public class GPlayerController : GController
         {
             _isFirstAction = true;
         }
+    }
+
+    void Awake() 
+    {
+        GGameManager.Instance._playerController = this;
     }
 }
