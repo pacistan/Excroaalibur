@@ -59,8 +59,7 @@ namespace WingmanInspector {
         }
 
         private static void InitAsset() {
-            try {
-                boldLabelStyle = new GUIStyle(EditorStyles.boldLabel);
+            try {boldLabelStyle = new GUIStyle(EditorStyles.boldLabel);
                 boldLabelStyle.fontSize = 10;
                 
                 CheckForPersistent();

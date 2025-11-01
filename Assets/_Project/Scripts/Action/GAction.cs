@@ -1,4 +1,5 @@
-﻿using Sirenix.OdinInspector;
+﻿using JetBrains.Annotations;
+using Sirenix.OdinInspector;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -78,7 +79,7 @@ public abstract class GAction
     float safehandle = 10f;
     float _elapsedTime = 0f;
     
-    public Texture2D GetCursorIcon(int index = 0) => _actionCursorIcon[index];
+    public Texture2D GetCursorIcon(int index = 0) =>_actionCursorIcon != null && index <= _actionCursorIcon.Length - 1 ? _actionCursorIcon[index] : null;
     
     public GAction(){}
     public GAction(GPawn inLinkedPawn, GCell inTargetCell, Action inOnActionStarted = null,
@@ -106,6 +107,7 @@ public abstract class GAction
         clone.OnActionFinished = OnActionFinished;
         clone.actionIcon = actionIcon;
         clone.actionLabel = actionLabel;
+        clone._actionCursorIcon = _actionCursorIcon;
         return clone;
     }
     
