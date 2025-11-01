@@ -41,6 +41,7 @@ public class GPawn : GGridObject
     public const string AnimParam_HasSword = "HasSword";
     public const string AnimParam_IsPreparedToCatch = "IsPrepareCatch";
     public const string AnimParam_IsPreparedToThrow = "isPrepareThrow";
+    public const string AnimParam_IsInHole = "IsInHole";
     
     [SerializeReference]
     public GPawnData data;
