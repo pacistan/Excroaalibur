@@ -11,6 +11,7 @@ using UnityEngine.Events;
 
 public class GPawn : GGridObject
 {
+    public enum EDeathType {Pushed, Hole, Throw}
     public event Action<GEquipment> OnEquip;
     public event Action<GEquipment> OnUnequip;
     public event Action OnKill;
@@ -30,7 +31,12 @@ public class GPawn : GGridObject
     public const string PushedEndAnimationName = "Pushed_End";
     public const string CatchAnimationName = "Catch";
     public const string GetOutOfHoleAnimationName = "MoveOutOfHole";
-
+    public const string DieAnimationName = "Die";
+    public const string PushedIntoHoleAnimationName = "Pushed_Hole";
+    public const string HitAnimationName = "Hit";
+    public const string Spawn = "Spawn";
+    
+    
     public const string AnimParam_IsStunned = "IsStunned";
     public const string AnimParam_HasSword = "HasSword";
     public const string AnimParam_IsPreparedToCatch = "IsPrepareCatch";
@@ -65,6 +71,7 @@ public class GPawn : GGridObject
     public bool IsStunned => stunTurn > 0;
 
     public bool IsAlive => !(hp == 0);
+    
     
     [FoldoutGroup("Other", false)]
     [SerializeField, FoldoutGroup("Other/Events"), HideIf("@hp < 0")]
@@ -222,12 +229,19 @@ public class GPawn : GGridObject
         }
     }
 
-    public void Kill()
+    public void Kill(EDeathType deathType = EDeathType.Throw)
     {
         OnKill?.Invoke();
         _OnDeath?.Invoke();
+        if (deathType == EDeathType.Throw)
+        {
+            visuals.SetAnimationState(DieAnimationName);
+        }
+        else 
+        {
+            Destroy(gameObject);
+        }
         isMarkedForDestruction = true;
-        Destroy(gameObject);
     }
 
     public void OnStartAction()

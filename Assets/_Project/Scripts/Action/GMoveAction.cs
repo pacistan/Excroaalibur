@@ -1,3 +1,4 @@
+using DG.Tweening;
 using FMOD;
 using FMOD.Studio;
 using FMODUnity;
@@ -103,19 +104,26 @@ public class GMoveAction : GAction
         _progress = 0;
         _currentWayPoint = 0;
 
-        if (moveAnimationName == GPawn.PushedStartAnimationName)
+        if (targetCell.GetTileType == ETileType.Hole)
+        {
+            RuntimeManager.PlayOneShotAttached("event:/Pawn/Fall", linkedPawn.gameObject);
+            if (!linkedPawn.data.isPlayer)
+                moveAnimationName = GPawn.PushedIntoHoleAnimationName;
+        }
+
+        if (moveAnimationName == GPawn.PushedStartAnimationName || moveAnimationName == GPawn.PushedIntoHoleAnimationName)
         {
             Vector3 lookAtPosition = targetCell.transform.position - (2 * (targetCell.transform.position - linkedPawn.transform.position));
             lookAtPosition.y = linkedPawn.transform.position.y;
-            linkedPawn.transform.LookAt(lookAtPosition);
+            linkedPawn.transform.DOLookAt(lookAtPosition, 0.5f).SetEase(Ease.InOutElastic);
+            //linkedPawn.transform.LookAt(lookAtPosition);
         }
 
+        
         linkedPawn.visuals.SetAnimationState(moveAnimationName, 0.01f);
         MoveEventInstance = RuntimeManager.CreateInstance(MoveEvent);
         MoveEventInstance.set3DAttributes(RuntimeUtils.To3DAttributes(linkedPawn.gameObject));
         MoveEventInstance.start();
-        if (targetCell.GetTileType == ETileType.Hole)
-            RuntimeManager.PlayOneShotAttached("event:/Pawn/Fall", linkedPawn.gameObject);
     }
 
     public override void Update_Action(float delta)
@@ -134,7 +142,7 @@ public class GMoveAction : GAction
             }
             _currentWayPoint++;
 
-            if (_wayPoints.Length > 0 && moveAnimationName != GPawn.PushedStartAnimationName)
+            if (_wayPoints.Length > 0 && moveAnimationName != GPawn.PushedStartAnimationName && moveAnimationName != GPawn.PushedIntoHoleAnimationName)
             {
                 Vector3 lookAtPosition = _wayPoints[Mathf.Min(_currentWayPoint + 1, _wayPoints.Length - 1)];
                 lookAtPosition.y = linkedPawn.transform.position.y;
@@ -154,18 +162,30 @@ public class GMoveAction : GAction
     public override void End_Action()
     {
         linkedPawn.transform.position = targetCell.transform.position;
-        linkedPawn.visuals.SetAnimationState(GPawn.IdleAnimationName);
         MoveEventInstance.stop(STOP_MODE.ALLOWFADEOUT);
         if (!linkedPawn.IsAlive)
         {
             if (targetCell.GetTileType == ETileType.Hole)
+            {
                 RuntimeManager.PlayOneShotAttached("event:/Pawn/Enemy/Drown", linkedPawn.gameObject);
-            linkedPawn.Kill();
+            }
+            else
+            {
+                linkedPawn.Kill(GPawn.EDeathType.Pushed);
+            }
         }
 
-        if (moveAnimationName == GPawn.PushedStartAnimationName)
+        if (moveAnimationName == GPawn.PushedStartAnimationName && linkedPawn.IsAlive)
         {
             linkedPawn.visuals.SetAnimationState(GPawn.PushedEndAnimationName);
+        }
+        else if (moveAnimationName == GPawn.PushedStartAnimationName && !linkedPawn.IsAlive)
+        {
+            
+        }
+        else if(linkedPawn.IsAlive)
+        {
+            linkedPawn.visuals.SetAnimationState(GPawn.IdleAnimationName);
         }
         base.End_Action();
     }
