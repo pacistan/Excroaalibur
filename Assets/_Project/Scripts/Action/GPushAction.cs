@@ -110,7 +110,7 @@ public class GPushAction : GAction
         linkedPawn.transform.LookAt(lookAtPosition);
         
         linkedPawn.OnAnimationPush += OnAnimationPushCallback;
-        linkedPawn.visuals.SetAnimationState(GPawn.PushAnimationName);
+        linkedPawn.visuals.SetAnimationState(GPawn.PushAnimationName, 0.0f);
         linkedPawn.StartCoroutine(StartReactionsCoroutine());
         
     }

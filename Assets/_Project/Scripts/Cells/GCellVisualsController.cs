@@ -85,6 +85,7 @@ public class GCellVisualsController : MonoBehaviour
             _meshRenderer.sharedMaterials = materials;
             _meshFilter.sharedMesh = mesh;
             
+            // TODO : Move to local position 
             Vector3 position = _meshFilter.transform.parent.position;
             position.y = tileTypeData.heightOffset;
             _meshFilter.transform.parent.position = position;
