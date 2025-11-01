@@ -135,6 +135,13 @@ public class GPawnVisualsController : SerializedMonoBehaviour
             Debug.LogWarning("Animator is not set");
             return;
         }
+
+        // TODO : Rework that !!!
+        if (animationStateName == GPawn.IdleAnimationName)
+        {
+            animationStateName = _pawn.equipment ? "Idle_Sword" : GPawn.IdleAnimationName;
+        }
+        
         _animator.CrossFade(animationStateName, transitionDuration);
     }
 
