@@ -2332,7 +2332,7 @@ PrefabInstance:
       objectReference: {fileID: 21300000, guid: ff146265ae197d7459acab335d09915d, type: 3}
     - target: {fileID: 3600378517476369325, guid: 1d6081f5ade087446add2ebf981b4170, type: 3}
       propertyPath: m_text
-      value: "Your character have various possible actions per turn : Moving, Pushing
+      value: "Your character has various possible actions per turn : Moving, Pushing
         (if you don\u2019t have the Sword) and Throwing the Sword.\n\r\nEach of your
         characters can do 2 actions per turn. When every character of yours used
         all their action points, your turn will end and the enemies will take their
@@ -2369,6 +2369,10 @@ PrefabInstance:
     - target: {fileID: 4148849100115544902, guid: 1d6081f5ade087446add2ebf981b4170, type: 3}
       propertyPath: m_AnchoredPosition.x
       value: -225
+      objectReference: {fileID: 0}
+    - target: {fileID: 8150465694355448709, guid: 1d6081f5ade087446add2ebf981b4170, type: 3}
+      propertyPath: m_text
+      value: Click Any Button
       objectReference: {fileID: 0}
     - target: {fileID: 8706553226191763757, guid: 1d6081f5ade087446add2ebf981b4170, type: 3}
       propertyPath: m_SizeDelta.x
@@ -15096,11 +15100,10 @@ PrefabInstance:
     - target: {fileID: 134540935242368777, guid: 8ceb726ec6d92264eaf5e690f9c19af8, type: 3}
       propertyPath: m_text
       value: "Welcome to Excroaalibur\u2019s first demo !\n\r\nHere, your goal is
-        to get the Sword on the altar and to survive as much as possible waves of
-        enemies by killing them by throwing the Sword at them. But be careful not
+        to get the Sword on the altar and to survive as much waves of enemies as
+        possible by killing them by throwing the Sword at them. But be careful not
         loosing it, because the enemies will try to get it back to the altar, making
-        you loose the game.\n\r\nTo start your turn, push the altar to get the Sword
-        !"
+        you loose.\n\r\nTo start your turn, push the altar to get the Sword !"
       objectReference: {fileID: 0}
     - target: {fileID: 134540935242368777, guid: 8ceb726ec6d92264eaf5e690f9c19af8, type: 3}
       propertyPath: m_margin.w
