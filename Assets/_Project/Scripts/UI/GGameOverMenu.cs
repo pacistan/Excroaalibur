@@ -32,6 +32,14 @@ public class GGameOverMenu : MonoBehaviour
     
     public void OnPanelOpen()
     {
+        if (_profils == null)
+        {
+            _profils = new GLeaderboardProfilEntry[_maxNumberOfLeaderboardProfils];
+            for (int i = 0; i < _maxNumberOfLeaderboardProfils; i++)
+            {
+                _profils[i] = Instantiate(_profilPrefab,  _profilFolder);
+            }
+        }
         LoadEntries();
         _waveNumberValueTxt.text = $"Number of waves completed : {GTurnBaseManager.Instance.GetScore()}";
     }
@@ -64,11 +72,7 @@ public class GGameOverMenu : MonoBehaviour
 
     private void Start()
     {
-        _profils = new GLeaderboardProfilEntry[_maxNumberOfLeaderboardProfils];
-        for (int i = 0; i < _maxNumberOfLeaderboardProfils; i++)
-        {
-            _profils[i] = Instantiate(_profilPrefab,  _profilFolder);
-        }
+
         
         _replayButton.onClick.AddListener(() => GGameManager.Instance.ChangeState(EMacroStates.LoadingScreen));
         _mainMenuButton.onClick.AddListener(() => GGameManager.Instance.ChangeState(EMacroStates.Start));

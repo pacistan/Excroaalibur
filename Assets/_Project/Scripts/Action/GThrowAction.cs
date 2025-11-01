@@ -338,7 +338,7 @@ public class GThrowAction : GAction
         _throwSoundInstance.start();
         
         _crown.ResetTransformOwner();
-        _crown.transform.DORotateQuaternion(Quaternion.identity, 0.2f);
+        _crown.transform.LookAt(targetCell.transform.position);
         _startPos  = linkedPawn.equipmentParentTr.position;
         _hitPos    =  _targetPawn ? _targetPawn.equipmentParentTr.position : targetCell.equipmentSpawnPoint.position;
         _returnPos = _startPos;

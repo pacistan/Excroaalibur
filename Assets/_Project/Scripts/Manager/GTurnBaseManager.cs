@@ -206,6 +206,7 @@ public class GTurnBaseManager : GSingleton<GTurnBaseManager>
     {
         base.Awake();
         // enabled = false;
+        //GHudManager.Instance.playMenu.SetWaveNumberText(GetScore());
         _waitForTurn = new WaitUntil(() => !isActionPlaying);
         _turnOrderControllerQueue.Clear();
         _actionsInProgress.Clear();
@@ -285,7 +286,7 @@ public class GTurnBaseManager : GSingleton<GTurnBaseManager>
         if (newState == EMacroStates.Play && oldState == EMacroStates.LoadingScreen)
         {
             _actionsInProgress.Clear();
-            GHudManager.Instance.playMenu.SetWaveNumberText(GWaveManager.Instance.GetScore());
+            GHudManager.Instance.playMenu.SetWaveNumberText(GetScore() - 1);
         }
     }
 }
