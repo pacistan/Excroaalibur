@@ -26,7 +26,6 @@ public class GPawn : GGridObject
     public const string PushAnimationName = "Push";
     public const string ThrowAnimationName = "Throw";
     public const string PassCloseAnimationName = "Pass_Close";
-    public const string PassFarAnimationName = "Pass_Far";
     public const string PushedStartAnimationName = "Pushed_Start";
     public const string PushedEndAnimationName = "Pushed_End";
     public const string CatchAnimationName = "Catch";

@@ -240,7 +240,7 @@ public class GThrowAction : GAction
         if(_targetPawn && _targetPawn.data.isPlayer)
             animName = _targetPawn.GetCell().hexCoordinates.DistanceTo(linkedPawn.GetCell().hexCoordinates) == 1
                 ? GPawn.PassCloseAnimationName
-                : GPawn.PassFarAnimationName;
+                : GPawn.ThrowAnimationName;
         
         
         linkedPawn.OnAnimationThrow += OnAnimationThrowCallback;
