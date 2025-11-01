@@ -76,11 +76,11 @@ public class GGridObject : SerializedMonoBehaviour
     
     protected virtual void OnEnable()
     {
-        GGridObjectRegistry.Instance.Register(this);
+        GGridObjectRegistry.Instance?.Register(this);
     }
 
     protected virtual void OnDisable()
     {
-        GGridObjectRegistry.Instance.Unregister(this);
+        GGridObjectRegistry.Instance?.Unregister(this);
     }
 }
