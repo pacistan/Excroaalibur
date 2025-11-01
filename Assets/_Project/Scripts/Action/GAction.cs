@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 // Data container for passing parameters between actions
 // This is an equivalent to a String/Untyped dictionary
@@ -61,6 +62,10 @@ public abstract class GAction
     public string actionLabel { get; private set; }
     [field: SerializeField, FoldoutGroup("Visuals")]
     public Sprite actionIcon { get; private set; }
+
+    [FormerlySerializedAs("actionCursorIcon")]
+    [field: SerializeField, FoldoutGroup("Visuals")]
+    private Texture2D[] _actionCursorIcon;
     [ReadOnly, HideInEditorMode] 
     public GPawn linkedPawn;
     [ReadOnly, HideInEditorMode] 
@@ -72,6 +77,8 @@ public abstract class GAction
     // Safe handle to avoid infinite action state !
     float safehandle = 10f;
     float _elapsedTime = 0f;
+    
+    public Texture2D GetCursorIcon(int index = 0) => _actionCursorIcon[index];
     
     public GAction(){}
     public GAction(GPawn inLinkedPawn, GCell inTargetCell, Action inOnActionStarted = null,

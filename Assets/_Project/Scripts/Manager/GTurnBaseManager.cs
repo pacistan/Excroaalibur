@@ -285,6 +285,7 @@ public class GTurnBaseManager : GSingleton<GTurnBaseManager>
         if (newState == EMacroStates.Play && oldState == EMacroStates.LoadingScreen)
         {
             _actionsInProgress.Clear();
+            GHudManager.Instance.playMenu.SetWaveNumberText(GWaveManager.Instance.GetScore());
         }
     }
 }
