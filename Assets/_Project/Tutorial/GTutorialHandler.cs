@@ -68,7 +68,6 @@ public class GTutorialHandler : MonoBehaviour
     
     IEnumerator WaitAndHideInfo(STutorialInfo info)
     {
-
         GGameManager.Instance.playerController.enabled = false; 
         yield return new WaitForSeconds(info.stopTime);
         
