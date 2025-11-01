@@ -81,19 +81,16 @@ public class GGridEditor : MonoBehaviour
     public void ClearCells()
     {
         GGridManager gridManager = GGridManager.Instance ? GGridManager.Instance : GameObject.FindFirstObjectByType<GGridManager>();
-        GCell[] grid = gridManager.grid;
-        if (grid != null)
+        for (int i = _cellsParent.childCount - 1; i >= 0; i--)
         {
-            for (int i = grid.Length - 1; i >= 0; i--)
-            {
-                if (grid[i] == null) continue;
-                if (grid[i].ui != null)
-                    DestroyImmediate(grid[i].ui.gameObject);
-                DestroyImmediate(grid[i].gameObject);
-            }
-
-            grid = null;
+            DestroyImmediate(_cellsParent.GetChild(i).gameObject);
         }
+        for (int i = _cellsCanvas.transform.childCount - 1; i >= 0; i--)
+        {
+            DestroyImmediate(_cellsCanvas.transform.GetChild(i).gameObject);
+        }
+        
+        gridManager.grid = null;
     }
 
     private void CreateCell(int row, int column, int i, ref GCell[] grid)
