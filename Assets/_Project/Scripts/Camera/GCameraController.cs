@@ -55,6 +55,8 @@ public class GCameraController : GSingleton<GCameraController>
 
     private void Update()
     {
+        if (GGameManager.Instance.isGamePaused) return;
+        
         if (_quartTurnLeft.WasPressedThisFrame())
             StartHorizontalQuartRotation(false);
         if (_quartTurnRight.WasPressedThisFrame())
