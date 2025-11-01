@@ -7,6 +7,7 @@ using System.Collections;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;
+using UnityEngine.Serialization;
 
 public enum EMacroStates { Start, Options, Pause, Play, End, LoadingScreen, None }
 
@@ -67,7 +68,8 @@ public class GGameManager: GSingleton<GGameManager>
     [SerializeField]
     float _loadSceneForceDuration = 2f;
     
-    public GPlayerController _playerController;
+    [FormerlySerializedAs("_playerController")]
+    public GPlayerController playerController;
     
     public void SetSceneToLoad(string sceneToLoadName)
     {
