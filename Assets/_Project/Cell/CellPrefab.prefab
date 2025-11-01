@@ -294,15 +294,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4837c35aaaec49949566631d3c9bd0e3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  serializationData:
-    SerializedFormat: 2
-    SerializedBytes: 
-    ReferencedUnityObjects: []
-    SerializedBytesString: 
-    Prefab: {fileID: 0}
-    PrefabModificationsReferencedUnityObjects: []
-    PrefabModifications: []
-    SerializationNodes: []
   cellCommonData: {fileID: 11400000, guid: 6b3ac300fab008a42b3df5d92c030bf0, type: 2}
   instantiationCommonData: {fileID: 11400000, guid: 4b4fcf36089c3bb4eba6e330bdef62cf, type: 2}
   _meshRenderer: {fileID: 6697371883044350570}
@@ -321,6 +312,7 @@ MonoBehaviour:
   _currentHighlightType: 2
   _previousPositionY: 0
   _isPullingNeighbors: 0
+  _cadrillageNumber: 0
 --- !u!1 &5259476100005063110
 GameObject:
   m_ObjectHideFlags: 0
@@ -346,7 +338,7 @@ Transform:
   m_GameObject: {fileID: 5259476100005063110}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: 4.56, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
