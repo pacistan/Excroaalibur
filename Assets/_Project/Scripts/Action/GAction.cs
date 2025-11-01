@@ -66,6 +66,10 @@ public abstract class GAction
     [FormerlySerializedAs("actionCursorIcon")]
     [field: SerializeField, FoldoutGroup("Visuals")]
     private Texture2D[] _actionCursorIcon;
+
+    [field : SerializeField, FoldoutGroup("Visuals")]
+    public bool centerCursorOffset { get; private set; }
+    
     [ReadOnly, HideInEditorMode] 
     public GPawn linkedPawn;
     [ReadOnly, HideInEditorMode] 
@@ -106,6 +110,8 @@ public abstract class GAction
         clone.OnActionFinished = OnActionFinished;
         clone.actionIcon = actionIcon;
         clone.actionLabel = actionLabel;
+        clone.centerCursorOffset = centerCursorOffset;
+        clone._actionCursorIcon = _actionCursorIcon;
         return clone;
     }
     

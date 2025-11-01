@@ -24,14 +24,15 @@ public class GCell : SerializedMonoBehaviour
     [FormerlySerializedAs("cellVisualsController")]
     [SerializeField, FoldoutGroup("PersistantData/Components")][FormerlySerializedAs("_cellVisualsController")]
     public GCellVisualsController visuals;
-    
-    [SerializeField, FoldoutGroup("PersistantData/Components")][FormerlySerializedAs("_pawnSpawnPoint")]
-    public Transform pawnSpawnPoint;
-    
-    [FormerlySerializedAs("equipmentPoint")]
-    [FormerlySerializedAs("pawnEquipmentPoint")]
-    [SerializeField, FoldoutGroup("PersistantData/Components")][FormerlySerializedAs("_pawnSpawnPoint")]
-    public Transform equipmentSpawnPoint;
+
+    [SerializeField, FoldoutGroup("PersistantData/Components")]
+    private Transform _pawnTransformPoint;
+
+    [SerializeField, FoldoutGroup("PersistantData/Components")]
+    private Transform _pawnSpawnPoint;
+
+    [SerializeField, FoldoutGroup("PersistantData/Components")]
+    Transform _equipmentTransformPoint;
     
     [SerializeField, ReadOnly, FoldoutGroup("PersistantData")][FormerlySerializedAs("_hexCoordinates")]
     public GHexCoordinate hexCoordinates;
@@ -49,6 +50,13 @@ public class GCell : SerializedMonoBehaviour
     public GCell spawnLinkCell {get; private set;}
     
     public ETileType GetTileType => data.tileType;
+
+    public Transform GetTransformPoint(GGridObject gridObject)
+    {
+        if(gridObject is GEquipment) return _equipmentTransformPoint;
+        else if(data.tileType == ETileType.Spawner) return _pawnSpawnPoint;
+        else return _pawnTransformPoint;
+    }
     
     public void SetGridObject(GGridObject inGridObject, bool updateTransform = true)
     {
@@ -57,7 +65,7 @@ public class GCell : SerializedMonoBehaviour
         gridObject = inGridObject;
         if (!updateTransform || !inGridObject) return;
         
-        Transform parent = gridObject is GEquipment ? equipmentSpawnPoint : pawnSpawnPoint;
+        Transform parent = GetTransformPoint(gridObject);
         gridObject.transform.parent = parent;
         gridObject.transform.localPosition = Vector3.zero; 
         gridObject.transform.localRotation = Quaternion.identity;
@@ -109,16 +117,16 @@ public class GCell : SerializedMonoBehaviour
         UpdateGridObject();
         
         Vector3 targetPos = spawnLinkCell.transform.position;
-        targetPos = 2 * transform.position - targetPos;
+        //targetPos = /*2 * transform.position - */targetPos;
         targetPos.y = pawn.transform.position.y;
         pawn.transform.LookAt(targetPos);
         //pawn.transform.position = spawnLinkCell.transform.position;
-        pawn.visuals.SetAnimationState(GPawn.SpawnAnimationName);
+        pawn.visuals.SetAnimationState(GPawn.SpawnAnimationName, 0f);
         
         RuntimeManager.PlayOneShotAttached("event:/Pawn/Enemy/Spawn", pawn.gameObject);
         // TODO : Call When the Spawn Process is finished (Animation, VFX, etc.) !!
-        yield return new WaitUntil(() =>
-            !pawn.visuals.GetAnimator().GetCurrentAnimatorStateInfo(0).IsName(GPawn.SpawnAnimationName));
+        yield return new WaitForSeconds(1);/*() =>
+            !pawn.visuals.GetAnimator().GetCurrentAnimatorStateInfo(0).IsName(GPawn.SpawnAnimationName));*/
         _OnSpawnedPawnFinished?.Invoke();
         OnSpawnFinishCallback?.Invoke();
     }

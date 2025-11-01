@@ -109,6 +109,7 @@ public class GPawn : GGridObject
         transform.rotation = targetRotation;
         
     }
+   
     public GAction GetReaction(GAction action)
     {
         if (action == null) return null;
