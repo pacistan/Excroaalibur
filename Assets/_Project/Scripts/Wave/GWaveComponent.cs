@@ -21,7 +21,7 @@ public class GWaveComponent : MonoBehaviour
     [HideInEditorMode, ReadOnly, Tooltip("List of potential spawn cells for enemies")]
     private List<GCell> _spawnCells = new List<GCell>();
 
-    private int _spawningInProcess = 0; 
+    private int SpawningInProcess = 0; 
     
     /** Current Wave Data Use by the Wave Manager */
     private WaveData _waveData;
@@ -32,14 +32,14 @@ public class GWaveComponent : MonoBehaviour
     public bool HasWave() => _waveData != null &&
                              (_waveData._waveType == WaveData.EWaveType.Endless ||
                               (_waveData.waves != null && _waveData.waves.Count > 0));
-    public bool IsSpawningInProgress() => HasEnemiesToSpawn() || _spawningInProcess > 0;
+    public bool IsSpawningInProgress() => HasEnemiesToSpawn() && SpawningInProcess > 0;
     
     private bool HasEnemiesToSpawn() => _ennemiesPool.Count > 0;
     
     private void OnEnemySpawned()
     {
-        _spawningInProcess = Mathf.Max(0, _spawningInProcess - 1);
-        if (_spawningInProcess > 0) return;
+        SpawningInProcess = Mathf.Max(0, SpawningInProcess - 1);
+        if (SpawningInProcess > 0) return;
         
         // TODO : Spawning process finish !
     }
@@ -101,7 +101,7 @@ public class GWaveComponent : MonoBehaviour
     {
         if (!HasEnemiesToSpawn()) return;
         
-        _spawningInProcess = 0;
+        SpawningInProcess = 0;
         int spawnable = Mathf.Min(_ennemiesPool.Count, _spawnCells.Count);
         Debug.Log($"[WaveManager] Spawning {spawnable} enemies.");
         GHudManager.Instance.playMenu.SetWaveNumberText(_WaveCount);
@@ -124,7 +124,7 @@ public class GWaveComponent : MonoBehaviour
                 Debug.LogWarning("[WaveManager] Spawned controller has no GPawn component.");
                 continue;
             }
-            _spawningInProcess++;
+            SpawningInProcess++;
             StartCoroutine(_spawnCells[i].SpawnPawnFinish(pawn, OnEnemySpawned));
             _ennemiesPool.RemoveAt(i);
         }
