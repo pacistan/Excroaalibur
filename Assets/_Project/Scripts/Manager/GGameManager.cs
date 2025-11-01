@@ -92,17 +92,12 @@ public class GGameManager: GSingleton<GGameManager>
         OnChangeMacroStateEvent?.Invoke(currentState, previousState);
     }
 
-    public void LoadScene(bool reloadScene = false)
+    public void LoadScene()
     {
-        if (reloadScene)
-        {
-            StartCoroutine(LoadSceneCoroutine(SceneManager.GetActiveScene().name));
-            return;
-        }
         string sceneName = "";
         if (isLoadingTutorial)
         {
-            if(_currentTutorialSceneToLoadIndex > _loadableTutorialScenes.Length)
+            if(_currentTutorialSceneToLoadIndex > _loadableTutorialScenes.Length - 1)
             {
                 ChangeState(EMacroStates.Start);
                 return;
@@ -119,30 +114,22 @@ public class GGameManager: GSingleton<GGameManager>
 
     private IEnumerator LoadSceneCoroutine(string sceneName)
     {
-        if (currentState == EMacroStates.LoadingScreen)
+        AsyncOperation asyncOperation = SceneManager.LoadSceneAsync(sceneName);
+        asyncOperation.allowSceneActivation = false;
+        float forcedTimer = 0;
+        while (!asyncOperation.isDone || forcedTimer < 1f)
         {
-            /* string sceneName = reloadScene ? SceneManager.GetActiveScene().name : // Is Reload ?
-                isLoadingTutorial ?  // Is Tutorial ?
-                    _loadableTutorialScenes[Mathf.Min(_currentTutorialSceneToLoadIndex, _loadableTutorialScenes.Length - 1)] :
-                    _loadableScenes[Mathf.Min(_currentSceneToLoadIndex, _loadableScenes.Length - 1)]; */
-            
-            AsyncOperation asyncOperation = SceneManager.LoadSceneAsync(sceneName);
-            asyncOperation.allowSceneActivation = false;
-            float forcedTimer = 0;
-            while (!asyncOperation.isDone || forcedTimer < 1f)
+            GHudManager.Instance.loadingScreenMenu.UpdateProgress(asyncOperation.progress);
+            forcedTimer += Time.unscaledDeltaTime / _loadSceneForceDuration;
+            if (asyncOperation.progress >= 0.9f)
             {
-                GHudManager.Instance.loadingScreenMenu.UpdateProgress(asyncOperation.progress);
-                forcedTimer += Time.unscaledDeltaTime / _loadSceneForceDuration;
-                if (asyncOperation.progress >= 0.9f)
-                {
-                    asyncOperation.allowSceneActivation = true;
-                }
-
-                yield return null;
+                asyncOperation.allowSceneActivation = true;
             }
-            Debug.Log(forcedTimer);
-            ChangeState(EMacroStates.Play);
+
+            yield return null;
         }
+        Debug.Log(forcedTimer);
+        ChangeState(EMacroStates.Play);
     }
 
     private void OnMenuEnter()
