@@ -33,7 +33,7 @@ public class GGameOverMenu : MonoBehaviour
     public void OnPanelOpen()
     {
         LoadEntries();
-        _waveNumberValueTxt.text = $"Number of waves completed : {GWaveManager.Instance.GetScore()}";
+        _waveNumberValueTxt.text = $"Number of waves completed : {GTurnBaseManager.Instance.GetScore()}";
     }
     
     public void LoadEntries()
@@ -54,7 +54,7 @@ public class GGameOverMenu : MonoBehaviour
 
     public void UploadEntry()
     {
-        int Score = GWaveManager.Instance.GetScore();
+        int Score = GTurnBaseManager.Instance.GetScore();
         Leaderboards.Croawn.UploadNewEntry(_newHighscoreInputField.text, Score , isSuccessful =>
         {
             if (isSuccessful)

@@ -3,7 +3,6 @@ using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
-using UnityEngine.UI;
 
 /* Use this for Displaying Tutorial Information to the Player */
 public class GTutorialHandler : MonoBehaviour
@@ -51,6 +50,7 @@ public class GTutorialHandler : MonoBehaviour
     void HandleUnregisterController(GController controller)
     {
         if (controller is GPlayerController) return;
+
         
         GGameManager.Instance._currentTutorialSceneToLoadIndex++;
         GGameManager.Instance.LoadScene();
@@ -72,6 +72,7 @@ public class GTutorialHandler : MonoBehaviour
         
         info.TextObject.gameObject.SetActive(false);
         GGameManager.Instance.playerController.enabled = true;
+        
         yield return new WaitUntil(() => Input.anyKeyDown);
         
         info.CanvasObject.SetActive(false);

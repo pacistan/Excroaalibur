@@ -1,77 +1,16 @@
-﻿using Stanpac.Utilities;
+﻿using _Project.Scripts.Wave;
 using Sirenix.OdinInspector;
+using Stanpac.Utilities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
-using UnityEngine.Events;
 
 
-// TODO : Create Wave Data In Scriptable Object ! 
-// Creat this in Turn Base Manager ?
-// Set the Data for Wave expose in the turn Base manager ?
-// Remove Singleton From this Script 
 /* Manage the Wave and Spawn of Ennemies */
-public class GWaveManager : GSingleton<GWaveManager>
+public class GWaveComponent : MonoBehaviour 
 {
-    private enum EWaveType
-    {
-        Finite,
-        Endless
-    }
-    
-    [Serializable]
-    public class EnemySpawnEntry
-    {
-        [Tooltip("Enemy to spawn")]
-        public GAIController enemy;
-
-        [Min(0), Tooltip("Number of enemies to spawn")]
-        public int count;
-    }
-
-    [Serializable]
-    public class SWave
-    {
-        [Tooltip("At which turn the wave starts")]
-        public int turn = 0;
-        
-        [SerializeField, Tooltip("Enemies to spawn in this wave")]
-        private List<EnemySpawnEntry> enemiesToSpawn = new List<EnemySpawnEntry>();
-        
-        [NonSerialized, ReadOnly, Tooltip("Does the Wave Has been preview by the system (Just before the Player Turn)")] 
-        public bool IsPreview = false; 
-        
-        public int GetSpawnCount()
-        {
-            int total = 0;
-            for (int i = 0; i < enemiesToSpawn.Count; i++)
-                total += Mathf.Max(0, enemiesToSpawn[i].count);
-            return total;
-        }
-        
-        public List<GAIController> GetEnemiesToSpawn()
-        {
-            var list = new List<GAIController>();
-            for (int i = 0; i < enemiesToSpawn.Count; i++)
-            {
-                var e = enemiesToSpawn[i];
-                if (e.enemy == null || e.count <= 0) continue;
-                for (int k = 0; k < e.count; k++)
-                    list.Add(e.enemy);
-            }
-            return list;
-        }
-    }
-    
-    [field: SerializeField, ShowIf("@_waveType == EWaveType.Finite"),Tooltip("List of waves to spawn")]
-    public List<SWave> waves { get; private set; } = new List<SWave>();
-    
-    [SerializeField, Tooltip("Type of wave spawning"), PropertyOrder(-1)]
-    private EWaveType _waveType = EWaveType.Finite;
-    
-    [SerializeField, ShowIf("@_waveType == EWaveType.Endless"), Tooltip("Enemy prefab for Endless wave spawning")]
-    private GAIController enemyPrefab; 
+    public Action<bool> OnSpawningProcessFinsish;
     
     [HideInEditorMode, ReadOnly, Tooltip("Number of completed waves")]
     private int _WaveCount = 0;
@@ -84,10 +23,18 @@ public class GWaveManager : GSingleton<GWaveManager>
 
     private int SpawningInProcess = 0; 
     
-    /** Get the Current Score (Number of completed waves) */
-    public int GetScore() => _waveType == EWaveType.Endless ? GetWaveCount() - 1: -1;
+    /** Current Wave Data Use by the Wave Manager */
+    private WaveData _waveData;
     
+    /* Get the Actual wave Count */
+    public int GetWaveCount() => _waveData._waveType == WaveData.EWaveType.Endless ? _WaveCount : -1;
+
+    public bool HasWave() => _waveData != null &&
+                             (_waveData._waveType == WaveData.EWaveType.Endless ||
+                              (_waveData.waves != null && _waveData.waves.Count > 0));
     public bool IsSpawningInProgress() => HasEnemiesToSpawn() && SpawningInProcess > 0;
+    
+    private bool HasEnemiesToSpawn() => _ennemiesPool.Count > 0;
     
     private void OnEnemySpawned()
     {
@@ -104,7 +51,7 @@ public class GWaveManager : GSingleton<GWaveManager>
     
     private void OnPostPlayerTurn(int turnCount)
     {
-        if (_waveType == EWaveType.Endless)
+        if (_waveData._waveType == WaveData.EWaveType.Endless)
             CheckNextWave(turnCount);
        
         SpawnNextWave();
@@ -114,21 +61,21 @@ public class GWaveManager : GSingleton<GWaveManager>
     {
         if (HasEnemiesToSpawn()) return; // already have enemies to spawn ! 
         
-        if (_waveType == EWaveType.Endless) // Endless wave logic
+        if (_waveData._waveType == WaveData.EWaveType.Endless) // Endless wave logic
         {
             if (GTurnBaseManager.Instance.EnemiesCount > 0) return; // Wait until all enemies are dead !
-            _ennemiesPool.AddRange(Enumerable.Repeat(enemyPrefab, _WaveCount + 1)); 
+            _ennemiesPool.AddRange(Enumerable.Repeat(_waveData.enemyPrefab, _WaveCount + 1)); 
         }
-        else if (_waveType == EWaveType.Finite) // Finite wave logic
+        else if (_waveData._waveType == WaveData.EWaveType.Finite) // Finite wave logic
         {
-            if (waves == null || waves.Count == 0)  return;
+            if (_waveData.waves == null || _waveData.waves.Count == 0)  return;
             
-            SWave wave = waves.FirstOrDefault();
+            WaveData.SWave wave = _waveData.waves.FirstOrDefault();
             if (wave == null || turnCount < wave.turn) return;
             
             wave.IsPreview = true;
             _ennemiesPool.AddRange(wave.GetEnemiesToSpawn());
-            waves.RemoveAt(0);
+            _waveData.waves.RemoveAt(0);
         }
 
         if (_ennemiesPool.Count > 0)
@@ -138,7 +85,7 @@ public class GWaveManager : GSingleton<GWaveManager>
                 _spawnCells.Shuffle();
         }
         
-        if (_waveType == EWaveType.Endless) return; // Do not preview for endless mode
+        if (_waveData._waveType == WaveData.EWaveType.Endless) return; // Do not preview for endless mode
         
         // Preview Spawn
         int spawnable = Mathf.Min(_ennemiesPool.Count, _spawnCells.Count);
@@ -180,7 +127,7 @@ public class GWaveManager : GSingleton<GWaveManager>
             _ennemiesPool.RemoveAt(i);
         }
         
-        if (_waveType == EWaveType.Endless) return; // Do not clear the pool for endless mode
+        if (_waveData._waveType == WaveData.EWaveType.Endless) return; // Do not clear the pool for endless mode
         
         _ennemiesPool.Clear();    
     }
@@ -191,17 +138,12 @@ public class GWaveManager : GSingleton<GWaveManager>
         GGameManager.Instance.UpdateIntensity(GetWaveCount()); 
     }
     
-    private bool HasEnemiesToSpawn() => _ennemiesPool.Count > 0;
-    
-    /* Get the Actual wave Count */
-    private int GetWaveCount() => _waveType == EWaveType.Endless ? _WaveCount : -1;
-    
-    protected override void Awake()
+    protected void Awake()
     {
-        base.Awake(); 
         _spawnCells = GGridManager.Instance.GetAllCellsOfType(ETileType.Spawner);
         GTurnBaseManager.Instance.OnPrePlayerTurn += OnPrePlayerTurn;
         GTurnBaseManager.Instance.OnPostPlayerTurn += OnPostPlayerTurn;
+        _waveData = GTurnBaseManager.Instance.GetCurrentWaveData();
     }
 
     void OnDisable()

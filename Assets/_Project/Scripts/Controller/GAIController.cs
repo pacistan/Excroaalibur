@@ -79,6 +79,11 @@ public class GAIController : GController
         GTurnBaseManager.Instance.RequestEndTurn(this, false);
     }
 
+    void OnDestroy()
+    {
+        GTurnBaseManager.Instance.UnregisterController(this);
+    }
+
     void Awake()
     {
         pawn = GetComponent<GPawn>();
