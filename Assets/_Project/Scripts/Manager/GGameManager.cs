@@ -123,7 +123,6 @@ public class GGameManager: GSingleton<GGameManager>
             Debug.Log(forcedTimer);
             ChangeState(EMacroStates.Play);
         }
-
     }
 
     private void OnMenuEnter()
@@ -255,16 +254,29 @@ public class GGameManager: GSingleton<GGameManager>
 #if UNITY_EDITOR
     private void OnValidate()
     {
-        if(_loadableSceneAssets == null || _loadableSceneAssets.Length == 0)
+        if(_loadableSceneAssets != null && _loadableSceneAssets.Length > 0)
         {
+            _loadableScenes = new string[_loadableSceneAssets.Length];
+            for (int i = 0; i < _loadableSceneAssets.Length; i++)
+            {
+                _loadableScenes[i] = _loadableSceneAssets[i].name;
+            }
+        } 
+        else 
             _loadableScenes = null;
-            return;
-        }
-        _loadableScenes = new string[_loadableSceneAssets.Length];
-        for (int i = 0; i < _loadableSceneAssets.Length; i++)
+       
+        
+        if(_tutorialSceneAssets != null && _tutorialSceneAssets.Length > 0)
         {
-            _loadableScenes[i] = _loadableSceneAssets[i].name;
+            _loadableTutorialScenes = new string[_tutorialSceneAssets.Length];
+            for (int i = 0; i < _tutorialSceneAssets.Length; i++)
+            {
+                _loadableTutorialScenes[i] = _tutorialSceneAssets[i].name;
+            }
         }
+        else
+            _loadableTutorialScenes = null;
+       
     }
 #endif
 }

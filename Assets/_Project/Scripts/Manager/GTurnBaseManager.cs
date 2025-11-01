@@ -72,6 +72,8 @@ public class GTurnBaseManager : GSingleton<GTurnBaseManager>
     public int GetScore() => _waveComponent.GetWaveCount();
 
     public WaveData GetCurrentWaveData() => _hasWaves ? _currentWaveData : null;
+
+    public bool HasFutureSpawns() => _waveComponent.HasWave();
     
     /** Register an Controller to the Turn Base Manager */
     public void RegisterController(GController Controller)
@@ -90,13 +92,15 @@ public class GTurnBaseManager : GSingleton<GTurnBaseManager>
     /** Unregister a Controller from the Turn Base Manager */
     public void UnregisterController(GController Controller)
     {
+        
         if (_turnOrderControllerQueue.Contains(Controller) )
             _turnOrderControllerQueue.Remove(Controller);
-        
+
         if (_controllerList.Contains(Controller))
+        {
             _controllerList.Remove(Controller);
-        
-        OnUnregisterController?.Invoke(Controller);
+            OnUnregisterController?.Invoke(Controller);
+        }
     }
     
     /** Request to End the Turn of the Current Controller,
@@ -205,8 +209,7 @@ public class GTurnBaseManager : GSingleton<GTurnBaseManager>
     protected override void Awake()
     {
         base.Awake();
-        // enabled = false;
-        // GHudManager.Instance.playMenu.SetWaveNumberText(GetScore());
+        enabled = false;
         _waitForTurn = new WaitUntil(() => !isActionPlaying);
         _turnOrderControllerQueue.Clear();
         _actionsInProgress.Clear();

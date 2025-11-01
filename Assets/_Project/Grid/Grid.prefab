@@ -44,7 +44,8 @@ GameObject:
   - component: {fileID: 6610908280659176654}
   - component: {fileID: 7651828138839633993}
   - component: {fileID: 3274910628591863012}
-  - component: {fileID: 1045691303782029521}
+  - component: {fileID: 8961280520078500072}
+  - component: {fileID: 1037805715884389594}
   m_Layer: 0
   m_Name: Grid
   m_TagString: Untagged
@@ -104,7 +105,6 @@ MonoBehaviour:
   _cellsCanvas: {fileID: 699275846877622127}
   _cellPrefab: {fileID: 8962405803899580738, guid: ea08067a6a7f16e46a2a7007c2355b2e, type: 3}
   _cellUiPrefab: {fileID: 1694930933310197699, guid: 9ba9504904d0e3b4387c8b9502693c3f, type: 3}
-  _hudTransform: {fileID: 0}
   _gridDataFileName: LayoutTest_1
   _isUIGridPickable: 0
 --- !u!114 &7651828138839633993
@@ -132,11 +132,17 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   <currentTurnController>k__BackingField: {fileID: 0}
+  _actionsInProgress: []
   _turnOrderControllerQueue: []
   _safeTimeHandle: 5
   _actionSpeed: 1
   _turnCount: 0
---- !u!114 &1045691303782029521
+  _hasWaves: 1
+  _currentWaveData: {fileID: 0}
+  references:
+    version: 2
+    RefIds: []
+--- !u!114 &8961280520078500072
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -145,12 +151,21 @@ MonoBehaviour:
   m_GameObject: {fileID: 4055392255285988590}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3371b832a5c6486e8942b81295d0ebee, type: 3}
+  m_Script: {fileID: 11500000, guid: c9b92b44ee1408445bb0d282bf6f9a39, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  <waves>k__BackingField: []
-  _waveType: 1
-  enemyPrefab: {fileID: 3539483301687403083, guid: 05d949de3c2a4aa4eb1df7f5d5a2e8ac, type: 3}
+--- !u!114 &1037805715884389594
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4055392255285988590}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c9b92b44ee1408445bb0d282bf6f9a39, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &6229668815744158599
 GameObject:
   m_ObjectHideFlags: 0

@@ -50,10 +50,11 @@ public class GTutorialHandler : MonoBehaviour
     void HandleUnregisterController(GController controller)
     {
         if (controller is GPlayerController) return;
-
+        
+        if (GTurnBaseManager.Instance.EnemiesCount > 0 && GTurnBaseManager.Instance.HasFutureSpawns()) return; 
         
         GGameManager.Instance._currentTutorialSceneToLoadIndex++;
-        GGameManager.Instance.LoadScene();
+        GGameManager.Instance.ChangeState(EMacroStates.LoadingScreen);
     }
 
     void HandlePrePlayerTurn(int TurnCount)
@@ -70,7 +71,7 @@ public class GTutorialHandler : MonoBehaviour
         GGameManager.Instance.playerController.enabled = false; 
         yield return new WaitForSeconds(info.stopTime);
         
-        info.TextObject.gameObject.SetActive(false);
+        info.TextObject.gameObject.SetActive(true);
         GGameManager.Instance.playerController.enabled = true;
         
         yield return new WaitUntil(() => Input.anyKeyDown);
