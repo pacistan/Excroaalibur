@@ -92,19 +92,39 @@ public class GGameManager: GSingleton<GGameManager>
         OnChangeMacroStateEvent?.Invoke(currentState, previousState);
     }
 
-    public void LoadScene()
+    public void LoadScene(bool reloadScene = false)
     {
-        StartCoroutine(LoadSceneCoroutine());
+        if (reloadScene)
+        {
+            StartCoroutine(LoadSceneCoroutine(SceneManager.GetActiveScene().name));
+            return;
+        }
+        string sceneName = "";
+        if (isLoadingTutorial)
+        {
+            if(_currentTutorialSceneToLoadIndex > _loadableTutorialScenes.Length)
+            {
+                ChangeState(EMacroStates.Start);
+                return;
+            }
+            sceneName = _loadableTutorialScenes[Mathf.Min(_currentTutorialSceneToLoadIndex, _loadableTutorialScenes.Length - 1)];
+        }
+        else
+        {
+            sceneName = _loadableScenes[Mathf.Min(_currentSceneToLoadIndex, _loadableScenes.Length - 1)];
+        }
+        
+        StartCoroutine(LoadSceneCoroutine(sceneName));
     }
 
-    private IEnumerator LoadSceneCoroutine(bool reloadScene = false)
+    private IEnumerator LoadSceneCoroutine(string sceneName)
     {
         if (currentState == EMacroStates.LoadingScreen)
         {
-            string sceneName = reloadScene ? SceneManager.GetActiveScene().name : // Is Reload ?
+            /* string sceneName = reloadScene ? SceneManager.GetActiveScene().name : // Is Reload ?
                 isLoadingTutorial ?  // Is Tutorial ?
                     _loadableTutorialScenes[Mathf.Min(_currentTutorialSceneToLoadIndex, _loadableTutorialScenes.Length - 1)] :
-                    _loadableScenes[Mathf.Min(_currentSceneToLoadIndex, _loadableScenes.Length - 1)];
+                    _loadableScenes[Mathf.Min(_currentSceneToLoadIndex, _loadableScenes.Length - 1)]; */
             
             AsyncOperation asyncOperation = SceneManager.LoadSceneAsync(sceneName);
             asyncOperation.allowSceneActivation = false;
@@ -130,6 +150,8 @@ public class GGameManager: GSingleton<GGameManager>
         switch (currentState)
         {
             case EMacroStates.Start:
+                isLoadingTutorial = false;
+                _currentTutorialSceneToLoadIndex = 0;
                 PauseGameTime(true);
                 break;
             case EMacroStates.Options:
