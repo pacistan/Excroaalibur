@@ -481,6 +481,6 @@ public class GPlayerController : GController
 
     void Awake() 
     {
-        GGameManager.Instance._playerController = this;
+        GGameManager.Instance.playerController = this;
     }
 }

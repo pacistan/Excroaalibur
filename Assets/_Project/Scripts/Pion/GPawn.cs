@@ -376,7 +376,7 @@ public class GPawn : GGridObject
         }
         else if(data.isPlayer)
         {
-            GPlayerController controller = FindFirstObjectByType<GPlayerController>();
+            GPlayerController controller = GGameManager.Instance.playerController;
             if (controller)
             {
                 controller.UnregisterPawn(this);

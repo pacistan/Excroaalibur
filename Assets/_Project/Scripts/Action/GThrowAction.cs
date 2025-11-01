@@ -237,7 +237,7 @@ public class GThrowAction : GAction
         linkedPawn.transform.LookAt(lookAtPosition);
 
         string animName = GPawn.ThrowAnimationName;
-        if(_targetPawn.data.isPlayer)
+        if(_targetPawn && _targetPawn.data.isPlayer)
             animName = _targetPawn.GetCell().hexCoordinates.DistanceTo(linkedPawn.GetCell().hexCoordinates) == 1
                 ? GPawn.PassCloseAnimationName
                 : GPawn.PassFarAnimationName;
