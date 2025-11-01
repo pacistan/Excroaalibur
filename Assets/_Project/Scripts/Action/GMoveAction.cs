@@ -173,6 +173,10 @@ public class GMoveAction : GAction
                 linkedPawn.Kill(GPawn.EDeathType.Pushed);
             }
         }
+        else if(targetCell.GetTileType == ETileType.Hole)
+        {
+            linkedPawn.visuals.SetAnimationParameter(GPawn.AnimParam_IsInHole, true);
+        }
 
         if (moveAnimationName == GPawn.PushedStartAnimationName && linkedPawn.IsAlive)
         {
@@ -184,7 +188,14 @@ public class GMoveAction : GAction
         }
         else if(linkedPawn.IsAlive)
         {
-            linkedPawn.visuals.SetAnimationState(GPawn.IdleAnimationName, 0.01f);
+            if (targetCell.GetTileType == ETileType.Hole)
+            {
+                linkedPawn.visuals.SetAnimationState("Idle_InHole", 0.01f);
+            }
+            else
+            {
+                linkedPawn.visuals.SetAnimationState(GPawn.IdleAnimationName, 0.01f);
+            }
         }
         base.End_Action();
     }

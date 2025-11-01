@@ -48,6 +48,7 @@ public class GMoveOutOfHoleAction : GAction
     public override void End_Action()
     {
         base.End_Action();
+        linkedPawn.visuals.SetAnimationParameter(GPawn.AnimParam_IsInHole, false);
         linkedPawn.visuals.SetAnimationState(GPawn.IdleAnimationName);
     }
 
