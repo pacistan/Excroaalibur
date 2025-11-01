@@ -31,6 +31,7 @@ public class GWaveComponent : MonoBehaviour
 
     public bool HasWave() => _waveData != null &&
                              (_waveData._waveType == WaveData.EWaveType.Endless ||
+                              HasEnemiesToSpawn() ||
                               (_waveData.waves != null && _waveData.waves.Count > 0));
     public bool IsSpawningInProgress() => HasEnemiesToSpawn() && SpawningInProcess > 0;
     
