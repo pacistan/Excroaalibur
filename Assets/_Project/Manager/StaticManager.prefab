@@ -305,8 +305,10 @@ MonoBehaviour:
   _cellLayerMask:
     serializedVersion: 2
     m_Bits: 64
-  _normalActionCursor: {fileID: 2800000, guid: 12b75b5abec599e4b816b0c4451959d0, type: 3}
-  _waitActionCursor: {fileID: 2800000, guid: 5ca5db85277268d41a66bc3263fdedbe, type: 3}
+  _normalCursor: {fileID: 2800000, guid: 12b75b5abec599e4b816b0c4451959d0, type: 3}
+  _waitCursor: {fileID: 2800000, guid: 5ca5db85277268d41a66bc3263fdedbe, type: 3}
+  _normalCursorOffset: {x: 0, y: 0}
+  _waitCursorOffset: {x: 0, y: 0}
 --- !u!1 &2880959369405473362
 GameObject:
   m_ObjectHideFlags: 0
@@ -1562,6 +1564,14 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 6869576826158282357}
     m_Modifications:
+    - target: {fileID: 2026037403582253510, guid: 67cc2f08d0e7ccc4fbb8dbc931190f9f, type: 3}
+      propertyPath: _heightSpeed
+      value: 50
+      objectReference: {fileID: 0}
+    - target: {fileID: 2026037403582253510, guid: 67cc2f08d0e7ccc4fbb8dbc931190f9f, type: 3}
+      propertyPath: _quarterRotationSpeed
+      value: 10
+      objectReference: {fileID: 0}
     - target: {fileID: 5164812354402089066, guid: 67cc2f08d0e7ccc4fbb8dbc931190f9f, type: 3}
       propertyPath: m_LocalPosition.x
       value: 47.031693
@@ -1605,94 +1615,6 @@ PrefabInstance:
     - target: {fileID: 5994669400643579349, guid: 67cc2f08d0e7ccc4fbb8dbc931190f9f, type: 3}
       propertyPath: m_Name
       value: Camera
-      objectReference: {fileID: 0}
-    - target: {fileID: 6963774543222204923, guid: 67cc2f08d0e7ccc4fbb8dbc931190f9f, type: 3}
-      propertyPath: _horizontalQuartRotationAction.m_SingletonActionBindings.Array.size
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6963774543222204923, guid: 67cc2f08d0e7ccc4fbb8dbc931190f9f, type: 3}
-      propertyPath: _horizontalQuartRotationAction.m_SingletonActionBindings.Array.data[0].m_Id
-      value: d2b57b5f-1472-4e45-b222-ed1ea103080b
-      objectReference: {fileID: 0}
-    - target: {fileID: 6963774543222204923, guid: 67cc2f08d0e7ccc4fbb8dbc931190f9f, type: 3}
-      propertyPath: _horizontalQuartRotationAction.m_SingletonActionBindings.Array.data[1].m_Id
-      value: 918e18dd-e6af-4844-83e4-3ff383c752fa
-      objectReference: {fileID: 0}
-    - target: {fileID: 6963774543222204923, guid: 67cc2f08d0e7ccc4fbb8dbc931190f9f, type: 3}
-      propertyPath: _horizontalQuartRotationAction.m_SingletonActionBindings.Array.data[2].m_Id
-      value: b096e46a-a50f-491c-bc01-c23d7be08b75
-      objectReference: {fileID: 0}
-    - target: {fileID: 6963774543222204923, guid: 67cc2f08d0e7ccc4fbb8dbc931190f9f, type: 3}
-      propertyPath: _horizontalQuartRotationAction.m_SingletonActionBindings.Array.data[3].m_Id
-      value: 8a77c8d1-31ae-45b8-94c3-37efba4c41c4
-      objectReference: {fileID: 0}
-    - target: {fileID: 6963774543222204923, guid: 67cc2f08d0e7ccc4fbb8dbc931190f9f, type: 3}
-      propertyPath: _horizontalQuartRotationAction.m_SingletonActionBindings.Array.data[4].m_Id
-      value: 6e1950cf-67cd-4968-9774-27ca81a2cac7
-      objectReference: {fileID: 0}
-    - target: {fileID: 6963774543222204923, guid: 67cc2f08d0e7ccc4fbb8dbc931190f9f, type: 3}
-      propertyPath: _horizontalQuartRotationAction.m_SingletonActionBindings.Array.data[0].m_Name
-      value: 2D Vector
-      objectReference: {fileID: 0}
-    - target: {fileID: 6963774543222204923, guid: 67cc2f08d0e7ccc4fbb8dbc931190f9f, type: 3}
-      propertyPath: _horizontalQuartRotationAction.m_SingletonActionBindings.Array.data[0].m_Path
-      value: 2DVector
-      objectReference: {fileID: 0}
-    - target: {fileID: 6963774543222204923, guid: 67cc2f08d0e7ccc4fbb8dbc931190f9f, type: 3}
-      propertyPath: _horizontalQuartRotationAction.m_SingletonActionBindings.Array.data[1].m_Name
-      value: up
-      objectReference: {fileID: 0}
-    - target: {fileID: 6963774543222204923, guid: 67cc2f08d0e7ccc4fbb8dbc931190f9f, type: 3}
-      propertyPath: _horizontalQuartRotationAction.m_SingletonActionBindings.Array.data[2].m_Name
-      value: down
-      objectReference: {fileID: 0}
-    - target: {fileID: 6963774543222204923, guid: 67cc2f08d0e7ccc4fbb8dbc931190f9f, type: 3}
-      propertyPath: _horizontalQuartRotationAction.m_SingletonActionBindings.Array.data[3].m_Name
-      value: left
-      objectReference: {fileID: 0}
-    - target: {fileID: 6963774543222204923, guid: 67cc2f08d0e7ccc4fbb8dbc931190f9f, type: 3}
-      propertyPath: _horizontalQuartRotationAction.m_SingletonActionBindings.Array.data[4].m_Name
-      value: right
-      objectReference: {fileID: 0}
-    - target: {fileID: 6963774543222204923, guid: 67cc2f08d0e7ccc4fbb8dbc931190f9f, type: 3}
-      propertyPath: _horizontalQuartRotationAction.m_SingletonActionBindings.Array.data[0].m_Flags
-      value: 4
-      objectReference: {fileID: 0}
-    - target: {fileID: 6963774543222204923, guid: 67cc2f08d0e7ccc4fbb8dbc931190f9f, type: 3}
-      propertyPath: _horizontalQuartRotationAction.m_SingletonActionBindings.Array.data[1].m_Flags
-      value: 8
-      objectReference: {fileID: 0}
-    - target: {fileID: 6963774543222204923, guid: 67cc2f08d0e7ccc4fbb8dbc931190f9f, type: 3}
-      propertyPath: _horizontalQuartRotationAction.m_SingletonActionBindings.Array.data[2].m_Flags
-      value: 8
-      objectReference: {fileID: 0}
-    - target: {fileID: 6963774543222204923, guid: 67cc2f08d0e7ccc4fbb8dbc931190f9f, type: 3}
-      propertyPath: _horizontalQuartRotationAction.m_SingletonActionBindings.Array.data[3].m_Flags
-      value: 8
-      objectReference: {fileID: 0}
-    - target: {fileID: 6963774543222204923, guid: 67cc2f08d0e7ccc4fbb8dbc931190f9f, type: 3}
-      propertyPath: _horizontalQuartRotationAction.m_SingletonActionBindings.Array.data[4].m_Flags
-      value: 8
-      objectReference: {fileID: 0}
-    - target: {fileID: 6963774543222204923, guid: 67cc2f08d0e7ccc4fbb8dbc931190f9f, type: 3}
-      propertyPath: _horizontalQuartRotationAction.m_SingletonActionBindings.Array.data[0].m_Action
-      value: Horizontal Quart Rotation
-      objectReference: {fileID: 0}
-    - target: {fileID: 6963774543222204923, guid: 67cc2f08d0e7ccc4fbb8dbc931190f9f, type: 3}
-      propertyPath: _horizontalQuartRotationAction.m_SingletonActionBindings.Array.data[1].m_Action
-      value: Horizontal Quart Rotation
-      objectReference: {fileID: 0}
-    - target: {fileID: 6963774543222204923, guid: 67cc2f08d0e7ccc4fbb8dbc931190f9f, type: 3}
-      propertyPath: _horizontalQuartRotationAction.m_SingletonActionBindings.Array.data[2].m_Action
-      value: Horizontal Quart Rotation
-      objectReference: {fileID: 0}
-    - target: {fileID: 6963774543222204923, guid: 67cc2f08d0e7ccc4fbb8dbc931190f9f, type: 3}
-      propertyPath: _horizontalQuartRotationAction.m_SingletonActionBindings.Array.data[3].m_Action
-      value: Horizontal Quart Rotation
-      objectReference: {fileID: 0}
-    - target: {fileID: 6963774543222204923, guid: 67cc2f08d0e7ccc4fbb8dbc931190f9f, type: 3}
-      propertyPath: _horizontalQuartRotationAction.m_SingletonActionBindings.Array.data[4].m_Action
-      value: Horizontal Quart Rotation
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
