@@ -103,7 +103,7 @@ public class GCellVisualsController : MonoBehaviour
             if (objectPrefab)
             {
                 GGridObject gridObject = PrefabUtility.InstantiatePrefab(objectPrefab) as GGridObject;
-                Transform parent = gridObject is GEquipment ? _cell.equipmentSpawnPoint : _cell.pawnSpawnPoint;
+                Transform parent = _cell.GetTransformPoint(gridObject);
                 gridObject.transform.parent = parent;
                 _cell.SetGridObject(gridObject, true);
                 EditorUtility.SetDirty(gridObject);
@@ -113,7 +113,7 @@ public class GCellVisualsController : MonoBehaviour
         
         // UI
         {
-            _text.color = tileTypeData.textColor;
+            //_text.color = tileTypeData.textColor;
             _highlight.color = tileTypeData.highlightColor;
             
             var rectTransform = _highlight.rectTransform.parent.GetComponent<RectTransform>();
@@ -155,7 +155,7 @@ public class GCellVisualsController : MonoBehaviour
     
     public void UpdateCellDebugNum(string newDebugText)
     {
-        _text.text = newDebugText;
+        //_text.text = newDebugText;
     }
 
     public void ChangeSprite(ETileHighlightType highlightType)
@@ -204,8 +204,8 @@ public class GCellVisualsController : MonoBehaviour
         
         _cadrillageNumber = 1 + (((x % 3) + 1 + (y % 2) * 2) % 3);
         
-        _cell.ui.GetComponentInChildren<TextMeshProUGUI>().text = _cadrillageNumber.ToString();
-        _cell.ui.GetComponentInChildren<TextMeshProUGUI>().enabled = true;
+        //_cell.ui.GetComponentInChildren<TextMeshProUGUI>().text = _cadrillageNumber.ToString();
+        //_cell.ui.GetComponentInChildren<TextMeshProUGUI>().enabled = true;
         
         Color color = _meshRenderer.material.color;
         Color.RGBToHSV(color, out float h, out float s, out float v);

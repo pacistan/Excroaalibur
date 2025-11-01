@@ -340,7 +340,7 @@ public class GThrowAction : GAction
         _crown.ResetTransformOwner();
         _crown.transform.LookAt(targetCell.transform.position);
         _startPos  = linkedPawn.equipmentParentTr.position;
-        _hitPos    =  _targetPawn ? _targetPawn.equipmentParentTr.position : targetCell.equipmentSpawnPoint.position;
+        _hitPos    =  _targetPawn ? _targetPawn.equipmentParentTr.position : targetCell.GetTransformPoint(_crown).position;
         _returnPos = _startPos;
         
         var direction = linkedPawn.GetHexCoordinate().GetLineDirection(targetCell.hexCoordinates);
