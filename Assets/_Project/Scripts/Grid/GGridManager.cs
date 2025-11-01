@@ -285,6 +285,12 @@ public class GGridManager : GSingleton<GGridManager>
         //stepMap = new int[_grid.Length];
         //stepMap.Populate(-1);
     }
+
+    protected override void Awake()
+    {
+        base.Awake();
+        grid = FindObjectsByType<GCell>(FindObjectsSortMode.None).OrderBy(o => o.data.gridCoordinates.y).ThenBy(o => o.data.gridCoordinates.x).ToArray();
+    }
 }
 
 

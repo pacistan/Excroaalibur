@@ -1,6 +1,7 @@
 ﻿#if UNITY_EDITOR
 using Sirenix.OdinInspector;
 using UnityEditor;
+using UnityEditor.SceneManagement;
 using UnityEngine;
 
 public class GGridEditor : MonoBehaviour
@@ -73,6 +74,7 @@ public class GGridEditor : MonoBehaviour
         EditorUtility.SetDirty(_gridData);
         EditorUtility.SetDirty(_cellsParent);
         EditorUtility.SetDirty(_cellsCanvas);
+        EditorSceneManager.MarkSceneDirty(_cellsParent.gameObject.scene);
         EnablePickingUIGrid();
     }
 
