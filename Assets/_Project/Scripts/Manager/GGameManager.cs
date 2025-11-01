@@ -121,8 +121,6 @@ public class GGameManager: GSingleton<GGameManager>
     {
         if (currentState == EMacroStates.LoadingScreen)
         {
-            
-            
             /* string sceneName = reloadScene ? SceneManager.GetActiveScene().name : // Is Reload ?
                 isLoadingTutorial ?  // Is Tutorial ?
                     _loadableTutorialScenes[Mathf.Min(_currentTutorialSceneToLoadIndex, _loadableTutorialScenes.Length - 1)] :
