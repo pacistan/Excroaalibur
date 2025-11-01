@@ -331,17 +331,16 @@ public class GPawn : GGridObject
 
     protected virtual void Awake()
     {
-        if (data.isPlayer) hp = -1; // Player has infinite HP
         RebuildOverrideCache();
         data = ScriptableObject.Instantiate(data);
+        hp = data.startHp;
+        if (data.isPlayer) hp = -1; // Player has infinite HP
     }
 
     protected virtual void Start()
     {
         _currentCell.SetGridObject(this);
         remainingActionToken = data.actionTokens;
-        hp = data.startHp;
-
     }
 
     protected override void OnEnable()
