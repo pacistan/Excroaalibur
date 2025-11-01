@@ -351,10 +351,10 @@ public class GCellVisualsController : MonoBehaviour
     }
 }
 
+#if UNITY_EDITOR
 [CustomEditor(typeof(GCellVisualsController))]
 public class YourClassNameEditor : Editor
 {
-    
     private SerializedProperty _previousPositionYProp;
     private GCellVisualsController _target;
 
@@ -396,3 +396,4 @@ public class YourClassNameEditor : Editor
         EditorUtility.SetDirty(_target);
     }
 }
+#endif
