@@ -34,7 +34,7 @@ public class GPawn : GGridObject
     public const string DieAnimationName = "Die";
     public const string PushedIntoHoleAnimationName = "Pushed_Hole";
     public const string HitAnimationName = "Hit";
-    public const string Spawn = "Spawn";
+    public const string SpawnAnimationName = "Spawn";
     
     
     public const string AnimParam_IsStunned = "IsStunned";

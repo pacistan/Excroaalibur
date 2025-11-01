@@ -107,8 +107,7 @@ public class GMoveAction : GAction
         if (targetCell.GetTileType == ETileType.Hole)
         {
             RuntimeManager.PlayOneShotAttached("event:/Pawn/Fall", linkedPawn.gameObject);
-            if (!linkedPawn.data.isPlayer)
-                moveAnimationName = GPawn.PushedIntoHoleAnimationName;
+            moveAnimationName = GPawn.PushedIntoHoleAnimationName;
         }
 
         if (moveAnimationName == GPawn.PushedStartAnimationName || moveAnimationName == GPawn.PushedIntoHoleAnimationName)
@@ -185,7 +184,7 @@ public class GMoveAction : GAction
         }
         else if(linkedPawn.IsAlive)
         {
-            linkedPawn.visuals.SetAnimationState(GPawn.IdleAnimationName);
+            linkedPawn.visuals.SetAnimationState(GPawn.IdleAnimationName, 0.01f);
         }
         base.End_Action();
     }

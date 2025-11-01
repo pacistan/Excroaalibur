@@ -82,6 +82,8 @@ public class GPawnVisualsController : SerializedMonoBehaviour
     [SerializeField]
     int _stunMaterialIndex = 0;
 
+    public Animator GetAnimator() => _animator;
+    
     bool isPlayerAccessor {
     get
     {

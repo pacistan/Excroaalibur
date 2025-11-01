@@ -34,6 +34,9 @@ public class GPlayerController : GController
     [SerializeField, Tooltip("Layer Mask for the Cell Raycast")]
     private LayerMask _cellLayerMask;
 
+    [SerializeField]
+    Texture2D _normalActionCursor, _waitActionCursor;
+    
     private GTargetHud _targetHud;
     InputAction _leftClickInput;
     InputAction _rightClickInput;
@@ -72,8 +75,16 @@ public class GPlayerController : GController
         
         if (_selectedAction != null) 
             _selectedAction.OnUnselectedAction();
+
+        GPawn targetPawn = _hoverCell.GetGridObject<GPawn>();
         
         _selectedAction = action;
+        
+        int index = action != null && action.GetType() != typeof(GThrowAction) ? 0 :
+            action != null && targetPawn && !targetPawn.data.isPlayer ? 0 : 1;
+        Texture2D cursor = action == null ? _normalActionCursor : action.GetCursorIcon(index);
+        
+        Cursor.SetCursor(cursor, Vector2.zero, CursorMode.Auto);
         
         if (_selectedAction == null) return;
         _selectedAction.OnSelectedAction();
@@ -180,6 +191,7 @@ public class GPlayerController : GController
         GHudManager.Instance.playMenu.endTurnButton.onClick.AddListener(StopTurn);
         GHudManager.Instance.playMenu.endTurnButton.interactable = false;
         GGameManager.Instance.OnChangeMacroStateEvent += OnChangeMacroStateCallback;
+        Cursor.SetCursor(_normalActionCursor, Vector2.zero, CursorMode.Auto);
     }
 
     private void Update()
@@ -421,6 +433,10 @@ public class GPlayerController : GController
         GActionContext context = new GActionContext();
         _selectedAction.targetCell = hoveredCell;
                 
+        int index = _selectedAction.GetType() != typeof(GThrowAction) ? 0 :
+            hoveredPawn && !hoveredPawn.data.isPlayer ? 0 : 1;
+        Cursor.SetCursor(_selectedAction.GetCursorIcon(index), Vector2.zero, CursorMode.Auto);
+        
         previsuCell = _selectedAction.Previsualisation(context);
                 
         foreach (GCell cell in previsuCell)
@@ -448,11 +464,338 @@ public class GPlayerController : GController
     {
         base.StopTurn();
         GHudManager.Instance.playMenu.endTurnButton.interactable = false;
+        Cursor.SetCursor(_waitActionCursor, Vector2.zero, CursorMode.Auto);
     }
 
     public override void StartTurn()
     {
         base.StartTurn();
+        Cursor.SetCursor(_normalActionCursor, Vector2.zero, CursorMode.Auto);
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
         if (!_isFirstAction)
         {
             GHudManager.Instance.playMenu.endTurnButton.interactable = true;

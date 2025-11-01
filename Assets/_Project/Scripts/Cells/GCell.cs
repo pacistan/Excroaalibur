@@ -1,6 +1,7 @@
 ﻿using FMODUnity;
 using Sirenix.OdinInspector;
 using System;
+using System.Collections;
 using System.Linq;
 using UnityEngine;
 using UnityEngine.Events;
@@ -44,6 +45,9 @@ public class GCell : SerializedMonoBehaviour
     [SerializeField, FoldoutGroup("Events")]
     private UnityEvent _OnSpawnedPawnFinished;
 
+    [field :SerializeField, ShowIf("GetTileType", ETileType.Spawner)]
+    public GCell spawnLinkCell {get; private set;}
+    
     public ETileType GetTileType => data.tileType;
     
     public void SetGridObject(GGridObject inGridObject, bool updateTransform = true)
@@ -99,13 +103,22 @@ public class GCell : SerializedMonoBehaviour
         // TODO : Other debug here !
     }
     
-    public void SpawnPawnFinish(GPawn pawn, Action OnSpawnFinishCallback)
+    public IEnumerator SpawnPawnFinish(GPawn pawn, Action OnSpawnFinishCallback)
     {
         RegisterGridObject(pawn);
         UpdateGridObject();
         
+        Vector3 targetPos = spawnLinkCell.transform.position;
+        targetPos = 2 * transform.position - targetPos;
+        targetPos.y = pawn.transform.position.y;
+        pawn.transform.LookAt(targetPos);
+        //pawn.transform.position = spawnLinkCell.transform.position;
+        pawn.visuals.SetAnimationState(GPawn.SpawnAnimationName);
+        
         RuntimeManager.PlayOneShotAttached("event:/Pawn/Enemy/Spawn", pawn.gameObject);
         // TODO : Call When the Spawn Process is finished (Animation, VFX, etc.) !!
+        yield return new WaitUntil(() =>
+            !pawn.visuals.GetAnimator().GetCurrentAnimatorStateInfo(0).IsName(GPawn.SpawnAnimationName));
         _OnSpawnedPawnFinished?.Invoke();
         OnSpawnFinishCallback?.Invoke();
     }
@@ -124,6 +137,14 @@ public class GCell : SerializedMonoBehaviour
     {
         if (gridObject)
             gridObject.TrySetCell(this);
+        if (data.tileType == ETileType.Spawner && !spawnLinkCell)
+        {
+            spawnLinkCell = neighbors.First(a => a && a.data.tileType == ETileType.Hole);
+            if (spawnLinkCell == null)
+            {
+                Debug.LogError("Spawner with no adjacent Hole Cell", gameObject);
+            }
+        }
     }
     
 #if UNITY_EDITOR

@@ -123,7 +123,7 @@ public class GWaveComponent : MonoBehaviour
                 continue;
             }
             SpawningInProcess++;
-            _spawnCells[i].SpawnPawnFinish(pawn, OnEnemySpawned);
+            StartCoroutine(_spawnCells[i].SpawnPawnFinish(pawn, OnEnemySpawned));
             _ennemiesPool.RemoveAt(i);
         }
         
