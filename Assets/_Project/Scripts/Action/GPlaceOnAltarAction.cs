@@ -43,7 +43,14 @@ public class GPlaceOnAltarAction : GAction
     public override void End_Action()
     {
         base.End_Action();
-        GGameManager.Instance.ChangeState(EMacroStates.End);
+        if (GGameManager.Instance.isLoadingTutorial)
+        {
+            GGameManager.Instance.LoadScene(true);            
+        }
+        else
+        {
+            GGameManager.Instance.ChangeState(EMacroStates.End);
+        }
     }
 
 }
