@@ -18,9 +18,7 @@ MonoBehaviour:
     ReferencedUnityObjects:
     - {fileID: 4300000, guid: 09cdbc3bb30033c4bb5d4cfb94ca3759, type: 2}
     - {fileID: -5374185815670993362, guid: 5f37d33f41e61f8449a2bee6c506a15f, type: 3}
-    - {fileID: -1418106222229866039, guid: 33c831cb98a848d46bb6805853649cef, type: 3}
     - {fileID: 2100000, guid: c62f97b24de6adc46a09d669fc4bb411, type: 2}
-    - {fileID: 2100000, guid: 8f754fa9c9dfe07408c1199466eb8976, type: 2}
     - {fileID: 21300000, guid: da79e8c95928ac84ea1e0b2b62e7c189, type: 3}
     - {fileID: 21300000, guid: 859a731217a16904fa8c82fd9f25e43a, type: 3}
     - {fileID: 21300000, guid: fde754b29be38d34490d65a49f65ce86, type: 3}
@@ -141,7 +139,7 @@ MonoBehaviour:
       Data: 1
     - Name: 
       Entry: 10
-      Data: 2
+      Data: 1
     - Name: 
       Entry: 13
       Data: 
@@ -165,7 +163,7 @@ MonoBehaviour:
       Data: 0.488252
     - Name: 
       Entry: 4
-      Data: 1
+      Data: 0
     - Name: 
       Entry: 8
       Data: 
@@ -183,7 +181,7 @@ MonoBehaviour:
       Data: 0.488252
     - Name: 
       Entry: 4
-      Data: 1
+      Data: 0
     - Name: 
       Entry: 8
       Data: 
@@ -203,8 +201,8 @@ MonoBehaviour:
       Entry: 7
       Data: GCellCommonData+FTileTypeData, Assembly-CSharp
     - Name: <mesh>k__BackingField
-      Entry: 10
-      Data: 0
+      Entry: 6
+      Data: 
     - Name: <materials>k__BackingField
       Entry: 7
       Data: 4|UnityEngine.Material[], UnityEngine.CoreModule
@@ -213,7 +211,7 @@ MonoBehaviour:
       Data: 1
     - Name: 
       Entry: 10
-      Data: 3
+      Data: 2
     - Name: 
       Entry: 13
       Data: 
@@ -222,7 +220,7 @@ MonoBehaviour:
       Data: 
     - Name: <heightOffset>k__BackingField
       Entry: 4
-      Data: -3
+      Data: 0
     - Name: <textColor>k__BackingField
       Entry: 7
       Data: UnityEngine.Color, UnityEngine.CoreModule
@@ -285,7 +283,7 @@ MonoBehaviour:
       Data: 1
     - Name: 
       Entry: 10
-      Data: 4
+      Data: 1
     - Name: 
       Entry: 13
       Data: 
@@ -371,7 +369,7 @@ MonoBehaviour:
       Data: 0
     - Name: $v
       Entry: 10
-      Data: 5
+      Data: 3
     - Name: 
       Entry: 8
       Data: 
@@ -383,7 +381,7 @@ MonoBehaviour:
       Data: 1
     - Name: $v
       Entry: 10
-      Data: 6
+      Data: 4
     - Name: 
       Entry: 8
       Data: 
@@ -395,7 +393,7 @@ MonoBehaviour:
       Data: 2
     - Name: $v
       Entry: 10
-      Data: 7
+      Data: 5
     - Name: 
       Entry: 8
       Data: 
@@ -566,10 +564,10 @@ MonoBehaviour:
     - Name: 
       Entry: 8
       Data: 
-  previsualizedColor: {r: 1, g: 0, b: 0, a: 1}
+  previsualizedColor: {r: 0.2285066, g: 0.5271035, b: 0.745283, a: 1}
   cadrillageTint1: 0
   cadrillageTint2: 0.02
   cadrillageTint3: 0.04
-  maxHeight: 0
-  maxOffsetHeight: 0
-  maxRangeOfPullingEffect: 0
+  maxHeight: 4
+  maxOffsetHeight: 2
+  maxRangeOfPullingEffect: 4

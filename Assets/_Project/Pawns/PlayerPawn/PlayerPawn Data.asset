@@ -176,7 +176,7 @@ MonoBehaviour:
           z: 9
         _maxThrowDistance: 100
         _throwMidPointHeight: 0
-        _throwCrownSpeed: 70
+        _throwCrownSpeed: 20
         _throwSpeedCurve:
           serializedVersion: 2
           m_Curve:
@@ -280,7 +280,7 @@ MonoBehaviour:
           m_PreInfinity: 2
           m_PostInfinity: 2
           m_RotationOrder: 4
-        _crownRotationAmountByTileOnThrowToTarget: -200
+        _crownRotationAmountByTileOnThrowToTarget: -100
         _crownRotationAnimationCurveOnThrowToTarget:
           serializedVersion: 2
           m_Curve:
