@@ -185,7 +185,7 @@ public class GMoveAction : GAction
         }
         else if(linkedPawn.IsAlive)
         {
-            linkedPawn.visuals.SetAnimationState(GPawn.IdleAnimationName);
+            linkedPawn.visuals.SetAnimationState(GPawn.IdleAnimationName,0.01f);
         }
         base.End_Action();
     }
