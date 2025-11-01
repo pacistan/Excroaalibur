@@ -95,7 +95,6 @@ public class GCellVisualsController : MonoBehaviour
         EGridObjectType newObjectType = _cell.data.objectType;
         if(_previousObjectSpawnType != newObjectType)
         {
-            Debug.Log("D");
             if (_cell.GetGridObject<GPawn>())
             {
                 DestroyImmediate(_cell.gridObject.gameObject);

@@ -46,7 +46,6 @@ public class GPlaceOnAltarAction : GAction
         if (GGameManager.Instance.isLoadingTutorial)
         {
             GGameManager.Instance.ChangeState(EMacroStates.LoadingScreen);
-            GGameManager.Instance.LoadScene(true);            
         }
         else
         {

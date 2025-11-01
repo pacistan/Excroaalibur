@@ -49,7 +49,7 @@ public class GTutorialHandler : MonoBehaviour
 
     void HandleUnregisterController(GController controller)
     {
-        if (controller is GPlayerController) return;
+        if (controller is GPlayerController || GGameManager.Instance.currentState != EMacroStates.Play) return;
         
         if (GTurnBaseManager.Instance.EnemiesCount > 0 || GTurnBaseManager.Instance.HasFutureSpawns()) return; 
         
