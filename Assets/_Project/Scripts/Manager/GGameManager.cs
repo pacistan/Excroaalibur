@@ -4,8 +4,11 @@ using FMODUnity;
 using Sirenix.OdinInspector;
 using System;
 using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.Localization;
+using UnityEngine.Localization.Settings;
 using UnityEngine.SceneManagement;
 using UnityEngine.Serialization;
 
@@ -29,6 +32,9 @@ public class GGameManager: GSingleton<GGameManager>
     [ReadOnly]
     public bool isLoadingTutorial;
 
+    [SerializeField]
+    public int _localizationId;
+    
 #if UNITY_EDITOR
     [SerializeField, FoldoutGroup("SceneToLoad")]
     private UnityEditor.SceneAsset[] _loadableSceneAssets;
@@ -243,8 +249,14 @@ public class GGameManager: GSingleton<GGameManager>
         _pauseAction = InputSystem.actions.FindAction("Pause");
         base.Awake();
     }
-    void Start()
+    
+    IEnumerator Start()
     {
+        yield return LocalizationSettings.InitializationOperation;
+        
+        Locale currentLocal = LocalizationSettings.AvailableLocales.Locales[_localizationId];
+        LocalizationSettings.SelectedLocale = currentLocal;
+        
         _menuInput = InputSystem.actions.FindAction("Menu");
         StartMusic();
         ChangeState(_startState); 

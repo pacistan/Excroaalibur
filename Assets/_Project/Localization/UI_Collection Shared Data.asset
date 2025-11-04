@@ -1,0 +1,116 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5b11a58205ec3474ca216360e9fa74a8, type: 3}
+  m_Name: UI_Collection Shared Data
+  m_EditorClassIdentifier: 
+  m_TableCollectionName: UI_Collection
+  m_TableCollectionNameGuidString: 5846447bda5b96c44b5df967bea897d9
+  m_Entries:
+  - m_Id: 66180063232
+    m_Key: Tuto (Caps Lock)
+    m_Metadata:
+      m_Items: []
+  - m_Id: 139416805376
+    m_Key: Play (Caps Lock)
+    m_Metadata:
+      m_Items: []
+  - m_Id: 179640180736
+    m_Key: Quit (Caps Lock)
+    m_Metadata:
+      m_Items: []
+  - m_Id: 247340441600
+    m_Key: Yes (Caps Lock)
+    m_Metadata:
+      m_Items: []
+  - m_Id: 281289138176
+    m_Key: No (Caps Lock)
+    m_Metadata:
+      m_Items: []
+  - m_Id: 335546654720
+    m_Key: Are you sure ?
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1036389687296
+    m_Key: Options(Caps Lock)
+    m_Metadata:
+      m_Items: []
+  - m_Id: 7293007798272
+    m_Key: End Turn
+    m_Metadata:
+      m_Items: []
+  - m_Id: 8072766660608
+    m_Key: Wave Nbr
+    m_Metadata:
+      m_Items: []
+  - m_Id: 31476089593856
+    m_Key: RMB_Indice
+    m_Metadata:
+      m_Items: []
+  - m_Id: 32256997695488
+    m_Key: Resume(capsLock)
+    m_Metadata:
+      m_Items: []
+  - m_Id: 32633998516224
+    m_Key: Retry (Caps Lock)
+    m_Metadata:
+      m_Items: []
+  - m_Id: 32859131977728
+    m_Key: Main Menu (Caps Lock)
+    m_Metadata:
+      m_Items: []
+  - m_Id: 33508246659072
+    m_Key: Music
+    m_Metadata:
+      m_Items: []
+  - m_Id: 33617961263104
+    m_Key: Volume
+    m_Metadata:
+      m_Items: []
+  - m_Id: 33703353098240
+    m_Key: SFX
+    m_Metadata:
+      m_Items: []
+  - m_Id: 34100553687040
+    m_Key: Skip Turn Automatically
+    m_Metadata:
+      m_Items: []
+  - m_Id: 34448106299392
+    m_Key: 'Number of Wave Completed : X'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 34890164969472
+    m_Key: InputField Placeholder - new Name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 36452434157568
+    m_Key: Submit
+    m_Metadata:
+      m_Items: []
+  - m_Id: 36605274595328
+    m_Key: Ranking
+    m_Metadata:
+      m_Items: []
+  - m_Id: 36972259418112
+    m_Key: Waves
+    m_Metadata:
+      m_Items: []
+  m_Metadata:
+    m_Items: []
+  m_KeyGenerator:
+    rid: 9057057809307009244
+  references:
+    version: 2
+    RefIds:
+    - rid: 9057057809307009244
+      type: {class: DistributedUIDGenerator, ns: UnityEngine.Localization.Tables, asm: Unity.Localization}
+      data:
+        m_CustomEpoch: 1762251628338

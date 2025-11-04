@@ -1,0 +1,67 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e9620f8c34305754d8cc9a7e49e852d9, type: 3}
+  m_Name: Tutorials_fr
+  m_EditorClassIdentifier: 
+  m_LocaleId:
+    m_Code: fr
+  m_SharedData: {fileID: 11400000, guid: 18ac45afbbf827544bd54c68a528c078, type: 2}
+  m_Metadata:
+    m_Items: []
+  m_TableData:
+  - m_Id: 119967817728
+    m_Localized: Presser un bouton
+    m_Metadata:
+      m_Items: []
+  - m_Id: 427288666112
+    m_Localized: "Bienvenue dans la premi\xE8re d\xE9mo d\u2019Excroaalibur !\n\nVotre
+      objectif est de r\xE9cup\xE9rer l\u2019\xC9p\xE9e sur l\u2019autel et de survivre
+      \xE0 un maximum de vagues d\u2019ennemis en les \xE9liminant en leur lan\xE7ant
+      l\u2019\xC9p\xE9e.\nMais attention \xE0 ne pas la perdre ! Les ennemis tenteront
+      de la ramener sur l\u2019autel, ce qui vous fera perdre.\n\nPour commencer
+      votre tour, poussez l\u2019autel pour obtenir l\u2019\xC9p\xE9e !"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2083535429632
+    m_Localized: "Votre personnage dispose de plusieurs actions possibles par tour
+      : se d\xE9placer, pousser (si vous n\u2019avez pas l\u2019\xC9p\xE9e) et lancer
+      l\u2019\xC9p\xE9e.\n\nChacun de vos personnages peut effectuer 2 actions par
+      tour. Lorsque tous vos personnages ont utilis\xE9 tous leurs points d\u2019action,
+      votre tour se termine et les ennemis jouent le leur."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2696918835200
+    m_Localized: "Si vous tuez un ennemi avec l\u2019\xC9p\xE9e, elle reviendra instantan\xE9ment
+      au lanceur. Mais si vous ne l\u2019abattez pas, elle rebondira et tombera juste
+      devant lui.\n\nChaque fois que vous vous passez l\u2019\xC9p\xE9e entre vos
+      personnages, sa puissance augmente de 1, vous permettant d\u2019\xE9liminer
+      des ennemis plus puissants.\n\nLa puissance se r\xE9initialise apr\xE8s avoir
+      tu\xE9 un ennemi, ou apr\xE8s avoir lanc\xE9 l\u2019\xC9p\xE9e sans la faire
+      passer entre vos personnages."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3020303867904
+    m_Localized: "Lorsque tous les ennemis de la vague en cours sont \xE9limin\xE9s,
+      la vague suivante appara\xEEt.\n\nPour mieux g\xE9rer le flux d\u2019ennemis
+      qui arrivent vers vous, essayez de pousser un ennemi afin de gagner un peu
+      de temps."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3166127235072
+    m_Localized: "Cet ennemi semble bien trop puissant pour \xEAtre vaincu avec l\u2019\xC9p\xE9e.\n\nEssayez
+      de le pousser dans un Trou pour l\u2019\xE9liminer instantan\xE9ment, peu importe
+      ses points de vie !"
+    m_Metadata:
+      m_Items: []
+  references:
+    version: 2
+    RefIds: []
