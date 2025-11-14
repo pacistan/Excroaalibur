@@ -70,7 +70,6 @@ public class GPlayerController : GController
     List<GCell> previsuCell = new List<GCell>();
     public bool isFirstAction = true;
     
-    
     public void SetSelectedPlayer(GPawn newSelected)
     {
         if (_selectedPlayer == newSelected) return;
@@ -458,7 +457,7 @@ public class GPlayerController : GController
             bool isTurnOver = true;
             pawns.ForEach(p =>
             {
-                if (p.remainingActionToken > 0 && !p.isStunned) isTurnOver = false;
+                if (p.remainingActionToken > 0 && !p.IsStunned) isTurnOver = false;
             });
 
             if (isTurnOver)

@@ -24,6 +24,11 @@ public class GCellVisualsController : MonoBehaviour
     MeshRenderer _meshRenderer;
     [SerializeField, FoldoutGroup("Components")]
     MeshFilter _meshFilter;
+    
+    /** Render Use For Range of Action **/
+    [SerializeField, FoldoutGroup("Components")]
+    Renderer feedbackRenderer;
+    
     [SerializeField, FoldoutGroup("Components")]
     public GCell _cell;
     [SerializeField, FoldoutGroup("Components")]
@@ -265,6 +270,51 @@ public class GCellVisualsController : MonoBehaviour
         ChangeSprite(_currentHighlightType);
     }
     
+    void OnValidate()
+    {
+        if (transform.position.y != _previousPositionY)
+        {
+            Vector3 pos = transform.position;
+            pos.y = Mathf.Clamp(pos.y, -cellCommonData.maxHeight, cellCommonData.maxHeight);
+            transform.position = pos;
+        
+            float diff = _previousPositionY - transform.position.y;
+            Vector3 uiPos = _cell.ui.position;
+            uiPos.y -= diff;
+            _cell.ui.position = uiPos;
+        
+            _previousPositionY = transform.position.y;
+        }       
+    }
+    
+    public void UpdateYPosGizmo(float neighborHeight)
+    {
+        float diff = neighborHeight - transform.position.y;
+        float newHeight = transform.position.y + Mathf.Min(Mathf.Abs(diff), cellCommonData.maxOffsetHeight) * diff / Mathf.Abs(diff);
+        Vector3 pos = transform.position;
+        pos.y = newHeight;
+        transform.position = pos;
+        
+        float diff2 = _previousPositionY - transform.position.y;
+        Vector3 uiPos = _cell.ui.position;
+        uiPos.y -= diff2;
+        _cell.ui.position = uiPos;
+        
+        _previousPositionY = transform.position.y;
+        
+        foreach (var neighbor in _cell.neighbors)
+        {
+            
+            if (!neighbor || neighbor.data.tileType != ETileType.Normal) continue;
+            if (Mathf.Abs(transform.position.y - neighbor.transform.position.y) > cellCommonData.maxOffsetHeight)
+            {
+                neighbor.visuals.UpdateYPosGizmo(transform.position.y);
+            }
+        }
+#if UNITY_EDITOR
+        EditorUtility.SetDirty(gameObject);
+#endif
+    }
     void OnDrawGizmos()
     {
 
