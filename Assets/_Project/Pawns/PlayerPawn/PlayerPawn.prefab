@@ -79,6 +79,14 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: -7865658190677580369, guid: 5723966a00723af4dbe7f1ccc5fe6483, type: 3}
+      propertyPath: m_Materials.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: -7865658190677580369, guid: 5723966a00723af4dbe7f1ccc5fe6483, type: 3}
+      propertyPath: 'm_Materials.Array.data[1]'
+      value: 
+      objectReference: {fileID: 2100000, guid: 106f3ff43a17d4967a2b64c7a92e49ec, type: 2}
     - target: {fileID: 919132149155446097, guid: 5723966a00723af4dbe7f1ccc5fe6483, type: 3}
       propertyPath: m_Name
       value: PlayerPawnAnim
