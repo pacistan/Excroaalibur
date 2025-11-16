@@ -67,7 +67,7 @@ public class GPawn : GGridObject
     
     [field: SerializeField, HideIf("@hp == -1"), HideInEditorMode]
     public int hp { get; protected set; } = 3;
-
+    
     public bool IsStunned => stunTurn > 0;
 
     public bool IsAlive => !(hp == 0);
@@ -307,6 +307,8 @@ public class GPawn : GGridObject
         OnAnimationThrow?.Invoke();
     }
     
+    public Vector3 GetPrevisuPosition() => transform.position + Vector3.up * data.previsuHeightOffset;
+    
     private void RebuildOverrideCache()
     {
         _overrideCache = new Dictionary<Type, GAction>();
@@ -398,6 +400,11 @@ public class GPawn : GGridObject
         }
         
         RebuildOverrideCache();
+    }
+
+    void OnDrawGizmos()
+    {
+        Gizmos.DrawSphere(transform.position + Vector3.up * data.previsuHeightOffset, 0.1f);
     }
 #endif
     

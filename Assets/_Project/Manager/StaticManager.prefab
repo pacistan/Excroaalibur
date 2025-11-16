@@ -281,7 +281,7 @@ Transform:
   m_GameObject: {fileID: 2664664000065750272}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 12.38169, y: -188.568, z: -26.07442}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -309,6 +309,8 @@ MonoBehaviour:
   _waitCursor: {fileID: 2800000, guid: 5ca5db85277268d41a66bc3263fdedbe, type: 3}
   _normalCursorOffset: {x: 0, y: 0}
   _waitCursorOffset: {x: 0, y: 0}
+  _prefabPrevisuLineRenderer: {fileID: 8938474802879977569, guid: 682059199f001cd449a3f7db635a304f, type: 3}
+  _lineRendererNumber: 3
 --- !u!1 &2880959369405473362
 GameObject:
   m_ObjectHideFlags: 0

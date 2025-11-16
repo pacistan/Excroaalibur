@@ -123,7 +123,6 @@ public class GCellVisualsController : MonoBehaviour
         }
         EditorUtility.SetDirty(this);
         EditorUtility.SetDirty(_cell);
-        Image image;
     }
 
     public GameObject OnCreateVisualPreset(GCellVisualPresetData brush, Quaternion rot, bool serialize = true)

@@ -16,12 +16,12 @@ public class GGridManipulation
     {
         var e = Event.current;
         return;
-        if (e.type == EventType.KeyDown && e.keyCode == KeyCode.Keypad1)
-        {
-            OnChangeTileType();
-            e.Use();
-            SceneView.RepaintAll();
-        }
+       //if (e.type == EventType.KeyDown && e.keyCode == KeyCode.Keypad1)
+       //{
+       //    OnChangeTileType();
+       //    e.Use();
+       //    SceneView.RepaintAll();
+       //}
 
     }
 

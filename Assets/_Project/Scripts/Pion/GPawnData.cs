@@ -35,6 +35,8 @@ public class GPawnData : SerializedScriptableObject
     [OdinSerialize, FoldoutGroup("Actions"), DictionaryDrawerSettings(KeyLabel = "Action Type", ValueLabel = "Reaction"), Tooltip("Dictionary mapping action types to reaction actions that override both base reactions and default reactions.")] 
     public Dictionary<SerializableType<GAction>, GAction> overrideReactionByType = new();
 
+    [field: SerializeField] public float previsuHeightOffset { get; private set; } = .5f;
+    
     [FoldoutGroup("Other", false)]
     [SerializeField, FoldoutGroup("Other/Sound")]
     public EventReference hoverSound;

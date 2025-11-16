@@ -65,6 +65,26 @@ public class GThrowAction : GAction
 
     [SerializeField, BoxGroup("Animation/Throw"), Tooltip("Rotation AnimationCruve while moving back toward the thrower")]
     AnimationCurve _crownRotationAnimationCurveOnThrowToOrigin;
+
+    [SerializeField, BoxGroup("Previsualisation"),
+     Tooltip("Previsualisation Curve data for the throw on the way to the target ennemy Pawn")]
+    GActionPrevisualisationCurveData _previsuCurveDataToTargetCell;
+    
+    [SerializeField, BoxGroup("Previsualisation"),
+     Tooltip("Previsualisation Curve data for the throw on the way to the target ennemy Pawn")]
+    GActionPrevisualisationCurveData _previsuCurveDataToTargetEnnemyPawn;
+    
+    [SerializeField, BoxGroup("Previsualisation"),
+     Tooltip("Previsualisation Curve data for the throw on the way to the target Player Pawn")]
+    GActionPrevisualisationCurveData _previsuCurveDataToTargetPlayer;
+    
+    [SerializeField, BoxGroup("Previsualisation"),
+     Tooltip("Previsualisation Curve data for the throw on the way back to the player when the target is killed")]
+    GActionPrevisualisationCurveData _previsuCurveDataBackOnKill;
+    
+    [SerializeField, BoxGroup("Previsualisation"),
+     Tooltip("Previsualisation Curve data for the throw on the way back to the player when the target is Damaged")]
+    GActionPrevisualisationCurveData _previsuCurveDataBackOnDamage;
     
     GCrown _crown;
     GAction _impactReaction;
@@ -125,6 +145,8 @@ public class GThrowAction : GAction
         
         if (_targetPawn && _targetPawn.data.isPlayer)
         {
+            AddPrevisualisationCurve(previsuContext, linkedPawn.GetPrevisuPosition(), 
+                _targetPawn.GetPrevisuPosition(), _previsuCurveDataToTargetPlayer);
             previewCells.Add(targetCell);  // Target Cell
         } 
         else if (_targetPawn && !_targetPawn.data.isPlayer)
@@ -138,9 +160,14 @@ public class GThrowAction : GAction
                 impactReaction.Previsualisation(in previsuContext);
             }
             
+            AddPrevisualisationCurve(previsuContext, linkedPawn.GetPrevisuPosition(), 
+                _targetPawn.GetPrevisuPosition(), _previsuCurveDataToTargetEnnemyPawn);
+            
             if (_targetPawn.hp - previsuContext.Get<int>(GActionContext.DAMAGE_STRING) <= 0) // Kill 
             {
                 previewCells.Add(linkedPawn.GetCell()); // Return to owner (Cell of the linked pawn)
+                AddPrevisualisationCurve(previsuContext, _targetPawn.GetPrevisuPosition(), 
+                    linkedPawn.GetPrevisuPosition(), _previsuCurveDataBackOnKill);
             }
             else
             {
@@ -148,6 +175,8 @@ public class GThrowAction : GAction
                 if (_targetPawn && frontCell.IsWalkable(true))
                 {
                     previewCells.Add(frontCell); // Cell in front of target
+                    AddPrevisualisationCurve(previsuContext, _targetPawn.GetPrevisuPosition(), 
+                       frontCell.transform.position, _previsuCurveDataBackOnDamage);
                 }
                 else
                 {
@@ -158,6 +187,8 @@ public class GThrowAction : GAction
         }
         else
         {
+            AddPrevisualisationCurve(previsuContext, linkedPawn.GetPrevisuPosition(), 
+                targetCell.transform.position, _previsuCurveDataToTargetCell);
             previewCells.Add(targetCell); // Target Cell
         }
         

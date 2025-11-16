@@ -27,7 +27,6 @@ public class GSwordVFX : MonoBehaviour
                 ring[i].gameObject.SetActive(false);
             }
         }
-        Debug.Log(damage);
         ring[Mathf.Min(damage - 1, ring.Length - 1)].gameObject.SetActive(true);
     }
 }
