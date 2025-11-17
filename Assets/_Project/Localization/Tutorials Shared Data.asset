@@ -1,0 +1,52 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5b11a58205ec3474ca216360e9fa74a8, type: 3}
+  m_Name: Tutorials Shared Data
+  m_EditorClassIdentifier: 
+  m_TableCollectionName: Tutorials
+  m_TableCollectionNameGuidString: 18ac45afbbf827544bd54c68a528c078
+  m_Entries:
+  - m_Id: 119967817728
+    m_Key: Click any Button
+    m_Metadata:
+      m_Items: []
+  - m_Id: 427288666112
+    m_Key: Tuto 1
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2083535429632
+    m_Key: Tuto 2
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2696918835200
+    m_Key: Tuto 3
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3020303867904
+    m_Key: Tuto 4
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3166127235072
+    m_Key: Tuto 5
+    m_Metadata:
+      m_Items: []
+  m_Metadata:
+    m_Items: []
+  m_KeyGenerator:
+    rid: 9057057809307009308
+  references:
+    version: 2
+    RefIds:
+    - rid: 9057057809307009308
+      type: {class: DistributedUIDGenerator, ns: UnityEngine.Localization.Tables, asm: Unity.Localization}
+      data:
+        m_CustomEpoch: 1762260818914

@@ -1,0 +1,73 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e9620f8c34305754d8cc9a7e49e852d9, type: 3}
+  m_Name: TempTuto_fr
+  m_EditorClassIdentifier: 
+  m_LocaleId:
+    m_Code: fr
+  m_SharedData: {fileID: 11400000, guid: cdcbf3cb95d2e0343ade322e82905af6, type: 2}
+  m_Metadata:
+    m_Items: []
+  m_TableData:
+  - m_Id: 112883638272
+    m_Localized: Ennemis
+    m_Metadata:
+      m_Items: []
+  - m_Id: 764733005824
+    m_Localized: "R\xE8gles"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1081851748352
+    m_Localized: Actions
+    m_Metadata:
+      m_Items: []
+  - m_Id: 6919559553024
+    m_Localized: "Condition de d\xE9faite : un ennemi ram\xE8ne l'\xC9p\xE9e sur
+      son socle d\u2019origine.\n\n\xC0 chaque fois qu\u2019une vague d\u2019ennemis
+      est vaincue, une nouvelle vague appara\xEEt, avec un ennemi suppl\xE9mentaire
+      \xE0 chaque nouvelle vague."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 7426810290176
+    m_Localized: "Contr\xF4les :\n\nClic gauche : S\xE9lectionner et ex\xE9cuter
+      une action\nClic droit : Changer l\u2019action active\nMolette : Zoom / D\xE9zoom
+      de la cam\xE9ra\nA | E : Faire pivoter la cam\xE9ra autour de la grille"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 7591650631680
+    m_Localized: "Chaque pion a 2 actions par tour :\n- Le d\xE9placement de 2 cases.\n\n-
+      Si le pion ne poss\xE8de pas la couronne il peut pousser un ennemi. (si l'ennemi
+      est pouss\xE9 contre un mur ou un autre pion il est stun 1 tour et prend 1
+      d\xE9gat. Si il est pouss\xE9 dans un trou il est \xE9limin\xE9)\n\n- Si le
+      pion poss\xE8de la couronne il peut la lancer dans une ligne droite ou une
+      ligne diagonale. Si la couronne touche un ennemi et que l'ennemi est \xE9limin\xE9
+      la couronne revient dans les main du joueur. Si il survit la couronne tombe
+      devant lui.\nLa couronne gagne de plus en plus de d\xE9gats quand elle est
+      pass\xE9 entre joueurs. Ses d\xE9gats sont r\xE9initialis\xE9s si elle tombe,
+      fais des d\xE9gats ou est r\xE9cup\xE9r\xE9e par un ennemi.\n\n- Si le pion
+      est dans un trou il peut seulement faire un d\xE9placement de 1 cases pour
+      sortir du trou"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 7803655921664
+    m_Localized: "Les ennemis se d\xE9placent de 3 cases vers le joueur le plus proche.
+      Si ils sont adjacent avec le joueur le plus proche et n'ont pas utilis\xE9
+      tous leurs d\xE9placements ils poussent le joueur, r\xE9cup\xE8re la couronne
+      et font 3 d\xE9placements vers le r\xE9c\xE9ptacle le plus proche. Encore une
+      fois si il leur reste un d\xE9placement ils placent l'\xE9p\xE9e sur le r\xE9c\xE9ptacle.\n\nSi
+      les ennemis n'ont aucune option de d\xE9placement vers la couronne, ils vont
+      \xE0 la place se d\xE9placer vers le joueur sans couronne le plus proche."
+    m_Metadata:
+      m_Items: []
+  references:
+    version: 2
+    RefIds: []

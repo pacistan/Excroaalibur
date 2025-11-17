@@ -1,0 +1,67 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e9620f8c34305754d8cc9a7e49e852d9, type: 3}
+  m_Name: Tutorials_en
+  m_EditorClassIdentifier: 
+  m_LocaleId:
+    m_Code: en
+  m_SharedData: {fileID: 11400000, guid: 18ac45afbbf827544bd54c68a528c078, type: 2}
+  m_Metadata:
+    m_Items: []
+  m_TableData:
+  - m_Id: 119967817728
+    m_Localized: Click Any Button
+    m_Metadata:
+      m_Items: []
+  - m_Id: 427288666112
+    m_Localized: "Welcome to Excroaalibur\u2019s first demo !\n\nHere, your goal
+      is to get the Sword on the altar and to survive as much waves of enemies as
+      possible by killing them by throwing the Sword at them. But be careful not
+      loosing it, because the enemies will try to get it back to the altar, making
+      you lose.\n\nTo start your turn, push the altar to get the Sword !"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2083535429632
+    m_Localized: "Your character has various possible actions per turn : Moving,
+      Pushing (if you don\u2019t have the Sword) and Throwing the Sword.\n\nEach
+      of your characters can do 2 actions per turn. When every character of yours
+      used all their action points, your turn will end and the enemies will take
+      their turn."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2696918835200
+    m_Localized: "If you kill an enemy with the Sword, it will get back to the thrower
+      instantly, but if it doesn\u2019t, it will bounce just in front of them.\n\nEach
+      time you pass the Sword between your characters, it will grow in power by 1,
+      allowing you to kill stronger enemies. \n\nIts power resets after a kill or
+      after it\u2019s thrown but not passed."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3020303867904
+    m_Localized: 'When every enemies of the actual wave are eliminated, the next
+      wave spawns.
+
+
+
+      To better manage the flow of enemies coming to you, try
+      Pushing an enemy to gain some time.'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3166127235072
+    m_Localized: "This enemy looks way too strong to be killed by the Sword. \n\nTry
+      pushing it into a Hole, eliminating them in an instant, regardless of their
+      health !"
+    m_Metadata:
+      m_Items: []
+  references:
+    version: 2
+    RefIds: []

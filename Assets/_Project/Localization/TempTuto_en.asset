@@ -1,0 +1,88 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e9620f8c34305754d8cc9a7e49e852d9, type: 3}
+  m_Name: TempTuto_en
+  m_EditorClassIdentifier: 
+  m_LocaleId:
+    m_Code: en
+  m_SharedData: {fileID: 11400000, guid: cdcbf3cb95d2e0343ade322e82905af6, type: 2}
+  m_Metadata:
+    m_Items: []
+  m_TableData:
+  - m_Id: 112883638272
+    m_Localized: Ennemis
+    m_Metadata:
+      m_Items: []
+  - m_Id: 764733005824
+    m_Localized: Rules
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1081851748352
+    m_Localized: Actions
+    m_Metadata:
+      m_Items: []
+  - m_Id: 6919559553024
+    m_Localized: 'Lose condition: an enemy brings the Sword back to its original
+      altar.
+
+
+      Each time a wave of enemies is defeated, a new wave spawns,
+      with one additional enemy each time.'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 7426810290176
+    m_Localized: 'Controls:
+
+
+      Left Click: Select and perform action
+
+      Right
+      Click: Switch active action
+
+      Mouse Wheel: Zoom in / Zoom out
+
+      A
+      | E: Rotate camera around the grid'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 7591650631680
+    m_Localized: "Each pawn has 2 actions per turn:\n\nMoving up to 2 tiles.\n\nIf
+      the pawn does not have the crown, it may push an enemy.\n(If the enemy is pushed
+      into a wall or another pawn, it is stunned for 1 turn and takes 1 damage. If
+      it is pushed into a hole, it is instantly eliminated.)\n\nIf the pawn has the
+      crown, it can throw it in a straight line or a diagonal line.\nIf the crown
+      hits and kills an enemy, it returns to the player\u2019s hands.\nIf the enemy
+      survives, the crown falls in front of them.\nThe crown gains damage each time
+      it is passed between allied pawns. Its damage resets if it falls, deals damage,
+      or is picked up by an enemy.\n\nIf a pawn is in a hole, it can only move 1
+      tile to climb out."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 7803655921664
+    m_Localized: 'Enemies move up to 3 tiles toward the nearest player.
+
+      If
+      they become adjacent to the closest player and still have movement left, they
+      push the player, pick up the crown, and then move 3 tiles toward the nearest
+      altar.
+
+      Once again, if they still have movement remaining, they place
+      the crown on the altar.
+
+
+      If enemies have no possible path toward the
+      crown, they will instead move toward the nearest player without the crown.'
+    m_Metadata:
+      m_Items: []
+  references:
+    version: 2
+    RefIds: []

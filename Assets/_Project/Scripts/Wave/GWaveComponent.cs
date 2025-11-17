@@ -5,7 +5,9 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
-
+using UnityEngine.Localization.Settings;
+using UnityEngine.Localization.SmartFormat.PersistentVariables;
+using UnityEngine.SocialPlatforms.Impl;
 
 /* Manage the Wave and Spawn of Ennemies */
 public class GWaveComponent : MonoBehaviour 
@@ -21,6 +23,8 @@ public class GWaveComponent : MonoBehaviour
     [HideInEditorMode, ReadOnly, Tooltip("List of potential spawn cells for enemies")]
     private List<GCell> _spawnCells = new List<GCell>();
 
+    IntVariable _currentWave;
+    
     private int SpawningInProcess = 0; 
     
     /** Current Wave Data Use by the Wave Manager */
@@ -33,6 +37,7 @@ public class GWaveComponent : MonoBehaviour
                              (_waveData._waveType == WaveData.EWaveType.Endless ||
                               HasEnemiesToSpawn() ||
                               (_waveData.waves != null && _waveData.waves.Count > 0));
+    
     public bool IsSpawningInProgress() => HasEnemiesToSpawn() && SpawningInProcess > 0;
     
     private bool HasEnemiesToSpawn() => _ennemiesPool.Count > 0;
@@ -133,6 +138,8 @@ public class GWaveComponent : MonoBehaviour
         if (_waveData._waveType == WaveData.EWaveType.Endless) return; // Do not clear the pool for endless mode
         
         _ennemiesPool.Clear();    
+        var globals = LocalizationSettings.StringDatabase.SmartFormatter.GetSourceExtension<UnityEngine.Localization.SmartFormat.Extensions.PersistentVariablesSource>();
+        globals["Score"][""] =  _currentWave;
     }
     
     private void UpdateWaveCount()
@@ -157,3 +164,6 @@ public class GWaveComponent : MonoBehaviour
         GGameManager.Instance.UpdateIntensity(0); // Reset Intensity
     }
 }
+
+
+

@@ -1,0 +1,121 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e9620f8c34305754d8cc9a7e49e852d9, type: 3}
+  m_Name: UI_Collection_fr
+  m_EditorClassIdentifier: 
+  m_LocaleId:
+    m_Code: fr
+  m_SharedData: {fileID: 11400000, guid: 5846447bda5b96c44b5df967bea897d9, type: 2}
+  m_Metadata:
+    m_Items:
+    - rid: 9057057809307009305
+  m_TableData:
+  - m_Id: 66180063232
+    m_Localized: TUTORIEL
+    m_Metadata:
+      m_Items: []
+  - m_Id: 139416805376
+    m_Localized: JOUER
+    m_Metadata:
+      m_Items: []
+  - m_Id: 179640180736
+    m_Localized: QUITTER
+    m_Metadata:
+      m_Items: []
+  - m_Id: 247340441600
+    m_Localized: OUI
+    m_Metadata:
+      m_Items: []
+  - m_Id: 281289138176
+    m_Localized: NON
+    m_Metadata:
+      m_Items: []
+  - m_Id: 335546654720
+    m_Localized: "Etes-vous s\xFBrs ?"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1036389687296
+    m_Localized: OPTIONS
+    m_Metadata:
+      m_Items: []
+  - m_Id: 7293007798272
+    m_Localized: Fin du Tour
+    m_Metadata:
+      m_Items: []
+  - m_Id: 8072766660608
+    m_Localized: Vague {wave-data.wave-number}
+    m_Metadata:
+      m_Items:
+      - rid: 9057057809307009305
+  - m_Id: 31476089593856
+    m_Localized: Appuyer sur le click droit de la Souris pour changer d'Action
+    m_Metadata:
+      m_Items: []
+  - m_Id: 32256997695488
+    m_Localized: CONTINUER
+    m_Metadata:
+      m_Items: []
+  - m_Id: 32633998516224
+    m_Localized: RECOMMENCER
+    m_Metadata:
+      m_Items: []
+  - m_Id: 32859131977728
+    m_Localized: MENU PRINCIPAL
+    m_Metadata:
+      m_Items: []
+  - m_Id: 33508246659072
+    m_Localized: Musique
+    m_Metadata:
+      m_Items: []
+  - m_Id: 33617961263104
+    m_Localized: Volume
+    m_Metadata:
+      m_Items: []
+  - m_Id: 33703353098240
+    m_Localized: Effets sonores
+    m_Metadata:
+      m_Items: []
+  - m_Id: 34100553687040
+    m_Localized: Fin de Tour automatique
+    m_Metadata:
+      m_Items: []
+  - m_Id: 34448106299392
+    m_Localized: 'Nombre de vagues vaincus : {wave-data.wave-number}'
+    m_Metadata:
+      m_Items:
+      - rid: 9057057809307009305
+  - m_Id: 34890164969472
+    m_Localized: Entrez un nouveau Nom...
+    m_Metadata:
+      m_Items: []
+  - m_Id: 36452434157568
+    m_Localized: Envoyer
+    m_Metadata:
+      m_Items: []
+  - m_Id: 36605274595328
+    m_Localized: Classement
+    m_Metadata:
+      m_Items: []
+  - m_Id: 36972259418112
+    m_Localized: Vagues
+    m_Metadata:
+      m_Items: []
+  references:
+    version: 2
+    RefIds:
+    - rid: 9057057809307009305
+      type: {class: SmartFormatTag, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
+      data:
+        m_Entries: 
+        m_SharedEntries:
+        - id: 8072766660608
+        - id: 34448106299392

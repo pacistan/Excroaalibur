@@ -25,7 +25,8 @@ public class GPlayMenu : MonoBehaviour
         OnUpdateCrownUI?.Invoke(damage);
     }
 
-    public void SetWaveNumberText(int waveNumber) => _waveNumberTxt.text = $"Wave {waveNumber}";
+    public void SetWaveNumberText(int waveNumber) => 
+        _waveNumberTxt.text = $"Wave {waveNumber}";
     
     void Start()
     {
