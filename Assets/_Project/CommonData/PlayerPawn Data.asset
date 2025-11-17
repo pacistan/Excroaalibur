@@ -52,6 +52,7 @@ MonoBehaviour:
   - rid: 3108424474244939853
   - rid: 3108424474244939855
   baseReactionData: {fileID: 11400000, guid: 3d2f439763d27cc4488c148c9d11360b, type: 2}
+  <previsuHeightOffset>k__BackingField: 3.62
   hoverSound:
     Guid:
       Data1: 0
@@ -128,6 +129,7 @@ MonoBehaviour:
           m_PreInfinity: 2
           m_PostInfinity: 2
           m_RotationOrder: 4
+        _previsuCurveData: {fileID: 11400000, guid: 11eea60cc8d82364baac63c8cd184f8f, type: 2}
         moveAnimationName: Move
     - rid: 3108424474244939853
       type: {class: GThrowAction, ns: , asm: Assembly-CSharp}
@@ -337,6 +339,11 @@ MonoBehaviour:
           m_PreInfinity: 2
           m_PostInfinity: 2
           m_RotationOrder: 4
+        _previsuCurveDataToTargetCell: {fileID: 11400000, guid: 11eea60cc8d82364baac63c8cd184f8f, type: 2}
+        _previsuCurveDataToTargetEnnemyPawn: {fileID: 11400000, guid: 11eea60cc8d82364baac63c8cd184f8f, type: 2}
+        _previsuCurveDataToTargetPlayer: {fileID: 11400000, guid: 11eea60cc8d82364baac63c8cd184f8f, type: 2}
+        _previsuCurveDataBackOnKill: {fileID: 11400000, guid: 11eea60cc8d82364baac63c8cd184f8f, type: 2}
+        _previsuCurveDataBackOnDamage: {fileID: 11400000, guid: 11eea60cc8d82364baac63c8cd184f8f, type: 2}
     - rid: 3108424474244939854
       type: {class: GPushAction, ns: , asm: Assembly-CSharp}
       data:
@@ -350,6 +357,7 @@ MonoBehaviour:
         validCells: []
         _pushForce: 1
         _followDistance: 1
+        _previsuCurveData: {fileID: 11400000, guid: 11eea60cc8d82364baac63c8cd184f8f, type: 2}
     - rid: 3108424474244939855
       type: {class: GMoveOutOfHoleAction, ns: , asm: Assembly-CSharp}
       data:

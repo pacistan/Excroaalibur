@@ -25,6 +25,10 @@ MonoBehaviour:
     - rid: 828711102939922561
       type: {class: GPushedReaction, ns: , asm: Assembly-CSharp}
       data:
+        <actionLabel>k__BackingField: 
+        <actionIcon>k__BackingField: {fileID: 0}
+        _actionCursorIcon: []
+        <centerCursorOffset>k__BackingField: 0
         linkedPawn: {fileID: 0}
         targetCell: {fileID: 0}
         validCells: []
@@ -32,3 +36,5 @@ MonoBehaviour:
         _DamageRelatedToPushForce: 0
         _damage: 1
         _stun: 1
+        _pushedTileType: 0000000002000000
+        _previsuCurveData: {fileID: 11400000, guid: 11eea60cc8d82364baac63c8cd184f8f, type: 2}

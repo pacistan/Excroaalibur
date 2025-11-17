@@ -23,6 +23,10 @@ public class GPushedReaction : GAction
     [SerializeField, Tooltip("Tile types on which the pawn can be pushed")]
     ETileType[] _pushedTileType = new ETileType[] { ETileType.Normal, ETileType.Hole };
     
+
+    [SerializeField]
+    GActionPrevisualisationCurveData _previsuCurveData;
+    
     int _distance;
     
     bool _inflictDamage;
@@ -35,7 +39,7 @@ public class GPushedReaction : GAction
     {
         if (previsuContext == null)
         {
-            Debug.LogWarning($"GPushedReaction on {linkedPawn} missing context");
+            Debug.LogWarning( $"GPushedReaction on {linkedPawn} missing context");
             return null;
         }
         
@@ -81,6 +85,9 @@ public class GPushedReaction : GAction
             }
             
             PreviewCells.Add(cell);
+            
+            AddPrevisualisationCurve(previsuContext, linkedPawn.GetPrevisuPosition(), 
+                cell.transform.position, _previsuCurveData);
         }
         
         if (_inflictDamage)
@@ -227,6 +234,7 @@ public class GPushedReaction : GAction
         reaction._damage = _damage;
         reaction._stun = _stun;
         reaction._pushedTileType = _pushedTileType;
+        reaction._previsuCurveData = _previsuCurveData;
         return reaction;
     }
 }

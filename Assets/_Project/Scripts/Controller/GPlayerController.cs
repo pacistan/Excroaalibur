@@ -12,7 +12,8 @@ using UnityEngine.UI;
 
 public class GPlayerController : GController
 {
-    public event Action<GPawn> SelectedPlayerChanged;
+    //public event Action<GPawn> SelectedPlayerChanged;
+    
     public GAction[] availableActions = new GAction[] { };
 
     [SerializeField]
@@ -44,6 +45,12 @@ public class GPlayerController : GController
 
     [SerializeField]
     Vector2 _normalCursorOffset, _waitCursorOffset;
+
+    [SerializeField]
+    LineRenderer _prefabPrevisuLineRenderer;
+
+    [SerializeField]
+    int _lineRendererNumber;
     
     private GTargetHud _targetHud;
     InputAction _leftClickInput;
@@ -51,6 +58,7 @@ public class GPlayerController : GController
     private GCell _targetCell;
     private GCell _hoverCell;
     private int _currentActionIndex;
+    LineRenderer[] _lineRenderers;
     
     List<GCell> previsuCell = new List<GCell>();
     bool _isFirstAction = true;
@@ -181,15 +189,17 @@ public class GPlayerController : GController
     //TODO : Change to Button or other interface
     private void DebugTools()
     {
-        return;
-        if (Input.GetKeyDown(KeyCode.L) && !_isFirstAction)
+        if (Application.isEditor)
         {
-            StopTurn();
-        }
+            if (Input.GetKeyDown(KeyCode.L) && !_isFirstAction)
+            {
+                StopTurn();
+            }
 
-        if (Input.GetKeyDown(KeyCode.R))
-        {
-           GGameManager.Instance.ChangeState(EMacroStates.LoadingScreen);
+            if (Input.GetKeyDown(KeyCode.R))
+            {
+               GGameManager.Instance.ChangeState(EMacroStates.LoadingScreen);
+            }
         }
     }
     
@@ -202,6 +212,12 @@ public class GPlayerController : GController
         GHudManager.Instance.playMenu.endTurnButton.interactable = false;
         GGameManager.Instance.OnChangeMacroStateEvent += OnChangeMacroStateCallback;
         Cursor.SetCursor(_normalCursor, Vector2.zero, CursorMode.Auto);
+        _lineRenderers = new  LineRenderer[_lineRendererNumber];
+        for (int i = 0; i < _lineRendererNumber; i++)
+        {
+            _lineRenderers[i] = Instantiate(_prefabPrevisuLineRenderer, transform);
+            _lineRenderers[i].enabled = false;
+        }
     }
 
     private void Update()
@@ -445,10 +461,22 @@ public class GPlayerController : GController
                 
         int index = _selectedAction.GetType() != typeof(GThrowAction) ? 0 :
             hoveredPawn && !hoveredPawn.data.isPlayer ? 0 : 1;
-        //Cursor.SetCursor(_selectedAction.GetCursorIcon(index), Vector2.zero, CursorMode.Auto);
         
         previsuCell = _selectedAction.Previsualisation(context);
-                
+
+        if (context.TryGet(GActionContext.PREVISU_POS_STRING, out List<Vector3[]> curves))
+        {
+            if(curves.Count > _lineRenderers.Length)
+                Debug.LogWarning($"Not Enough line renderers to see all previsualisations {curves.Count} > {_lineRenderers.Length}");
+            int maxCurves = Mathf.Min(curves.Count, _lineRenderers.Length);
+            for (int i = 0; i < maxCurves; i++)
+            {
+                _lineRenderers[i].enabled = true;
+                _lineRenderers[i].positionCount = curves[i].Length;
+                _lineRenderers[i].SetPositions(curves[i]);
+            }
+        }
+        
         foreach (GCell cell in previsuCell)
             cell.visuals.isPrevisualized = true;
         
@@ -465,9 +493,10 @@ public class GPlayerController : GController
         if (_selectedAction != null && targetPawn)
             targetPawn.visuals.OnDisablePrevisualisation();
 
-        if (previsuCell.Count <= 0) return;
+        if (previsuCell == null || previsuCell.Count <= 0) return;
         foreach (GCell cell in previsuCell)
             cell.visuals.isPrevisualized = false;
+        _lineRenderers.ForEach(l => l.enabled = false);
     }
 
     protected override void StopTurn()

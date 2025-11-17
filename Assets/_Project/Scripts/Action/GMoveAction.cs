@@ -20,6 +20,10 @@ public class GMoveAction : GAction
     [SerializeField]
     protected AnimationCurve _speedCurve = AnimationCurve.EaseInOut(0, 0, 1, 1);
 
+    [FormerlySerializedAs("_previsualisationCurveData")]
+    [SerializeField]
+    GActionPrevisualisationCurveData _previsuCurveData;
+    
     [FormerlySerializedAs("animationName")]
     public string moveAnimationName = GPawn.MoveAnimationName;
     
@@ -66,6 +70,8 @@ public class GMoveAction : GAction
         List<GCell> previewCells = new List<GCell>();
         previewCells.Add(targetCell);
         
+        AddPrevisualisationCurve(previsuContext, linkedPawn.GetPrevisuPosition(), 
+            targetCell.transform.position, _previsuCurveData);
         return previewCells;
     }
 

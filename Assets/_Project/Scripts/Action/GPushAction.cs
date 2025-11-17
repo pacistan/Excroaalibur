@@ -14,6 +14,9 @@ public class GPushAction : GAction
     [SerializeField, Min(0), Tooltip("Distance Of the pawn following the pushed pawn, if possible")]
     private int _followDistance = 1;
     
+    [SerializeField]
+    GActionPrevisualisationCurveData _previsuCurveData;
+    
     EHexDirection _direction = EHexDirection.NE;
     GPawn _targetPawn;
     
@@ -56,10 +59,16 @@ public class GPushAction : GAction
             }
             
             previewCells.Add(pathCell);
+            
+            AddPrevisualisationCurve(previsuContext, linkedPawn.GetPrevisuPosition(), 
+                pathCell.transform.position, _previsuCurveData);
         }
+        
+        
         
         return previewCells;
     }
+   
     public override void PreProcess(GActionContext context = null)
     {
         base.PreProcess(context);

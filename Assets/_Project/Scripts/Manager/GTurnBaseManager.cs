@@ -48,8 +48,8 @@ public class GTurnBaseManager : GSingleton<GTurnBaseManager>
     /** All the Entity in the Scene */
     private List<GController> _controllerList = new List<GController>();
     
-    [SerializeField, BoxGroup("Dev Settings"), Tooltip("Time to wait before forcing the end of the turn when action is playing")]
-    private float _safeTimeHandle = 5f;
+    //[SerializeField, BoxGroup("Dev Settings"), Tooltip("Time to wait before forcing the end of the turn when action is playing")]
+    //private float _safeTimeHandle = 5f;
 
     [SerializeField, BoxGroup("Dev Settings"), Tooltip("Speed Multiplier of the Action")]
     private float _actionSpeed = 1f;

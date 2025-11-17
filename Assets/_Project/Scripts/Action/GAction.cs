@@ -14,7 +14,8 @@ public class GActionContext
     public const string DAMAGE_STRING = "Damage";
     public const string STUN_STRING = "Stun";
     public const string DIRECTION_STRING = "Direction";
-    public const string FORCE_STRING = "Force"; 
+    public const string FORCE_STRING = "Force";
+    public const string PREVISU_POS_STRING = "previsuPositions";
     
     private Dictionary<string, object> _data = new Dictionary<string, object>();
     
@@ -193,5 +194,33 @@ public abstract class GAction
     /// <param name="cell">Cell to check the validity of</param>
     /// <returns>True if cell is valid for this action</returns>
     public bool IsValidCell(GHexCoordinate cell) { return validCells.Contains(cell); }
-    
+
+    /// <summary>
+    /// Add Previsualisation curve to <see cref="context"/>
+    /// </summary>
+    protected void AddPrevisualisationCurve(in GActionContext context, Vector3 startPosition, Vector3 endPosition,
+        GActionPrevisualisationCurveData data)
+    {
+        int resolution = data.previsuCurveResolution;
+        Vector3[] curve = new Vector3[resolution];
+        for (int i = 0; i < resolution; i++)
+        {
+            float progress = (float)i / resolution;
+            Vector3 position = Vector3.Lerp(startPosition + data.startHeightOffset * Vector3.up, endPosition + data.endHeightOffset * Vector3.up, data.previsuPositionsCurve.Evaluate(progress));
+            float height = Mathf.Lerp(position.y, data.previsuCurveMaxHeight, data.previsuHeightCurve.Evaluate(progress));
+            position.y = height;
+            curve[i] = position;
+        }
+        
+        if (context.Has(GActionContext.PREVISU_POS_STRING))
+        {
+            List<Vector3[]> curves = context.Get<List<Vector3[]>>(GActionContext.PREVISU_POS_STRING);
+            curves.Add(curve);
+        }
+        else
+        {
+            var curves = new List<Vector3[]>(1) { curve };
+            context.Set(GActionContext.PREVISU_POS_STRING, curves);
+        }
+    }
 }
