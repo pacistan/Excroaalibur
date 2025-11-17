@@ -34,18 +34,16 @@ public class GAIController : GController
 
     public override void StartAction()
     {
-        base.StartAction();
-        pawn.remainingActionToken--;
         var action = _aiBehavior.GetAction();
         if (action == null)
         {
             StopTurn();
+            return;
         }
-        else
-        {
-            action.OnActionFinished += OnActionOver;
-            bool isValid = pawn.RequestAction(action);
-        }
+        base.StartAction();
+        pawn.remainingActionToken--;
+        action.OnActionFinished += OnActionOver;
+        bool isValid = pawn.RequestAction(action);
     }
 
     public override void OnActionOver()

@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;
 using UnityEngine.Serialization;
@@ -13,6 +14,12 @@ using UnityEngine.UI;
 public class GPlayerController : GController
 {
     //public event Action<GPawn> SelectedPlayerChanged;
+    
+    [SerializeField, FoldoutGroup("Events"), Tooltip("Event triggered when a player is selected.")]
+    private UnityEvent OnPawnSelected;
+    
+    [SerializeField, FoldoutGroup("Events"), Tooltip("Event triggered when a player is hovered.")]
+    private UnityEvent OnPawnHover;
     
     public GAction[] availableActions = new GAction[] { };
 
@@ -73,6 +80,7 @@ public class GPlayerController : GController
             return;
         }
         _selectedPlayer = newSelected;
+        OnPawnSelected?.Invoke();
         
         availableActions = GetAvailableActions();
         foreach (var action in availableActions)
@@ -260,20 +268,24 @@ public class GPlayerController : GController
             {
                 _targetHud.OnGridObjectHovered(null, _isFirstAction);
             }
-            
-            
-            // Handle Hover Sounds
-            if (cellPawn && !cellPawn.data.hoverSound.IsNull)
+
+            // Handle Hover New Pawn
+            if (cellPawn)
             {
-                RuntimeManager.PlayOneShotAttached(cellPawn.data.hoverSound, cellPawn.gameObject);
-            }
-            else
+                if (!cellPawn.data.hoverSound.IsNull)
+                {
+                    RuntimeManager.PlayOneShotAttached(cellPawn.data.hoverSound, cellPawn.gameObject);
+                }
+                
+                OnPawnHover?.Invoke(); // Trigger Hover Event 
+            } 
+            else 
             {
                 RuntimeManager.PlayOneShot("event:/Map/Hover_Empty");
             }
             
             // Handle Action Highlight on Hover
-            if (cellPawn && _hoverCell != newCell && !_selectedPlayer && !(cellPawn.data.isPlayer && (cellPawn.remainingActionToken == 0 || cellPawn.IsStunned) ))
+            if (cellPawn && _hoverCell != newCell && !_selectedPlayer && !(cellPawn.data.isPlayer && (cellPawn.remainingActionToken == 0 || cellPawn.IsStunned)))
             {
                 var tempAvailableActions = GetAvailableActions(cellPawn);
                 if (tempAvailableActions.Length > 0)
