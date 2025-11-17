@@ -2610,6 +2610,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c29c045b769546f8a95ca7f04d51a0f5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  OnStartActionEvent:
+    m_PersistentCalls:
+      m_Calls: []
   pawn: {fileID: 0}
   _aiBehavior: {fileID: 11400000, guid: 6a0476ad347235d4f9396f9fae556a50, type: 2}
 --- !u!224 &4553590095380219751 stripped

@@ -15,10 +15,10 @@ public class GPlayerController : GController
 {
     //public event Action<GPawn> SelectedPlayerChanged;
     
-    [SerializeField, BoxGroup("Events"), Tooltip("Event triggered when a player is selected.")]
+    [SerializeField, FoldoutGroup("Events"), Tooltip("Event triggered when a player is selected.")]
     private UnityEvent OnPawnSelected;
     
-    [SerializeField, BoxGroup("Events"), Tooltip("Event triggered when a player is hovered.")]
+    [SerializeField, FoldoutGroup("Events"), Tooltip("Event triggered when a player is hovered.")]
     private UnityEvent OnPawnHover;
     
     public GAction[] availableActions = new GAction[] { };
