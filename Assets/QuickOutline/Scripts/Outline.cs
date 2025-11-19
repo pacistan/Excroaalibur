@@ -99,8 +99,14 @@ public class Outline : MonoBehaviour {
     // Apply material properties immediately
     needsUpdate = true;
   }
+    private void Start()
+    {
+        //SetUpoutline
+        OutlineWidth = 4f;
+        OutlineColor = Color.yellow;
+    }
 
-  void OnEnable() {
+    void OnEnable() {
     foreach (var renderer in renderers) {
 
       // Append outline shaders
@@ -154,8 +160,16 @@ public class Outline : MonoBehaviour {
       renderer.materials = materials.ToArray();
     }
   }
+    private void OnMouseEnter()
+    {
+        this.enabled = true;
+    }
+    private void OnMouseExit()
+    {
+        this.enabled = false;
+    }
 
-  void OnDestroy() {
+    void OnDestroy() {
 
     // Destroy material instances
     Destroy(outlineMaskMaterial);

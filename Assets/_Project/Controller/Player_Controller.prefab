@@ -44,9 +44,24 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 424295aca862424e8e5bd97658e071b1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  <actionTokens>k__BackingField: 3
-  actionList: {fileID: 0}
+  OnStartActionEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  OnPawnSelected:
+    m_PersistentCalls:
+      m_Calls: []
+  OnPawnHover:
+    m_PersistentCalls:
+      m_Calls: []
+  _endTurnWhenNoActionsLeft: 0
+  _speedRotateTowardsActionValidsCell: 0.1
+  _selectedPlayer: {fileID: 0}
   _cellLayerMask:
     serializedVersion: 2
     m_Bits: 64
-  _remainingActionToken: 0
+  _normalCursor: {fileID: 0}
+  _waitCursor: {fileID: 0}
+  _normalCursorOffset: {x: 0, y: 0}
+  _waitCursorOffset: {x: 0, y: 0}
+  _prefabPrevisuLineRenderer: {fileID: 0}
+  _lineRendererNumber: 0
