@@ -181,7 +181,7 @@ public abstract class GAction
         CurrentState = EActionState.Finished;
         OnActionFinished?.Invoke();
     }
-    
+
     /// <summary>
     /// Get all cells onto which this action can be played.
     /// </summary>

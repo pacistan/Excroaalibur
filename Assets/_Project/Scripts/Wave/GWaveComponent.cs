@@ -15,7 +15,7 @@ public class GWaveComponent : MonoBehaviour
     public Action<bool> OnSpawningProcessFinsish;
     
     [HideInEditorMode, ReadOnly, Tooltip("Number of completed waves")]
-    private int _WaveCount = 0;
+    private int _waveCount = 0;
     
     [HideInEditorMode, ReadOnly, Tooltip("Currrent Pool of Enemies to Spawn")]
     private List<GAIController> _ennemiesPool = new List<GAIController>();
@@ -31,8 +31,10 @@ public class GWaveComponent : MonoBehaviour
     private WaveData _waveData;
     
     /* Get the Actual wave Count */
-    public int GetWaveCount() => _waveData._waveType == WaveData.EWaveType.Endless ? _WaveCount : -1;
+    public int GetWaveCount() => _waveData._waveType == WaveData.EWaveType.Endless ? _waveCount : -1;
 
+    public void SetWaveCount(int waveCount) => _waveCount = waveCount;
+    
     public bool HasWave() => _waveData != null &&
                              (_waveData._waveType == WaveData.EWaveType.Endless ||
                               HasEnemiesToSpawn() ||
@@ -72,7 +74,7 @@ public class GWaveComponent : MonoBehaviour
         if (_waveData._waveType == WaveData.EWaveType.Endless) // Endless wave logic
         {
             if (GTurnBaseManager.Instance.EnemiesCount > 0) return; // Wait until all enemies are dead !
-            _ennemiesPool.AddRange(Enumerable.Repeat(_waveData.enemyPrefab, _WaveCount + 1)); 
+            _ennemiesPool.AddRange(Enumerable.Repeat(_waveData.enemyPrefab, _waveCount + 1)); 
         }
         else if (_waveData._waveType == WaveData.EWaveType.Finite) // Finite wave logic
         {
@@ -110,7 +112,7 @@ public class GWaveComponent : MonoBehaviour
         SpawningInProcess = 0;
         int spawnable = Mathf.Min(_ennemiesPool.Count, _spawnCells.Count);
         Debug.Log($"[WaveManager] Spawning {spawnable} enemies.");
-        GHudManager.Instance.playMenu.SetWaveNumberText(_WaveCount);
+        GHudManager.Instance.playMenu.SetWaveNumberText(_waveCount);
 
         for (int i = spawnable - 1; i >= 0; i--)
         {
@@ -144,7 +146,7 @@ public class GWaveComponent : MonoBehaviour
     
     private void UpdateWaveCount()
     {
-        _WaveCount++;
+        _waveCount++;
         GGameManager.Instance.UpdateIntensity(GetWaveCount()); 
     }
     

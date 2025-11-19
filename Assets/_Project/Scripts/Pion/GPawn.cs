@@ -200,6 +200,22 @@ public class GPawn : GGridObject
         
         return true;
     }
+
+    public void SetHp(int newHpValue)
+    {
+        if (newHpValue <= 0)
+        {
+            Debug.LogError("Tried to set new Hp Value <= 0");
+            return;
+        }
+        else if (newHpValue > data.startHp)
+        {
+            Debug.LogError("Tried to set new Hp Value > startHp");
+            return;
+        }
+        
+        hp = newHpValue;
+    }
     
     public void TakeDamage(int damage = 1)
     {
