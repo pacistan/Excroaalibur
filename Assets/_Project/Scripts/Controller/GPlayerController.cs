@@ -432,6 +432,7 @@ public class GPlayerController : GController
         if (_selectedPlayer.RequestAction(_selectedAction))
         {
             base.StartAction();
+            
             if (isFirstAction)
             {
                 isFirstAction = false;

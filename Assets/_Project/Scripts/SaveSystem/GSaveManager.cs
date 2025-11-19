@@ -7,6 +7,7 @@ using UnityEngine.Windows;
 using UnityEditor;
 using File = System.IO.File;
 
+
 [DefaultExecutionOrder(100)]
 public class GSaveManager : GSingleton<GSaveManager>
 {
@@ -67,6 +68,7 @@ public class GSaveManager : GSingleton<GSaveManager>
             playerData.xCoordinate = player.GetCell().data.gridCoordinates.x;
             playerData.yCoordinate = player.GetCell().data.gridCoordinates.y;
             playerData.isStunned = player.isStunned;
+
             saveData.players[i] = playerData;
         }
         GCrown crown = GGridObjectRegistry.GetItems<GCrown>()[0];
@@ -90,12 +92,14 @@ public class GSaveManager : GSingleton<GSaveManager>
         {
             DeleteSaveFile();
         }
+
     }
 
     private void CreateGameStateFromData(GGameStateSaveData data)
     {
         GCrown crown = GGridObjectRegistry.GetItems<GCrown>()[0];
         GPawn[] players = GGridObjectRegistry.GetItemsByPredicate<GPawn>(pawn => pawn.data.isPlayer).ToArray();
+
 
         // Player Stuff
         {
@@ -132,6 +136,7 @@ public class GSaveManager : GSingleton<GSaveManager>
                 GCell ennemyCell = GGridManager.Instance.GetCell(new Vector2Int(ennemyData.xCoordinate, ennemyData.yCoordinate));
                 ennemyCell.SetGridObject(pawn, true);
                 if(ennemyData.isStunned) pawn.Stun();
+
                 pawn.SetHp(ennemyData.hp);
             }
         }
