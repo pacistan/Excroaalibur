@@ -61,7 +61,8 @@ public class GPlayerController : GController
     LineRenderer[] _lineRenderers;
     
     List<GCell> previsuCell = new List<GCell>();
-    bool _isFirstAction = true;
+    public bool isFirstAction = true;
+    
     
     public void SetSelectedPlayer(GPawn newSelected)
     {
@@ -81,7 +82,7 @@ public class GPlayerController : GController
 
         
         if (_targetHud) 
-            _targetHud.actionList.UpdateButtons(_selectedPlayer, _isFirstAction);
+            _targetHud.actionList.UpdateButtons(_selectedPlayer, isFirstAction);
     }
 
     public void SelectAction(GAction action)
@@ -156,7 +157,7 @@ public class GPlayerController : GController
 
         if (target.data.isPlayer)
         {
-            if (_isFirstAction)
+            if (isFirstAction)
             {
                 newAvailableActions.Add(target.data.actionList[1]);
             }
@@ -191,7 +192,7 @@ public class GPlayerController : GController
     {
         if (Application.isEditor)
         {
-            if (Input.GetKeyDown(KeyCode.L) && !_isFirstAction)
+            if (Input.GetKeyDown(KeyCode.L) && !isFirstAction)
             {
                 StopTurn();
             }
@@ -253,12 +254,12 @@ public class GPlayerController : GController
             // Hover New Tile with no Selection
             if (!_selectedPlayer && newCell.gridObject)
             {
-                _targetHud.OnGridObjectHovered(newCell.gridObject, _isFirstAction);
+                _targetHud.OnGridObjectHovered(newCell.gridObject, isFirstAction);
             }
             // Hover New Tile with no Selection and No Object
             else if (!_selectedPlayer && !newCell.gridObject)
             {
-                _targetHud.OnGridObjectHovered(null, _isFirstAction);
+                _targetHud.OnGridObjectHovered(null, isFirstAction);
             }
             
             
@@ -308,7 +309,7 @@ public class GPlayerController : GController
             _hoverCell = null;
             if (!_selectedPlayer)
             {
-                _targetHud.OnGridObjectHovered(null, _isFirstAction);
+                _targetHud.OnGridObjectHovered(null, isFirstAction);
             }
         }
     }
@@ -370,7 +371,7 @@ public class GPlayerController : GController
                     {
                         _targetCell.visuals.isSelected = true;
                         SetSelectedPlayer(cellPawn);
-                        _targetHud.OnGridObjectHovered(cellPawn, _isFirstAction);
+                        _targetHud.OnGridObjectHovered(cellPawn, isFirstAction);
                     }
                     // Not Player Pawn
                     else if (_selectedPlayer != cellPawn && !isSelectable)
@@ -378,7 +379,7 @@ public class GPlayerController : GController
                         SetSelectedPlayer(null);
                         if (!cellPawn.data.isPlayer)
                         {
-                            _targetHud.OnGridObjectHovered(cellPawn, _isFirstAction);
+                            _targetHud.OnGridObjectHovered(cellPawn, isFirstAction);
                         }
                     }
                 }
@@ -387,7 +388,7 @@ public class GPlayerController : GController
                 {
                     SetSelectedPlayer(null);
                     SelectAction(null);
-                    _targetHud.OnGridObjectHovered(null, _isFirstAction);
+                    _targetHud.OnGridObjectHovered(null, isFirstAction);
                 }
             }
             
@@ -422,14 +423,14 @@ public class GPlayerController : GController
         _selectedAction.targetCell = _targetCell;
         if (_selectedPlayer.RequestAction(_selectedAction))
         {
-            if (_isFirstAction)
+            if (isFirstAction)
             {
-                _isFirstAction = false;
+                isFirstAction = false;
                 GHudManager.Instance.playMenu.endTurnButton.interactable = true;
             }
             _selectedPlayer.remainingActionToken--;
             _selectedPlayer.visuals.OnUpdateActionsToken();
-            _targetHud.UpdateGridObjectHoveredInfo(_selectedPlayer, _isFirstAction);
+            _targetHud.UpdateGridObjectHoveredInfo(_selectedPlayer, isFirstAction);
             SetSelectedPlayer(null);
             SelectAction(null);
             availableActions = null;
@@ -511,7 +512,7 @@ public class GPlayerController : GController
         base.StartTurn();
         Cursor.SetCursor(_normalCursor, Vector2.zero, CursorMode.Auto);
         
-        if (!_isFirstAction)
+        if (!isFirstAction)
         {
             GHudManager.Instance.playMenu.endTurnButton.interactable = true;
         }
@@ -531,9 +532,9 @@ public class GPlayerController : GController
 
     private void OnChangeMacroStateCallback(EMacroStates newState, EMacroStates oldState)
     {
-        if (newState == EMacroStates.Play && oldState == EMacroStates.LoadingScreen)
+        if (newState == EMacroStates.Play && oldState == EMacroStates.LoadingScreen && GGameManager.Instance.isLoadingNewSave)
         {
-            _isFirstAction = true;
+            isFirstAction = true;
         }
     }
 
