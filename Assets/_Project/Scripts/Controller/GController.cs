@@ -2,10 +2,14 @@ using System;
 using System.Collections.Generic;
 using Sirenix.OdinInspector;
 using UnityEngine;
+using UnityEngine.Events;
 
 public abstract class GController : MonoBehaviour
 {
     public event Action OnStartTurn;
+    
+    [SerializeField, FoldoutGroup("Events"), Tooltip("Event triggered when an action starts")]
+    protected UnityEvent OnStartActionEvent;
     public event Action OnEndTurn;
     public event Action OnStartAction;
     
@@ -37,7 +41,11 @@ public abstract class GController : MonoBehaviour
         OnStartTurn?.Invoke();
     }
 
-    public virtual void StartAction() { OnStartAction?.Invoke(); }
+    public virtual void StartAction()
+    {
+        OnStartAction?.Invoke();
+        OnStartActionEvent?.Invoke();
+    }
     
     public virtual void OnActionOver() {}
     
