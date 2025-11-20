@@ -87,6 +87,7 @@ MonoBehaviour:
   _hexSize: 0
   _isOffsetOnPairs: 0
   <painterParent>k__BackingField: {fileID: 3305766028830446823}
+  _commonData: {fileID: 11400000, guid: 6b3ac300fab008a42b3df5d92c030bf0, type: 2}
 --- !u!114 &6610908280659176654
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -133,7 +134,6 @@ MonoBehaviour:
   <currentTurnController>k__BackingField: {fileID: 0}
   _actionsInProgress: []
   _turnOrderControllerQueue: []
-  _safeTimeHandle: 5
   _actionSpeed: 1
   _turnCount: 0
   _hasWaves: 1

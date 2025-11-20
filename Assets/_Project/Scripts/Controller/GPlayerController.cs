@@ -248,7 +248,7 @@ public class GPlayerController : GController
             
             DisablePrevisualisation();
             
-            if (_selectedPlayer && _selectedPlayer.remainingActionToken > 0 && !_selectedPlayer.IsStunned && _selectedAction != null && newCell != _hoverCell && _selectedAction.IsValidCell(newCell.hexCoordinates))
+            if (_selectedPlayer && _selectedPlayer.remainingActionToken > 0 && !_selectedPlayer.isStunned && _selectedAction != null && newCell != _hoverCell && _selectedAction.IsValidCell(newCell.hexCoordinates))
             {
                 ActivatePrevisualisation(newCell, cellPawn);
             }
@@ -286,7 +286,8 @@ public class GPlayerController : GController
             }
             
             // Handle Action Highlight on Hover
-            if (cellPawn && _hoverCell != newCell && !_selectedPlayer && !(cellPawn.data.isPlayer && (cellPawn.remainingActionToken == 0 || cellPawn.IsStunned)))
+
+            if (cellPawn && _hoverCell != newCell && !_selectedPlayer && !(cellPawn.data.isPlayer && (cellPawn.remainingActionToken == 0 || cellPawn.isStunned) ))
             {
                 var tempAvailableActions = GetAvailableActions(cellPawn);
                 if (tempAvailableActions.Length > 0)
@@ -361,7 +362,7 @@ public class GPlayerController : GController
             {
                 if (cellPawn)
                 {
-                    bool isSelectable = cellPawn.data.isPlayer && cellPawn.remainingActionToken > 0 && !cellPawn.IsStunned;
+                    bool isSelectable = cellPawn.data.isPlayer && cellPawn.remainingActionToken > 0 && !cellPawn.isStunned;
                     // No Selected player and Clicked on not Player Pawn
                     if (!_selectedPlayer && !cellPawn.data.isPlayer)
                     {
@@ -431,7 +432,7 @@ public class GPlayerController : GController
     public override void StartAction()
     {
         if (!_validCells.Contains(_targetCell.hexCoordinates) &&  _selectedPlayer.remainingActionToken <= 0) return;
-        if(_selectedPlayer.IsStunned) return;
+        if(_selectedPlayer.isStunned) return;
         _selectedAction.targetCell = _targetCell;
         if (_selectedPlayer.RequestAction(_selectedAction))
         {
@@ -457,7 +458,7 @@ public class GPlayerController : GController
             bool isTurnOver = true;
             pawns.ForEach(p =>
             {
-                if (p.remainingActionToken > 0 && !p.IsStunned) isTurnOver = false;
+                if (p.remainingActionToken > 0 && !p.isStunned) isTurnOver = false;
             });
 
             if (isTurnOver)
@@ -494,7 +495,7 @@ public class GPlayerController : GController
             cell.visuals.isPrevisualized = true;
         
         context.TryGet(GActionContext.DAMAGE_STRING, out int damage);
-        context.TryGet(GActionContext.STUN_STRING, out int stun);
+        context.TryGet(GActionContext.STUN_STRING, out bool stun);
         if (hoveredPawn)
             hoveredPawn.visuals.OnPrevisualisation(damage, stun);
     }

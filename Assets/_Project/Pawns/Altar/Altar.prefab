@@ -284,7 +284,8 @@ MonoBehaviour:
   <visuals>k__BackingField: {fileID: 1528920753647014634}
   <equipmentParentTr>k__BackingField: {fileID: 6677674562615435608}
   remainingActionToken: 0
-  stunTurn: 0
+  <isStunned>k__BackingField: 0
+  <isStunnedProtected>k__BackingField: 0
   <hp>k__BackingField: 3
   _OnDeath:
     m_PersistentCalls:

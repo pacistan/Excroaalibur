@@ -24,6 +24,11 @@ public class GSaveManager : GSingleton<GSaveManager>
         System.IO.File.WriteAllText(path, jsonData);
     }
 
+    public void DeleteSaveFile()
+    {
+        File.Delete(Application.streamingAssetsPath + "/" + _saveFileName + ".json");
+    }
+    
     private GGameStateSaveData DeserializeFromJson()
     {
         string jsonData = System.IO.File.ReadAllText(Application.streamingAssetsPath + "/" + _saveFileName + ".json");
@@ -48,7 +53,7 @@ public class GSaveManager : GSingleton<GSaveManager>
             ennemyData.ennemyType = ennemy.data.gridObjectType.ToString();
             ennemyData.xCoordinate = ennemy.GetCell().data.gridCoordinates.x;
             ennemyData.yCoordinate = ennemy.GetCell().data.gridCoordinates.y;
-            ennemyData.isStunned = ennemy.IsStunned;
+            ennemyData.isStunned = ennemy.isStunned;
             ennemyData.hp = ennemy.hp;
             saveData.ennemies[i] = ennemyData;
         }
@@ -58,7 +63,7 @@ public class GSaveManager : GSingleton<GSaveManager>
             var player = players.ElementAt(i);
             playerData.xCoordinate = player.GetCell().data.gridCoordinates.x;
             playerData.yCoordinate = player.GetCell().data.gridCoordinates.y;
-            playerData.isStunned = player.IsStunned;
+            playerData.isStunned = player.isStunned;
             saveData.players[i] = playerData;
         }
         GCrown crown = GGridObjectRegistry.GetItems<GCrown>()[0];
@@ -77,6 +82,11 @@ public class GSaveManager : GSingleton<GSaveManager>
             var data = DeserializeFromJson();
             CreateGameStateFromData(data);
         }
+
+        if (currentState == EMacroStates.End)
+        {
+            DeleteSaveFile();
+        }
     }
 
     private void CreateGameStateFromData(GGameStateSaveData data)
@@ -93,7 +103,7 @@ public class GSaveManager : GSingleton<GSaveManager>
                 GPawn player = players.ElementAt(i);
                 var playerData = data.players.ElementAt(i);
 
-                player.stunTurn = playerData.isStunned ? 1 : 0;
+                if(playerData.isStunned) player.Stun();
                 GCell playerCell = GGridManager.Instance.GetCell(new Vector2Int(playerData.xCoordinate, playerData.yCoordinate));
                 if (playerCell != player.GetCell())
                 {
@@ -118,7 +128,7 @@ public class GSaveManager : GSingleton<GSaveManager>
                 GPawn pawn = PrefabUtility.InstantiatePrefab(pawnPrefab) as GPawn;
                 GCell ennemyCell = GGridManager.Instance.GetCell(new Vector2Int(ennemyData.xCoordinate, ennemyData.yCoordinate));
                 ennemyCell.SetGridObject(pawn, true);
-                pawn.stunTurn = ennemyData.isStunned ? 1 : 0;
+                if(ennemyData.isStunned) pawn.Stun();
                 pawn.SetHp(ennemyData.hp);
             }
         }
