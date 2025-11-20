@@ -5,8 +5,6 @@ public class GPunchAction : GAction
 { 
     [SerializeField]
     private int _damage = 1;
-    [SerializeField]
-    private int _stun = 1;
     float _progress = 0;
 
 
@@ -26,7 +24,7 @@ public class GPunchAction : GAction
     {
         base.Start_Action();
         targetCell.GetGridObject<GPawn>().TakeDamage(_damage);
-        targetCell.GetGridObject<GPawn>().Stun(_stun);
+        targetCell.GetGridObject<GPawn>().Stun();
         _progress = 0;
     }
 

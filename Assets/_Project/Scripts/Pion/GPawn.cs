@@ -36,7 +36,7 @@ public class GPawn : GGridObject
     public const string SpawnAnimationName = "Spawn";
     
     
-    public const string AnimParam_IsStunned = "IsStunned";
+    public const string AnimParam_isStunned = "IsStunned";
     public const string AnimParam_HasSword = "HasSword";
     public const string AnimParam_IsPreparedToCatch = "IsPrepareCatch";
     public const string AnimParam_IsPreparedToThrow = "isPrepareThrow";
@@ -61,15 +61,16 @@ public class GPawn : GGridObject
 
     [SerializeField, ReadOnly, HideInEditorMode]
     public int remainingActionToken;
-    
-    [SerializeField, ReadOnly, HideInEditorMode, FormerlySerializedAs("_stunTurn")] 
-    public int stunTurn = 0;
+
+    [field: SerializeField, ReadOnly, HideInEditorMode]
+    public bool isStunned { get; private set; } = false;
+
+    [field : SerializeField, ReadOnly, HideInEditorMode] 
+    public bool isStunnedProtected { get; private set; } = false;
     
     [field: SerializeField, HideIf("@hp == -1"), HideInEditorMode]
     public int hp { get; protected set; } = 3;
     
-    public bool IsStunned => stunTurn > 0;
-
     public bool IsAlive => !(hp == 0);
     
     
@@ -200,6 +201,22 @@ public class GPawn : GGridObject
         
         return true;
     }
+
+    public void SetHp(int newHpValue)
+    {
+        if (newHpValue <= 0)
+        {
+            Debug.LogError("Tried to set new Hp Value <= 0");
+            return;
+        }
+        else if (newHpValue > data.startHp)
+        {
+            Debug.LogError("Tried to set new Hp Value > startHp");
+            return;
+        }
+        
+        hp = newHpValue;
+    }
     
     public void TakeDamage(int damage = 1)
     {
@@ -214,19 +231,34 @@ public class GPawn : GGridObject
         } 
     }
     
-    public void Stun(int stunTurnNumber)
+    public void Stun()
     {
-        bool justGotStunned = stunTurn == 0;
-        stunTurn += stunTurnNumber;
-        if(justGotStunned)
+        if (!isStunned && !isStunnedProtected)
+        {
+            isStunned = true;
             OnStunned?.Invoke();
+        }
+    }
+
+    public void Unstun()
+    {
+        if (isStunnedProtected)
+        {
+            isStunnedProtected = false;
+        }
+        else
+        {
+            isStunnedProtected = data.isPlayer;
+            isStunned = false;
+            visuals.OnUpdateStunTurn();
+        }
     }
 
     public void Fall()
     {
         if (data.isPlayer)
         {
-            Stun(1);
+            Stun();
         }
         else
         {
@@ -259,13 +291,10 @@ public class GPawn : GGridObject
         
         if (data.isPlayer)
             visuals.OnUpdateActionsToken();
-        else if (stunTurn > 0)
-        {
-            stunTurn--;
-            visuals.OnUpdateStunTurn();
-        }
+        else 
+            Unstun();
         
-        if (stunTurn == 0)
+        if (!isStunned)
             OnUnstunned?.Invoke();
     }
 
@@ -281,10 +310,9 @@ public class GPawn : GGridObject
     
     public void OnEndTurn()
     {
-        if (stunTurn > 0 && data.isPlayer)
+        if (isStunned && data.isPlayer)
         {
-            stunTurn--;
-            visuals.OnUpdateStunTurn();
+            Unstun();
         }
     }
     
@@ -404,7 +432,10 @@ public class GPawn : GGridObject
 
     void OnDrawGizmos()
     {
-        Gizmos.DrawSphere(transform.position + Vector3.up * data.previsuHeightOffset, 0.1f);
+        if (data)
+        {
+            Gizmos.DrawSphere(transform.position + Vector3.up * data.previsuHeightOffset, 0.1f);
+        }
     }
 #endif
     

@@ -17,6 +17,9 @@ public enum EMacroStates { Start, Options, Pause, Play, End, LoadingScreen, None
 /* Responsable de la gestion globale du Jeu, de l'activation de potentiel Manager etc...*/
 public class GGameManager: GSingleton<GGameManager>
 {
+    /// <summary>
+    /// 1 - current 2 - previous
+    /// </summary>
     public event Action<EMacroStates, EMacroStates> OnChangeMacroStateEvent;
     public event Action<bool> OnPauseEvent;
     
@@ -32,6 +35,9 @@ public class GGameManager: GSingleton<GGameManager>
     [ReadOnly]
     public bool isLoadingTutorial;
 
+    [ReadOnly]
+    public bool isLoadingNewSave = true;
+    
     [SerializeField]
     public int _localizationId;
     
@@ -143,6 +149,7 @@ public class GGameManager: GSingleton<GGameManager>
         {
             case EMacroStates.Start:
                 isLoadingTutorial = false;
+                isLoadingTutorial = true;
                 _currentTutorialSceneToLoadIndex = 0;
                 PauseGameTime(true);
                 break;

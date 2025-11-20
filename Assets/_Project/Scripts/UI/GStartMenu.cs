@@ -1,10 +1,12 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 using UnityEngine.UI;
 
+[DefaultExecutionOrder(200)]
 public class GStartMenu : MonoBehaviour
 {
     [SerializeField]
-    private Button _startButton, _tutorialButton, _optionsButton, _quitMenuOpenButton, _quitButton, _cancelQuitMenuButtton;
+    private Button _startButton, _continueButton, _tutorialButton, _optionsButton, _quitMenuOpenButton, _quitButton, _cancelQuitMenuButtton;
 
     [SerializeField]
     private GameObject _gameOverValidationPanel;
@@ -14,6 +16,14 @@ public class GStartMenu : MonoBehaviour
         _startButton.onClick.AddListener(() =>
         {
             GGameManager.Instance.isLoadingTutorial = false;
+            GGameManager.Instance.isLoadingNewSave = true;
+            GGameManager.Instance.ChangeState(EMacroStates.LoadingScreen);
+        });
+        
+        _continueButton.onClick.AddListener(() =>
+        {
+            GGameManager.Instance.isLoadingTutorial = false;
+            GGameManager.Instance.isLoadingNewSave = false;
             GGameManager.Instance.ChangeState(EMacroStates.LoadingScreen);
         });
 
@@ -27,6 +37,11 @@ public class GStartMenu : MonoBehaviour
         _quitMenuOpenButton.onClick.AddListener(()=>ActivateQuitValidationMenu(true));
         _quitButton.onClick.AddListener(()=> Application.Quit());
         _cancelQuitMenuButtton.onClick.AddListener(()=>ActivateQuitValidationMenu(false));
+    }
+
+    void OnEnable()
+    {
+        _continueButton.interactable = GSaveManager.Instance.IsSaveFileCreated();
     }
 
     public void ActivateQuitValidationMenu(bool toActivate)

@@ -8,6 +8,9 @@ using UnityEngine.Serialization;
 [CreateAssetMenu(menuName = "PawnData", fileName = "Pawn Data")]
 public class GPawnData : SerializedScriptableObject
 {
+    [SerializeField]
+    public EGridObjectType gridObjectType = EGridObjectType.None;
+    
     [field : SerializeField, Min(1)]
     public int actionTokens { get; private set; }
     

@@ -71,6 +71,8 @@ public class GTurnBaseManager : GSingleton<GTurnBaseManager>
     /** Get the Current Score (Number of completed waves) */
     public int GetScore() => _waveComponent.GetWaveCount();
 
+    public void SetWaveCount(int waveCount) => _waveComponent.SetWaveCount(waveCount);
+    
     public WaveData GetCurrentWaveData() => _hasWaves ? _currentWaveData : null;
 
     public bool HasFutureSpawns() => _waveComponent.HasWave();
@@ -269,6 +271,8 @@ public class GTurnBaseManager : GSingleton<GTurnBaseManager>
         
         _currentTurnState = ETurnState.Finished;
         currentTurnController?.EndTurn();
+        
+        GSaveManager.Instance.SerializeToJson();
         
         if (currentTurnController is GPlayerController) // After Player Turn
         {

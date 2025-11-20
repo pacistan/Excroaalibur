@@ -1,4 +1,5 @@
 ﻿using Sirenix.OdinInspector;
+using Sirenix.Utilities;
 using System;
 using System.Collections.Generic;
 using UnityEditor;
@@ -50,8 +51,18 @@ public class GCellCommonData : SerializedScriptableObject
 
 
     public float maxHeight;
-    public float maxOffsetHeight;
+    public float heightStep;
     public float maxRangeOfPullingEffect;
+
+    [Button("Rebuild Scene Visuals")]
+    private void RebuildSceneVisuals()
+    {
+        GGridManager gridManager = FindFirstObjectByType<GGridManager>();
+        gridManager.grid.ForEach(cell =>
+        {
+            cell.visuals.UpdateCellVisuals();
+        });
+    }
     
     #if UNITY_EDITOR
     [OnInspectorInit]

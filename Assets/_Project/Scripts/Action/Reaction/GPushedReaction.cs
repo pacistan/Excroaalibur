@@ -17,9 +17,6 @@ public class GPushedReaction : GAction
     [SerializeField, HideIf("_DamageRelatedToPushForce"), Tooltip("Damage inflicted if we hit Something while being pushed")]
     int _damage = 1;
     
-    [SerializeField, Tooltip("Stun inflicted if we hit Something while being pushed")]
-    int _stun = 1;
-    
     [SerializeField, Tooltip("Tile types on which the pawn can be pushed")]
     ETileType[] _pushedTileType = new ETileType[] { ETileType.Normal, ETileType.Hole };
     
@@ -93,7 +90,7 @@ public class GPushedReaction : GAction
         if (_inflictDamage)
         {
             previsuContext.Set(GActionContext.DAMAGE_STRING, _damage);
-            previsuContext.Set(GActionContext.STUN_STRING, _stun);
+            previsuContext.Set(GActionContext.STUN_STRING, true);
         }
         
         return PreviewCells;
@@ -163,7 +160,6 @@ public class GPushedReaction : GAction
                     targetCell = neighbor;
                     _inflictDamage = true;
                     _damage = 0;
-                    _stun = 1;
                     break;
                 }
             }
@@ -180,7 +176,7 @@ public class GPushedReaction : GAction
         if (_inflictDamage)
         {
             linkedPawn.TakeDamage(_damage);
-            linkedPawn.Stun(_stun);
+            linkedPawn.Stun();
         }
     }
 
@@ -232,7 +228,6 @@ public class GPushedReaction : GAction
         reaction._isPushable = _isPushable;
         reaction._DamageRelatedToPushForce = _DamageRelatedToPushForce;
         reaction._damage = _damage;
-        reaction._stun = _stun;
         reaction._pushedTileType = _pushedTileType;
         reaction._previsuCurveData = _previsuCurveData;
         return reaction;
