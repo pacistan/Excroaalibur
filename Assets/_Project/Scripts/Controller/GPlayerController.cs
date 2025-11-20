@@ -491,7 +491,7 @@ public class GPlayerController : GController
         }
         
         foreach (GCell cell in previsuCell)
-            cell.visuals.isPrevisualized = true;
+            cell.visuals.StartVisualisation();
         
         context.TryGet(GActionContext.DAMAGE_STRING, out int damage);
         context.TryGet(GActionContext.STUN_STRING, out bool stun);
@@ -508,8 +508,9 @@ public class GPlayerController : GController
 
         if (previsuCell == null || previsuCell.Count <= 0) return;
         foreach (GCell cell in previsuCell)
-            cell.visuals.isPrevisualized = false;
+            cell.visuals.StopVisualisation();
         _lineRenderers.ForEach(l => l.enabled = false);
+           
     }
 
     protected override void StopTurn()

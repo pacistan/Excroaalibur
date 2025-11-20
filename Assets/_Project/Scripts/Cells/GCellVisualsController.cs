@@ -128,6 +128,7 @@ public class GCellVisualsController : MonoBehaviour
         }
         EditorUtility.SetDirty(this);
         EditorUtility.SetDirty(_cell);
+        Image image;
     }
 
     public GameObject OnCreateVisualPreset(GCellVisualPresetData brush, Quaternion rot, bool serialize = true)
@@ -321,6 +322,13 @@ public class GCellVisualsController : MonoBehaviour
     }
 
    
+
+    void Awake()
+    {
+        if (!feedbackRenderer)  return;
+        feedbackRenderer.enabled = true;
+        feedbackRenderer.material.SetFloat("_Zone", 0f);
+    }
 }
 
 #if UNITY_EDITOR

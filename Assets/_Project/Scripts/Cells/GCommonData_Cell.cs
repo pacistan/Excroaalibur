@@ -50,7 +50,7 @@ public class GCellCommonData : SerializedScriptableObject
     public float cadrillageTint3;
 
 
-    public float maxHeight;
+    public float maxOffsetHeight;
     public float heightStep;
     public float maxRangeOfPullingEffect;
 
