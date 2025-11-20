@@ -267,8 +267,10 @@ public class GCellVisualsController : MonoBehaviour
         Color color = cellCommonData.actionColorZoneData[highlightActionType];
         ShowZone(color.r, color.g, color.b);
     }
-    
-    void OnValidate()
+
+
+   
+    /*void OnValidate()
     {
         if (transform.position.y != _previousPositionY)
         {
@@ -316,7 +318,7 @@ public class GCellVisualsController : MonoBehaviour
     void OnDrawGizmos()
     {
 
-    }
+    }*/
     
     void Awake()
     {
@@ -327,7 +329,7 @@ public class GCellVisualsController : MonoBehaviour
 
 #if UNITY_EDITOR
 [CustomEditor(typeof(GCellVisualsController))]
-public class GCellVisualEditor : Editor
+public class YourClassNameEditor : Editor
 {
     private SerializedProperty _previousPositionYProp;
     private GCellVisualsController _target;
@@ -343,7 +345,6 @@ public class GCellVisualEditor : Editor
         Undo.RecordObject(_target.transform, "gridItem");
         Undo.RecordObject(_target._cell.ui.transform, "gridUiItem");
         Undo.RecordObject(_target, "gridVisualsPropertiese");
-        
         if (!Application.isPlaying && _target.transform.position.y != _target._previousPositionY)
         {
             float newHeight = _target.transform.position.y;
@@ -353,11 +354,13 @@ public class GCellVisualEditor : Editor
             
             GGridManager gridManager = FindFirstObjectByType<GGridManager>();
             
-            if (_target._isPullingNeighbors) 
-                gridManager.PropagateEffect(_target._cell, 10, (originCell, previousCell, cell, i) => gridManager.UpdateCellYPositionRelativeToNeighbor(previousCell, cell));
+            if (_target._isPullingNeighbors)
+                gridManager.PropagateEffect(_target._cell, 10, (originCell, previousCell, cell, i) => 
+                    gridManager.UpdateCellYPositionRelativeToNeighbor(previousCell, cell));
             EditorUtility.SetDirty(_target);
             Debug.Log(EditorSceneManager.MarkSceneDirty(_target.gameObject.scene));
         }
+        
     }
 
     public override void OnInspectorGUI()

@@ -225,7 +225,7 @@ public class GPawnVisualsController : SerializedMonoBehaviour
             _imgStatus.sprite = _spriteStun;
             _imgStatusContainer.SetActive(true);
             OnStunUnityEvent?.Invoke();
-            SetAnimationParameter(GPawn.AnimParam_isStunned, true);
+            SetAnimationParameter(GPawn.AnimParam_IsStunned, true);
             //TODO : Start Stun Feedbacks
         }
         else if (!_pawn.isStunned && _previousStunTurn != _pawn.isStunned)
@@ -233,7 +233,7 @@ public class GPawnVisualsController : SerializedMonoBehaviour
             List<Material> materials = _mainRenderer.materials.ToList();
             materials[_stunMaterialIndex] = _defaultMaterial;
             _mainRenderer.SetMaterials(materials);
-            SetAnimationParameter(GPawn.AnimParam_isStunned, false);
+            SetAnimationParameter(GPawn.AnimParam_IsStunned, false);
             //TODO : Start UnStun Feedbacks            
         }
 

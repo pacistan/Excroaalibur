@@ -33,7 +33,6 @@ public class GCellCommonData : SerializedScriptableObject
 
     public Dictionary<ETileHighlightType, Sprite> tileHighlightData;
     
-    // TODO : Rename Because not Accurate anymore !
     public Dictionary<EZoneActionType, Color> actionColorZoneData;
     
     public Color previsualizedColor = Color.green;
@@ -50,12 +49,11 @@ public class GCellCommonData : SerializedScriptableObject
     [SerializeField]
     public float cadrillageTint3;
 
+
     public float maxHeight;
-    public float maxOffsetHeight;
     public float heightStep;
     public float maxRangeOfPullingEffect;
 
-#if UNITY_EDITOR
     [Button("Rebuild Scene Visuals")]
     private void RebuildSceneVisuals()
     {
@@ -66,6 +64,7 @@ public class GCellCommonData : SerializedScriptableObject
         });
     }
     
+    #if UNITY_EDITOR
     [OnInspectorInit]
     public void CreateData()
     {

@@ -403,13 +403,13 @@ MonoBehaviour:
     - Name: 
       Entry: 8
       Data: 
-    - Name: actionColorZoneData
+    - Name: tileHighlightActionData
       Entry: 7
-      Data: 8|System.Collections.Generic.Dictionary`2[[EZoneActionType, Assembly-CSharp],[UnityEngine.Color,
-        UnityEngine.CoreModule]], mscorlib
+      Data: 8|System.Collections.Generic.Dictionary`2[[ETileHighlightActionType,
+        Assembly-CSharp],[UnityEngine.Color, UnityEngine.CoreModule]], mscorlib
     - Name: comparer
       Entry: 7
-      Data: 9|System.Collections.Generic.EnumEqualityComparer`1[[EZoneActionType,
+      Data: 9|System.Collections.Generic.EnumEqualityComparer`1[[ETileHighlightActionType,
         Assembly-CSharp]], mscorlib
     - Name: 
       Entry: 12
@@ -434,13 +434,13 @@ MonoBehaviour:
       Data: UnityEngine.Color, UnityEngine.CoreModule
     - Name: 
       Entry: 4
-      Data: 1
+      Data: 0.16829811
     - Name: 
       Entry: 4
-      Data: 1
+      Data: 0.16540584
     - Name: 
       Entry: 4
-      Data: 1
+      Data: 0.5566038
     - Name: 
       Entry: 4
       Data: 1
@@ -461,13 +461,13 @@ MonoBehaviour:
       Data: UnityEngine.Color, UnityEngine.CoreModule
     - Name: 
       Entry: 4
-      Data: 0
+      Data: 0.462931633
     - Name: 
       Entry: 4
-      Data: 0.0802474
+      Data: 0.563699663
     - Name: 
       Entry: 4
-      Data: 1
+      Data: 0.9716981
     - Name: 
       Entry: 4
       Data: 1
@@ -488,10 +488,10 @@ MonoBehaviour:
       Data: UnityEngine.Color, UnityEngine.CoreModule
     - Name: 
       Entry: 4
-      Data: 0.73146677
+      Data: 0.817338
     - Name: 
       Entry: 4
-      Data: 0
+      Data: 0.4292453
     - Name: 
       Entry: 4
       Data: 1
@@ -515,13 +515,13 @@ MonoBehaviour:
       Data: UnityEngine.Color, UnityEngine.CoreModule
     - Name: 
       Entry: 4
-      Data: 0.9676409
+      Data: 0.9528302
     - Name: 
       Entry: 4
-      Data: 1
+      Data: 0.9462397
     - Name: 
       Entry: 4
-      Data: 0
+      Data: 0.4000089
     - Name: 
       Entry: 4
       Data: 1
@@ -542,13 +542,13 @@ MonoBehaviour:
       Data: UnityEngine.Color, UnityEngine.CoreModule
     - Name: 
       Entry: 4
-      Data: 1
+      Data: 0.8584906
     - Name: 
       Entry: 4
-      Data: 0
+      Data: 0.2956123
     - Name: 
       Entry: 4
-      Data: 0
+      Data: 0.2956123
     - Name: 
       Entry: 4
       Data: 1
@@ -569,6 +569,5 @@ MonoBehaviour:
   cadrillageTint2: 0.02
   cadrillageTint3: 0.04
   maxHeight: 4
-  maxOffsetHeight: 0
   heightStep: 0.3
   maxRangeOfPullingEffect: 4

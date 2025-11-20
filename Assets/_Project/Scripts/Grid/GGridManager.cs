@@ -379,17 +379,3 @@ public static class TransformExtensions
         transform.localPosition = temp;
     }
 }
-
-#if UNITY_EDITOR
-public class SceneReloader
-{
-    [MenuItem("Tools/Reload Current Scene %#r")]  // Ctrl/Cmd + Shift + R
-    private static void ReloadScene()
-    {
-        var scene = EditorSceneManager.GetActiveScene();
-        EditorSceneManager.MarkSceneDirty(scene);
-        EditorSceneManager.SaveOpenScenes();
-        EditorSceneManager.OpenScene(scene.path);
-    }
-}
-#endif
