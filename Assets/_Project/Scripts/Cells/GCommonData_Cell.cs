@@ -64,7 +64,7 @@ public class GCellCommonData : SerializedScriptableObject
             cell.visuals.UpdateCellVisuals();
         });
     }
-
+    
     [OnInspectorInit]
     public void CreateData()
     {

@@ -286,7 +286,6 @@ public class GPlayerController : GController
             }
             
             // Handle Action Highlight on Hover
-
             if (cellPawn && _hoverCell != newCell && !_selectedPlayer && !(cellPawn.data.isPlayer && (cellPawn.remainingActionToken == 0 || cellPawn.isStunned) ))
             {
                 var tempAvailableActions = GetAvailableActions(cellPawn);
