@@ -3,6 +3,8 @@ using Sirenix.Utilities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using UnityEditor;
+using UnityEditor.SceneManagement;
 using UnityEngine;
 using UnityEngine.Serialization;
 
@@ -27,6 +29,9 @@ public class GGridManager : GSingleton<GGridManager>
     [field: SerializeField]
     public Transform painterParent { get; private set; }
 
+    [SerializeField]
+    private GCellCommonData _commonData;
+    
     public GCell GetCell(GHexCoordinate coordinate)
     {
         int id = coordinate.X + coordinate.Z *  _currentGridSize.y + coordinate.Z / 2;
@@ -280,6 +285,57 @@ public class GGridManager : GSingleton<GGridManager>
         return cellsOfType;
     }
 
+    /// <summary>
+    /// Propagate an effect <see cref="effect"/> on tiles around <see cref="originCell"/> on range <see cref="range"/>
+    /// </summary>
+    /// <param name="range">
+    /// Number of rows around <see cref="originCell"/> of cells affected by <see cref="effect"/>/></param>
+    /// <param name="effect">
+    /// Effect applied on rows around <see cref="originCell"/>.
+    /// 1 : Origin Cell, 2 : Previous Cell, 3 : Current Cell, 4 : Range
+    /// </param>
+    public void PropagateEffect(GCell originCell, int range, Action<GCell, GCell, GCell, int> effect)
+    {
+#if UNITY_EDITOR
+        if (!Application.isPlaying)
+        {
+            Undo.RecordObjects(grid.Select(a=>a.transform).ToArray(), "gridItems");
+            Undo.RecordObjects(grid.Select(a=>a.ui).ToArray(), "gridUiItems");
+            Undo.RecordObjects(grid.Select(a=>a.visuals).ToArray(), "gridUiItems");
+        }
+#endif
+        HashSet<GCell> visited = new HashSet<GCell>() { originCell };
+        List<GCell> currentLayer = new List<GCell>() { originCell };
+        for (int i = 0; i < range; i++)
+        {
+            var nextLayer = new List<GCell>();
+            foreach (var neighbor in currentLayer)
+            {
+                foreach (var cell in neighbor.neighbors)
+                {
+                    if (cell && !visited.Contains(cell))
+                    {
+                        visited.Add(cell);
+                        nextLayer.Add(cell);
+
+                        effect.Invoke(originCell, neighbor, cell, i + 1);
+                    }
+                }
+            }
+            currentLayer = nextLayer;
+        }
+    }
+    
+    public void UpdateCellYPositionRelativeToNeighbor(GCell previousCell, GCell currentCell)
+    {
+        float diff = currentCell.transform.position.y - previousCell.transform.position.y;
+        if (Mathf.Abs(diff) > _commonData.heightStep)
+        {
+            float newHeight = previousCell.transform.position.y + _commonData.heightStep * diff / Mathf.Abs(diff);
+            currentCell.visuals.UpdateHeight(newHeight);
+        }
+    }
+    
     void Start()
     {
         //stepMap = new int[_grid.Length];
@@ -293,4 +349,42 @@ public class GGridManager : GSingleton<GGridManager>
     }
 }
 
+public static class TransformExtensions
+{
+    public enum ETransformAxis {X, Y, Z}
+    public static void SetAxisPosition(this Transform transform, float value, ETransformAxis axis)
+    {
+        Vector3 temp = transform.position;
+        switch (axis)
+        {
+            case ETransformAxis.X: temp.x = value; break;
+            case ETransformAxis.Y: temp.y = value; break;
+            case ETransformAxis.Z: temp.z = value; break;
+        }
+        transform.position = temp;
+    }
+    
+    public static void SetAxisLocalPosition(this Transform transform, float value, ETransformAxis axis)
+    {
+        Vector3 temp = transform.localPosition;
+        switch (axis)
+        {
+            case ETransformAxis.X: temp.x = value; break;
+            case ETransformAxis.Y: temp.y = value; break;
+            case ETransformAxis.Z: temp.z = value; break;
+        }
+        transform.localPosition = temp;
+    }
+}
 
+public class SceneReloader
+{
+    [MenuItem("Tools/Reload Current Scene %#r")]  // Ctrl/Cmd + Shift + R
+    private static void ReloadScene()
+    {
+        var scene = EditorSceneManager.GetActiveScene();
+        EditorSceneManager.MarkSceneDirty(scene);
+        EditorSceneManager.SaveOpenScenes();
+        EditorSceneManager.OpenScene(scene.path);
+    }
+}

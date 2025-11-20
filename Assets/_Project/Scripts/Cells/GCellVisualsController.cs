@@ -63,8 +63,8 @@ public class GCellVisualsController : MonoBehaviour
     [SerializeField, HideInInspector]
     public float _previousPositionY;
 
-    [SerializeField, ReadOnly, Tooltip("Work In Progress")]
-    bool _isPullingNeighbors;
+    [field : SerializeField, Tooltip("Work In Progress")]
+    public bool _isPullingNeighbors { get; private set; }
 
     [SerializeField, ReadOnly]
     int _cadrillageNumber;
@@ -86,9 +86,9 @@ public class GCellVisualsController : MonoBehaviour
             _meshFilter.sharedMesh = mesh;
             
             // TODO : Move to local position 
-            Vector3 position = _meshFilter.transform.parent.position;
-            position.y = tileTypeData.heightOffset;
-            _meshFilter.transform.parent.position = position;
+            //Vector3 position = _meshFilter.transform.parent.localPosition;
+            //position.y = tileTypeData.heightOffset;
+            //_meshFilter.transform.parent.localPosition = position;
         }
         
         // Object Type
@@ -116,10 +116,10 @@ public class GCellVisualsController : MonoBehaviour
             //_text.color = tileTypeData.textColor;
             _highlight.color = tileTypeData.highlightColor;
             
-            var rectTransform = _highlight.rectTransform.parent.GetComponent<RectTransform>();
-            Vector3 position = rectTransform.position;
-            position.y = tileTypeData.heightOffset;
-            rectTransform.position = position;
+            //var rectTransform = _highlight.rectTransform.parent.GetComponent<RectTransform>();
+            //Vector3 position = rectTransform.position;
+            //position.y = tileTypeData.heightOffset;
+            //rectTransform.position = position;
         }
         EditorUtility.SetDirty(this);
         EditorUtility.SetDirty(_cell);
@@ -178,6 +178,18 @@ public class GCellVisualsController : MonoBehaviour
         _highlight.rectTransform.localScale = new Vector3(scale, scale, scale);
     }
 
+    public void UpdateHeight(float newHeight)
+    {
+        float uiDiff = newHeight - _previousPositionY;
+            
+        transform.SetAxisPosition(newHeight, TransformExtensions.ETransformAxis.Y);
+        _cell.ui.SetAxisPosition(_cell.ui.transform.position.y + uiDiff, TransformExtensions.ETransformAxis.Y);
+        _previousPositionY = transform.position.y;
+        //EditorUtility.SetDirty(this);
+        /*EditorUtility.SetDirty(transform);
+        EditorUtility.SetDirty(_cell.ui.transform);*/
+    }
+    
     void LateUpdate()
     {
         UpdateHighlightSprite();
@@ -198,6 +210,11 @@ public class GCellVisualsController : MonoBehaviour
     void Start()
     {
         SetHighlightActionType(ETileHighlightActionType.Normal);
+        DoCadrillageOfGrid();
+    }
+
+    private void DoCadrillageOfGrid()
+    {
         int x = _cell.data.gridCoordinates.x;
         int y = _cell.data.gridCoordinates.y;
         
@@ -248,111 +265,17 @@ public class GCellVisualsController : MonoBehaviour
         ChangeSprite(_currentHighlightType);
     }
     
-    void OnValidate()
-    {
-        if (transform.position.y != _previousPositionY)
-        {
-            Vector3 pos = transform.position;
-            pos.y = Mathf.Clamp(pos.y, -cellCommonData.maxHeight, cellCommonData.maxHeight);
-            transform.position = pos;
-        
-            float diff = _previousPositionY - transform.position.y;
-            Vector3 uiPos = _cell.ui.position;
-            uiPos.y -= diff;
-            _cell.ui.position = uiPos;
-        
-            _previousPositionY = transform.position.y;
-        }       
-    }
-
-
-    
-    /*
     void OnDrawGizmos()
     {
-        if (transform.position.y != _previousPositionY)
-        {
-            Vector3 pos = transform.position;
-            pos.y = Mathf.Min(pos.y, cellCommonData.maxHeight);
-            pos.y = Mathf.Max(pos.y, -cellCommonData.maxHeight);
-            transform.position = pos;
-            
-            float diff = _previousPositionY - transform.position.y;
-            Vector3 uiPos = _cell.ui.position;
-            uiPos.y -= diff;
-            _cell.ui.position = uiPos;
-            
-            _previousPositionY = transform.position.y;
-            
-#if UNITY_EDITOR
-            EditorUtility.SetDirty(this);
-            foreach (Transform child in transform)
-            {
-                
-                EditorUtility.SetDirty(child.gameObject);
-            }
-            EditorUtility.SetDirty(_cell.ui.gameObject);       
-            EditorSceneManager.MarkSceneDirty(gameObject.scene);
-            
-#endif
-            return;
-            
-            if (!_isPullingNeighbors)
-            {
-                GGridManager gridManager = GGridManager.Instance ?? FindFirstObjectByType<GGridManager>(); 
-                gridManager.grid.ForEach(a => a.visuals._previousPositionY = a.transform.position.y);
-                _previousPositionY = transform.position.y;
-                return;
-            }
-            int i = 0;
-            foreach (var neighbor in _cell.neighbors)
-            {
-                if(!neighbor || neighbor.data.tileType != ETileType.Normal) continue;
-                if (Mathf.Abs(transform.position.y - neighbor.transform.position.y) > cellCommonData.maxOffsetHeight)
-                {
-                    neighbor.visuals.UpdateYPosGizmo(transform.position.y);
-                }
-            }
-        }
+
     }
 
-    bool isCheckedThisFrame;
-    */
-    
-    public void UpdateYPosGizmo(float neighborHeight)
-    {
-        float diff = neighborHeight - transform.position.y;
-        float newHeight = transform.position.y + Mathf.Min(Mathf.Abs(diff), cellCommonData.maxOffsetHeight) * diff / Mathf.Abs(diff);
-        Vector3 pos = transform.position;
-        pos.y = newHeight;
-        transform.position = pos;
-        
-        float diffe = _previousPositionY - transform.position.y;
-        Vector3 uiPos = _cell.ui.position;
-        uiPos.y -= diffe;
-        _cell.ui.position = uiPos;
-
-        
-        _previousPositionY = transform.position.y;
-        
-        foreach (var neighbor in _cell.neighbors)
-        {
-            
-            if (!neighbor || neighbor.data.tileType != ETileType.Normal) continue;
-            if (Mathf.Abs(transform.position.y - neighbor.transform.position.y) > cellCommonData.maxOffsetHeight)
-            {
-                neighbor.visuals.UpdateYPosGizmo(transform.position.y);
-            }
-        }
-#if UNITY_EDITOR
-        EditorUtility.SetDirty(gameObject);
-#endif
-    }
+   
 }
 
 #if UNITY_EDITOR
 [CustomEditor(typeof(GCellVisualsController))]
-public class YourClassNameEditor : Editor
+public class GCellVisualEditor : Editor
 {
     private SerializedProperty _previousPositionYProp;
     private GCellVisualsController _target;
@@ -363,6 +286,29 @@ public class YourClassNameEditor : Editor
         _previousPositionYProp = serializedObject.FindProperty("_previousPositionY");
     }
 
+    void OnSceneGUI()
+    {
+        Undo.RecordObject(_target.transform, "gridItem");
+        Undo.RecordObject(_target._cell.ui.transform, "gridUiItem");
+        Undo.RecordObject(_target, "gridVisualsPropertiese");
+        if (!Application.isPlaying && _target.transform.position.y != _target._previousPositionY)
+        {
+            float newHeight = _target.transform.position.y;
+            newHeight = Mathf.Min(newHeight, _target.cellCommonData.maxHeight);
+            newHeight = Mathf.Max(newHeight, -_target.cellCommonData.maxHeight);
+            _target.UpdateHeight(newHeight);
+            
+            GGridManager gridManager = FindFirstObjectByType<GGridManager>();
+            
+            if (_target._isPullingNeighbors)
+                gridManager.PropagateEffect(_target._cell, 10, (originCell, previousCell, cell, i) => 
+                    gridManager.UpdateCellYPositionRelativeToNeighbor(previousCell, cell));
+            EditorUtility.SetDirty(_target);
+            Debug.Log(EditorSceneManager.MarkSceneDirty(_target.gameObject.scene));
+        }
+        
+    }
+
     public override void OnInspectorGUI()
     {
         DrawDefaultInspector();
@@ -371,7 +317,7 @@ public class YourClassNameEditor : Editor
 
         if (_target.transform.position.y != _previousPositionYProp.floatValue)
         {
-            ApplyPositionClamping();
+           // ApplyPositionClamping();
         }
     }
 

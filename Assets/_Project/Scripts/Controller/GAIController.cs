@@ -15,7 +15,7 @@ public class GAIController : GController
     
     public override void StartTurn()
     {
-        bool isStunned = pawn.IsStunned;
+        bool isStunned = pawn.isStunned;
         base.StartTurn();
         if (isStunned)
         {

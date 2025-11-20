@@ -96,7 +96,7 @@ public class GPawnVisualsController : SerializedMonoBehaviour
     Material _defaultMaterial;
     
     int _previousHpNumber;
-    int _previousStunTurn;
+    bool _previousStunTurn;
 
     void Start()
     {
@@ -203,7 +203,7 @@ public class GPawnVisualsController : SerializedMonoBehaviour
     
     public void OnUpdateStunTurn()
     {
-        if (_pawn.IsStunned && _previousStunTurn != _pawn.stunTurn)
+        if (_pawn.isStunned && _previousStunTurn != _pawn.isStunned)
         {
             List<Material> materials = _mainRenderer.materials.ToList();
             materials[_stunMaterialIndex] = _stunnedMaterial;
@@ -211,27 +211,27 @@ public class GPawnVisualsController : SerializedMonoBehaviour
             _imgStatus.sprite = _spriteStun;
             _imgStatus.enabled = true;
             OnStunUnityEvent?.Invoke();
-            SetAnimationParameter(GPawn.AnimParam_IsStunned, true);
+            SetAnimationParameter(GPawn.AnimParam_isStunned, true);
             //TODO : Start Stun Feedbacks
         }
-        else if (!_pawn.IsStunned && _previousStunTurn != _pawn.stunTurn)
+        else if (!_pawn.isStunned && _previousStunTurn != _pawn.isStunned)
         {
             List<Material> materials = _mainRenderer.materials.ToList();
             materials[_stunMaterialIndex] = _defaultMaterial;
             _mainRenderer.SetMaterials(materials);
             _imgStatus.sprite = _spriteStun;
             _imgStatus.enabled = false;
-            SetAnimationParameter(GPawn.AnimParam_IsStunned, false);
+            SetAnimationParameter(GPawn.AnimParam_isStunned, false);
             //TODO : Start UnStun Feedbacks            
         }
         
-        _previousStunTurn = _pawn.stunTurn;
+        _previousStunTurn = _pawn.isStunned;
     }
 
-    public void OnPrevisualisation(int damage, int stunTurns)
+    public void OnPrevisualisation(int damage, bool isStun)
     {
         if (_pawn is GAltar) return;
-        int tempStun = _pawn.stunTurn + stunTurns;
+        bool tempStun = (_pawn.isStunned || isStun) && !_pawn.isStunnedProtected;
         bool isDead = false;
         if (!_pawn.data.isPlayer)
         {
@@ -249,7 +249,7 @@ public class GPawnVisualsController : SerializedMonoBehaviour
                 isDead = true;
             }
         }
-        if (tempStun > 0 && !isDead)
+        if (tempStun && !isDead)
         {
             _imgStatus.sprite = _spriteStun;
             _imgStatus.enabled = true;
@@ -265,7 +265,7 @@ public class GPawnVisualsController : SerializedMonoBehaviour
             _txtCurrentHp.text = $"{_pawn.hp}";
             _txtCurrentHp.color = _txtHpNormalColor;
         }
-        if (_pawn.stunTurn > 0)
+        if (_pawn.isStunned)
         {
             _imgStatus.sprite = _spriteStun;
             _imgStatus.enabled = true;

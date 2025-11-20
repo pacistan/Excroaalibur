@@ -28,6 +28,9 @@ public class GGameOverMenu : MonoBehaviour
     [SerializeField, BoxGroup("Leaderboard")]
     Button _newHighscoreButton;
 
+    [SerializeField, BoxGroup("Leaderboard")]
+    int _characterLimitForProfilName = 10;
+    
     GLeaderboardProfilEntry[] _profils;
     
     public void OnPanelOpen()
@@ -54,7 +57,8 @@ public class GGameOverMenu : MonoBehaviour
             {
                 _profils[i].gameObject.SetActive(true);
                 _profils[i].rankTxt.text = entries[i].Rank.ToString();
-                _profils[i].usernameTxt.text = entries[i].Username;
+                string userName = entries[i].Username.Substring(0, _characterLimitForProfilName);
+                _profils[i].usernameTxt.text = userName;
                 _profils[i].waveNbrTxt.text = entries[i].Score.ToString();
             }
         });
@@ -72,11 +76,10 @@ public class GGameOverMenu : MonoBehaviour
 
     private void Start()
     {
-
-        
         _replayButton.onClick.AddListener(() => GGameManager.Instance.ChangeState(EMacroStates.LoadingScreen));
         _mainMenuButton.onClick.AddListener(() => GGameManager.Instance.ChangeState(EMacroStates.Start));
         _newHighscoreButton.onClick.AddListener(UploadEntry);
+        _newHighscoreInputField.characterLimit = _characterLimitForProfilName;
     }
 
 }
