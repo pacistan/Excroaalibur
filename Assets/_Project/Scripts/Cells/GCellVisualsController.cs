@@ -157,6 +157,26 @@ public class GCellVisualsController : MonoBehaviour
         _visualPresetInstances.Clear();
     }
 #endif
+
+    public void StartVisualisation()
+    {
+        isPrevisualized = true;
+    }
+    
+    public void StopVisualisation()
+    {
+        isPrevisualized = false;
+    }
+    
+    public void ShowZone()
+    {
+        feedbackRenderer?.material?.SetFloat("_Zone", 1f);
+    }
+    
+    public void HideZone()
+    {
+        feedbackRenderer?.material?.SetFloat("_Zone", 0f);
+    }
     
     public void UpdateCellDebugNum(string newDebugText)
     {
@@ -261,10 +281,12 @@ public class GCellVisualsController : MonoBehaviour
         if (highlightActionType == ETileHighlightActionType.Normal)
         {
             color = cellCommonData.tileTypeData[_cell.data.tileType].highlightColor;
+            HideZone(); // TODO : move maybe ?
         }
         else
         {
             color = cellCommonData.tileHighlightActionData[highlightActionType];
+            ShowZone();
         }
 
         _highlight.color = color;

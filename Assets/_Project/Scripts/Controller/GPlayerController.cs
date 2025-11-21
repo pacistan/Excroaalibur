@@ -128,6 +128,7 @@ public class GPlayerController : GController
         foreach (var coordinate in _validCells)
         {
             GCell cell = GGridManager.Instance.GetCell(coordinate);
+            
             ETileHighlightActionType highlightActionType = _selectedAction.linkedPawn.data.isPlayer
                 ? _selectedAction.GetHighlightActionType()
                 : ETileHighlightActionType.EnnemyAction;
