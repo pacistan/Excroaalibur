@@ -3,10 +3,13 @@ using Sirenix.Utilities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using UnityEditor;
-using UnityEditor.SceneManagement;
 using UnityEngine;
 using UnityEngine.Serialization;
+
+#if UNITY_EDITOR
+using UnityEditor;
+using UnityEditor.SceneManagement;
+#endif
 
 public class GGridManager : GSingleton<GGridManager>
 {
@@ -377,6 +380,7 @@ public static class TransformExtensions
     }
 }
 
+#if UNITY_EDITOR
 public class SceneReloader
 {
     [MenuItem("Tools/Reload Current Scene %#r")]  // Ctrl/Cmd + Shift + R
@@ -388,3 +392,4 @@ public class SceneReloader
         EditorSceneManager.OpenScene(scene.path);
     }
 }
+#endif

@@ -1,8 +1,8 @@
 using Sirenix.Utilities;
 using System.Linq;
 using UnityEngine;
-using UnityEngine.Windows;
 using System;
+using System.IO;
 using UnityEditor;
 
 [DefaultExecutionOrder(100)]
@@ -21,7 +21,7 @@ public class GSaveManager : GSingleton<GSaveManager>
     {
         string path = Application.streamingAssetsPath + "/" + _saveFileName + ".json";
         string jsonData = JsonUtility.ToJson(GenerateSaveData(), false);
-        System.IO.File.WriteAllText(path, jsonData);
+        File.WriteAllText(path, jsonData);
     }
 
     public void DeleteSaveFile()
@@ -31,7 +31,7 @@ public class GSaveManager : GSingleton<GSaveManager>
     
     private GGameStateSaveData DeserializeFromJson()
     {
-        string jsonData = System.IO.File.ReadAllText(Application.streamingAssetsPath + "/" + _saveFileName + ".json");
+        string jsonData = File.ReadAllText(Application.streamingAssetsPath + "/" + _saveFileName + ".json");
         return JsonUtility.FromJson<GGameStateSaveData>(jsonData);
     }
 
@@ -94,8 +94,6 @@ public class GSaveManager : GSingleton<GSaveManager>
         GCrown crown = GGridObjectRegistry.GetItems<GCrown>()[0];
         GPawn[] players = GGridObjectRegistry.GetItemsByPredicate<GPawn>(pawn => pawn.data.isPlayer).ToArray();
 
-
-
         // Player Stuff
         {
             for (var i = 0; i < players.Length; i++)
@@ -125,7 +123,11 @@ public class GSaveManager : GSingleton<GSaveManager>
                     Debug.LogError($"Could not find pawn for type {ennemyData.ennemyType}");
                     continue;
                 }
-                GPawn pawn = PrefabUtility.InstantiatePrefab(pawnPrefab) as GPawn;
+                #if UNITY_EDITOR
+                    GPawn pawn = PrefabUtility.InstantiatePrefab(pawnPrefab) as GPawn; 
+                #else
+                    GPawn pawn = Instantiate(pawnPrefab);
+                #endif
                 GCell ennemyCell = GGridManager.Instance.GetCell(new Vector2Int(ennemyData.xCoordinate, ennemyData.yCoordinate));
                 ennemyCell.SetGridObject(pawn, true);
                 if(ennemyData.isStunned) pawn.Stun();
