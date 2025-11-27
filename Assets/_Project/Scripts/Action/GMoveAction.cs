@@ -225,7 +225,7 @@ public class GMoveAction : GAction
         return validCells = newValidCells.ToArray();
     }
 
-    public override ETileHighlightActionType GetHighlightActionType() => ETileHighlightActionType.Move;
+    public override EZoneActionType GetHighlightActionType() => EZoneActionType.Move;
 
     public override GAction CloneAction()
     {

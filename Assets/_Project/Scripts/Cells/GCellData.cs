@@ -7,8 +7,7 @@ using static GCellVisualsController;
     public enum ETileType { Normal, Wall, Hole, Spawner}
     public enum EGridObjectType { None, Sentry, PlayerPawn, Altar, Brawler, Speedy, Crown }
     public enum ETileHighlightType { CellBase, CellHover, CellSelect  }
-
-    public enum ETileHighlightActionType { Normal, Move, Push, Throw, EnnemyAction }
+    public enum EZoneActionType { Default, Move, Push, Throw, EnnemyAction }
 
 [System.Serializable]
 public struct GCellData

@@ -327,7 +327,7 @@ public class GThrowAction : GAction
         return validCells = newValidCells.ToArray();
     }
 
-    public override ETileHighlightActionType GetHighlightActionType() => ETileHighlightActionType.Throw;
+    public override EZoneActionType GetHighlightActionType() => EZoneActionType.Throw;
 
     public override GAction CloneAction()
     {

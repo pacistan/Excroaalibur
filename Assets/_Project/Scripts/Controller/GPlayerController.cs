@@ -13,8 +13,6 @@ using UnityEngine.UI;
 
 public class GPlayerController : GController
 {
-    //public event Action<GPawn> SelectedPlayerChanged;
-    
     [SerializeField, FoldoutGroup("Events"), Tooltip("Event triggered when a player is selected.")]
     private UnityEvent OnPawnSelected;
     
@@ -95,7 +93,7 @@ public class GPlayerController : GController
     public void SelectAction(GAction action)
     {
         if (_selectedAction == action) return;
-        ResetHighlight();
+        ResetActionZone();
         
         if (_selectedAction != null) 
             _selectedAction.OnUnselectedAction();
@@ -113,7 +111,7 @@ public class GPlayerController : GController
         
         if (_selectedAction == null) return;
         _selectedAction.OnSelectedAction();
-        ShowHighlight();
+        SetActionZone();
     }
     
     public void SelectAction(int id)
@@ -123,25 +121,23 @@ public class GPlayerController : GController
         SelectAction(availableActions[id]);
     }
 
-    private void ShowHighlight()
+    private void SetActionZone()
     {
         foreach (var coordinate in _validCells)
         {
             GCell cell = GGridManager.Instance.GetCell(coordinate);
             
-            ETileHighlightActionType highlightActionType = _selectedAction.linkedPawn.data.isPlayer
-                ? _selectedAction.GetHighlightActionType()
-                : ETileHighlightActionType.EnnemyAction;
-            cell.visuals.SetHighlightActionType(highlightActionType);
+            EZoneActionType highlightActionType = _selectedAction.linkedPawn.data.isPlayer ? _selectedAction.GetHighlightActionType() : EZoneActionType.EnnemyAction;
+            cell.visuals.SetActionZone(highlightActionType);
         }
     }
 
-    private void ResetHighlight()
+    private void ResetActionZone()
     {
         foreach (var coordinate in _validCells)
         {
             GCell cell = GGridManager.Instance.GetCell(coordinate);
-            cell.visuals.SetHighlightActionType(ETileHighlightActionType.Normal);
+            cell.visuals.SetActionZone(EZoneActionType.Default);
         }
     }
 
@@ -351,7 +347,7 @@ public class GPlayerController : GController
             
             if (_selectedPlayer && _selectedAction.IsValidCell(_targetCell.hexCoordinates) && _selectedPlayer.remainingActionToken > 0)
             {
-                ResetHighlight();
+                ResetActionZone();
                 DisablePrevisualisation();
                 StartAction();
                 SetSelectedPlayer(null);
@@ -458,7 +454,7 @@ public class GPlayerController : GController
             bool isTurnOver = true;
             pawns.ForEach(p =>
             {
-                if (p.remainingActionToken > 0 && !p.IsStunned) isTurnOver = false;
+                if (p.remainingActionToken > 0 && !p.isStunned) isTurnOver = false;
             });
 
             if (isTurnOver)

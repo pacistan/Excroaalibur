@@ -96,7 +96,7 @@ public abstract class GAction
         OnActionFinished += inOnActionFinished;
     }
 
-    public abstract ETileHighlightActionType GetHighlightActionType();
+    public abstract EZoneActionType GetHighlightActionType();
     
     /// <summary>
     /// Create a new instance of the action with the same parameters, Override this for Add Params

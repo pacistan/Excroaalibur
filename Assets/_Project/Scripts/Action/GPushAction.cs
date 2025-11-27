@@ -164,7 +164,7 @@ public class GPushAction : GAction
         return validCells = newValidCells.ToArray();
     }
 
-    public override ETileHighlightActionType GetHighlightActionType() => ETileHighlightActionType.Push;
+    public override EZoneActionType GetHighlightActionType() => EZoneActionType.Push;
 
     public override GAction CloneAction()
     {

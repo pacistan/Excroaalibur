@@ -60,7 +60,7 @@ public class GCellVisualsController : MonoBehaviour
     
     [FormerlySerializedAs("_currentactionHighlightActionType")]
     [SerializeField, HideInInspector, ReadOnly]
-    public ETileHighlightActionType _currentHighlightActionType;
+    public EZoneActionType _currentHighlightActionType;
 
     [SerializeField, HideInInspector, ReadOnly]
     public ETileHighlightType _currentHighlightType = ETileHighlightType.CellSelect;
@@ -167,6 +167,7 @@ public class GCellVisualsController : MonoBehaviour
         isPrevisualized = false;
     }
     
+    /** Set the Render With the Good Color So that the Decal Can Draw Action Zone **/
     public void ShowZone(float red, float green, float blue)
     {
         feedbackRenderer?.material?.SetFloat("_red", red);
@@ -174,6 +175,7 @@ public class GCellVisualsController : MonoBehaviour
         feedbackRenderer?.material?.SetFloat("_blue", blue);
     }
     
+    /** Set the rendere Color to black **/
     public void HideZone()
     {
         feedbackRenderer?.material?.SetFloat("_red", 0f);
@@ -181,16 +183,16 @@ public class GCellVisualsController : MonoBehaviour
         feedbackRenderer?.material?.SetFloat("_blue", 0f);
     }
     
+    // TODO : Remove if no use ?
     public void UpdateCellDebugNum(string newDebugText)
     {
         //_text.text = newDebugText;
     }
-
     
     public void ChangeSprite(ETileHighlightType highlightType)
     {
         var highlightSprite = cellCommonData.tileHighlightData[highlightType];
-        if (highlightSprite && (isHovered || isSelected || _currentHighlightActionType != ETileHighlightActionType.Normal))
+        if (highlightSprite && (isHovered || isSelected || _currentHighlightActionType != EZoneActionType.Default))
         {
             _highlight.enabled = true; 
             _highlight.sprite = cellCommonData.tileHighlightData[highlightType];
@@ -215,31 +217,15 @@ public class GCellVisualsController : MonoBehaviour
         transform.SetAxisPosition(newHeight, TransformExtensions.ETransformAxis.Y);
         _cell.ui.SetAxisPosition(_cell.ui.transform.position.y + uiDiff, TransformExtensions.ETransformAxis.Y);
         _previousPositionY = transform.position.y;
-        //EditorUtility.SetDirty(this);
-        /*EditorUtility.SetDirty(transform);
-        EditorUtility.SetDirty(_cell.ui.transform);*/
     }
     
     void LateUpdate()
     {
-        UpdateHighlightSprite();
-        if (_wasPrevisualized != isPrevisualized)
-        {
-            _wasPrevisualized = isPrevisualized;
-            if (isPrevisualized)
-            {
-                _highlight.color = cellCommonData.previsualizedColor;
-            }
-            else
-            {
-                SetHighlightActionType(_currentHighlightActionType);
-            }
-        }
+        UpdateHighlight();
     }
 
     void Start()
     {
-        SetHighlightActionType(ETileHighlightActionType.Normal);
         DoCadrillageOfGrid();
     }
 
@@ -250,9 +236,6 @@ public class GCellVisualsController : MonoBehaviour
         
         _cadrillageNumber = 1 + (((x % 3) + 1 + (y % 2) * 2) % 3);
         
-        //_cell.ui.GetComponentInChildren<TextMeshProUGUI>().text = _cadrillageNumber.ToString();
-        //_cell.ui.GetComponentInChildren<TextMeshProUGUI>().enabled = true;
-        
         Color color = _meshRenderer.material.color;
         Color.RGBToHSV(color, out float h, out float s, out float v);
         float tint = _cadrillageNumber == 1 ? cellCommonData.cadrillageTint1 : _cadrillageNumber == 2 ? cellCommonData.cadrillageTint2 : cellCommonData.cadrillageTint3;
@@ -261,12 +244,9 @@ public class GCellVisualsController : MonoBehaviour
         _meshRenderer.material.color = color;
     }
 
-    private void UpdateHighlightSprite()
+    private void UpdateHighlight()
     {
-        ETileHighlightType newHighlightType = ETileHighlightType.CellBase;
-
-        newHighlightType = isSelected ? ETileHighlightType.CellSelect :
-            isHovered ? ETileHighlightType.CellHover : ETileHighlightType.CellBase;
+        ETileHighlightType newHighlightType = isSelected ? ETileHighlightType.CellSelect : isHovered ? ETileHighlightType.CellHover : ETileHighlightType.CellBase;
         
         if (newHighlightType != _currentHighlightType)
         {
@@ -275,26 +255,17 @@ public class GCellVisualsController : MonoBehaviour
         
         _currentHighlightType = newHighlightType;
     }
-
-    public void SetHighlightActionType(ETileHighlightActionType highlightActionType)
+    
+    public void SetActionZone(EZoneActionType highlightActionType)
     {
-        _currentHighlightActionType = highlightActionType;
-
-        Color color = Color.white;
-
-        if (highlightActionType == ETileHighlightActionType.Normal)
+        if (highlightActionType == EZoneActionType.Default)
         {
-            color = cellCommonData.tileTypeData[_cell.data.tileType].highlightColor;
-            HideZone(); // TODO : move maybe ?
+            HideZone();
+            return;
         }
-        else
-        {
-            color = cellCommonData.tileHighlightActionData[highlightActionType];
-            ShowZone(color.r, color.g, color.b);
-        }
-
-        _highlight.color = color;
-        ChangeSprite(_currentHighlightType);
+      
+        Color color = cellCommonData.actionColorZoneData[highlightActionType];
+        ShowZone(color.r, color.g, color.b);
     }
     
     void OnValidate()
