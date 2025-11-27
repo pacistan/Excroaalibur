@@ -128,7 +128,6 @@ public class GCellVisualsController : MonoBehaviour
         }
         EditorUtility.SetDirty(this);
         EditorUtility.SetDirty(_cell);
-        Image image;
     }
 
     public GameObject OnCreateVisualPreset(GCellVisualPresetData brush, Quaternion rot, bool serialize = true)
@@ -168,14 +167,18 @@ public class GCellVisualsController : MonoBehaviour
         isPrevisualized = false;
     }
     
-    public void ShowZone()
+    public void ShowZone(float red, float green, float blue)
     {
-        feedbackRenderer?.material?.SetFloat("_Zone", 1f);
+        feedbackRenderer?.material?.SetFloat("_red", red);
+        feedbackRenderer?.material?.SetFloat("_green", green);
+        feedbackRenderer?.material?.SetFloat("_blue", blue);
     }
     
     public void HideZone()
     {
-        feedbackRenderer?.material?.SetFloat("_Zone", 0f);
+        feedbackRenderer?.material?.SetFloat("_red", 0f);
+        feedbackRenderer?.material?.SetFloat("_green", 0f);
+        feedbackRenderer?.material?.SetFloat("_blue", 0f);
     }
     
     public void UpdateCellDebugNum(string newDebugText)
@@ -183,6 +186,7 @@ public class GCellVisualsController : MonoBehaviour
         //_text.text = newDebugText;
     }
 
+    
     public void ChangeSprite(ETileHighlightType highlightType)
     {
         var highlightSprite = cellCommonData.tileHighlightData[highlightType];
@@ -286,7 +290,7 @@ public class GCellVisualsController : MonoBehaviour
         else
         {
             color = cellCommonData.tileHighlightActionData[highlightActionType];
-            ShowZone();
+            ShowZone(color.r, color.g, color.b);
         }
 
         _highlight.color = color;
@@ -348,8 +352,7 @@ public class GCellVisualsController : MonoBehaviour
     void Awake()
     {
         if (!feedbackRenderer)  return;
-        feedbackRenderer.enabled = true;
-        feedbackRenderer.material.SetFloat("_Zone", 0f);
+        feedbackRenderer.gameObject.SetActive(true);
     }
 }
 
