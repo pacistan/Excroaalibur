@@ -102,8 +102,7 @@ public class GPlayerController : GController
 
         _selectedAction = action;
         
-        int index = action != null && action.GetType() != typeof(GThrowAction) ? 0 :
-            action != null && targetPawn && !targetPawn.data.isPlayer ? 0 : 1;
+        int index = action != null && action.GetType() != typeof(GThrowAction) ? 0 : action != null && targetPawn && !targetPawn.data.isPlayer ? 0 : 1;
         Texture2D cursor = action == null ? _normalCursor : action.GetCursorIcon(index);
         Vector2 cursorOffset = action != null && action.centerCursorOffset ? new Vector2(cursor.width / 2f, cursor.height / 2f) : Vector2.zero;
 
@@ -486,9 +485,12 @@ public class GPlayerController : GController
                 _lineRenderers[i].SetPositions(curves[i]);
             }
         }
-        
-        foreach (GCell cell in previsuCell)
-            cell.visuals.StartVisualisation();
+
+        if (previsuCell.Count > 0)
+        {
+            foreach (GCell cell in previsuCell)
+                cell.visuals.StartVisualisation();
+        }
         
         context.TryGet(GActionContext.DAMAGE_STRING, out int damage);
         context.TryGet(GActionContext.STUN_STRING, out bool stun);

@@ -317,9 +317,7 @@ public class GCellVisualsController : MonoBehaviour
     {
 
     }
-
-   
-
+    
     void Awake()
     {
         if (!feedbackRenderer)  return;

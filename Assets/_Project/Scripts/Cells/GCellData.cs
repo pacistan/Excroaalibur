@@ -1,8 +1,6 @@
 ﻿using Sirenix.OdinInspector;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.Serialization;
-using static GCellVisualsController;
 
     public enum ETileType { Normal, Wall, Hole, Spawner}
     public enum EGridObjectType { None, Sentry, PlayerPawn, Altar, Brawler, Speedy, Crown }
