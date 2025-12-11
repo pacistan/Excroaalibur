@@ -259,6 +259,7 @@ public class GPlayerController : GController
             {
                 _targetHud.OnGridObjectHovered(newCell.gridObject, isFirstAction);
             }
+            
             // Hover New Tile with no Selection and No Object
             else if (!_selectedPlayer && !newCell.gridObject)
             {

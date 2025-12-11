@@ -343,6 +343,7 @@ public class GCellVisualEditor : Editor
         Undo.RecordObject(_target.transform, "gridItem");
         Undo.RecordObject(_target._cell.ui.transform, "gridUiItem");
         Undo.RecordObject(_target, "gridVisualsPropertiese");
+        
         if (!Application.isPlaying && _target.transform.position.y != _target._previousPositionY)
         {
             float newHeight = _target.transform.position.y;
@@ -352,13 +353,11 @@ public class GCellVisualEditor : Editor
             
             GGridManager gridManager = FindFirstObjectByType<GGridManager>();
             
-            if (_target._isPullingNeighbors)
-                gridManager.PropagateEffect(_target._cell, 10, (originCell, previousCell, cell, i) => 
-                    gridManager.UpdateCellYPositionRelativeToNeighbor(previousCell, cell));
+            if (_target._isPullingNeighbors) 
+                gridManager.PropagateEffect(_target._cell, 10, (originCell, previousCell, cell, i) => gridManager.UpdateCellYPositionRelativeToNeighbor(previousCell, cell));
             EditorUtility.SetDirty(_target);
             Debug.Log(EditorSceneManager.MarkSceneDirty(_target.gameObject.scene));
         }
-        
     }
 
     public override void OnInspectorGUI()
