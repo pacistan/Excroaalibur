@@ -279,6 +279,10 @@ public class GPawn : GGridObject
             Destroy(gameObject);
         }
         isMarkedForDestruction = true;
+
+        if (GTurnBaseManager.Instance.EnemiesCount <= 0)
+            GGameManager.Instance.TriggerSlowMotion();
+           // GGameManager.Instance.TriggerSlowMotion(0.5f, 0.1f);
     }
 
     public void OnStartAction()
