@@ -1,0 +1,86 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6f142f82c36848568bab977f95bb7e00, type: 3}
+  m_Name: SentryVar2 Behaviour
+  m_EditorClassIdentifier: 
+  _moveAction:
+    rid: 3108424149014413392
+  _pushAction:
+    rid: 3108424154922877060
+  _placeOnAltarAction:
+    rid: 3108424154922877075
+  _isFouteurDeMerde: 1
+  _isDirtyStealer: 0
+  references:
+    version: 2
+    RefIds:
+    - rid: 3108424149014413392
+      type: {class: GMoveAction, ns: , asm: Assembly-CSharp}
+      data:
+        <actionLabel>k__BackingField: 
+        <actionIcon>k__BackingField: {fileID: 0}
+        _actionCursorIcon: []
+        <centerCursorOffset>k__BackingField: 0
+        linkedPawn: {fileID: 0}
+        targetCell: {fileID: 0}
+        validCells: []
+        _maxMoveDistance: 2
+        _speed: 3
+        _speedCurve:
+          serializedVersion: 2
+          m_Curve:
+          - serializedVersion: 3
+            time: 0
+            value: 0
+            inSlope: 0
+            outSlope: 0
+            tangentMode: 0
+            weightedMode: 0
+            inWeight: 0
+            outWeight: 0
+          - serializedVersion: 3
+            time: 1
+            value: 1
+            inSlope: 0
+            outSlope: 0
+            tangentMode: 0
+            weightedMode: 0
+            inWeight: 0
+            outWeight: 0
+          m_PreInfinity: 2
+          m_PostInfinity: 2
+          m_RotationOrder: 4
+        _previsuCurveData: {fileID: 0}
+        moveAnimationName: Move
+    - rid: 3108424154922877060
+      type: {class: GPushAction, ns: , asm: Assembly-CSharp}
+      data:
+        <actionLabel>k__BackingField: 
+        <actionIcon>k__BackingField: {fileID: 0}
+        _actionCursorIcon: []
+        <centerCursorOffset>k__BackingField: 0
+        linkedPawn: {fileID: 0}
+        targetCell: {fileID: 0}
+        validCells: []
+        _pushForce: 1
+        _followDistance: 1
+        _previsuCurveData: {fileID: 0}
+    - rid: 3108424154922877075
+      type: {class: GPlaceOnAltarAction, ns: , asm: Assembly-CSharp}
+      data:
+        <actionLabel>k__BackingField: 
+        <actionIcon>k__BackingField: {fileID: 0}
+        _actionCursorIcon: []
+        <centerCursorOffset>k__BackingField: 0
+        linkedPawn: {fileID: 0}
+        targetCell: {fileID: 0}
+        validCells: []

@@ -7,6 +7,7 @@ namespace _Project.Scripts.Wave
 {
     /* Scriptable Object to Store Wave Data */
     [CreateAssetMenu(fileName = "WaveData", menuName = "LeJeu/Wave", order = 0)]
+    
     public class WaveData : ScriptableObject
     {
         [Serializable]
@@ -25,7 +26,16 @@ namespace _Project.Scripts.Wave
             [Min(0), Tooltip("Number of enemies to spawn")]
             public int count;
         }
-        
+
+        [Serializable] //Je tente des trucs
+        public struct EndlessEnemyEntry
+        {
+            public GAIController enemyPrefab;
+            [Range(0, 1)] public float spawnWeight; // probabilité
+        }
+
+        public List<EndlessEnemyEntry> endlessEnemies;
+
         [Serializable]
         public class SWave
         {
@@ -58,8 +68,9 @@ namespace _Project.Scripts.Wave
                 }
                 return list;
             }
+
         }
-        
+
         [field: SerializeField, ShowIf("@_waveType == EWaveType.Finite"),Tooltip("List of waves to spawn")]
         public List<SWave> waves { get; private set; } = new List<SWave>();
     
