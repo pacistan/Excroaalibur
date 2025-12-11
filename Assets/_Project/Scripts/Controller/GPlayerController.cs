@@ -13,8 +13,6 @@ using UnityEngine.UI;
 
 public class GPlayerController : GController
 {
-    //public event Action<GPawn> SelectedPlayerChanged;
-    
     [SerializeField, FoldoutGroup("Events"), Tooltip("Event triggered when a player is selected.")]
     private UnityEvent OnPawnSelected;
     
@@ -70,7 +68,6 @@ public class GPlayerController : GController
     List<GCell> previsuCell = new List<GCell>();
     public bool isFirstAction = true;
     
-    
     public void SetSelectedPlayer(GPawn newSelected)
     {
         if (_selectedPlayer == newSelected) return;
@@ -96,7 +93,7 @@ public class GPlayerController : GController
     public void SelectAction(GAction action)
     {
         if (_selectedAction == action) return;
-        ResetHighlight();
+        ResetActionZone();
         
         if (_selectedAction != null) 
             _selectedAction.OnUnselectedAction();
@@ -105,8 +102,7 @@ public class GPlayerController : GController
 
         _selectedAction = action;
         
-        int index = action != null && action.GetType() != typeof(GThrowAction) ? 0 :
-            action != null && targetPawn && !targetPawn.data.isPlayer ? 0 : 1;
+        int index = action != null && action.GetType() != typeof(GThrowAction) ? 0 : action != null && targetPawn && !targetPawn.data.isPlayer ? 0 : 1;
         Texture2D cursor = action == null ? _normalCursor : action.GetCursorIcon(index);
         Vector2 cursorOffset = action != null && action.centerCursorOffset ? new Vector2(cursor.width / 2f, cursor.height / 2f) : Vector2.zero;
 
@@ -114,7 +110,7 @@ public class GPlayerController : GController
         
         if (_selectedAction == null) return;
         _selectedAction.OnSelectedAction();
-        ShowHighlight();
+        SetActionZone();
     }
     
     public void SelectAction(int id)
@@ -124,24 +120,23 @@ public class GPlayerController : GController
         SelectAction(availableActions[id]);
     }
 
-    private void ShowHighlight()
+    private void SetActionZone()
     {
         foreach (var coordinate in _validCells)
         {
             GCell cell = GGridManager.Instance.GetCell(coordinate);
-            ETileHighlightActionType highlightActionType = _selectedAction.linkedPawn.data.isPlayer
-                ? _selectedAction.GetHighlightActionType()
-                : ETileHighlightActionType.EnnemyAction;
-            cell.visuals.SetHighlightActionType(highlightActionType);
+            
+            EZoneActionType highlightActionType = _selectedAction.linkedPawn.data.isPlayer ? _selectedAction.GetHighlightActionType() : EZoneActionType.EnnemyAction;
+            cell.visuals.SetActionZone(highlightActionType);
         }
     }
 
-    private void ResetHighlight()
+    private void ResetActionZone()
     {
         foreach (var coordinate in _validCells)
         {
             GCell cell = GGridManager.Instance.GetCell(coordinate);
-            cell.visuals.SetHighlightActionType(ETileHighlightActionType.Normal);
+            cell.visuals.SetActionZone(EZoneActionType.Default);
         }
     }
 
@@ -264,6 +259,7 @@ public class GPlayerController : GController
             {
                 _targetHud.OnGridObjectHovered(newCell.gridObject, isFirstAction);
             }
+            
             // Hover New Tile with no Selection and No Object
             else if (!_selectedPlayer && !newCell.gridObject)
             {
@@ -351,7 +347,7 @@ public class GPlayerController : GController
             
             if (_selectedPlayer && _selectedAction.IsValidCell(_targetCell.hexCoordinates) && _selectedPlayer.remainingActionToken > 0)
             {
-                ResetHighlight();
+                ResetActionZone();
                 DisablePrevisualisation();
                 StartAction();
                 SetSelectedPlayer(null);
@@ -490,9 +486,12 @@ public class GPlayerController : GController
                 _lineRenderers[i].SetPositions(curves[i]);
             }
         }
-        
-        foreach (GCell cell in previsuCell)
-            cell.visuals.isPrevisualized = true;
+
+        if (previsuCell.Count > 0)
+        {
+            foreach (GCell cell in previsuCell)
+                cell.visuals.StartVisualisation();
+        }
         
         context.TryGet(GActionContext.DAMAGE_STRING, out int damage);
         context.TryGet(GActionContext.STUN_STRING, out bool stun);
@@ -509,8 +508,9 @@ public class GPlayerController : GController
 
         if (previsuCell == null || previsuCell.Count <= 0) return;
         foreach (GCell cell in previsuCell)
-            cell.visuals.isPrevisualized = false;
+            cell.visuals.StopVisualisation();
         _lineRenderers.ForEach(l => l.enabled = false);
+           
     }
 
     protected override void StopTurn()

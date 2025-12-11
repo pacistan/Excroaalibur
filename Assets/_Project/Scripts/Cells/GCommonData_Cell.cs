@@ -33,7 +33,8 @@ public class GCellCommonData : SerializedScriptableObject
 
     public Dictionary<ETileHighlightType, Sprite> tileHighlightData;
     
-    public Dictionary<ETileHighlightActionType, Color> tileHighlightActionData;
+    // TODO : Rename Because not Accurate anymore !
+    public Dictionary<EZoneActionType, Color> actionColorZoneData;
     
     public Color previsualizedColor = Color.green;
 
@@ -49,8 +50,8 @@ public class GCellCommonData : SerializedScriptableObject
     [SerializeField]
     public float cadrillageTint3;
 
-
     public float maxHeight;
+    public float maxOffsetHeight;
     public float heightStep;
     public float maxRangeOfPullingEffect;
 
@@ -87,12 +88,12 @@ public class GCellCommonData : SerializedScriptableObject
         }
         
         
-        if (tileHighlightActionData == null)
+        if (actionColorZoneData == null)
         {
-            tileHighlightActionData = new Dictionary<ETileHighlightActionType, Color>();
-            foreach (var tileActionType in Enum.GetValues(typeof(ETileHighlightActionType)) as ETileHighlightActionType[])
+            actionColorZoneData = new Dictionary<EZoneActionType, Color>();
+            foreach (var tileActionType in Enum.GetValues(typeof(EZoneActionType)) as EZoneActionType[])
             {
-                tileHighlightActionData.Add(tileActionType, Color.white);
+                actionColorZoneData.Add(tileActionType, Color.white);
             }
         }
 

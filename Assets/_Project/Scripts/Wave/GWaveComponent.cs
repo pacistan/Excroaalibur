@@ -139,9 +139,11 @@ public class GWaveComponent : MonoBehaviour
         
         if (_waveData._waveType == WaveData.EWaveType.Endless) return; // Do not clear the pool for endless mode
         
-        _ennemiesPool.Clear();    
-        var globals = LocalizationSettings.StringDatabase.SmartFormatter.GetSourceExtension<UnityEngine.Localization.SmartFormat.Extensions.PersistentVariablesSource>();
-        globals["Score"][""] =  _currentWave;
+        _ennemiesPool.Clear();
+        
+        // TODO : To fix Doesn't work (Prevent Finite mode to End the Turn)
+        // var globals = LocalizationSettings.StringDatabase.SmartFormatter.GetSourceExtension<UnityEngine.Localization.SmartFormat.Extensions.PersistentVariablesSource>();
+        // globals["Score"][""] =  _currentWave;
     }
     
     private void UpdateWaveCount()

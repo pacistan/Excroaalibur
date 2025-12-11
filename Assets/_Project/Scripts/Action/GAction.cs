@@ -78,6 +78,7 @@ public abstract class GAction
     public GCell targetCell;
     [ReadOnly, HideInEditorMode] 
     public GHexCoordinate[] validCells = Array.Empty<GHexCoordinate>();
+    
     [ReadOnly] public EActionState CurrentState { get; protected set; } = EActionState.None;
     
     // Safe handle to avoid infinite action state !
@@ -87,8 +88,7 @@ public abstract class GAction
     public Texture2D GetCursorIcon(int index = 0) =>_actionCursorIcon != null && index <= _actionCursorIcon.Length - 1 ? _actionCursorIcon[index] : null;
     
     public GAction(){}
-    public GAction(GPawn inLinkedPawn, GCell inTargetCell, Action inOnActionStarted = null,
-        Action inOnActionFinished = null)
+    public GAction(GPawn inLinkedPawn, GCell inTargetCell, Action inOnActionStarted = null, Action inOnActionFinished = null)
     {
         linkedPawn = inLinkedPawn;
         targetCell = inTargetCell;
@@ -96,7 +96,7 @@ public abstract class GAction
         OnActionFinished += inOnActionFinished;
     }
 
-    public abstract ETileHighlightActionType GetHighlightActionType();
+    public abstract EZoneActionType GetHighlightActionType();
     
     /// <summary>
     /// Create a new instance of the action with the same parameters, Override this for Add Params

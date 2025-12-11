@@ -24,6 +24,11 @@ public class GCellVisualsController : MonoBehaviour
     MeshRenderer _meshRenderer;
     [SerializeField, FoldoutGroup("Components")]
     MeshFilter _meshFilter;
+    
+    /** Render Use For Range of Action **/
+    [SerializeField, FoldoutGroup("Components")]
+    Renderer feedbackRenderer;
+    
     [SerializeField, FoldoutGroup("Components")]
     public GCell _cell;
     [SerializeField, FoldoutGroup("Components")]
@@ -55,7 +60,7 @@ public class GCellVisualsController : MonoBehaviour
     
     [FormerlySerializedAs("_currentactionHighlightActionType")]
     [SerializeField, HideInInspector, ReadOnly]
-    public ETileHighlightActionType _currentHighlightActionType;
+    public EZoneActionType _currentHighlightActionType;
 
     [SerializeField, HideInInspector, ReadOnly]
     public ETileHighlightType _currentHighlightType = ETileHighlightType.CellSelect;
@@ -151,16 +156,43 @@ public class GCellVisualsController : MonoBehaviour
         _visualPresetInstances.Clear();
     }
 #endif
+
+    public void StartVisualisation()
+    {
+        isPrevisualized = true;
+    }
     
+    public void StopVisualisation()
+    {
+        isPrevisualized = false;
+    }
+    
+    /** Set the Render With the Good Color So that the Decal Can Draw Action Zone **/
+    public void ShowZone(float red, float green, float blue)
+    {
+        feedbackRenderer?.material?.SetFloat("_red", red);
+        feedbackRenderer?.material?.SetFloat("_green", green);
+        feedbackRenderer?.material?.SetFloat("_blue", blue);
+    }
+    
+    /** Set the rendere Color to black **/
+    public void HideZone()
+    {
+        feedbackRenderer?.material?.SetFloat("_red", 0f);
+        feedbackRenderer?.material?.SetFloat("_green", 0f);
+        feedbackRenderer?.material?.SetFloat("_blue", 0f);
+    }
+    
+    // TODO : Remove if no use ?
     public void UpdateCellDebugNum(string newDebugText)
     {
         //_text.text = newDebugText;
     }
-
+    
     public void ChangeSprite(ETileHighlightType highlightType)
     {
         var highlightSprite = cellCommonData.tileHighlightData[highlightType];
-        if (highlightSprite && (isHovered || isSelected || _currentHighlightActionType != ETileHighlightActionType.Normal))
+        if (highlightSprite && (isHovered || isSelected || _currentHighlightActionType != EZoneActionType.Default))
         {
             _highlight.enabled = true; 
             _highlight.sprite = cellCommonData.tileHighlightData[highlightType];
@@ -185,31 +217,15 @@ public class GCellVisualsController : MonoBehaviour
         transform.SetAxisPosition(newHeight, TransformExtensions.ETransformAxis.Y);
         _cell.ui.SetAxisPosition(_cell.ui.transform.position.y + uiDiff, TransformExtensions.ETransformAxis.Y);
         _previousPositionY = transform.position.y;
-        //EditorUtility.SetDirty(this);
-        /*EditorUtility.SetDirty(transform);
-        EditorUtility.SetDirty(_cell.ui.transform);*/
     }
     
     void LateUpdate()
     {
-        UpdateHighlightSprite();
-        if (_wasPrevisualized != isPrevisualized)
-        {
-            _wasPrevisualized = isPrevisualized;
-            if (isPrevisualized)
-            {
-                _highlight.color = cellCommonData.previsualizedColor;
-            }
-            else
-            {
-                SetHighlightActionType(_currentHighlightActionType);
-            }
-        }
+        UpdateHighlight();
     }
 
     void Start()
     {
-        SetHighlightActionType(ETileHighlightActionType.Normal);
         DoCadrillageOfGrid();
     }
 
@@ -220,9 +236,6 @@ public class GCellVisualsController : MonoBehaviour
         
         _cadrillageNumber = 1 + (((x % 3) + 1 + (y % 2) * 2) % 3);
         
-        //_cell.ui.GetComponentInChildren<TextMeshProUGUI>().text = _cadrillageNumber.ToString();
-        //_cell.ui.GetComponentInChildren<TextMeshProUGUI>().enabled = true;
-        
         Color color = _meshRenderer.material.color;
         Color.RGBToHSV(color, out float h, out float s, out float v);
         float tint = _cadrillageNumber == 1 ? cellCommonData.cadrillageTint1 : _cadrillageNumber == 2 ? cellCommonData.cadrillageTint2 : cellCommonData.cadrillageTint3;
@@ -231,12 +244,9 @@ public class GCellVisualsController : MonoBehaviour
         _meshRenderer.material.color = color;
     }
 
-    private void UpdateHighlightSprite()
+    private void UpdateHighlight()
     {
-        ETileHighlightType newHighlightType = ETileHighlightType.CellBase;
-
-        newHighlightType = isSelected ? ETileHighlightType.CellSelect :
-            isHovered ? ETileHighlightType.CellHover : ETileHighlightType.CellBase;
+        ETileHighlightType newHighlightType = isSelected ? ETileHighlightType.CellSelect : isHovered ? ETileHighlightType.CellHover : ETileHighlightType.CellBase;
         
         if (newHighlightType != _currentHighlightType)
         {
@@ -245,32 +255,74 @@ public class GCellVisualsController : MonoBehaviour
         
         _currentHighlightType = newHighlightType;
     }
-
-    public void SetHighlightActionType(ETileHighlightActionType highlightActionType)
+    
+    public void SetActionZone(EZoneActionType highlightActionType)
     {
-        _currentHighlightActionType = highlightActionType;
-
-        Color color = Color.white;
-
-        if (highlightActionType == ETileHighlightActionType.Normal)
+        if (highlightActionType == EZoneActionType.Default)
         {
-            color = cellCommonData.tileTypeData[_cell.data.tileType].highlightColor;
+            HideZone();
+            return;
         }
-        else
-        {
-            color = cellCommonData.tileHighlightActionData[highlightActionType];
-        }
-
-        _highlight.color = color;
-        ChangeSprite(_currentHighlightType);
+      
+        Color color = cellCommonData.actionColorZoneData[highlightActionType];
+        ShowZone(color.r, color.g, color.b);
     }
     
+    void OnValidate()
+    {
+        if (transform.position.y != _previousPositionY)
+        {
+            Vector3 pos = transform.position;
+            pos.y = Mathf.Clamp(pos.y, -cellCommonData.maxHeight, cellCommonData.maxHeight);
+            transform.position = pos;
+        
+            float diff = _previousPositionY - transform.position.y;
+            Vector3 uiPos = _cell.ui.position;
+            uiPos.y -= diff;
+            _cell.ui.position = uiPos;
+        
+            _previousPositionY = transform.position.y;
+        }       
+    }
+    
+    public void UpdateYPosGizmo(float neighborHeight)
+    {
+        float diff = neighborHeight - transform.position.y;
+        float newHeight = transform.position.y + Mathf.Min(Mathf.Abs(diff), cellCommonData.maxOffsetHeight) * diff / Mathf.Abs(diff);
+        Vector3 pos = transform.position;
+        pos.y = newHeight;
+        transform.position = pos;
+        
+        float diff2 = _previousPositionY - transform.position.y;
+        Vector3 uiPos = _cell.ui.position;
+        uiPos.y -= diff2;
+        _cell.ui.position = uiPos;
+        
+        _previousPositionY = transform.position.y;
+        
+        foreach (var neighbor in _cell.neighbors)
+        {
+            
+            if (!neighbor || neighbor.data.tileType != ETileType.Normal) continue;
+            if (Mathf.Abs(transform.position.y - neighbor.transform.position.y) > cellCommonData.maxOffsetHeight)
+            {
+                neighbor.visuals.UpdateYPosGizmo(transform.position.y);
+            }
+        }
+#if UNITY_EDITOR
+        EditorUtility.SetDirty(gameObject);
+#endif
+    }
     void OnDrawGizmos()
     {
 
     }
-
-   
+    
+    void Awake()
+    {
+        if (!feedbackRenderer)  return;
+        feedbackRenderer.gameObject.SetActive(true);
+    }
 }
 
 #if UNITY_EDITOR
@@ -291,6 +343,7 @@ public class GCellVisualEditor : Editor
         Undo.RecordObject(_target.transform, "gridItem");
         Undo.RecordObject(_target._cell.ui.transform, "gridUiItem");
         Undo.RecordObject(_target, "gridVisualsPropertiese");
+        
         if (!Application.isPlaying && _target.transform.position.y != _target._previousPositionY)
         {
             float newHeight = _target.transform.position.y;
@@ -300,13 +353,11 @@ public class GCellVisualEditor : Editor
             
             GGridManager gridManager = FindFirstObjectByType<GGridManager>();
             
-            if (_target._isPullingNeighbors)
-                gridManager.PropagateEffect(_target._cell, 10, (originCell, previousCell, cell, i) => 
-                    gridManager.UpdateCellYPositionRelativeToNeighbor(previousCell, cell));
+            if (_target._isPullingNeighbors) 
+                gridManager.PropagateEffect(_target._cell, 10, (originCell, previousCell, cell, i) => gridManager.UpdateCellYPositionRelativeToNeighbor(previousCell, cell));
             EditorUtility.SetDirty(_target);
             Debug.Log(EditorSceneManager.MarkSceneDirty(_target.gameObject.scene));
         }
-        
     }
 
     public override void OnInspectorGUI()

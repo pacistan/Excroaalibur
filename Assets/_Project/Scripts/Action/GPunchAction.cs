@@ -8,7 +8,7 @@ public class GPunchAction : GAction
     float _progress = 0;
 
 
-    public override ETileHighlightActionType GetHighlightActionType()
+    public override EZoneActionType GetHighlightActionType()
     {
         throw new System.NotImplementedException();
     }

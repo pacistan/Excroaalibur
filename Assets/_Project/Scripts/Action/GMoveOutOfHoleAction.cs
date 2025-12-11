@@ -6,7 +6,7 @@ public class GMoveOutOfHoleAction : GAction
 {
     GMoveAction _moveAction = null; 
     
-    public override ETileHighlightActionType GetHighlightActionType() => ETileHighlightActionType.Move;
+    public override EZoneActionType GetHighlightActionType() => EZoneActionType.Move;
     
     public override List<GCell> Previsualisation(in GActionContext previsuContext)
     {

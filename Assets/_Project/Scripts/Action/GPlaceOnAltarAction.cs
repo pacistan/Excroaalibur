@@ -6,7 +6,7 @@ public class GPlaceOnAltarAction : GAction
     GCrown _crown;
     GAltar _altar;
 
-    public override ETileHighlightActionType GetHighlightActionType() => ETileHighlightActionType.Move;
+    public override EZoneActionType GetHighlightActionType() => EZoneActionType.Move;
     
     public override List<GCell> Previsualisation(in GActionContext previsuContext)
     {

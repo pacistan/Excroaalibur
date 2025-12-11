@@ -59,6 +59,15 @@ public class GGameManager: GSingleton<GGameManager>
     
     [SerializeField, FoldoutGroup("SceneToLoad"), ReadOnly]
     public int _currentTutorialSceneToLoadIndex = 0 ;
+    
+    // Debug For Vincent 
+    [FoldoutGroup("Debug")]
+    [SerializeField, FoldoutGroup("Debug/SlowMotion")]
+    private float duration = 0.5f;
+    
+    [SerializeField, FoldoutGroup("Debug/SlowMotion")]
+    private float timeScale = 0.1f;
+    // End Debug For Vincent 
 
     [SerializeField]
     EventReference _musicEvent;
@@ -81,6 +90,8 @@ public class GGameManager: GSingleton<GGameManager>
     float _loadSceneForceDuration = 2f;
     
     public GPlayerController playerController;
+    
+    Coroutine _SlongMoCoroutine;
     
     public void SetSceneToLoad(string sceneToLoadName)
     {
@@ -248,6 +259,23 @@ public class GGameManager: GSingleton<GGameManager>
     {
         Debug.Log("Game Over !");
         GTurnBaseManager.Instance.enabled = false; // Disable turn ! 
+    }
+    
+    public void TriggerSlowMotion()
+    {
+        if (_SlongMoCoroutine != null)
+            StopCoroutine(_SlongMoCoroutine);
+        
+        // TODO : add Cam Movement  
+        _SlongMoCoroutine = StartCoroutine(SlowMoCoroutine(duration, timeScale));
+    }
+    
+    IEnumerator SlowMoCoroutine(float duration, float timeScale)
+    {
+        float originalTimeScale = Time.timeScale;
+        Time.timeScale = timeScale;
+        yield return new WaitForSecondsRealtime(duration);
+        Time.timeScale = originalTimeScale;
     }
     
     protected override void Awake()
