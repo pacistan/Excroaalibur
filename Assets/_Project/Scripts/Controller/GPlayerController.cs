@@ -432,6 +432,7 @@ public class GPlayerController : GController
         _selectedAction.targetCell = _targetCell;
         if (_selectedPlayer.RequestAction(_selectedAction))
         {
+            base.StartAction();
             if (isFirstAction)
             {
                 isFirstAction = false;
