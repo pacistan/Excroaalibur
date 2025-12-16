@@ -153,7 +153,7 @@ Camera:
   m_Depth: -1
   m_CullingMask:
     serializedVersion: 2
-    m_Bits: 4294967295
+    m_Bits: 247
   m_RenderingPath: -1
   m_TargetTexture: {fileID: 0}
   m_TargetDisplay: 0
@@ -386,6 +386,8 @@ MonoBehaviour:
   _currentSceneToLoadIndex: 0
   _loadableTutorialScenes: []
   _currentTutorialSceneToLoadIndex: 0
+  duration: 0.5
+  timeScale: 0.1
   _musicEvent:
     Guid:
       Data1: -1790422121
