@@ -81,6 +81,12 @@ public class GPawn : GGridObject
     [SerializeField, FoldoutGroup("Other/Events"), Tooltip("Event triggered when this pawn starts an action")]
     protected UnityEvent _OnStartActionEvent;
     
+    [SerializeField, FoldoutGroup("Other/Events"), Tooltip("Event triggered when this pawn is selected.")]
+    public UnityEvent OnPawnSelected;
+    
+    [SerializeField, FoldoutGroup("Other/Events"), Tooltip("Event triggered when this pawn is hovered.")]
+    public UnityEvent OnPawnHover;
+    
     // Cache for quick look-up of override reactions
     private Dictionary<Type, GAction> _overrideCache;
     
