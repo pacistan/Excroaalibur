@@ -7,9 +7,7 @@ using System.Linq;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.InputSystem;
-using UnityEngine.SceneManagement;
 using UnityEngine.Serialization;
-using UnityEngine.UI;
 
 public class GPlayerController : GController
 {
@@ -79,6 +77,7 @@ public class GPlayerController : GController
         }
         _selectedPlayer = newSelected;
         OnPawnSelected?.Invoke();
+        _selectedPlayer?.OnPawnSelected?.Invoke();
         
         availableActions = GetAvailableActions();
         foreach (var action in availableActions)
@@ -275,6 +274,7 @@ public class GPlayerController : GController
                 }
                 
                 OnPawnHover?.Invoke(); // Trigger Hover Event 
+                _selectedPlayer?.OnPawnHover?.Invoke(); // Trigger Selected Pawn Hover Event
             } 
             else 
             {
