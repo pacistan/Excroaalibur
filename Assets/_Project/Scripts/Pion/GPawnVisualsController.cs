@@ -50,7 +50,15 @@ public class GPawnVisualsController : SerializedMonoBehaviour
     
     [SerializeField, FoldoutGroup("Components")]
     [BoxGroup("Components/World Canvas")]
+    GameObject _imgStatusContainer;
+    
+    [SerializeField, FoldoutGroup("Components")]
+    [BoxGroup("Components/World Canvas")]
     Sprite _spriteStun;
+    
+    [SerializeField, FoldoutGroup("Components")]
+    [BoxGroup("Components/World Canvas")]
+    Sprite _spriteStunProtected;
     
     [SerializeField, FoldoutGroup("Components")]
     [BoxGroup("Components/World Canvas"), HideIf("isPlayerAccessor")]
@@ -203,15 +211,21 @@ public class GPawnVisualsController : SerializedMonoBehaviour
     
     public void OnUpdateStunTurn()
     {
+        if (_pawn.isStunnedProtected)
+        {
+            _imgStatus.sprite = _spriteStunProtected;
+            _imgStatusContainer.SetActive(true);
+        }
+        
         if (_pawn.isStunned && _previousStunTurn != _pawn.isStunned)
         {
             List<Material> materials = _mainRenderer.materials.ToList();
             materials[_stunMaterialIndex] = _stunnedMaterial;
             _mainRenderer.SetMaterials(materials);
             _imgStatus.sprite = _spriteStun;
-            _imgStatus.enabled = true;
+            _imgStatusContainer.SetActive(true);
             OnStunUnityEvent?.Invoke();
-            SetAnimationParameter(GPawn.AnimParam_isStunned, true);
+            SetAnimationParameter(GPawn.AnimParam_IsStunned, true);
             //TODO : Start Stun Feedbacks
         }
         else if (!_pawn.isStunned && _previousStunTurn != _pawn.isStunned)
@@ -219,10 +233,12 @@ public class GPawnVisualsController : SerializedMonoBehaviour
             List<Material> materials = _mainRenderer.materials.ToList();
             materials[_stunMaterialIndex] = _defaultMaterial;
             _mainRenderer.SetMaterials(materials);
-            _imgStatus.sprite = _spriteStun;
-            _imgStatus.enabled = false;
-            SetAnimationParameter(GPawn.AnimParam_isStunned, false);
-            //TODO : Start UnStun Feedbacks            
+            SetAnimationParameter(GPawn.AnimParam_IsStunned, false);
+        }
+
+        if (!_pawn.isStunned && !_pawn.isStunnedProtected)
+        {
+            _imgStatusContainer.SetActive(false);
         }
         
         _previousStunTurn = _pawn.isStunned;
@@ -245,14 +261,14 @@ public class GPawnVisualsController : SerializedMonoBehaviour
             if (tempHp == 0)
             {
                 _imgStatus.sprite = _spriteDeath;
-                _imgStatus.enabled = true;
+                _imgStatusContainer.SetActive(true);
                 isDead = true;
             }
         }
         if (tempStun && !isDead)
         {
             _imgStatus.sprite = _spriteStun;
-            _imgStatus.enabled = true;
+            _imgStatusContainer.SetActive(false);
         }
     }
 
@@ -268,11 +284,16 @@ public class GPawnVisualsController : SerializedMonoBehaviour
         if (_pawn.isStunned)
         {
             _imgStatus.sprite = _spriteStun;
-            _imgStatus.enabled = true;
+            _imgStatusContainer.SetActive(true);
+        }
+        else if (_pawn.isStunnedProtected)
+        {
+            _imgStatus.sprite = _spriteStunProtected;
+            _imgStatusContainer.SetActive(true);
         }
         else
         {
-            _imgStatus.enabled = false;
+            _imgStatusContainer.SetActive(false);
         }
     }
     

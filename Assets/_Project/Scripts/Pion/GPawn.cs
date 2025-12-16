@@ -36,7 +36,7 @@ public class GPawn : GGridObject
     public const string SpawnAnimationName = "Spawn";
     
     
-    public const string AnimParam_isStunned = "IsStunned";
+    public const string AnimParam_IsStunned = "IsStunned";
     public const string AnimParam_HasSword = "HasSword";
     public const string AnimParam_IsPreparedToCatch = "IsPrepareCatch";
     public const string AnimParam_IsPreparedToThrow = "isPrepareThrow";
@@ -207,7 +207,6 @@ public class GPawn : GGridObject
             return false;
         }
         
-        _OnStartActionEvent?.Invoke();
         return true;
     }
 
@@ -254,8 +253,9 @@ public class GPawn : GGridObject
         if (isStunnedProtected)
         {
             isStunnedProtected = false;
+            visuals.OnUpdateStunTurn();
         }
-        else
+        else if (isStunned)
         {
             isStunnedProtected = data.isPlayer;
             isStunned = false;
@@ -304,8 +304,8 @@ public class GPawn : GGridObject
         
         if (data.isPlayer)
             visuals.OnUpdateActionsToken();
-        else 
-            Unstun();
+        /*else if(isStunned ||  isStunnedProtected)
+            Unstun();*/
         
         if (!isStunned)
             OnUnstunned?.Invoke();
@@ -323,7 +323,7 @@ public class GPawn : GGridObject
     
     public void OnEndTurn()
     {
-        if (isStunned && data.isPlayer)
+        if ((isStunned || isStunnedProtected)/* && data.isPlayer*/)
         {
             Unstun();
         }

@@ -1,9 +1,11 @@
 using Sirenix.Utilities;
+using System;
 using System.Linq;
 using UnityEngine;
-using System;
 using System.IO;
+using UnityEngine.Windows;
 using UnityEditor;
+using File = System.IO.File;
 
 [DefaultExecutionOrder(100)]
 public class GSaveManager : GSingleton<GSaveManager>
@@ -54,6 +56,7 @@ public class GSaveManager : GSingleton<GSaveManager>
             ennemyData.xCoordinate = ennemy.GetCell().data.gridCoordinates.x;
             ennemyData.yCoordinate = ennemy.GetCell().data.gridCoordinates.y;
             ennemyData.isStunned = ennemy.isStunned;
+
             ennemyData.hp = ennemy.hp;
             saveData.ennemies[i] = ennemyData;
         }
@@ -64,6 +67,7 @@ public class GSaveManager : GSingleton<GSaveManager>
             playerData.xCoordinate = player.GetCell().data.gridCoordinates.x;
             playerData.yCoordinate = player.GetCell().data.gridCoordinates.y;
             playerData.isStunned = player.isStunned;
+
             saveData.players[i] = playerData;
         }
         GCrown crown = GGridObjectRegistry.GetItems<GCrown>()[0];
@@ -87,12 +91,14 @@ public class GSaveManager : GSingleton<GSaveManager>
         {
             DeleteSaveFile();
         }
+
     }
 
     private void CreateGameStateFromData(GGameStateSaveData data)
     {
         GCrown crown = GGridObjectRegistry.GetItems<GCrown>()[0];
         GPawn[] players = GGridObjectRegistry.GetItemsByPredicate<GPawn>(pawn => pawn.data.isPlayer).ToArray();
+
 
         // Player Stuff
         {
@@ -102,6 +108,7 @@ public class GSaveManager : GSingleton<GSaveManager>
                 var playerData = data.players.ElementAt(i);
 
                 if(playerData.isStunned) player.Stun();
+
                 GCell playerCell = GGridManager.Instance.GetCell(new Vector2Int(playerData.xCoordinate, playerData.yCoordinate));
                 if (playerCell != player.GetCell())
                 {
@@ -123,14 +130,12 @@ public class GSaveManager : GSingleton<GSaveManager>
                     Debug.LogError($"Could not find pawn for type {ennemyData.ennemyType}");
                     continue;
                 }
-                #if UNITY_EDITOR
-                    GPawn pawn = PrefabUtility.InstantiatePrefab(pawnPrefab) as GPawn; 
-                #else
-                    GPawn pawn = Instantiate(pawnPrefab);
-                #endif
+
+                GPawn pawn = Instantiate(pawnPrefab);
                 GCell ennemyCell = GGridManager.Instance.GetCell(new Vector2Int(ennemyData.xCoordinate, ennemyData.yCoordinate));
                 ennemyCell.SetGridObject(pawn, true);
                 if(ennemyData.isStunned) pawn.Stun();
+
                 pawn.SetHp(ennemyData.hp);
             }
         }
