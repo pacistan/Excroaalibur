@@ -153,8 +153,6 @@ public partial class GMenuManager : GSingleton<GMenuManager>
     }
 
 
-
-
 #if UNITY_EDITOR
     private void OnDrawGizmos()
     {

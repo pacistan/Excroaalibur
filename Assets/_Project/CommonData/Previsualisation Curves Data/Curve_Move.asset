@@ -12,58 +12,25 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3f3db5be4c50425da87d7b9106d446e4, type: 3}
   m_Name: Curve_Move
   m_EditorClassIdentifier: 
-  <previsuCurveResolution>k__BackingField: 30
-  <previsuPositionsCurve>k__BackingField:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: 0
-      value: 0
-      inSlope: 1
-      outSlope: 1
-      tangentMode: 34
-      weightedMode: 0
-      inWeight: 0
-      outWeight: 0
-    - serializedVersion: 3
-      time: 1
-      value: 1
-      inSlope: 1
-      outSlope: 1
-      tangentMode: 34
-      weightedMode: 0
-      inWeight: 0
-      outWeight: 0
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
+  <previsuCurveResolution>k__BackingField: 100
   <previsuCurveMaxHeight>k__BackingField: 7
   <previsuHeightCurve>k__BackingField:
     serializedVersion: 2
     m_Curve:
     - serializedVersion: 3
       time: 0
-      value: 0
-      inSlope: 1.9984478
-      outSlope: 1.9984478
+      value: 0.3
+      inSlope: 0
+      outSlope: 0
       tangentMode: 34
       weightedMode: 0
       inWeight: 0
       outWeight: 0.33333334
     - serializedVersion: 3
-      time: 0.49958324
-      value: 0.99839103
-      inSlope: -0.00010418892
-      outSlope: -0.00010418892
-      tangentMode: 34
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
-    - serializedVersion: 3
       time: 1
-      value: -0.0017700195
-      inSlope: -1.9986562
-      outSlope: -1.9986562
+      value: 0.3
+      inSlope: 0
+      outSlope: 0
       tangentMode: 34
       weightedMode: 0
       inWeight: 0.33333334
@@ -73,3 +40,6 @@ MonoBehaviour:
     m_RotationOrder: 4
   <startHeightOffset>k__BackingField: 0
   <endHeightOffset>k__BackingField: 0
+  <previusCurveMaterial>k__BackingField: {fileID: 5286673721406747786, guid: b967ff360e23fe5439f9d96519d2af7a, type: 3}
+  <previusCurveWidth>k__BackingField: 1
+  <isPositionRelativeToTargets>k__BackingField: 1

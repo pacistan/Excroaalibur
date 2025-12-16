@@ -2,8 +2,10 @@ using DG.Tweening;
 using FMOD;
 using FMOD.Studio;
 using FMODUnity;
+using Sirenix.Utilities;
 using System.Collections.Generic;
 using System;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.Serialization;
 using STOP_MODE = FMOD.Studio.STOP_MODE;
@@ -68,10 +70,16 @@ public class GMoveAction : GAction
         GCell cell = linkedPawn.GetCell();
         
         List<GCell> previewCells = new List<GCell>();
-        previewCells.Add(targetCell);
+        previewCells.Add(linkedPawn.GetCell());
+        GCell previousCell = linkedPawn.GetCell();
+        foreach (var direction in _path)
+        {
+            GCell currentCell = previousCell.GetNeighbor(direction);
+            previewCells.Add(currentCell);
+            previousCell = currentCell;
+        }
         
-        AddPrevisualisationCurve(previsuContext, linkedPawn.GetPrevisuPosition(), 
-            targetCell.transform.position, _previsuCurveData);
+        AddPrevisualisationCurve(previsuContext, previewCells.Select(cell => cell.transform.position).ToArray(), _previsuCurveData);
         return previewCells;
     }
 

@@ -164,7 +164,7 @@ public class GGameManager: GSingleton<GGameManager>
                 break;
             case EMacroStates.End:
                 StartGameOver();
-                PauseGameTime(false, true, 2);
+                PauseGameTime(true, true, 2);
                 break;
             case EMacroStates.LoadingScreen:
                 GHudManager.Instance.loadingScreenMenu.ResetProgress();
