@@ -52,7 +52,7 @@ public class GCellCommonData : SerializedScriptableObject
 
     public float maxHeight;
     public float heightStep;
-    public float maxRangeOfPullingEffect;
+    public int maxRangeOfPullingEffect;
 
     [Button("Rebuild Scene Visuals")]
     private void RebuildSceneVisuals()
