@@ -65,6 +65,7 @@ public class GCellCommonData : SerializedScriptableObject
     }
     
     #if UNITY_EDITOR
+
     [OnInspectorInit]
     public void CreateData()
     {

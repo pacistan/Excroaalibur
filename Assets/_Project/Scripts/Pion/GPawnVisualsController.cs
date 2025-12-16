@@ -234,7 +234,6 @@ public class GPawnVisualsController : SerializedMonoBehaviour
             materials[_stunMaterialIndex] = _defaultMaterial;
             _mainRenderer.SetMaterials(materials);
             SetAnimationParameter(GPawn.AnimParam_IsStunned, false);
-            //TODO : Start UnStun Feedbacks            
         }
 
         if (!_pawn.isStunned && !_pawn.isStunnedProtected)

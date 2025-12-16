@@ -7,7 +7,6 @@ using UnityEngine.Windows;
 using UnityEditor;
 using File = System.IO.File;
 
-
 [DefaultExecutionOrder(100)]
 public class GSaveManager : GSingleton<GSaveManager>
 {
