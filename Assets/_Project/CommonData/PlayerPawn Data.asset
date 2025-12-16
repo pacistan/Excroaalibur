@@ -41,6 +41,7 @@ MonoBehaviour:
     - Name: 
       Entry: 8
       Data: 
+  gridObjectType: 0
   <actionTokens>k__BackingField: 2
   <isPlayer>k__BackingField: 1
   <startHp>k__BackingField: -1
@@ -73,6 +74,7 @@ MonoBehaviour:
     - rid: 3108424474244939852
       type: {class: GMoveAction, ns: , asm: Assembly-CSharp}
       data:
+        <ValidateTargetCellVFXPrefab>k__BackingField: {fileID: 6218686886259567654, guid: d7c4a38a6ba0981419eaf1647c6fc9c5, type: 3}
         <actionLabel>k__BackingField: Move
         <actionIcon>k__BackingField: {fileID: 21300000, guid: bedbdbdfd22faed4b94289c70058e100, type: 3}
         _actionCursorIcon:
@@ -134,6 +136,7 @@ MonoBehaviour:
     - rid: 3108424474244939853
       type: {class: GThrowAction, ns: , asm: Assembly-CSharp}
       data:
+        <ValidateTargetCellVFXPrefab>k__BackingField: {fileID: 0}
         <actionLabel>k__BackingField: Throw
         <actionIcon>k__BackingField: {fileID: 21300000, guid: 4343b554cc3a747478185bc9f94543ac, type: 3}
         _actionCursorIcon:
@@ -347,6 +350,7 @@ MonoBehaviour:
     - rid: 3108424474244939854
       type: {class: GPushAction, ns: , asm: Assembly-CSharp}
       data:
+        <ValidateTargetCellVFXPrefab>k__BackingField: {fileID: 0}
         <actionLabel>k__BackingField: Push
         <actionIcon>k__BackingField: {fileID: 21300000, guid: 27e8fab003f993449a17bb55575cf502, type: 3}
         _actionCursorIcon:
@@ -361,6 +365,7 @@ MonoBehaviour:
     - rid: 3108424474244939855
       type: {class: GMoveOutOfHoleAction, ns: , asm: Assembly-CSharp}
       data:
+        <ValidateTargetCellVFXPrefab>k__BackingField: {fileID: 0}
         <actionLabel>k__BackingField: Move
         <actionIcon>k__BackingField: {fileID: 21300000, guid: bedbdbdfd22faed4b94289c70058e100, type: 3}
         _actionCursorIcon:
