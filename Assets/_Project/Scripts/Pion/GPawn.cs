@@ -76,7 +76,10 @@ public class GPawn : GGridObject
     
     [FoldoutGroup("Other", false)]
     [SerializeField, FoldoutGroup("Other/Events"), HideIf("@hp < 0")]
-    private UnityEvent _OnDeath;
+    protected UnityEvent _OnDeath;
+    
+    [SerializeField, FoldoutGroup("Other/Events"), Tooltip("Event triggered when this pawn starts an action")]
+    protected UnityEvent _OnStartActionEvent;
     
     // Cache for quick look-up of override reactions
     private Dictionary<Type, GAction> _overrideCache;
@@ -199,6 +202,7 @@ public class GPawn : GGridObject
             return false;
         }
         
+        _OnStartActionEvent?.Invoke();
         return true;
     }
 
