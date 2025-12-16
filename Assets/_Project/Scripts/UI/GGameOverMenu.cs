@@ -57,8 +57,10 @@ public class GGameOverMenu : MonoBehaviour
             {
                 _profils[i].gameObject.SetActive(true);
                 _profils[i].rankTxt.text = entries[i].Rank.ToString();
-                string userName = entries[i].Username.Substring(0, _characterLimitForProfilName);
-                _profils[i].usernameTxt.text = userName;
+
+                _profils[i].usernameTxt.text = entries[i].Username.Length > _characterLimitForProfilName
+                    ? entries[i].Username.Substring(0, _characterLimitForProfilName)
+                    : entries[i].Username;
                 _profils[i].waveNbrTxt.text = entries[i].Score.ToString();
             }
         });

@@ -15,7 +15,9 @@ public class GActionContext
     public const string STUN_STRING = "Stun";
     public const string DIRECTION_STRING = "Direction";
     public const string FORCE_STRING = "Force";
-    public const string PREVISU_POS_STRING = "previsuPositions";
+    public const string PREVISU_CURVE_POS_STRING = "previsu-Positions";
+    public const string PREVISU_CURVE_MATERIAL_STRING = "previsu-material";
+    public const string PREVISU_CURVE_WIDTH_STRING = "previsu-width";
     
     private Dictionary<string, object> _data = new Dictionary<string, object>();
     
@@ -210,21 +212,56 @@ public abstract class GAction
         for (int i = 0; i < resolution; i++)
         {
             float progress = (float)i / resolution;
-            Vector3 position = Vector3.Lerp(startPosition + data.startHeightOffset * Vector3.up, endPosition + data.endHeightOffset * Vector3.up, data.previsuPositionsCurve.Evaluate(progress));
+            Vector3 position = Vector3.Lerp(startPosition + data.startHeightOffset * Vector3.up, endPosition + data.endHeightOffset * Vector3.up, progress);
             float height = Mathf.Lerp(position.y, data.previsuCurveMaxHeight, data.previsuHeightCurve.Evaluate(progress));
             position.y = height;
             curve[i] = position;
         }
-        
-        if (context.Has(GActionContext.PREVISU_POS_STRING))
+        AddPrevisualisationData(in context, ref curve, data);
+    }
+    
+    protected void AddPrevisualisationCurve(in GActionContext context, Vector3[] path,
+        GActionPrevisualisationCurveData data)
+    {
+        int resolution = data.previsuCurveResolution;
+        Vector3[] curve = new Vector3[resolution];
+        Vector3 currentStartPosition = path[0];
+        Vector3 currentEndPosition = path[1];
+        for (int i = 0; i < resolution; i++)
         {
-            List<Vector3[]> curves = context.Get<List<Vector3[]>>(GActionContext.PREVISU_POS_STRING);
-            curves.Add(curve);
+            float progress = (float)i / (resolution - 1);
+            float pathProgress = progress * (path.Length - 1);
+            
+            int pathIndex = Mathf.FloorToInt(pathProgress);
+            pathIndex = Mathf.Min(pathIndex, path.Length - 2);
+            float segmentProgress = pathProgress - pathIndex;
+            
+            currentStartPosition = path[pathIndex];
+            currentEndPosition = path[pathIndex + 1];
+
+            
+            Vector3 position = Vector3.Lerp(currentStartPosition + data.startHeightOffset * Vector3.up, currentEndPosition + data.endHeightOffset * Vector3.up, segmentProgress);
+            float height = Mathf.Lerp(position.y, data.previsuCurveMaxHeight, data.previsuHeightCurve.Evaluate(progress));
+            position.y = height;
+            curve[i] = position;
+        }
+        AddPrevisualisationData(in context, ref curve, data);
+    }
+
+    private void AddPrevisualisationData(in GActionContext context, ref Vector3[] points, GActionPrevisualisationCurveData data)
+    {
+        if (context.Has(GActionContext.PREVISU_CURVE_POS_STRING))
+        {
+            List<Vector3[]> curves = context.Get<List<Vector3[]>>(GActionContext.PREVISU_CURVE_POS_STRING);
+            curves.Add(points);
         }
         else
         {
-            var curves = new List<Vector3[]>(1) { curve };
-            context.Set(GActionContext.PREVISU_POS_STRING, curves);
+            var curves = new List<Vector3[]>(1) { points };
+            context.Set(GActionContext.PREVISU_CURVE_POS_STRING, curves);
         }
+        
+        context.Set(GActionContext.PREVISU_CURVE_MATERIAL_STRING, data.previusCurveMaterial);
+        context.Set(GActionContext.PREVISU_CURVE_WIDTH_STRING, data.previusCurveWidth);
     }
 }

@@ -254,8 +254,9 @@ public class GPawn : GGridObject
         if (isStunnedProtected)
         {
             isStunnedProtected = false;
+            visuals.OnUpdateStunTurn();
         }
-        else
+        else if (isStunned)
         {
             isStunnedProtected = data.isPlayer;
             isStunned = false;
@@ -304,8 +305,8 @@ public class GPawn : GGridObject
         
         if (data.isPlayer)
             visuals.OnUpdateActionsToken();
-        else 
-            Unstun();
+        /*else if(isStunned ||  isStunnedProtected)
+            Unstun();*/
         
         if (!isStunned)
             OnUnstunned?.Invoke();
@@ -323,7 +324,7 @@ public class GPawn : GGridObject
     
     public void OnEndTurn()
     {
-        if (isStunned && data.isPlayer)
+        if ((isStunned || isStunnedProtected)/* && data.isPlayer*/)
         {
             Unstun();
         }
