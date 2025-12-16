@@ -73,7 +73,6 @@ public class GPawn : GGridObject
     
     public bool IsAlive => !(hp == 0);
     
-    
     [FoldoutGroup("Other", false)]
     [SerializeField, FoldoutGroup("Other/Events"), HideIf("@hp < 0")]
     protected UnityEvent _OnDeath;

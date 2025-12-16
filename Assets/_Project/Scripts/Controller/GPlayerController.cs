@@ -438,12 +438,27 @@ public class GPlayerController : GController
                 isFirstAction = false;
                 GHudManager.Instance.playMenu.endTurnButton.interactable = true;
             }
+            
+            PlayActionVFX(_selectedAction);
+            
             _selectedPlayer.remainingActionToken--;
             _selectedPlayer.visuals.OnUpdateActionsToken();
             _targetHud.UpdateGridObjectHoveredInfo(_selectedPlayer, isFirstAction);
             SetSelectedPlayer(null);
             SelectAction(null);
             availableActions = null;
+        }
+    }
+
+    // here Because Just Need to be play by the Player !
+    // TODO : Add the VFx to the pool System ! 
+    public void PlayActionVFX(GAction action)
+    {
+        if (action.ValidateTargetCellVFXPrefab != null  && action.targetCell != null)
+        {
+            ParticleSystem _particleSystem = Instantiate(action.ValidateTargetCellVFXPrefab);
+            _particleSystem.transform.position = action.targetCell.transform.position;
+            _particleSystem.Play();
         }
     }
 
