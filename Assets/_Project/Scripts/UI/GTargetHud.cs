@@ -150,7 +150,7 @@ public class GTargetHud : MonoBehaviour
                         image.gameObject.SetActive(false);
                     }
                     _aiHpNumberText.gameObject.SetActive(true);
-                    _aiHpNumberText.text = $"{pawn.hp}/{pawn.data.startHp} HPs";
+                    _aiHpNumberText.text = $"{pawn.hp}/{pawn.AttributesController.GetFinal(EAttributeType.MaxHealth)} HPs";
                 }
             }
         };
@@ -217,7 +217,7 @@ public class GTargetHud : MonoBehaviour
             }
             else
             {
-                _aiHpNumberText.text = $"{pawn.hp}/{pawn.data.startHp} HPs";
+                _aiHpNumberText.text = $"{pawn.hp}/{pawn.AttributesController.GetFinal(EAttributeType.MaxHealth)} HPs";
             }
         }
     }

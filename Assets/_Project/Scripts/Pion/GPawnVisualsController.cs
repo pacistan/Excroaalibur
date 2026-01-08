@@ -163,7 +163,7 @@ public class GPawnVisualsController : SerializedMonoBehaviour
         _animator.SetBool(animationParameterName, value);        
     }
     
-    public void HealthChange()
+    public void HealthChange(float oldValue, float newValue)
     {
     }
     
@@ -183,7 +183,7 @@ public class GPawnVisualsController : SerializedMonoBehaviour
         if (_pawn.hp >= 0 && _pawn.hp != _previousHpNumber) 
         { 
             text += $"{_pawn.hp}";
-            //TODO : Start Take Damage Feedbacks
+            // TODO : Start Take Damage Feedbacks
             OnDamagedUnityEvent?.Invoke();
 
             RuntimeManager.PlayOneShotAttached("event:/Pawn/Damaged", gameObject);
@@ -191,16 +191,14 @@ public class GPawnVisualsController : SerializedMonoBehaviour
         
         _previousHpNumber = _pawn.hp;
         _txtCurrentHp.text = text;
-        _imgHpBarForeground.fillAmount = (float)_pawn.hp / (float)_pawn.data.startHp;
-        _imgHpBarPrevisualisation.fillAmount = (float)_pawn.hp / (float)_pawn.data.startHp;
+        _imgHpBarForeground.fillAmount = _pawn.GetHpRatio();
+        _imgHpBarPrevisualisation.fillAmount = _pawn.GetHpRatio();
     }
 
     public void OnUpdateActionsToken()
     {
-        
         _imgListactionTokens[0].sprite = _pawn.remainingActionToken >= 1 ?
             _spriteActionTokenOn : _spriteActionTokenOff;
-        
         
         _imgListactionTokens[1].sprite = _pawn.remainingActionToken >= 2 ?
             _spriteActionTokenOn : _spriteActionTokenOff;
@@ -252,7 +250,7 @@ public class GPawnVisualsController : SerializedMonoBehaviour
         if (!_pawn.data.isPlayer)
         {
             int tempHp = Mathf.Max(0, _pawn.hp - damage);
-            _imgHpBarForeground.fillAmount = (float)tempHp / (float)_pawn.data.startHp;
+            _imgHpBarForeground.fillAmount = _pawn.GetHpRatio();
             _txtCurrentHp.text = $"{tempHp}";
             if (tempHp != _pawn.hp)
             {
@@ -277,7 +275,7 @@ public class GPawnVisualsController : SerializedMonoBehaviour
         if (_pawn is GAltar) return;
         if (!_pawn.data.isPlayer)
         {
-            _imgHpBarForeground.fillAmount = (float)_pawn.hp / (float)_pawn.data.startHp;
+            _imgHpBarForeground.fillAmount = _pawn.GetHpRatio();
             _txtCurrentHp.text = $"{_pawn.hp}";
             _txtCurrentHp.color = _txtHpNormalColor;
         }

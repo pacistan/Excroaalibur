@@ -11,14 +11,15 @@ public class GPawnData : SerializedScriptableObject
     [SerializeField]
     public EGridObjectType gridObjectType = EGridObjectType.None;
     
-    [field : SerializeField, Min(1)]
-    public int actionTokens { get; private set; }
-    
-    [field : SerializeField]
+    [field: SerializeField]
     public bool isPlayer { get; private set; }
-    
-    [field : SerializeField]
-    public int startHp { get; protected set; }
+
+    // [field: SerializeField]
+    // public int startHp { get; protected set; }
+
+    /** Attribute Profile defining base attributes for this pawn */
+    [SerializeField]
+    public GAttributeProfile attributeProfile;
     
     [SerializeField]
     public ETileType[] _walkingTileType = new[]{ETileType.Normal};
@@ -26,9 +27,11 @@ public class GPawnData : SerializedScriptableObject
     [SerializeField]
     public ETileType[] _endMovementTileType = new[]{ETileType.Normal};
     
-    [FormerlySerializedAs("actions")]
     [FoldoutGroup("Actions", true)] 
-    [SerializeReference, ShowIf("isPlayer")]
+    [field: SerializeField, Min(1), FoldoutGroup("Actions")]
+    public int actionTokens { get; private set; }
+    
+    [SerializeReference, FoldoutGroup("Actions"), ShowIf("isPlayer")]
     public List<GAction> actionList = new List<GAction>();
     
     [SerializeField, FoldoutGroup("Actions")]
@@ -37,8 +40,9 @@ public class GPawnData : SerializedScriptableObject
     // Cache in _overrideCache at Awake and OnValidate
     [OdinSerialize, FoldoutGroup("Actions"), DictionaryDrawerSettings(KeyLabel = "Action Type", ValueLabel = "Reaction"), Tooltip("Dictionary mapping action types to reaction actions that override both base reactions and default reactions.")] 
     public Dictionary<SerializableType<GAction>, GAction> overrideReactionByType = new();
-
-    [field: SerializeField] public float previsuHeightOffset { get; private set; } = .5f;
+    
+    [field: SerializeField, BoxGroup("Feedbacks")]
+    public float previsuHeightOffset { get; private set; } = .5f;
     
     [FoldoutGroup("Other", false)]
     [SerializeField, FoldoutGroup("Other/Sound")]
