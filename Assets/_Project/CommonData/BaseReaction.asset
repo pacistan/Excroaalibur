@@ -25,6 +25,7 @@ MonoBehaviour:
     - rid: 828711102939922561
       type: {class: GPushedReaction, ns: , asm: Assembly-CSharp}
       data:
+        <ValidateTargetCellVFXPrefab>k__BackingField: {fileID: 7657269539548993218, guid: ff5a475b2bb91cc489d5aad803103608, type: 3}
         <actionLabel>k__BackingField: 
         <actionIcon>k__BackingField: {fileID: 0}
         _actionCursorIcon: []
@@ -35,6 +36,5 @@ MonoBehaviour:
         _isPushable: 1
         _DamageRelatedToPushForce: 0
         _damage: 1
-        _stun: 1
         _pushedTileType: 0000000002000000
         _previsuCurveData: {fileID: 11400000, guid: 11eea60cc8d82364baac63c8cd184f8f, type: 2}
