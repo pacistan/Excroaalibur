@@ -1,6 +1,7 @@
+﻿using Sirenix.OdinInspector;
 using UnityEngine;
 
-public class GSingleton<T> : MonoBehaviour where T : MonoBehaviour
+public class GSerializedSingleton<T> : SerializedMonoBehaviour where T : SerializedMonoBehaviour
 {
     public static T Instance { get; private set; }
 

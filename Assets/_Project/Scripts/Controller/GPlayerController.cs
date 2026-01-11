@@ -343,6 +343,11 @@ public class GPlayerController : GController
             _targetCell = _hoverCell;
             GPawn cellPawn = _targetCell.GetGridObject<GPawn>();
 
+            if (GGameManager.Instance.currentState == EMacroStates.Upgrade_Select_Character && cellPawn &&
+                cellPawn.data.isPlayer)
+            {
+                GUpgradeManager.Instance.OnCharacterSelected(cellPawn);
+            }
             
             if (_selectedPlayer && _selectedAction.IsValidCell(_targetCell.hexCoordinates) && _selectedPlayer.remainingActionToken > 0)
             {
