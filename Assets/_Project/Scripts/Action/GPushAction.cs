@@ -8,10 +8,12 @@ using UnityEngine;
 
 public class GPushAction : GAction
 {
-    [SerializeField, Min(0), Tooltip("Number of cells the pushed pawn will be moved away")]
+    [Tooltip("Number of cells the pushed pawn will be moved away")]
+    [SerializeField, Min(0), HideIf("_useAttribute")]
     private int _pushForce = 2;
     
-    [SerializeField, Min(0), Tooltip("Distance Of the pawn following the pushed pawn, if possible")]
+    [Tooltip("Distance Of the pawn following the pushed pawn, if possible")]
+    [SerializeField, Min(0), HideIf("_useAttribute")]
     private int _followDistance = 1;
     
     [SerializeField]
@@ -25,8 +27,8 @@ public class GPushAction : GAction
 
     bool _isPushAnimationOver = false;
     
-    // TODO : Add What tile types we can push ! (Like walls, holes, Spawner)
     
+    // TODO : Add What tile types we can push ! (Like walls, holes, Spawner)
     public override List<GCell> Previsualisation(in GActionContext previsuContext)
     {
         _direction = linkedPawn.GetHexCoordinate().GetLineDirection(targetCell.hexCoordinates);
@@ -38,8 +40,8 @@ public class GPushAction : GAction
         if (_reaction != null)
         {
             previsuContext.Set(GActionContext.DIRECTION_STRING, _direction);
-            previsuContext.Set(GActionContext.FORCE_STRING, _pushForce);
-            _reaction.linkedPawn = _targetPawn;
+            previsuContext.Set(GActionContext.FORCE_STRING, GetAttributeOrBaseValue(_pushForce, EAttributeType.PushStrength));
+            _reaction.InitAction(_targetPawn);
             previewCells.AddRange(_reaction.Previsualisation(in previsuContext));
         }
 
@@ -64,8 +66,6 @@ public class GPushAction : GAction
                 pathCell.transform.position, _previsuCurveData);
         }
         
-        
-        
         return previewCells;
     }
    
@@ -81,8 +81,8 @@ public class GPushAction : GAction
         {
             GActionContext pushContext = new GActionContext();
             pushContext.Set(GActionContext.DIRECTION_STRING, _direction);
-            pushContext.Set(GActionContext.FORCE_STRING, _pushForce);
-            _reaction.linkedPawn = _targetPawn;
+            pushContext.Set(GActionContext.FORCE_STRING, GetAttributeOrBaseValue(_pushForce, EAttributeType.PushStrength));
+            _reaction.InitAction(_targetPawn);
             GTurnBaseManager.Instance.PreProcessReaction(_reaction, pushContext);
         }
 

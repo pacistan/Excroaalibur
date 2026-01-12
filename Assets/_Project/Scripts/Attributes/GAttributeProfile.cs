@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using Sirenix.OdinInspector;
+using UnityEngine;
 using System;
 using System.Collections.Generic;
 
@@ -16,6 +17,38 @@ public class GAttributeDef
 public class GAttributeProfile : ScriptableObject
 {
     public List<GAttributeDef> Attributes = new();
+
+    [Button]
+    private void AddAllAttributes()
+    {
+        Array attributeTypes = Enum.GetValues(typeof(EAttributeType));
+        foreach (EAttributeType type in attributeTypes)
+        {
+            if (!Attributes.Exists(attr => attr.Type == type))
+            {
+                GAttributeDef newAttr = new GAttributeDef { Type = type, BaseValue = 0f };
+                Attributes.Add(newAttr);
+            }
+        }
+    }
+
+    [Button]
+    private void AddPlayerAttributes()
+    {
+        Array attributeTypes = Enum.GetValues(typeof(EAttributeType));
+        foreach (EAttributeType type in attributeTypes)
+        {
+            if (type == EAttributeType.MaxHealth ) continue;
+            
+            if (!Attributes.Exists(attr => attr.Type == type))
+            {
+                GAttributeDef newAttr = new GAttributeDef { Type = type, BaseValue = 0f };
+                Attributes.Add(newAttr);
+            }
+        }
+        
+        Attributes.RemoveAll(attr => attr.Type == EAttributeType.MaxHealth); // safe removal
+    }
     
     // Editor Validation to Warn about duplicate attribute types
     private void OnValidate()

@@ -11,7 +11,8 @@ using STOP_MODE = FMOD.Studio.STOP_MODE;
 
 public class GThrowAction : GAction
 {
-    [SerializeField, Min(0), Tooltip("Maximum distance the Crown can be thrown")]
+    [SerializeField, Min(0)]
+    [Tooltip("Maximum distance the Crown can be thrown")]
     private int _maxThrowDistance = 10;
     
     [BoxGroup("Animation")]
@@ -255,7 +256,10 @@ public class GThrowAction : GAction
         }
         else
         {
-            _crown.OnPass();
+            int damagetoeToIncrement = 1;
+            if (_targetPawn.AttributesController.Has(EAttributeType.PassDMGUpgrade)) 
+                damagetoeToIncrement = (int)_targetPawn.AttributesController.GetFinal(EAttributeType.PassDMGUpgrade);
+            _crown.IncrementDamage(damagetoeToIncrement);
         }
     }
 
@@ -273,7 +277,6 @@ public class GThrowAction : GAction
                 ? GPawn.PassCloseAnimationName
                 : GPawn.ThrowAnimationName;
         
-        
         linkedPawn.OnAnimationThrow += OnAnimationThrowCallback;
         linkedPawn.visuals.SetAnimationState(animName);
         linkedPawn.StartCoroutine(StartReactionsCoroutine());
@@ -288,7 +291,6 @@ public class GThrowAction : GAction
         {
             DOTween.ManualUpdate(delta, delta);
         }
-        
     }
 
     public override void End_Action()

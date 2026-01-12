@@ -22,14 +22,14 @@ public class GAIController : GController
             StopTurn();
             return;
         }
-        pawn.remainingActionToken = pawn.data.actionTokens;
+        pawn.remainingActionToken = (int)pawn.AttributesController.GetFinal(EAttributeType.MaxAction);
         _aiBehavior.OnTurnStart();
         StartAction();
     }
 
     public void ResetTurn()
     {
-        pawn.remainingActionToken = pawn.data.actionTokens;
+        pawn.remainingActionToken = (int)pawn.AttributesController.GetFinal(EAttributeType.MaxAction);
     }
 
     public override void StartAction()

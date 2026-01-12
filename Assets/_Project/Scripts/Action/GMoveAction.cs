@@ -2,6 +2,7 @@ using DG.Tweening;
 using FMOD;
 using FMOD.Studio;
 using FMODUnity;
+using Sirenix.OdinInspector;
 using Sirenix.Utilities;
 using System.Collections.Generic;
 using System;
@@ -13,9 +14,11 @@ using STOP_MODE = FMOD.Studio.STOP_MODE;
 
 public class GMoveAction : GAction
 {
-    [SerializeField]
+    [Tooltip("Maximum number of cells the pawn can move")]
+    [SerializeField, Min(0), HideIf("_useAttribute")]
     public int _maxMoveDistance = 2;
     
+    [Tooltip("Speed of the movement")]
     [SerializeField]
     protected float _speed = 1f;
     
@@ -65,7 +68,7 @@ public class GMoveAction : GAction
     {
         GGridManager.Instance.GenerateStepMap(linkedPawn.GetCell(), _walkingTileType );
         _path = GGridManager.Instance.GetPath(linkedPawn.GetCell() ,targetCell, _endMovementTileType,false);
-        if (_path == null || _path.Length == 0 || _path.Length > _maxMoveDistance) return null;
+        if (_path == null || _path.Length == 0 || _path.Length > GetAttributeOrBaseValue(_maxMoveDistance, EAttributeType.MoveDistance)) return null;
         
         GCell cell = linkedPawn.GetCell();
         
@@ -89,7 +92,7 @@ public class GMoveAction : GAction
         base.PreProcess(context);
         GGridManager.Instance.GenerateStepMap(linkedPawn.GetCell(), _walkingTileType);
         _path = GGridManager.Instance.GetPath(linkedPawn.GetCell() ,targetCell, _endMovementTileType,false);
-        if (_path == null || _path.Length == 0 || _path.Length > _maxMoveDistance) return;
+        if (_path == null || _path.Length == 0 || _path.Length > GetAttributeOrBaseValue(_maxMoveDistance, EAttributeType.MoveDistance)) return;
         
         GCell cell = linkedPawn.GetCell();
 
@@ -225,7 +228,7 @@ public class GMoveAction : GAction
             GHexCoordinate coordinate = GHexCoordinate.FrommOffsetCoordinate(step.Key.x, step.Key.y);
             GCell cell = GGridManager.Instance.GetCell(coordinate);
             
-            if (!cell || !cell.IsWalkable() || step.Value > _maxMoveDistance) continue;
+            if (!cell || !cell.IsWalkable() || step.Value > GetAttributeOrBaseValue(_maxMoveDistance, EAttributeType.MoveDistance)) continue;
             if (GGridManager.Instance.GetPath(linkedPawn.GetCell(), cell).Length <= 0) continue;
             newValidCells.Add(coordinate);
         }

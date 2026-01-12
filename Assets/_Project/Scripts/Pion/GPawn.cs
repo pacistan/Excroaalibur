@@ -73,7 +73,7 @@ public class GPawn : GGridObject
 
     [field: SerializeField, ReadOnly]
     public int hp { get; protected set; } = -1;
-
+    
     public bool IsAlive => !(hp == 0);
     
     [FoldoutGroup("Other", false)]
@@ -239,7 +239,7 @@ public class GPawn : GGridObject
             return;
         
         int OldHP = hp;
-        int NewHP = Mathf.Max(hp - damage, 0, (int)AttributesController.GetFinal(EAttributeType.MaxHealth));
+        int NewHP = Mathf.Max(hp - damage, 0);
         
         if (OldHP == NewHP) return;
         
@@ -325,7 +325,7 @@ public class GPawn : GGridObject
     
     public void OnStartTurn()
     {
-        remainingActionToken = data.actionTokens;
+        remainingActionToken = (int)AttributesController.GetFinal(EAttributeType.MaxAction);
         
         if (data.isPlayer)
             visuals.OnUpdateActionsToken();
@@ -415,12 +415,20 @@ public class GPawn : GGridObject
         
         if (AttributesController == null) // Safety check
             AttributesController = GetComponent<GAttributesController>();
+        
+        AttributesController.LoadProfile(data.attributeProfile);
+        AttributesController.SubscribeCallBack(EAttributeType.MaxHealth, OnMaxHealthChanged);
+    }
+
+    void OnMaxHealthChanged(float oldValue, float NewValue)
+    {
+        UpdateHpNumber();
     }
 
     protected virtual void Start()
     {
         _currentCell.SetGridObject(this);
-        remainingActionToken = data.actionTokens;
+        remainingActionToken = (int)AttributesController.GetFinal(EAttributeType.MaxAction);
     }
 
     protected override void OnEnable()

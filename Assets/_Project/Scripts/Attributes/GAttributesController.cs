@@ -6,9 +6,11 @@ using UnityEngine;
 public enum EAttributeType
 {
     MaxHealth,
-    Strength,
+    MaxAction,
+    PassDMGUpgrade,
+    PushStrength,
     MoveDistance,
-    ThrowDistance,
+    FollowDistance,
     // Add New Attribute Types Here !
 }
 
@@ -52,6 +54,8 @@ public class GAttributesController : MonoBehaviour
     
     public void LoadProfile(GAttributeProfile profile)
     {
+        if (profile == null) return;
+        
         _attributes.Clear();
         _mods.Clear();
         _onAttributeChangedCallback.Clear();

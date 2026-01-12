@@ -27,10 +27,6 @@ public class GPawnData : SerializedScriptableObject
     [SerializeField]
     public ETileType[] _endMovementTileType = new[]{ETileType.Normal};
     
-    [FoldoutGroup("Actions", true)] 
-    [field: SerializeField, Min(1), FoldoutGroup("Actions")]
-    public int actionTokens { get; private set; }
-    
     [SerializeReference, FoldoutGroup("Actions"), ShowIf("isPlayer")]
     public List<GAction> actionList = new List<GAction>();
     
@@ -50,5 +46,6 @@ public class GPawnData : SerializedScriptableObject
     
     [SerializeField, FoldoutGroup("Other/Sound")]
     public EventReference SelectSound;
+    
 
 }

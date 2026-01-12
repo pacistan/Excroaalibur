@@ -26,10 +26,12 @@ MonoBehaviour:
     - rid: 3108424149014413392
       type: {class: GMoveAction, ns: , asm: Assembly-CSharp}
       data:
+        <ValidateTargetCellVFXPrefab>k__BackingField: {fileID: 0}
         <actionLabel>k__BackingField: 
         <actionIcon>k__BackingField: {fileID: 0}
         _actionCursorIcon: []
         <centerCursorOffset>k__BackingField: 0
+        _useAttribute: 1
         linkedPawn: {fileID: 0}
         targetCell: {fileID: 0}
         validCells: []
@@ -59,26 +61,32 @@ MonoBehaviour:
           m_PreInfinity: 2
           m_PostInfinity: 2
           m_RotationOrder: 4
+        _previsuCurveData: {fileID: 0}
         moveAnimationName: Move
     - rid: 3108424154922877060
       type: {class: GPushAction, ns: , asm: Assembly-CSharp}
       data:
+        <ValidateTargetCellVFXPrefab>k__BackingField: {fileID: 0}
         <actionLabel>k__BackingField: 
         <actionIcon>k__BackingField: {fileID: 0}
         _actionCursorIcon: []
         <centerCursorOffset>k__BackingField: 0
+        _useAttribute: 1
         linkedPawn: {fileID: 0}
         targetCell: {fileID: 0}
         validCells: []
         _pushForce: 1
         _followDistance: 1
+        _previsuCurveData: {fileID: 0}
     - rid: 3108424154922877075
       type: {class: GPlaceOnAltarAction, ns: , asm: Assembly-CSharp}
       data:
+        <ValidateTargetCellVFXPrefab>k__BackingField: {fileID: 0}
         <actionLabel>k__BackingField: 
         <actionIcon>k__BackingField: {fileID: 0}
         _actionCursorIcon: []
         <centerCursorOffset>k__BackingField: 0
+        _useAttribute: 1
         linkedPawn: {fileID: 0}
         targetCell: {fileID: 0}
         validCells: []
