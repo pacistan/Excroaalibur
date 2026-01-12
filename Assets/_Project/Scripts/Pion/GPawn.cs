@@ -37,7 +37,7 @@ public class GPawn : GGridObject
     public const string HitAnimationName = "Hit";
     public const string SpawnAnimationName = "Spawn";
 
-    public const string AnimParam_isStunned = "IsStunned";
+    public const string AnimParam_IsStunned = "IsStunned";
     public const string AnimParam_HasSword = "HasSword";
     public const string AnimParam_IsPreparedToCatch = "IsPrepareCatch";
     public const string AnimParam_IsPreparedToThrow = "isPrepareThrow";
