@@ -9,18 +9,20 @@ using UnityEngine;
 using UnityEngine.Events;
 
 
+[RequireComponent(typeof(GPawnVisualsController))]
+[RequireComponent(typeof(GAttributesController))]
 public class GPawn : GGridObject
 {
-    public enum EDeathType {Pushed, Hole, Throw}
+    public enum EDeathType { Pushed, Hole, Throw }
     public event Action<GEquipment> OnEquip;
     public event Action<GEquipment> OnUnequip;
     public event Action OnKill;
     public event Action OnStunned;
     public event Action OnUnstunned;
-    public event Action OnHealthChanged;
+    public event Action<float, float> OnHealthChanged;
     public event Action OnAnimationPush;
     public event Action OnAnimationThrow;
-        
+
     public const string MoveAnimationName = "Move";
     public const string IdleAnimationName = "Idle";
     public const string PushAnimationName = "Push";
@@ -34,8 +36,7 @@ public class GPawn : GGridObject
     public const string PushedIntoHoleAnimationName = "Pushed_Hole";
     public const string HitAnimationName = "Hit";
     public const string SpawnAnimationName = "Spawn";
-    
-    
+
     public const string AnimParam_IsStunned = "IsStunned";
     public const string AnimParam_HasSword = "HasSword";
     public const string AnimParam_IsPreparedToCatch = "IsPrepareCatch";
@@ -54,10 +55,12 @@ public class GPawn : GGridObject
     [FoldoutGroup("Other", false)]
     [field : SerializeField, FoldoutGroup("Other/Components")]
     public GPawnVisualsController visuals { get; private set; }
-
-    [FoldoutGroup("Other", false)]
+    
     [field : SerializeField, FoldoutGroup("Other/Components")]
     public Transform equipmentParentTr { get; private set; }
+
+    [field: SerializeField, FoldoutGroup("Other/Components")]
+    public GAttributesController AttributesController { get; private set; }
 
     [SerializeField, ReadOnly, HideInEditorMode]
     public int remainingActionToken;
@@ -67,9 +70,9 @@ public class GPawn : GGridObject
 
     [field : SerializeField, ReadOnly, HideInEditorMode] 
     public bool isStunnedProtected { get; private set; } = false;
-    
-    [field: SerializeField, HideIf("@hp == -1"), HideInEditorMode]
-    public int hp { get; protected set; } = 3;
+
+    [field: SerializeField, ReadOnly]
+    public int hp { get; protected set; } = -1;
     
     public bool IsAlive => !(hp == 0);
     
@@ -207,36 +210,60 @@ public class GPawn : GGridObject
             return false;
         }
         
+        _OnStartActionEvent?.Invoke();
         return true;
     }
 
     public void SetHp(int newHpValue)
     {
-        if (newHpValue <= 0)
-        {
-            Debug.LogError("Tried to set new Hp Value <= 0");
+        if (!AttributesController.Has(EAttributeType.MaxHealth))
             return;
-        }
-        else if (newHpValue > data.startHp)
-        {
-            Debug.LogError("Tried to set new Hp Value > startHp");
-            return;
-        }
         
-        hp = newHpValue;
+        newHpValue = Mathf.Clamp(newHpValue, 0, (int)AttributesController.GetFinal(EAttributeType.MaxHealth));
+        
+        if (hp != newHpValue)
+            OnHealthChanged?.Invoke(hp, newHpValue);
+    }
+    
+    public float GetHpRatio()
+    {
+        if (!AttributesController.Has(EAttributeType.MaxHealth))
+            return 1f;
+        
+        return (float)hp / AttributesController.GetFinal(EAttributeType.MaxHealth);
     }
     
     public void TakeDamage(int damage = 1)
     {
-        if (hp <= 0 || data.isPlayer) return;
+        if (!AttributesController.Has(EAttributeType.MaxHealth)) // If No max health, no damage is possible and hp is irrelevant
+            return;
         
-        hp = Mathf.Max(0, hp - damage);
-        OnHealthChanged?.Invoke();
+        int OldHP = hp;
+        int NewHP = Mathf.Max(hp - damage, 0);
+        
+        if (OldHP == NewHP) return;
+        
+        hp = NewHP;
+        OnHealthChanged?.Invoke(OldHP, hp);
         
         if (hp == 0 && GetCell().gridObject == this)
         {
             GetCell().SetGridObject(null);
         } 
+    }
+    
+    public void Heal(int healAmount = 1)
+    {
+        if (!AttributesController.Has(EAttributeType.MaxHealth)) // If No max health, no healing is possible and hp is irrelevant
+            return;
+        
+        int OldHP = hp;
+        int NewHP = Mathf.Min(hp + healAmount, (int)AttributesController.GetFinal(EAttributeType.MaxHealth));
+        
+        if (OldHP == NewHP) return;
+        
+        hp = NewHP;
+        OnHealthChanged?.Invoke(OldHP, hp);
     }
     
     public void Stun()
@@ -268,11 +295,10 @@ public class GPawn : GGridObject
         if (data.isPlayer)
         {
             Stun();
+            return;
         }
-        else
-        {
-            TakeDamage(hp); // instant kill
-        }
+       
+        TakeDamage(hp); // instant kill
     }
 
     public void Kill(EDeathType deathType = EDeathType.Throw)
@@ -291,7 +317,6 @@ public class GPawn : GGridObject
 
         if (GTurnBaseManager.Instance.EnemiesCount <= 0)
             GGameManager.Instance.TriggerSlowMotion();
-           // GGameManager.Instance.TriggerSlowMotion(0.5f, 0.1f);
     }
 
     public void OnStartAction()
@@ -300,7 +325,7 @@ public class GPawn : GGridObject
     
     public void OnStartTurn()
     {
-        remainingActionToken = data.actionTokens;
+        remainingActionToken = (int)AttributesController.GetFinal(EAttributeType.MaxAction);
         
         if (data.isPlayer)
             visuals.OnUpdateActionsToken();
@@ -367,6 +392,7 @@ public class GPawn : GGridObject
             // La dernière entrée gagnante écrase l’ancienne (pratique si doublons)
             _overrideCache[type] = val;
         }
+        
     #if UNITY_EDITOR
         if (!Application.isPlaying)
             EditorUtility.SetDirty(this);
@@ -376,15 +402,33 @@ public class GPawn : GGridObject
     protected virtual void Awake()
     {
         RebuildOverrideCache();
+        if (data == null)
+        {
+            Debug.LogError($"Pawn {name} has no data assigned !");
+            return;
+        }
+        
         data = ScriptableObject.Instantiate(data);
-        hp = data.startHp;
-        if (data.isPlayer) hp = -1; // Player has infinite HP
+        
+        if (visuals == null) // Safety check
+            visuals = GetComponent<GPawnVisualsController>();
+        
+        if (AttributesController == null) // Safety check
+            AttributesController = GetComponent<GAttributesController>();
+        
+        AttributesController.LoadProfile(data.attributeProfile);
+        AttributesController.SubscribeCallBack(EAttributeType.MaxHealth, OnMaxHealthChanged);
+    }
+
+    void OnMaxHealthChanged(float oldValue, float NewValue)
+    {
+        UpdateHpNumber();
     }
 
     protected virtual void Start()
     {
         _currentCell.SetGridObject(this);
-        remainingActionToken = data.actionTokens;
+        remainingActionToken = (int)AttributesController.GetFinal(EAttributeType.MaxAction);
     }
 
     protected override void OnEnable()

@@ -60,7 +60,7 @@ public abstract class GAction
     }
     
     public event Action OnActionStarted; 
-    public event Action OnActionFinished;
+    public event Action OnActionFinished; 
     
     [field: SerializeField, FoldoutGroup("VFX"), Tooltip("VFX played on the target cell when the action is validated")] 
     public ParticleSystem ValidateTargetCellVFXPrefab { get; private set; }
@@ -77,6 +77,9 @@ public abstract class GAction
 
     [field : SerializeField, FoldoutGroup("Visuals")]
     public bool centerCursorOffset { get; private set; }
+    
+    [SerializeField, Tooltip("Does this Action Use Attributes from the Pawn ?")]
+    protected bool _useAttribute = false;
     
     [ReadOnly, HideInEditorMode] 
     public GPawn linkedPawn;
@@ -102,6 +105,22 @@ public abstract class GAction
         OnActionFinished += inOnActionFinished;
     }
 
+    /** Get Attribute Value from Pawn if _useAttribute is true,
+     *  if false return the propertyGetter value
+     */
+    public T GetAttributeOrBaseValue<T>(T propertyGetter, EAttributeType attributeType)
+    {
+        T value = propertyGetter;
+        if (_useAttribute && linkedPawn)
+        {
+            if (linkedPawn.AttributesController.Has(attributeType))
+                value = (T)Convert.ChangeType(linkedPawn.AttributesController.GetFinal(attributeType), typeof(T));
+            else 
+                Debug.LogWarning($"Pawn {linkedPawn.name} is missing {attributeType} Attribute for calculation !");
+        }
+        return value;
+    }
+    
     public abstract EZoneActionType GetHighlightActionType();
     
     /// <summary>

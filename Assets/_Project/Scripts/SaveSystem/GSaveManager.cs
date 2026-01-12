@@ -142,7 +142,7 @@ public class GSaveManager : GSingleton<GSaveManager>
         
         // Crown Stuff
         {
-            for (int i = crown.currentDamage; i <= data.crownDamage; i++) crown.OnPass();
+            crown.SetCurrentDamage(data.crownDamage);
             GHudManager.Instance.playMenu.SetCrownDamageText(crown.currentDamage);
 
             GCell crownCell =
@@ -157,6 +157,7 @@ public class GSaveManager : GSingleton<GSaveManager>
             else
                 crownCell.SetGridObject(crown);
         }
+        
         GPlayerController playerController = FindFirstObjectByType<GPlayerController>();
         playerController.isFirstAction = data.isFirstAction;
         GTurnBaseManager.Instance.SetWaveCount(data.waveNumber);
