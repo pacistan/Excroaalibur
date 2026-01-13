@@ -17,6 +17,9 @@ public class GPushedReaction : GAction
     [SerializeField, HideIf("_DamageRelatedToPushForce"), Tooltip("Damage inflicted if we hit Something while being pushed")]
     int _damage = 1;
     
+    [SerializeField, HideIf("_DamageRelatedToPushForce"), Tooltip("Damage inflicted if we hit Something while being pushed")]
+    int _stunTurns = 1;
+    
     [SerializeField, Tooltip("Tile types on which the pawn can be pushed")]
     ETileType[] _pushedTileType = new ETileType[] { ETileType.Normal, ETileType.Hole };
 
@@ -44,6 +47,10 @@ public class GPushedReaction : GAction
             _direction = previsuContext.Get<EHexDirection>(GActionContext.DIRECTION_STRING);
         if (previsuContext.Has(GActionContext.FORCE_STRING))
             _distance = previsuContext.Get<int>(GActionContext.FORCE_STRING);
+        if (previsuContext.Has(GActionContext.DAMAGE_STRING))
+            _damage = previsuContext.Get<int>(GActionContext.DAMAGE_STRING);
+        if (previsuContext.Has(GActionContext.STUN_STRING))
+            _stunTurns = previsuContext.Get<int>(GActionContext.STUN_STRING);
         
         if (_isPushable) // Check initial param
         {
@@ -89,7 +96,7 @@ public class GPushedReaction : GAction
         if (_inflictDamage)
         {
             previsuContext.Set(GActionContext.DAMAGE_STRING, _damage);
-            previsuContext.Set(GActionContext.STUN_STRING, true);
+            previsuContext.Set(GActionContext.STUN_STRING, _stunTurns);
         }
         
         return PreviewCells;
@@ -109,6 +116,10 @@ public class GPushedReaction : GAction
             _direction = context.Get<EHexDirection>(GActionContext.DIRECTION_STRING);
         if (context.Has(GActionContext.FORCE_STRING))
             _distance = context.Get<int>(GActionContext.FORCE_STRING);
+        if (context.Has(GActionContext.DAMAGE_STRING))
+            _damage = context.Get<int>(GActionContext.DAMAGE_STRING);
+        if (context.Has(GActionContext.STUN_STRING))
+            _stunTurns = context.Get<int>(GActionContext.STUN_STRING);
         
         if (_isPushable) // Check initial param
         {
@@ -140,12 +151,12 @@ public class GPushedReaction : GAction
         {
             if (linkedPawn.equipment) 
                 linkedPawn.ReleaseEquipement(true, true);
-            
+
+            int moveDistance = 1;
             GCell cell = linkedPawn.GetCell();
             for (int i = 0; i < _distance; i++)
             {
                 GCell neighbor = cell.GetNeighbor(_direction);
-            
                 if (!neighbor || neighbor.GetTileType == ETileType.Wall)
                 {
                     _inflictDamage = true;
@@ -161,6 +172,7 @@ public class GPushedReaction : GAction
                     _damage = 0;
                     break;
                 }
+                moveDistance++;
             }
             
             _moveAction = new GMoveAction();
@@ -169,13 +181,14 @@ public class GPushedReaction : GAction
             _moveAction.targetCell = cell;
             _moveAction._maxMoveDistance = _distance;
             _moveAction.moveAnimationName = GPawn.PushedStartAnimationName;
+            _moveAction._speed = _moveAction._speed * moveDistance;
             GTurnBaseManager.Instance.PreProcessReaction(_moveAction, new GActionContext());
         }
         
         if (_inflictDamage)
         {
             linkedPawn.TakeDamage(_damage);
-            linkedPawn.Stun();
+            linkedPawn.Stun(_stunTurns);
         }
     }
 

@@ -13,7 +13,7 @@ public class GSOUpgrade : SerializedScriptableObject
     [field: SerializeField] public LocalizedString Name { get; private set; }
     [field: SerializeField] public LocalizedString Description { get; private set; }
     // TODO : Replace with GEffect once stan is done with them
-    [field: SerializeField] public List<GameObject> Effects { get; private set; } = new List<GameObject>();
+    [field: SerializeField] public List<GAttributeModifier> Effects { get; private set; } = new List<GAttributeModifier>();
     [field: SerializeField] public Sprite Icon { get; private set; }
     [field : SerializeField, ReadOnly] public string ItemID { get; private set; }
     // TODO : Conditions 
@@ -22,6 +22,10 @@ public class GSOUpgrade : SerializedScriptableObject
     {
         GSOUpgrade upgrade = Instantiate(this);
         upgrade.ItemID = ItemID;
+        foreach (GAttributeModifier effect in upgrade.Effects)
+        {
+            effect.Source = upgrade;
+        }
         return upgrade;
     }
     

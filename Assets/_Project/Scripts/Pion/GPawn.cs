@@ -43,6 +43,9 @@ public class GPawn : GGridObject
     public const string AnimParam_IsPreparedToThrow = "isPrepareThrow";
     public const string AnimParam_IsInHole = "IsInHole";
     
+    [SerializeField, ReadOnly]
+    List<GSOUpgrade> _upgrades = new List<GSOUpgrade>();
+    
     [SerializeReference]
     public GPawnData data;
 
@@ -66,7 +69,7 @@ public class GPawn : GGridObject
     public int remainingActionToken;
 
     [field: SerializeField, ReadOnly, HideInEditorMode]
-    public bool isStunned { get; private set; } = false;
+    public int stunTurns { get; private set; } = 0;
 
     [field : SerializeField, ReadOnly, HideInEditorMode] 
     public bool isStunnedProtected { get; private set; } = false;
@@ -93,6 +96,47 @@ public class GPawn : GGridObject
     private Dictionary<Type, GAction> _overrideCache;
     
     Coroutine RotateTowardsCouroutineHandle;
+    
+#if UNITY_EDITOR
+    [SerializeField]
+    GSOUpgrade _testUpgradeToAdd;
+
+    [SerializeField, HideInPlayMode]
+    List<GSOUpgrade> _preloadTestUpgradesToAdd;
+    
+    [Button]
+    private void AddTestUpgrade()
+    {
+        _upgrades.Add(_testUpgradeToAdd);
+        AttributesController.AddModifiers(_testUpgradeToAdd.Effects);
+    }
+#endif
+    
+    public void AddUpgrade(GSOUpgrade upgrade)
+    {
+        _upgrades.Add(upgrade);
+        AttributesController.AddModifiers(upgrade.Effects);
+    }
+
+    public void AddUpgrades(List<GSOUpgrade> upgrades)
+    {
+        foreach (GSOUpgrade upgrade in upgrades)
+        {
+            _upgrades.Add(upgrade);
+            AttributesController.AddModifiers(upgrade.Effects);
+        }
+    }
+
+    public void RemoveUpgrade(GSOUpgrade upgrade)
+    {
+        _upgrades.Remove(upgrade);
+        // TODO Modif Clear of Effects Removal
+        foreach (var effect in upgrade.Effects)
+        {
+            AttributesController.RemoveAllModifiersFromSource(effect.Type, upgrade);
+        }
+    }
+    
     
     // TODO : move with Timer Utils !
     public void RotateTowards(Vector3 Position, float duration)
@@ -266,12 +310,15 @@ public class GPawn : GGridObject
         OnHealthChanged?.Invoke(OldHP, hp);
     }
     
-    public void Stun()
+    public void Stun(int stunTurnAmount)
     {
-        if (!isStunned && !isStunnedProtected)
+        if (stunTurns == 0 && !isStunnedProtected)
         {
-            isStunned = true;
             OnStunned?.Invoke();
+        }
+        if (!isStunnedProtected)
+        {
+            stunTurns = Mathf.Max(stunTurnAmount, stunTurns);
         }
     }
 
@@ -282,11 +329,14 @@ public class GPawn : GGridObject
             isStunnedProtected = false;
             visuals.OnUpdateStunTurn();
         }
-        else if (isStunned)
+        else if (stunTurns > 0)
         {
-            isStunnedProtected = data.isPlayer;
-            isStunned = false;
-            visuals.OnUpdateStunTurn();
+            stunTurns--;
+            if (stunTurns == 0)
+            {
+                isStunnedProtected = data.isPlayer;
+                visuals.OnUpdateStunTurn();
+            }
         }
     }
 
@@ -294,7 +344,7 @@ public class GPawn : GGridObject
     {
         if (data.isPlayer)
         {
-            Stun();
+            Stun(1);
             return;
         }
        
@@ -332,7 +382,7 @@ public class GPawn : GGridObject
         /*else if(isStunned ||  isStunnedProtected)
             Unstun();*/
         
-        if (!isStunned)
+        if (stunTurns == 0)
             OnUnstunned?.Invoke();
     }
 
@@ -348,7 +398,7 @@ public class GPawn : GGridObject
     
     public void OnEndTurn()
     {
-        if ((isStunned || isStunnedProtected)/* && data.isPlayer*/)
+        if ((stunTurns > 0 || isStunnedProtected)/* && data.isPlayer*/)
         {
             Unstun();
         }
@@ -429,6 +479,16 @@ public class GPawn : GGridObject
     {
         _currentCell.SetGridObject(this);
         remainingActionToken = (int)AttributesController.GetFinal(EAttributeType.MaxAction);
+        AttributesController.SubscribeCallBack(EAttributeType.MaxAction,
+            (oldValue, newValue) =>
+            {
+                remainingActionToken += Mathf.Max(0, (int)newValue - (int)oldValue);
+            });
+        
+        
+        #if UNITY_EDITOR
+        AddUpgrades(_preloadTestUpgradesToAdd);
+        #endif
     }
 
     protected override void OnEnable()

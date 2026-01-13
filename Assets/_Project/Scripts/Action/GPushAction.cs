@@ -13,6 +13,12 @@ public class GPushAction : GAction
     
     [SerializeField, Min(0), Tooltip("Distance Of the pawn following the pushed pawn, if possible")]
     private int _followDistance = 1;
+
+    [SerializeField, Min(0), Tooltip("Damage taken by the pushed pawn if pushed into a wall or pawn")]
+    int _pushDamage = 1;
+    
+    [SerializeField, Min(0), Tooltip("Stun turns taken by the pushed pawn if pushed into a wall or pawn")]
+    int _pushStunAmount = 1;
     
     [SerializeField]
     GActionPrevisualisationCurveData _previsuCurveData;
@@ -39,6 +45,8 @@ public class GPushAction : GAction
         {
             previsuContext.Set(GActionContext.DIRECTION_STRING, _direction);
             previsuContext.Set(GActionContext.FORCE_STRING, GetAttributeOrBaseValue(_pushForce, EAttributeType.PushStrength));
+            previsuContext.Set(GActionContext.DAMAGE_STRING, GetAttributeOrBaseValue(_pushDamage, EAttributeType.PushDamage));
+            previsuContext.Set(GActionContext.STUN_STRING, GetAttributeOrBaseValue(_pushStunAmount, EAttributeType.PushStunAmount));
             _reaction.InitAction(_targetPawn);
             previewCells.AddRange(_reaction.Previsualisation(in previsuContext));
         }
@@ -83,6 +91,8 @@ public class GPushAction : GAction
             GActionContext pushContext = new GActionContext();
             pushContext.Set(GActionContext.DIRECTION_STRING, _direction);
             pushContext.Set(GActionContext.FORCE_STRING, GetAttributeOrBaseValue(_pushForce, EAttributeType.PushStrength));
+            pushContext.Set(GActionContext.DAMAGE_STRING, GetAttributeOrBaseValue(_pushDamage, EAttributeType.PushDamage));
+            pushContext.Set(GActionContext.STUN_STRING, GetAttributeOrBaseValue(_pushStunAmount, EAttributeType.PushStunAmount));
             _reaction.InitAction(_targetPawn);
             GTurnBaseManager.Instance.PreProcessReaction(_reaction, pushContext);
         }

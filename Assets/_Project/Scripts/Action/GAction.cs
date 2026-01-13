@@ -134,6 +134,7 @@ public abstract class GAction
         clone.linkedPawn = linkedPawn;
         clone.targetCell = targetCell;
         clone.CurrentState = CurrentState;
+        clone._useAttribute = _useAttribute;
         clone.OnActionStarted = OnActionStarted;
         clone.OnActionFinished = OnActionFinished;
         clone.actionIcon = actionIcon;

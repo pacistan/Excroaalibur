@@ -5,6 +5,7 @@ using UnityEngine;
 using System.IO;
 using UnityEngine.Windows;
 using UnityEditor;
+using UnityEngine.Serialization;
 using File = System.IO.File;
 
 [DefaultExecutionOrder(100)]
@@ -55,7 +56,7 @@ public class GSaveManager : GSingleton<GSaveManager>
             ennemyData.ennemyType = ennemy.data.gridObjectType.ToString();
             ennemyData.xCoordinate = ennemy.GetCell().data.gridCoordinates.x;
             ennemyData.yCoordinate = ennemy.GetCell().data.gridCoordinates.y;
-            ennemyData.isStunned = ennemy.isStunned;
+            ennemyData.stunTurnNumber = ennemy.stunTurns;
 
             ennemyData.hp = ennemy.hp;
             saveData.ennemies[i] = ennemyData;
@@ -66,7 +67,7 @@ public class GSaveManager : GSingleton<GSaveManager>
             var player = players.ElementAt(i);
             playerData.xCoordinate = player.GetCell().data.gridCoordinates.x;
             playerData.yCoordinate = player.GetCell().data.gridCoordinates.y;
-            playerData.isStunned = player.isStunned;
+            playerData.stunTurnNumber = player.stunTurns;
 
             saveData.players[i] = playerData;
         }
@@ -107,7 +108,7 @@ public class GSaveManager : GSingleton<GSaveManager>
                 GPawn player = players.ElementAt(i);
                 var playerData = data.players.ElementAt(i);
 
-                if(playerData.isStunned) player.Stun();
+                if(playerData.stunTurnNumber > 0) player.Stun(playerData.stunTurnNumber);
 
                 GCell playerCell = GGridManager.Instance.GetCell(new Vector2Int(playerData.xCoordinate, playerData.yCoordinate));
                 if (playerCell != player.GetCell())
@@ -134,7 +135,7 @@ public class GSaveManager : GSingleton<GSaveManager>
                 GPawn pawn = Instantiate(pawnPrefab);
                 GCell ennemyCell = GGridManager.Instance.GetCell(new Vector2Int(ennemyData.xCoordinate, ennemyData.yCoordinate));
                 ennemyCell.SetGridObject(pawn, true);
-                if(ennemyData.isStunned) pawn.Stun();
+                if(ennemyData.stunTurnNumber > 0) pawn.Stun(ennemyData.stunTurnNumber);
 
                 pawn.SetHp(ennemyData.hp);
             }
@@ -191,7 +192,7 @@ public class GEnnemySaveData
 {
     public string ennemyType;
     public int xCoordinate, yCoordinate;
-    public bool isStunned;
+    public int stunTurnNumber;
     public int hp;
 }
 
@@ -199,6 +200,6 @@ public class GEnnemySaveData
 public class GPlayerSaveData
 {
     public int xCoordinate, yCoordinate;
-    public bool isStunned;
+    public int stunTurnNumber;
 }
 

@@ -64,9 +64,10 @@ public class GPawnVisualsController : SerializedMonoBehaviour
     [BoxGroup("Components/World Canvas"), HideIf("isPlayerAccessor")]
     Sprite _spriteDeath;
     
+    [FormerlySerializedAs("_imgListactionTokens")]
     [SerializeField, FoldoutGroup("Components")]
     [BoxGroup("Components/World Canvas"), ShowIf("isPlayerAccessor")]
-    List<Image> _imgListactionTokens;
+    List<Image> _imgListActionTokens;
     
     [SerializeField, FoldoutGroup("Components")]
     [BoxGroup("Components/World Canvas"), ShowIf("isPlayerAccessor")]
@@ -104,7 +105,7 @@ public class GPawnVisualsController : SerializedMonoBehaviour
     Material _defaultMaterial;
     
     int _previousHpNumber;
-    bool _previousStunTurn;
+    int _previousStunTurnNumber;
 
     void Start()
     {
@@ -115,10 +116,25 @@ public class GPawnVisualsController : SerializedMonoBehaviour
             _imgHpBarForeground.fillAmount = 1;
             _imgHpBarPrevisualisation.fillAmount = 1;
         }
+        else if(_pawn.data.isPlayer)
+        {
+            UpdateActionPointUI(0, _pawn.AttributesController.GetFinal(EAttributeType.MaxAction));
+            _pawn.AttributesController.SubscribeCallBack(EAttributeType.MaxAction, UpdateActionPointUI);
+        }
         _stunMaterialIndex = Mathf.Min(_mainRenderer.materials.Length, _stunMaterialIndex);
         _defaultMaterial = _mainRenderer.materials[_stunMaterialIndex];
+        
     }
 
+    void UpdateActionPointUI(float oldAttributeValue, float newAttributeValue)
+    {
+        _imgListActionTokens.ForEach(img => img.gameObject.SetActive(false));
+        for (int i = 0; i < newAttributeValue; i++)
+        {
+            _imgListActionTokens[i].gameObject.SetActive(true);
+        }
+    }
+    
     void OnEnable()
     {
         _pawn.OnStunned += OnStunned;
@@ -197,14 +213,11 @@ public class GPawnVisualsController : SerializedMonoBehaviour
 
     public void OnUpdateActionsToken()
     {
-        _imgListactionTokens[0].sprite = _pawn.remainingActionToken >= 1 ?
-            _spriteActionTokenOn : _spriteActionTokenOff;
-        
-        _imgListactionTokens[1].sprite = _pawn.remainingActionToken >= 2 ?
-            _spriteActionTokenOn : _spriteActionTokenOff;
-        
-        //string text = "";
-        //_txtCurrentHp.text = $"{_pawn.remainingActionToken}";
+        for (int i = 0; i < _pawn.AttributesController.GetFinal(EAttributeType.MaxAction); i++)
+        {
+            _imgListActionTokens[i].sprite = _pawn.remainingActionToken > i ? 
+                _spriteActionTokenOn : _spriteActionTokenOff;
+        }
     }
     
     public void OnUpdateStunTurn()
@@ -215,7 +228,7 @@ public class GPawnVisualsController : SerializedMonoBehaviour
             _imgStatusContainer.SetActive(true);
         }
         
-        if (_pawn.isStunned && _previousStunTurn != _pawn.isStunned)
+        if (_pawn.stunTurns > 0 && _previousStunTurnNumber != _pawn.stunTurns)
         {
             List<Material> materials = _mainRenderer.materials.ToList();
             materials[_stunMaterialIndex] = _stunnedMaterial;
@@ -226,7 +239,7 @@ public class GPawnVisualsController : SerializedMonoBehaviour
             SetAnimationParameter(GPawn.AnimParam_IsStunned, true);
             //TODO : Start Stun Feedbacks
         }
-        else if (!_pawn.isStunned && _previousStunTurn != _pawn.isStunned)
+        else if (_pawn.stunTurns == 0 && _previousStunTurnNumber != _pawn.stunTurns)
         {
             List<Material> materials = _mainRenderer.materials.ToList();
             materials[_stunMaterialIndex] = _defaultMaterial;
@@ -234,18 +247,18 @@ public class GPawnVisualsController : SerializedMonoBehaviour
             SetAnimationParameter(GPawn.AnimParam_IsStunned, false);
         }
 
-        if (!_pawn.isStunned && !_pawn.isStunnedProtected)
+        if (_pawn.stunTurns == 0 && !_pawn.isStunnedProtected)
         {
             _imgStatusContainer.SetActive(false);
         }
         
-        _previousStunTurn = _pawn.isStunned;
+        _previousStunTurnNumber = _pawn.stunTurns;
     }
 
     public void OnPrevisualisation(int damage, bool isStun, int actionGain)
     {
         if (_pawn is GAltar) return;
-        bool tempStun = (_pawn.isStunned || isStun) && !_pawn.isStunnedProtected;
+        bool tempStun = (_pawn.stunTurns > 0 || isStun) && !_pawn.isStunnedProtected;
         bool isDead = false;
         if (!_pawn.data.isPlayer)
         {
@@ -283,7 +296,7 @@ public class GPawnVisualsController : SerializedMonoBehaviour
             _txtCurrentHp.text = $"{_pawn.hp}";
             _txtCurrentHp.color = _txtHpNormalColor;
         }
-        if (_pawn.isStunned)
+        if (_pawn.stunTurns > 0)
         {
             _imgStatus.sprite = _spriteStun;
             _imgStatusContainer.SetActive(true);
