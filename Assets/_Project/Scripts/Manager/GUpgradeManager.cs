@@ -30,6 +30,7 @@ public class GUpgradeManager : GSerializedSingleton<GUpgradeManager>
     int _selectedCardIndex = -1;
     
     [Button]
+    [HideInEditorMode]
     public void StartUpgradeSequence()
     {
         _pendingUpgrades = GetUpgradesAtRarityLevel(GetRandomRarity(), _numberOfPendingUpgrades);
@@ -37,6 +38,11 @@ public class GUpgradeManager : GSerializedSingleton<GUpgradeManager>
         GGameManager.Instance.ChangeState(EMacroStates.Upgrade_Select_Card);
     }
 
+    public bool IsUpgradeSelectionInProgress()
+    {
+        return _pendingUpgrades != null && _pendingUpgrades.Count > 0;
+    }
+    
     public void OnUpgradeSelected(int upgradeIndex)
     {
         GGameManager.Instance.ChangeState(EMacroStates.Upgrade_Select_Character);
@@ -53,6 +59,10 @@ public class GUpgradeManager : GSerializedSingleton<GUpgradeManager>
     {
         Debug.Log("OnCharacterSelected");
         GGameManager.Instance.ChangeState(EMacroStates.Play);
+        var selectedUpgrade = _pendingUpgrades[_selectedCardIndex];
+        var clonedUpgrade = selectedUpgrade.CreateInstance();
+        selectedCharacter.AddUpgrade(clonedUpgrade);
+        _pendingUpgrades = null;
         // Resume
     }
     
@@ -98,7 +108,6 @@ public class GUpgradeManager : GSerializedSingleton<GUpgradeManager>
     {
         Debug.Log(GetRandomRarity().ToString());    
     }
-    
     
     void Start()
     {

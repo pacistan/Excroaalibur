@@ -23,7 +23,7 @@ public class GPunchAction : GAction
     {
         base.Start_Action();
         targetCell.GetGridObject<GPawn>().TakeDamage(_damage);
-        targetCell.GetGridObject<GPawn>().Stun();
+        //targetCell.GetGridObject<GPawn>().Stun(_);
         _progress = 0;
     }
 

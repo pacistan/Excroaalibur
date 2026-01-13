@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Sirenix.OdinInspector;
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -11,6 +12,8 @@ public enum EAttributeType
     PushStrength,
     MoveDistance,
     FollowDistance,
+    PushDamage,
+    PushStunAmount
     // Add New Attribute Types Here !
 }
 
@@ -24,20 +27,26 @@ public enum EModifierType
 [Serializable]
 public class GAttributeModifier
 {
-    public readonly EModifierType Type;
-    public readonly float Value;
-    public readonly object Source;
+    [field : SerializeField] 
+    public EAttributeType Type { get; private set; }
+    [field : SerializeField] 
+    public EModifierType ModifierType { get; private set; }
+    [field : SerializeField] 
+    public float Value { get; private set; }
+
+    public object Source;
     
-    public GAttributeModifier(EModifierType type, float value, object source)
+    public GAttributeModifier(EAttributeType type, EModifierType modifierType, float value, object source)
     {
         this.Type = type;
+        this.ModifierType = modifierType;
         this.Value = value;
         this.Source = source;
     }
 }
 
 /** Controller responsible for managing a collection of attributes for a game entity. */
-public class GAttributesController : MonoBehaviour
+public class GAttributesController : SerializedMonoBehaviour
 {
     /** Struct holding the state of a single attribute. */
     private struct SAttribute
@@ -46,7 +55,9 @@ public class GAttributesController : MonoBehaviour
         public float CachedFinal; // Always valid 
     }
     
+    [SerializeField, HideInEditorMode]
     private readonly Dictionary<EAttributeType, SAttribute> _attributes = new();
+    [SerializeField, HideInEditorMode]
     private readonly Dictionary<EAttributeType, List<GAttributeModifier>> _mods = new();
 
     /** Simple per-attribute event (new value only) */
@@ -137,16 +148,33 @@ public class GAttributesController : MonoBehaviour
         RecomputeFinal_NotifyIfChanged(type);
     }
 
-    public void AddModifier(EAttributeType type, GAttributeModifier mod)
+    public void AddModifier(GAttributeModifier mod)
     {
-        if (!_mods.TryGetValue(type, out List<GAttributeModifier> list))
+        if (!_mods.TryGetValue(mod.Type, out List<GAttributeModifier> list))
         {
-            Debug.LogError($"[Attributes] AddModifier on unknown attribute '{type}'.");
+            Debug.LogError($"[Attributes] AddModifier on unknown attribute '{mod.Type}'.");
             return;
         }
 
         list.Add(mod);
-        RecomputeFinal_NotifyIfChanged(type);
+        RecomputeFinal_NotifyIfChanged(mod.Type);
+    }
+    
+    public void AddModifiers(List<GAttributeModifier> mod)
+    {
+        foreach (var modifier in mod)
+        {
+            if (!_mods.TryGetValue(modifier.Type, out List<GAttributeModifier> list))
+            {
+                Debug.LogError($"[Attributes] AddModifier on unknown attribute '{modifier.Type}'.");
+                continue;
+            }
+
+            list.AddRange(mod);
+            RecomputeFinal_NotifyIfChanged(modifier.Type);
+        }
+
+
     }
 
     public void RemoveModifier(EAttributeType type, GAttributeModifier mod)
@@ -230,8 +258,8 @@ public class GAttributesController : MonoBehaviour
         for (int i = 0; i < list.Count; i++)
         {
             var mod = list[i];
-            if (mod.Type == EModifierType.Additive) v += mod.Value;
-            else if (mod.Type == EModifierType.Multiplicative) sumPercent += mod.Value;
+            if (mod.ModifierType == EModifierType.Additive) v += mod.Value;
+            else if (mod.ModifierType == EModifierType.Multiplicative) sumPercent += mod.Value;
         }
 
         v *= (1f + sumPercent);

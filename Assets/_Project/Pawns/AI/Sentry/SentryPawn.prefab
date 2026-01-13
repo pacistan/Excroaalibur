@@ -1828,7 +1828,7 @@ PrefabInstance:
     - target: {fileID: 5047510769810583256, guid: 48d2615fd829feb4a9c7bfb377fa75cc, type: 3}
       propertyPath: _imgStatus
       value: 
-      objectReference: {fileID: 0}
+      objectReference: {fileID: 3712158479854134747}
     - target: {fileID: 5047510769810583256, guid: 48d2615fd829feb4a9c7bfb377fa75cc, type: 3}
       propertyPath: _hpBarPanel
       value: 
@@ -1873,6 +1873,10 @@ PrefabInstance:
       propertyPath: _txtHpNormalColor.r
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 5047510769810583256, guid: 48d2615fd829feb4a9c7bfb377fa75cc, type: 3}
+      propertyPath: _spriteStunProtected
+      value: 
+      objectReference: {fileID: 21300000, guid: 5c521799bd7670e44befa1ada8a2d038, type: 3}
     - target: {fileID: 5047510769810583256, guid: 48d2615fd829feb4a9c7bfb377fa75cc, type: 3}
       propertyPath: serializationData.Prefab
       value: 
@@ -2042,6 +2046,17 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 6854340670985515710, guid: 48d2615fd829feb4a9c7bfb377fa75cc, type: 3}
   m_PrefabInstance: {fileID: 8947550560613377680}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &3712158479854134747 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 5739883544107139915, guid: 48d2615fd829feb4a9c7bfb377fa75cc, type: 3}
+  m_PrefabInstance: {fileID: 8947550560613377680}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &4308081656395124890 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 5180675197840913930, guid: 48d2615fd829feb4a9c7bfb377fa75cc, type: 3}

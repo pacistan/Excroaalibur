@@ -8,13 +8,17 @@ using UnityEngine;
 
 public class GPushAction : GAction
 {
-    [Tooltip("Number of cells the pushed pawn will be moved away")]
-    [SerializeField, Min(0), HideIf("_useAttribute")]
+    [SerializeField, Min(0), Tooltip("Number of cells the pushed pawn will be moved away")]
     private int _pushForce = 2;
     
-    [Tooltip("Distance Of the pawn following the pushed pawn, if possible")]
-    [SerializeField, Min(0), HideIf("_useAttribute")]
+    [SerializeField, Min(0), Tooltip("Distance Of the pawn following the pushed pawn, if possible")]
     private int _followDistance = 1;
+
+    [SerializeField, Min(0), Tooltip("Damage taken by the pushed pawn if pushed into a wall or pawn")]
+    int _pushDamage = 1;
+    
+    [SerializeField, Min(0), Tooltip("Stun turns taken by the pushed pawn if pushed into a wall or pawn")]
+    int _pushStunAmount = 1;
     
     [SerializeField]
     GActionPrevisualisationCurveData _previsuCurveData;
@@ -27,8 +31,8 @@ public class GPushAction : GAction
 
     bool _isPushAnimationOver = false;
     
-    
     // TODO : Add What tile types we can push ! (Like walls, holes, Spawner)
+    
     public override List<GCell> Previsualisation(in GActionContext previsuContext)
     {
         _direction = linkedPawn.GetHexCoordinate().GetLineDirection(targetCell.hexCoordinates);
@@ -41,6 +45,8 @@ public class GPushAction : GAction
         {
             previsuContext.Set(GActionContext.DIRECTION_STRING, _direction);
             previsuContext.Set(GActionContext.FORCE_STRING, GetAttributeOrBaseValue(_pushForce, EAttributeType.PushStrength));
+            previsuContext.Set(GActionContext.DAMAGE_STRING, GetAttributeOrBaseValue(_pushDamage, EAttributeType.PushDamage));
+            previsuContext.Set(GActionContext.STUN_STRING, GetAttributeOrBaseValue(_pushStunAmount, EAttributeType.PushStunAmount));
             _reaction.InitAction(_targetPawn);
             previewCells.AddRange(_reaction.Previsualisation(in previsuContext));
         }
@@ -64,8 +70,11 @@ public class GPushAction : GAction
             
             AddPrevisualisationCurve(previsuContext, linkedPawn.GetPrevisuPosition(), 
                 pathCell.transform.position, _previsuCurveData);
+
+            int actionPointAddNum = linkedPawn.data.isPlayer && !_targetPawn.data.isPlayer ? 1 : 0;
+            previsuContext.Set(GActionContext.ACTION_GAIN_STRING, actionPointAddNum);
         }
-        
+
         return previewCells;
     }
    
@@ -82,6 +91,8 @@ public class GPushAction : GAction
             GActionContext pushContext = new GActionContext();
             pushContext.Set(GActionContext.DIRECTION_STRING, _direction);
             pushContext.Set(GActionContext.FORCE_STRING, GetAttributeOrBaseValue(_pushForce, EAttributeType.PushStrength));
+            pushContext.Set(GActionContext.DAMAGE_STRING, GetAttributeOrBaseValue(_pushDamage, EAttributeType.PushDamage));
+            pushContext.Set(GActionContext.STUN_STRING, GetAttributeOrBaseValue(_pushStunAmount, EAttributeType.PushStunAmount));
             _reaction.InitAction(_targetPawn);
             GTurnBaseManager.Instance.PreProcessReaction(_reaction, pushContext);
         }

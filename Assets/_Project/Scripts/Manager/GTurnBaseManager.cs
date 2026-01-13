@@ -76,7 +76,7 @@ public class GTurnBaseManager : GSingleton<GTurnBaseManager>
     public WaveData GetCurrentWaveData() => _hasWaves ? _currentWaveData : null;
 
     public bool HasFutureSpawns() => _waveComponent.HasWave();
-    
+
     /** Register an Controller to the Turn Base Manager */
     public void RegisterController(GController Controller)
     {
@@ -270,8 +270,9 @@ public class GTurnBaseManager : GSingleton<GTurnBaseManager>
         yield return _waitForTurn; 
         
         _currentTurnState = ETurnState.Finished;
-        currentTurnController?.EndTurn();
         
+        currentTurnController?.EndTurn();
+
         GSaveManager.Instance.SerializeToJson();
         
         if (currentTurnController is GPlayerController) // After Player Turn
@@ -281,7 +282,11 @@ public class GTurnBaseManager : GSingleton<GTurnBaseManager>
             
             // TODO : Find a Way to Avoid this WaitUntil
             yield return new WaitUntil(() => !_waveComponent.IsSpawningInProgress());
+
+            yield return new WaitUntil(() => !GUpgradeManager.Instance.IsUpgradeSelectionInProgress());
         }
+        
+        
         
         StartTurn();
         yield return null;
