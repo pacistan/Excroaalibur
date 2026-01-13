@@ -59,7 +59,7 @@ public class GWaveComponent : MonoBehaviour
     
     private void OnPostPlayerTurn(int turnCount)
     {
-        if (_waveData!= null && _waveData._waveType == WaveData.EWaveType.Endless)
+        if (_waveData != null && _waveData._waveType == WaveData.EWaveType.Endless)
             CheckNextWave(turnCount);
        
         SpawnNextWave();
@@ -75,6 +75,9 @@ public class GWaveComponent : MonoBehaviour
         {
             if (GTurnBaseManager.Instance.EnemiesCount > 0) return; // Wait until all enemies are dead !
             _ennemiesPool.AddRange(Enumerable.Repeat(_waveData.enemyPrefab, _waveCount + 1)); 
+            
+            // TODO : New Wave callback (Replace by new system Stan)
+            GUpgradeManager.Instance.StartUpgradeSequence();
         }
         else if (_waveData._waveType == WaveData.EWaveType.Finite) // Finite wave logic
         {
@@ -86,6 +89,9 @@ public class GWaveComponent : MonoBehaviour
             wave.IsPreview = true;
             _ennemiesPool.AddRange(wave.GetEnemiesToSpawn());
             _waveData.waves.RemoveAt(0);
+            
+            // TODO : New Wave callback (Replace by new system Stan)
+            GUpgradeManager.Instance.StartUpgradeSequence();
         }
 
         if (_ennemiesPool.Count > 0)

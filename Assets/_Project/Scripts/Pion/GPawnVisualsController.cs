@@ -242,7 +242,7 @@ public class GPawnVisualsController : SerializedMonoBehaviour
         _previousStunTurn = _pawn.isStunned;
     }
 
-    public void OnPrevisualisation(int damage, bool isStun)
+    public void OnPrevisualisation(int damage, bool isStun, int actionGain)
     {
         if (_pawn is GAltar) return;
         bool tempStun = (_pawn.isStunned || isStun) && !_pawn.isStunnedProtected;
@@ -263,10 +263,14 @@ public class GPawnVisualsController : SerializedMonoBehaviour
                 isDead = true;
             }
         }
+        else
+        {
+            //int tempActionPoints = actionGain + _pawn.remainingActionToken;
+        }
         if (tempStun && !isDead)
         {
             _imgStatus.sprite = _spriteStun;
-            _imgStatusContainer.SetActive(false);
+            _imgStatusContainer.SetActive(true);
         }
     }
 

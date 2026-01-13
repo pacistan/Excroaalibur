@@ -11,13 +11,14 @@ using UnityEngine.Serialization;
 [Serializable]
 public class GActionContext
 {
-    public const string DAMAGE_STRING = "Damage";
-    public const string STUN_STRING = "Stun";
-    public const string DIRECTION_STRING = "Direction";
-    public const string FORCE_STRING = "Force";
+    public const string DAMAGE_STRING = "damage";
+    public const string STUN_STRING = "stun";
+    public const string DIRECTION_STRING = "direction";
+    public const string FORCE_STRING = "force";
     public const string PREVISU_CURVE_POS_STRING = "previsu-Positions";
     public const string PREVISU_CURVE_MATERIAL_STRING = "previsu-material";
     public const string PREVISU_CURVE_WIDTH_STRING = "previsu-width";
+    public const string ACTION_GAIN_STRING = "action-point";
     
     private Dictionary<string, object> _data = new Dictionary<string, object>();
     

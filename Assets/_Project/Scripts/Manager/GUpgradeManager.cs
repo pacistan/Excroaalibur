@@ -37,6 +37,11 @@ public class GUpgradeManager : GSerializedSingleton<GUpgradeManager>
         GGameManager.Instance.ChangeState(EMacroStates.Upgrade_Select_Card);
     }
 
+    public bool IsUpgradeSelectionInProgress()
+    {
+        return _pendingUpgrades != null && _pendingUpgrades.Count > 0;
+    }
+    
     public void OnUpgradeSelected(int upgradeIndex)
     {
         GGameManager.Instance.ChangeState(EMacroStates.Upgrade_Select_Character);
@@ -53,6 +58,7 @@ public class GUpgradeManager : GSerializedSingleton<GUpgradeManager>
     {
         Debug.Log("OnCharacterSelected");
         GGameManager.Instance.ChangeState(EMacroStates.Play);
+        _pendingUpgrades = null;
         // Resume
     }
     
@@ -98,7 +104,6 @@ public class GUpgradeManager : GSerializedSingleton<GUpgradeManager>
     {
         Debug.Log(GetRandomRarity().ToString());    
     }
-    
     
     void Start()
     {

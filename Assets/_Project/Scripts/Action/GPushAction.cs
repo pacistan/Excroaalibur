@@ -8,12 +8,10 @@ using UnityEngine;
 
 public class GPushAction : GAction
 {
-    [Tooltip("Number of cells the pushed pawn will be moved away")]
-    [SerializeField, Min(0), HideIf("_useAttribute")]
+    [SerializeField, Min(0), Tooltip("Number of cells the pushed pawn will be moved away")]
     private int _pushForce = 2;
     
-    [Tooltip("Distance Of the pawn following the pushed pawn, if possible")]
-    [SerializeField, Min(0), HideIf("_useAttribute")]
+    [SerializeField, Min(0), Tooltip("Distance Of the pawn following the pushed pawn, if possible")]
     private int _followDistance = 1;
     
     [SerializeField]
@@ -27,8 +25,8 @@ public class GPushAction : GAction
 
     bool _isPushAnimationOver = false;
     
-    
     // TODO : Add What tile types we can push ! (Like walls, holes, Spawner)
+    
     public override List<GCell> Previsualisation(in GActionContext previsuContext)
     {
         _direction = linkedPawn.GetHexCoordinate().GetLineDirection(targetCell.hexCoordinates);
@@ -64,8 +62,11 @@ public class GPushAction : GAction
             
             AddPrevisualisationCurve(previsuContext, linkedPawn.GetPrevisuPosition(), 
                 pathCell.transform.position, _previsuCurveData);
+
+            int actionPointAddNum = linkedPawn.data.isPlayer && !_targetPawn.data.isPlayer ? 1 : 0;
+            previsuContext.Set(GActionContext.ACTION_GAIN_STRING, actionPointAddNum);
         }
-        
+
         return previewCells;
     }
    

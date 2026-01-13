@@ -528,8 +528,9 @@ public class GPlayerController : GController
         
         context.TryGet(GActionContext.DAMAGE_STRING, out int damage);
         context.TryGet(GActionContext.STUN_STRING, out bool stun);
+        context.TryGet(GActionContext.ACTION_GAIN_STRING, out int actionGain);
         if (hoveredPawn)
-            hoveredPawn.visuals.OnPrevisualisation(damage, stun);
+            hoveredPawn.visuals.OnPrevisualisation(damage, stun, actionGain);
     }
 
     private void DisablePrevisualisation()
