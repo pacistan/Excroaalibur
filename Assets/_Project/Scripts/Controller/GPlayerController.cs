@@ -282,7 +282,6 @@ public class GPlayerController : GController
             }
             
             // Handle Action Highlight on Hover
-
             if (cellPawn && _hoverCell != newCell && !_selectedPlayer && !(cellPawn.data.isPlayer && (cellPawn.remainingActionToken == 0 || cellPawn.isStunned) ))
             {
                 var tempAvailableActions = GetAvailableActions(cellPawn);
@@ -344,6 +343,11 @@ public class GPlayerController : GController
             _targetCell = _hoverCell;
             GPawn cellPawn = _targetCell.GetGridObject<GPawn>();
 
+            if (GGameManager.Instance.currentState == EMacroStates.Upgrade_Select_Character && cellPawn &&
+                cellPawn.data.isPlayer)
+            {
+                GUpgradeManager.Instance.OnCharacterSelected(cellPawn);
+            }
             
             if (_selectedPlayer && _selectedAction.IsValidCell(_targetCell.hexCoordinates) && _selectedPlayer.remainingActionToken > 0)
             {
@@ -433,6 +437,7 @@ public class GPlayerController : GController
         if (_selectedPlayer.RequestAction(_selectedAction))
         {
             base.StartAction();
+            
             if (isFirstAction)
             {
                 isFirstAction = false;
@@ -490,7 +495,7 @@ public class GPlayerController : GController
         
         previsuCell = _selectedAction.Previsualisation(context);
 
-        if (context.TryGet(GActionContext.PREVISU_POS_STRING, out List<Vector3[]> curves))
+        if (context.TryGet(GActionContext.PREVISU_CURVE_POS_STRING, out List<Vector3[]> curves))
         {
             if(curves.Count > _lineRenderers.Length)
                 Debug.LogWarning($"Not Enough line renderers to see all previsualisations {curves.Count} > {_lineRenderers.Length}");
@@ -508,6 +513,18 @@ public class GPlayerController : GController
             foreach (GCell cell in previsuCell)
                 cell.visuals.StartVisualisation();
         }
+        
+        Material lineMaterial = context.Get<Material>(GActionContext.PREVISU_CURVE_MATERIAL_STRING);
+        if (!context.TryGet(GActionContext.PREVISU_CURVE_WIDTH_STRING, out float lineWidth))
+        {
+            lineWidth = 1;
+        }
+        AnimationCurve curve = AnimationCurve.Constant(0, 1, lineWidth);
+        _lineRenderers.ForEach(l =>
+        {
+            l.widthCurve = curve;
+            l.material = lineMaterial;
+        });
         
         context.TryGet(GActionContext.DAMAGE_STRING, out int damage);
         context.TryGet(GActionContext.STUN_STRING, out bool stun);

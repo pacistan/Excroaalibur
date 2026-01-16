@@ -19,7 +19,6 @@ public class GPushedReaction : GAction
     
     [SerializeField, Tooltip("Tile types on which the pawn can be pushed")]
     ETileType[] _pushedTileType = new ETileType[] { ETileType.Normal, ETileType.Hole };
-    
 
     [SerializeField]
     GActionPrevisualisationCurveData _previsuCurveData;

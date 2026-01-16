@@ -5,8 +5,7 @@ using System.Linq;
 using UnityEngine;
 
 public abstract class GAIBehavior : ScriptableObject
-{
-    
+{ 
     [HideInInspector]
     public List<GAction> actions;
     protected GAIController _controller;

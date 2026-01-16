@@ -378,9 +378,10 @@ public static class TransformExtensions
         }
         transform.localPosition = temp;
     }
+    
+    
 }
 
-#if UNITY_EDITOR
 public class SceneReloader
 {
     [MenuItem("Tools/Reload Current Scene %#r")]  // Ctrl/Cmd + Shift + R
@@ -392,4 +393,3 @@ public class SceneReloader
         EditorSceneManager.OpenScene(scene.path);
     }
 }
-#endif

@@ -267,57 +267,7 @@ public class GCellVisualsController : MonoBehaviour
         Color color = cellCommonData.actionColorZoneData[highlightActionType];
         ShowZone(color.r, color.g, color.b);
     }
-    
-    void OnValidate()
-    {
-        if (transform.position.y != _previousPositionY)
-        {
-            Vector3 pos = transform.position;
-            pos.y = Mathf.Clamp(pos.y, -cellCommonData.maxHeight, cellCommonData.maxHeight);
-            transform.position = pos;
-        
-            float diff = _previousPositionY - transform.position.y;
-            Vector3 uiPos = _cell.ui.position;
-            uiPos.y -= diff;
-            _cell.ui.position = uiPos;
-        
-            _previousPositionY = transform.position.y;
-        }       
-    }
-    
-    public void UpdateYPosGizmo(float neighborHeight)
-    {
-        float diff = neighborHeight - transform.position.y;
-        float newHeight = transform.position.y + Mathf.Min(Mathf.Abs(diff), cellCommonData.maxOffsetHeight) * diff / Mathf.Abs(diff);
-        Vector3 pos = transform.position;
-        pos.y = newHeight;
-        transform.position = pos;
-        
-        float diff2 = _previousPositionY - transform.position.y;
-        Vector3 uiPos = _cell.ui.position;
-        uiPos.y -= diff2;
-        _cell.ui.position = uiPos;
-        
-        _previousPositionY = transform.position.y;
-        
-        foreach (var neighbor in _cell.neighbors)
-        {
-            
-            if (!neighbor || neighbor.data.tileType != ETileType.Normal) continue;
-            if (Mathf.Abs(transform.position.y - neighbor.transform.position.y) > cellCommonData.maxOffsetHeight)
-            {
-                neighbor.visuals.UpdateYPosGizmo(transform.position.y);
-            }
-        }
-#if UNITY_EDITOR
-        EditorUtility.SetDirty(gameObject);
-#endif
-    }
-    void OnDrawGizmos()
-    {
 
-    }
-    
     void Awake()
     {
         if (!feedbackRenderer)  return;
@@ -343,7 +293,6 @@ public class GCellVisualEditor : Editor
         Undo.RecordObject(_target.transform, "gridItem");
         Undo.RecordObject(_target._cell.ui.transform, "gridUiItem");
         Undo.RecordObject(_target, "gridVisualsPropertiese");
-        
         if (!Application.isPlaying && _target.transform.position.y != _target._previousPositionY)
         {
             float newHeight = _target.transform.position.y;
@@ -353,11 +302,13 @@ public class GCellVisualEditor : Editor
             
             GGridManager gridManager = FindFirstObjectByType<GGridManager>();
             
-            if (_target._isPullingNeighbors) 
-                gridManager.PropagateEffect(_target._cell, 10, (originCell, previousCell, cell, i) => gridManager.UpdateCellYPositionRelativeToNeighbor(previousCell, cell));
+            if (_target._isPullingNeighbors)
+                gridManager.PropagateEffect(_target._cell, _target.cellCommonData.maxRangeOfPullingEffect, (originCell, previousCell, cell, i) => 
+                    gridManager.UpdateCellYPositionRelativeToNeighbor(previousCell, cell));
             EditorUtility.SetDirty(_target);
             Debug.Log(EditorSceneManager.MarkSceneDirty(_target.gameObject.scene));
         }
+        
     }
 
     public override void OnInspectorGUI()

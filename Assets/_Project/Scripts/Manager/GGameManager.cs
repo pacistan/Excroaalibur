@@ -12,7 +12,7 @@ using UnityEngine.Localization.Settings;
 using UnityEngine.SceneManagement;
 using UnityEngine.Serialization;
 
-public enum EMacroStates { Start, Options, Pause, Play, End, LoadingScreen, None }
+public enum EMacroStates { Start, Options, Upgrade_Select_Card, Upgrade_Select_Character, Pause, Play, End, LoadingScreen, None }
 
 /* Responsable de la gestion globale du Jeu, de l'activation de potentiel Manager etc...*/
 public class GGameManager: GSingleton<GGameManager>
@@ -175,7 +175,7 @@ public class GGameManager: GSingleton<GGameManager>
                 break;
             case EMacroStates.End:
                 StartGameOver();
-                PauseGameTime(false, true, 2);
+                PauseGameTime(true, true, 2);
                 break;
             case EMacroStates.LoadingScreen:
                 GHudManager.Instance.loadingScreenMenu.ResetProgress();

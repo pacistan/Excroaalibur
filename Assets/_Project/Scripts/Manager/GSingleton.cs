@@ -17,4 +17,3 @@ public class GSingleton<T> : MonoBehaviour where T : MonoBehaviour
         }
     }
 }
-

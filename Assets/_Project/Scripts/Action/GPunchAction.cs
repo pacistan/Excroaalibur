@@ -7,7 +7,6 @@ public class GPunchAction : GAction
     private int _damage = 1;
     float _progress = 0;
 
-
     public override EZoneActionType GetHighlightActionType()
     {
         throw new System.NotImplementedException();
