@@ -214,7 +214,7 @@ MonoBehaviour:
           m_PreInfinity: 2
           m_PostInfinity: 2
           m_RotationOrder: 4
-        _passMidPointHeight: 0
+        _passMidPointHeight: 5
         _passCrownSpeed: 30
         _passSpeedCurve:
           serializedVersion: 2
@@ -241,16 +241,16 @@ MonoBehaviour:
           m_PostInfinity: 2
           m_RotationOrder: 4
         _returnMidPointHeight: 5
-        _impactDelayOnKill: 0.3
-        _returnCrownSpeed: 20
+        _impactDelayOnKill: 0.1
+        _returnCrownSpeed: 30
         _returnSpeedCurve:
           serializedVersion: 2
           m_Curve:
           - serializedVersion: 3
             time: 0
-            value: 0
-            inSlope: 1
-            outSlope: 1
+            value: 1
+            inSlope: 0
+            outSlope: 0
             tangentMode: 34
             weightedMode: 0
             inWeight: 0
@@ -258,8 +258,8 @@ MonoBehaviour:
           - serializedVersion: 3
             time: 1
             value: 1
-            inSlope: 1
-            outSlope: 1
+            inSlope: 0
+            outSlope: 0
             tangentMode: 34
             weightedMode: 0
             inWeight: 0
@@ -267,7 +267,7 @@ MonoBehaviour:
           m_PreInfinity: 2
           m_PostInfinity: 2
           m_RotationOrder: 4
-        _landMidPointHeight: 0
+        _landMidPointHeight: 20
         _landCrownSpeed: 30
         _landSpeedCurve:
           serializedVersion: 2

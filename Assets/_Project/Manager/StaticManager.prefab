@@ -108,7 +108,7 @@ Transform:
   m_GameObject: {fileID: 1405194144726248772}
   serializedVersion: 2
   m_LocalRotation: {x: 0.3240278, y: 0, z: 0, w: 0.9460476}
-  m_LocalPosition: {x: 47.031693, y: -153.56798, z: -43.184418}
+  m_LocalPosition: {x: 51.431694, y: -153.56798, z: -39.814415}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -379,10 +379,10 @@ MonoBehaviour:
   isLoadingNewSave: 1
   _localizationId: 0
   _loadableSceneAssets:
-  - {fileID: 102900000, guid: 18afa801cf1199741b5045dbf91066f8, type: 3}
+  - {fileID: 102900000, guid: 5db19314db6c0a5419bdb77829283f54, type: 3}
   _tutorialSceneAssets: []
   _loadableScenes:
-  - LD_TestDimanche 1
+  - LD_JU__jolieback
   _currentSceneToLoadIndex: 0
   _loadableTutorialScenes: []
   _currentTutorialSceneToLoadIndex: 0
@@ -502,6 +502,22 @@ PrefabInstance:
     - target: {fileID: 2026037403582253510, guid: 67cc2f08d0e7ccc4fbb8dbc931190f9f, type: 3}
       propertyPath: _quarterRotationSpeed
       value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 3743941024799614138, guid: 67cc2f08d0e7ccc4fbb8dbc931190f9f, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 4.4000015
+      objectReference: {fileID: 0}
+    - target: {fileID: 3743941024799614138, guid: 67cc2f08d0e7ccc4fbb8dbc931190f9f, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: -41.729996
+      objectReference: {fileID: 0}
+    - target: {fileID: 3743941024799614138, guid: 67cc2f08d0e7ccc4fbb8dbc931190f9f, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3743941024799614138, guid: 67cc2f08d0e7ccc4fbb8dbc931190f9f, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0
       objectReference: {fileID: 0}
     - target: {fileID: 5164812354402089066, guid: 67cc2f08d0e7ccc4fbb8dbc931190f9f, type: 3}
       propertyPath: m_LocalPosition.x

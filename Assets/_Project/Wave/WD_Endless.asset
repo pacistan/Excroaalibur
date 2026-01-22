@@ -12,6 +12,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 899181a38a0c468887fe84cb55432d63, type: 3}
   m_Name: WD_Endless
   m_EditorClassIdentifier: 
-  <waves>k__BackingField: []
+  endlessEnemies: []
+  <waves>k__BackingField:
+  - turn: 0
+    enemiesToSpawn:
+    - enemy: {fileID: 0}
+      count: 0
+    - enemy: {fileID: 0}
+      count: 0
   _waveType: 1
-  enemyPrefab: {fileID: 3539483301687403083, guid: 05d949de3c2a4aa4eb1df7f5d5a2e8ac, type: 3}
+  enemyPrefab: {fileID: 3539483301687403083, guid: 334a564be184ec94eb15ccde7dfe83cc, type: 3}

@@ -59,7 +59,7 @@ public class GWaveComponent : MonoBehaviour
     
     private void OnPostPlayerTurn(int turnCount)
     {
-        if (_waveData != null && _waveData._waveType == WaveData.EWaveType.Endless)
+        if (_waveData!= null && _waveData._waveType == WaveData.EWaveType.Endless)
             CheckNextWave(turnCount);
        
         SpawnNextWave();
@@ -74,10 +74,14 @@ public class GWaveComponent : MonoBehaviour
         if (_waveData._waveType == WaveData.EWaveType.Endless) // Endless wave logic
         {
             if (GTurnBaseManager.Instance.EnemiesCount > 0) return; // Wait until all enemies are dead !
-            _ennemiesPool.AddRange(Enumerable.Repeat(_waveData.enemyPrefab, _waveCount + 1)); 
-            
-            // TODO : New Wave callback (Replace by new system Stan)
-            GUpgradeManager.Instance.StartUpgradeSequence();
+            //_ennemiesPool.AddRange(Enumerable.Repeat(_waveData.enemyPrefab, _waveCount + 1)); 
+            int nbToSpawn = _waveCount + 1;
+
+            for (int i = 0; i < nbToSpawn; i++)
+            {
+                GAIController chosen = GetRandomEnemyPrefab();
+                _ennemiesPool.Add(chosen);
+            }
         }
         else if (_waveData._waveType == WaveData.EWaveType.Finite) // Finite wave logic
         {
@@ -89,9 +93,6 @@ public class GWaveComponent : MonoBehaviour
             wave.IsPreview = true;
             _ennemiesPool.AddRange(wave.GetEnemiesToSpawn());
             _waveData.waves.RemoveAt(0);
-            
-            // TODO : New Wave callback (Replace by new system Stan)
-            GUpgradeManager.Instance.StartUpgradeSequence();
         }
 
         if (_ennemiesPool.Count > 0)
@@ -151,7 +152,25 @@ public class GWaveComponent : MonoBehaviour
         // var globals = LocalizationSettings.StringDatabase.SmartFormatter.GetSourceExtension<UnityEngine.Localization.SmartFormat.Extensions.PersistentVariablesSource>();
         // globals["Score"][""] =  _currentWave;
     }
-    
+    private GAIController GetRandomEnemyPrefab() //Je tente des trucs
+    {
+        var entries = _waveData.endlessEnemies;
+        if (entries == null || entries.Count == 0)
+            return _waveData.enemyPrefab; // fallback
+
+        float total = entries.Sum(e => e.spawnWeight);
+        float r = UnityEngine.Random.value * total;
+
+        foreach (var e in entries)
+        {
+            if (r < e.spawnWeight)
+                return e.enemyPrefab;
+            r -= e.spawnWeight;
+        }
+
+        return entries.Last().enemyPrefab; // fallback
+    }
+
     private void UpdateWaveCount()
     {
         _waveCount++;
