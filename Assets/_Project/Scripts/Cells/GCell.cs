@@ -131,9 +131,11 @@ public class GCell : SerializedMonoBehaviour
         OnSpawnFinishCallback?.Invoke();
     }
 
-    public bool IsWalkable(bool ignorePawn = false)
+    public bool IsWalkable(bool ignorePawn = false, bool ignoreOnlyPlayerPawn = false)
     {
-        return data.tileType == ETileType.Normal && (GetGridObject<GPawn>() == null || ignorePawn);
+        GPawn pawn = GetGridObject<GPawn>();
+        return data.tileType == ETileType.Normal && (pawn == null || ignorePawn ||
+                                                     (pawn && pawn.data.isPlayer && ignoreOnlyPlayerPawn));
     }
 
     public bool IsWalkable(ref ETileType[] walkableTypes, bool ignorePawn = false)

@@ -107,8 +107,9 @@ public class GPawn : GGridObject
     [Button]
     private void AddTestUpgrade()
     {
-        _upgrades.Add(_testUpgradeToAdd);
-        AttributesController.AddModifiers(_testUpgradeToAdd.Effects);
+        var instance = _testUpgradeToAdd.CreateInstance();
+        _upgrades.Add(instance);
+        AttributesController.AddModifiers(instance.Effects);
     }
 #endif
     
@@ -477,18 +478,22 @@ public class GPawn : GGridObject
 
     protected virtual void Start()
     {
+        
+        #if UNITY_EDITOR
+        AddUpgrades(_preloadTestUpgradesToAdd);
+        #endif
+        
         _currentCell.SetGridObject(this);
         remainingActionToken = (int)AttributesController.GetFinal(EAttributeType.MaxAction);
+        
+        
+        
         AttributesController.SubscribeCallBack(EAttributeType.MaxAction,
             (oldValue, newValue) =>
             {
                 remainingActionToken += Mathf.Max(0, (int)newValue - (int)oldValue);
             });
         
-        
-        #if UNITY_EDITOR
-        AddUpgrades(_preloadTestUpgradesToAdd);
-        #endif
     }
 
     protected override void OnEnable()

@@ -84,7 +84,10 @@ public class GPushedReaction : GAction
                 
                 cell = neighbor;
                 if (neighbor.GetTileType == ETileType.Hole)
+                {
+                    _inflictDamage = true;
                     break;
+                }
             }
             
             PreviewCells.Add(cell);
@@ -141,6 +144,10 @@ public class GPushedReaction : GAction
                 {
                     linkedPawn.ReleaseEquipement(false, true);
                     Instigitator.GiveEquipement(CachedEquipment, false, false);
+                    if (!linkedPawn.data.isPlayer && Instigitator.data.isPlayer)
+                    {
+                        Instigitator.remainingActionToken++;
+                    }
                 }
             }
             
@@ -165,7 +172,7 @@ public class GPushedReaction : GAction
                 }
                 
                 cell = neighbor;
-                if (neighbor.GetTileType == ETileType.Hole)
+                if (neighbor.GetTileType == ETileType.Hole )
                 {
                     targetCell = neighbor;
                     _inflictDamage = true;
