@@ -286,6 +286,10 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: -0.3
       objectReference: {fileID: 0}
+    - target: {fileID: 5833444954066559084, guid: 48d2615fd829feb4a9c7bfb377fa75cc, type: 3}
+      propertyPath: serializationData.Prefab
+      value: 
+      objectReference: {fileID: 5833444954066559084, guid: 48d2615fd829feb4a9c7bfb377fa75cc, type: 3}
     - target: {fileID: 6996191448795593158, guid: 48d2615fd829feb4a9c7bfb377fa75cc, type: 3}
       propertyPath: m_IsActive
       value: 0
@@ -378,6 +382,7 @@ MonoBehaviour:
   <pawnColor>k__BackingField: {r: 1, g: 1, b: 1, a: 1}
   <headerName>k__BackingField: Altar
   <className>k__BackingField: 
+  _upgrades: []
   data: {fileID: 11400000, guid: 71c5007204ff57d4d8ee99c87565e661, type: 2}
   <hasCrown>k__BackingField: 0
   equipment: {fileID: 0}
@@ -385,7 +390,7 @@ MonoBehaviour:
   <equipmentParentTr>k__BackingField: {fileID: 6677674562615435608}
   <AttributesController>k__BackingField: {fileID: 0}
   remainingActionToken: 0
-  <isStunned>k__BackingField: 0
+  <stunTurns>k__BackingField: 0
   <isStunnedProtected>k__BackingField: 0
   <hp>k__BackingField: 3
   _OnDeath:
@@ -400,6 +405,8 @@ MonoBehaviour:
   OnPawnHover:
     m_PersistentCalls:
       m_Calls: []
+  _testUpgradeToAdd: {fileID: 0}
+  _preloadTestUpgradesToAdd: []
 --- !u!114 &1528920753647014634 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 5047510769810583256, guid: 48d2615fd829feb4a9c7bfb377fa75cc, type: 3}
