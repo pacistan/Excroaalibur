@@ -45,6 +45,7 @@ GameObject:
   - component: {fileID: 7651828138839633993}
   - component: {fileID: 3274910628591863012}
   - component: {fileID: 8961280520078500072}
+  - component: {fileID: 7233382955096834987}
   m_Layer: 0
   m_Name: Grid
   m_TagString: Untagged
@@ -153,6 +154,197 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c9b92b44ee1408445bb0d282bf6f9a39, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &7233382955096834987
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4055392255285988590}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 32442c4af4e9c394ab05cf76c30da21e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  serializationData:
+    SerializedFormat: 2
+    SerializedBytes: 
+    ReferencedUnityObjects:
+    - {fileID: 11400000, guid: 3b5b2078310783441ab285dd4c64f130, type: 2}
+    - {fileID: 11400000, guid: 49054a6c2bd58a14c8cb1e9ba19f1c50, type: 2}
+    - {fileID: 11400000, guid: e70afd8c8a18ed24595ff6d0051f7220, type: 2}
+    - {fileID: 11400000, guid: 333a8c43c9aa58a4286e7dd30b16029c, type: 2}
+    - {fileID: 11400000, guid: edefeaee36b8388469b8a6c42f0fe619, type: 2}
+    - {fileID: 11400000, guid: 9ad68278bca0113438e303c577bc7b5d, type: 2}
+    - {fileID: 11400000, guid: 4ee18ad3766f6e84695ceadfae6af6b5, type: 2}
+    - {fileID: 11400000, guid: cf159bb250665c5488765d41ced35547, type: 2}
+    SerializedBytesString: 
+    Prefab: {fileID: 0}
+    PrefabModificationsReferencedUnityObjects: []
+    PrefabModifications: []
+    SerializationNodes:
+    - Name: upgrades
+      Entry: 7
+      Data: 0|System.Collections.Generic.Dictionary`2[[ERarity, Assembly-CSharp],[System.Collections.Generic.List`1[[GSOUpgrade,
+        Assembly-CSharp]], mscorlib]], mscorlib
+    - Name: comparer
+      Entry: 7
+      Data: 1|System.Collections.Generic.EnumEqualityComparer`1[[ERarity, Assembly-CSharp]],
+        mscorlib
+    - Name: 
+      Entry: 12
+      Data: 0
+    - Name: 
+      Entry: 13
+      Data: 
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 12
+      Data: 2
+    - Name: 
+      Entry: 7
+      Data: 
+    - Name: $k
+      Entry: 3
+      Data: 0
+    - Name: $v
+      Entry: 7
+      Data: 2|System.Collections.Generic.List`1[[GSOUpgrade, Assembly-CSharp]], mscorlib
+    - Name: 
+      Entry: 12
+      Data: 4
+    - Name: 
+      Entry: 10
+      Data: 0
+    - Name: 
+      Entry: 10
+      Data: 1
+    - Name: 
+      Entry: 10
+      Data: 2
+    - Name: 
+      Entry: 10
+      Data: 3
+    - Name: 
+      Entry: 13
+      Data: 
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 7
+      Data: 
+    - Name: $k
+      Entry: 3
+      Data: 1
+    - Name: $v
+      Entry: 7
+      Data: 3|System.Collections.Generic.List`1[[GSOUpgrade, Assembly-CSharp]], mscorlib
+    - Name: 
+      Entry: 12
+      Data: 4
+    - Name: 
+      Entry: 10
+      Data: 4
+    - Name: 
+      Entry: 10
+      Data: 5
+    - Name: 
+      Entry: 10
+      Data: 6
+    - Name: 
+      Entry: 10
+      Data: 7
+    - Name: 
+      Entry: 13
+      Data: 
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 13
+      Data: 
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: _runTimeUpgrades
+      Entry: 7
+      Data: 4|System.Collections.Generic.Dictionary`2[[ERarity, Assembly-CSharp],[System.Collections.Generic.List`1[[GSOUpgrade,
+        Assembly-CSharp]], mscorlib]], mscorlib
+    - Name: comparer
+      Entry: 9
+      Data: 1
+    - Name: 
+      Entry: 12
+      Data: 0
+    - Name: 
+      Entry: 13
+      Data: 
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: <weigthtDictionary>k__BackingField
+      Entry: 7
+      Data: 5|System.Collections.Generic.Dictionary`2[[ERarity, Assembly-CSharp],[System.Single,
+        mscorlib]], mscorlib
+    - Name: comparer
+      Entry: 9
+      Data: 1
+    - Name: 
+      Entry: 12
+      Data: 3
+    - Name: 
+      Entry: 7
+      Data: 
+    - Name: $k
+      Entry: 3
+      Data: 0
+    - Name: $v
+      Entry: 4
+      Data: 0.6
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 7
+      Data: 
+    - Name: $k
+      Entry: 3
+      Data: 1
+    - Name: $v
+      Entry: 4
+      Data: 0.3
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 7
+      Data: 
+    - Name: $k
+      Entry: 3
+      Data: 2
+    - Name: $v
+      Entry: 4
+      Data: 0.1
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 13
+      Data: 
+    - Name: 
+      Entry: 8
+      Data: 
+  upgradeCardSelectMenu: {fileID: 0}
+  _numberOfPendingUpgrades: 3
 --- !u!1 &6229668815744158599
 GameObject:
   m_ObjectHideFlags: 0

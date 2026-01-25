@@ -111,7 +111,7 @@ public class GPawnVisualsController : SerializedMonoBehaviour
         if (!_pawn.data.isPlayer && !(_pawn is GAltar))
         {
             _txtCurrentHp.text = $"{_pawn.hp}";
-            _txtMaxHp.text = $"/{_pawn.hp}";
+            _txtMaxHp.text = $"/{_pawn.AttributesController.GetFinal(EAttributeType.MaxHealth)}";
             _imgHpBarForeground.fillAmount = 1;
             _imgHpBarPrevisualisation.fillAmount = 1;
         }
@@ -305,6 +305,7 @@ public class GPawnVisualsController : SerializedMonoBehaviour
         {
             OnUpdateActionsToken();
         }
+        
         if (_pawn.stunTurns > 0)
         {
             _imgStatus.sprite = _spriteStun;

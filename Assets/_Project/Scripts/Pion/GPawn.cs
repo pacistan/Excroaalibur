@@ -469,6 +469,7 @@ public class GPawn : GGridObject
         
         AttributesController.LoadProfile(data.attributeProfile);
         AttributesController.SubscribeCallBack(EAttributeType.MaxHealth, OnMaxHealthChanged);
+        hp = (int)AttributesController.GetFinal(EAttributeType.MaxHealth);
     }
 
     void OnMaxHealthChanged(float oldValue, float NewValue)
