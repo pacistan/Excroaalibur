@@ -175,7 +175,7 @@ public class GGridManager : GSingleton<GGridManager>
 
     
     /** Generate Step map with only <see cref="ETileType.Normal"/> */
-    public void GenerateStepMap(GCell from)
+    public void GenerateStepMap(GCell from, bool ignorePawn = false)
     {
         _stepMap = new Dictionary<Vector2Int, int>();
         if (!from || !from.IsWalkable(true))
@@ -187,10 +187,10 @@ public class GGridManager : GSingleton<GGridManager>
         _stepMap.Add(from.data.gridCoordinates, stepNum);
         from.visuals.UpdateCellDebugNum($"{stepNum}");
         ETileType[] walkableTypes = new []{ ETileType.Normal };
-        StepRecursion(from, stepNum + 1, ref walkableTypes);
+        StepRecursion(from, stepNum + 1, ref walkableTypes, ignorePawn);
     }
     
-    public void GenerateStepMap(GCell from, ETileType[] walkableTypes)
+    public void GenerateStepMap(GCell from, ETileType[] walkableTypes, bool ignorePawn = false)
     {
         _stepMap = new Dictionary<Vector2Int, int>();
         if (!from || !from.IsWalkable(ref walkableTypes, true))
@@ -201,14 +201,14 @@ public class GGridManager : GSingleton<GGridManager>
         int stepNum = 0;
         _stepMap.Add(from.data.gridCoordinates, stepNum);
         from.visuals.UpdateCellDebugNum($"{stepNum}");
-        StepRecursion(from, stepNum + 1, ref walkableTypes);
+        StepRecursion(from, stepNum + 1, ref walkableTypes, ignorePawn);
     }
 
-    private void StepRecursion(GCell from, int stepNum, ref ETileType[] walkableTypes)
+    private void StepRecursion(GCell from, int stepNum, ref ETileType[] walkableTypes, bool ignorePawn = false)
     {
         foreach (GCell cell in from.neighbors)
         {
-            if (cell && cell.IsWalkable(ref walkableTypes))
+            if (cell && cell.IsWalkable(ref walkableTypes, ignorePawn))
             {
                 var coordinates = cell.data.gridCoordinates;
                 if(!_stepMap.ContainsKey(coordinates))

@@ -313,6 +313,7 @@ public class GPlayerController : GController
             if (_hoverCell != null)
             {
                 _hoverCell.visuals.isHovered = false;
+                DisablePrevisualisation();
             }
             _hoverCell = null;
             if (!_selectedPlayer)
@@ -527,18 +528,27 @@ public class GPlayerController : GController
         });
         
         context.TryGet(GActionContext.DAMAGE_STRING, out int damage);
-        context.TryGet(GActionContext.STUN_STRING, out bool stun);
+        context.TryGet(GActionContext.STUN_STRING, out int stunTurns);
         context.TryGet(GActionContext.ACTION_GAIN_STRING, out int actionGain);
         if (hoveredPawn)
-            hoveredPawn.visuals.OnPrevisualisation(damage, stun, actionGain);
+        {
+            hoveredPawn.visuals.OnPrevisualisation(damage, stunTurns, 0);
+        }
+        _selectedPlayer.visuals.OnPrevisualisation(0, 0, actionGain);
     }
 
     private void DisablePrevisualisation()
     {
-        if (_selectedAction == null || !_selectedAction.targetCell) return;
-        GPawn targetPawn = _selectedAction.targetCell.GetGridObject<GPawn>();
-        if (_selectedAction != null && targetPawn)
-            targetPawn.visuals.OnDisablePrevisualisation();
+        if (_selectedPlayer == null) return;
+        if (!(_selectedAction == null || !_selectedAction.targetCell))
+        {
+            GPawn targetPawn = _selectedAction.targetCell.GetGridObject<GPawn>();
+            if (targetPawn)
+            {
+                targetPawn.visuals.OnDisablePrevisualisation();
+            }
+        }
+        _selectedPlayer.visuals.OnDisablePrevisualisation();
 
         if (previsuCell == null || previsuCell.Count <= 0) return;
         foreach (GCell cell in previsuCell)
@@ -582,6 +592,10 @@ public class GPlayerController : GController
         if (newState == EMacroStates.Play && oldState == EMacroStates.LoadingScreen && GGameManager.Instance.isLoadingNewSave)
         {
             isFirstAction = true;
+        }
+        if (newState == EMacroStates.End)
+        {
+            Cursor.SetCursor(_normalCursor, Vector2.zero, CursorMode.Auto);
         }
     }
 

@@ -12,7 +12,7 @@ using UnityEngine.Localization.Settings;
 using UnityEngine.SceneManagement;
 using UnityEngine.Serialization;
 
-public enum EMacroStates { Start, Options, Upgrade_Select_Card, Upgrade_Select_Character, Pause, Play, End, LoadingScreen, None }
+public enum EMacroStates { Start, Options, Upgrade_Select_Card, Upgrade_Select_Character, Pause, Play, End, LoadingScreen, Map_Select, None }
 
 /* Responsable de la gestion globale du Jeu, de l'activation de potentiel Manager etc...*/
 public class GGameManager: GSingleton<GGameManager>
@@ -43,13 +43,10 @@ public class GGameManager: GSingleton<GGameManager>
     
 #if UNITY_EDITOR
     [SerializeField, FoldoutGroup("SceneToLoad")]
-    private UnityEditor.SceneAsset[] _loadableSceneAssets;
-
-    [SerializeField, FoldoutGroup("SceneToLoad")]
     private UnityEditor.SceneAsset[] _tutorialSceneAssets;
 #endif
     [SerializeField, FoldoutGroup("SceneToLoad"), ReadOnly]
-    private string[] _loadableScenes;
+    private string _loadableScene;
     [SerializeField, FoldoutGroup("SceneToLoad")] 
     private int _currentSceneToLoadIndex;
 
@@ -95,7 +92,7 @@ public class GGameManager: GSingleton<GGameManager>
     
     public void SetSceneToLoad(string sceneToLoadName)
     {
-        _loadableScenes[_currentSceneToLoadIndex] = sceneToLoadName;
+        _loadableScene = sceneToLoadName;
     }    
     
     public bool IsMenuActive(EMacroStates menu) => menu == currentState;
@@ -129,7 +126,7 @@ public class GGameManager: GSingleton<GGameManager>
         }
         else
         {
-            sceneName = _loadableScenes[Mathf.Min(_currentSceneToLoadIndex, _loadableScenes.Length - 1)];
+            sceneName = _loadableScene;
         }
         
         StartCoroutine(LoadSceneCoroutine(sceneName));
@@ -309,18 +306,6 @@ public class GGameManager: GSingleton<GGameManager>
 #if UNITY_EDITOR
     private void OnValidate()
     {
-        if(_loadableSceneAssets != null && _loadableSceneAssets.Length > 0)
-        {
-            _loadableScenes = new string[_loadableSceneAssets.Length];
-            for (int i = 0; i < _loadableSceneAssets.Length; i++)
-            {
-                _loadableScenes[i] = _loadableSceneAssets[i].name;
-            }
-        } 
-        else 
-            _loadableScenes = null;
-       
-        
         if(_tutorialSceneAssets != null && _tutorialSceneAssets.Length > 0)
         {
             _loadableTutorialScenes = new string[_tutorialSceneAssets.Length];

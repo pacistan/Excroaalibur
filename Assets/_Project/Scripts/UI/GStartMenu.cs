@@ -17,7 +17,7 @@ public class GStartMenu : MonoBehaviour
         {
             GGameManager.Instance.isLoadingTutorial = false;
             GGameManager.Instance.isLoadingNewSave = true;
-            GGameManager.Instance.ChangeState(EMacroStates.LoadingScreen);
+            GGameManager.Instance.ChangeState(EMacroStates.Map_Select);
         });
         
         _continueButton.onClick.AddListener(() =>

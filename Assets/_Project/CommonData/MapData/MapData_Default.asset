@@ -1,0 +1,32 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: be4d822547b8d5e4dbc5e808be9539af, type: 3}
+  m_Name: MapData_Default
+  m_EditorClassIdentifier: 
+  _scene: {fileID: 102900000, guid: ea841e6f1e6ad4d439477eb704bc1382, type: 3}
+  <SceneName>k__BackingField: LD_JU_Jolie
+  <MapCardSprite>k__BackingField: {fileID: 21300000, guid: 83d2bd1ddb2d3ef44b8a85f2cd2c9bf5, type: 3}
+  <MapName>k__BackingField:
+    m_TableReference:
+      m_TableCollectionName: GUID:2eeeb9dd2d3243c4ab0abdde864fb29f
+    m_TableEntryReference:
+      m_KeyId: 2910237745152
+      m_Key: 
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
+  <NumberOfWavesToUnlock>k__BackingField: 10
+  <ProgressMapToUnlock>k__BackingField: {fileID: 11400000, guid: efc06b5a07257a64fa5e3e250b737e1b, type: 2}
+  <NumberOfWavesOnThisMap>k__BackingField: 0
+  references:
+    version: 2
+    RefIds: []

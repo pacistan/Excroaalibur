@@ -110,6 +110,7 @@ public class GPushAction : GAction
                 pathCell = neighbor;
                 if (neighbor.GetTileType == ETileType.Hole) break;
             }
+
         }
         
         if (pathCell == linkedPawn.GetCell())  return; // No valid cell to follow
@@ -149,6 +150,7 @@ public class GPushAction : GAction
     {
         base.End_Action();
         linkedPawn.visuals.SetAnimationState(GPawn.IdleAnimationName);
+        linkedPawn.visuals.OnUpdateActionsToken();
     }
     
     public override GHexCoordinate[] GetValidCells()
