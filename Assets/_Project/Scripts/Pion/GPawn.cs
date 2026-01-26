@@ -134,7 +134,7 @@ public class GPawn : GGridObject
         // TODO Modif Clear of Effects Removal
         foreach (var effect in upgrade.Effects)
         {
-            AttributesController.RemoveAllModifiersFromSource(effect.Type, upgrade);
+            AttributesController.RemoveAllModifiersFromSource(upgrade);
         }
     }
     

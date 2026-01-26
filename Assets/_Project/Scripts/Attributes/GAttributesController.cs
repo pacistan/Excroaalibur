@@ -69,7 +69,6 @@ public class GAttributesController : SerializedMonoBehaviour
         
         _attributes.Clear();
         _mods.Clear();
-        _onAttributeChangedCallback.Clear();
         
         // Attributes
         for (int i = 0; i < profile.Attributes.Count; i++)
@@ -128,6 +127,8 @@ public class GAttributesController : SerializedMonoBehaviour
     
     public bool Has(EAttributeType type) => _attributes.ContainsKey(type);
 
+    // TODO : Transform in TryGet pattern ! 
+    
     /** returns -1f if attribute not found */
     public float GetBase(EAttributeType type) => _attributes.TryGetValue(type, out SAttribute attribute) ? attribute.Base : -1f;
 
@@ -136,7 +137,7 @@ public class GAttributesController : SerializedMonoBehaviour
     
     public void SetBase(EAttributeType type, float value)
     {
-        if (_attributes.TryGetValue(type, out SAttribute attribute))
+        if (!_attributes.TryGetValue(type, out SAttribute attribute))
         {
             Debug.LogError($"[Attributes] SetBase on unknown attribute '{type}'.");
             return;
@@ -160,39 +161,74 @@ public class GAttributesController : SerializedMonoBehaviour
         RecomputeFinal_NotifyIfChanged(mod.Type);
     }
     
-    public void AddModifiers(List<GAttributeModifier> mod)
+    // Helper method to create and add a modifier in one call 
+    public GAttributeModifier AddMod(EAttributeType type, EModifierType modType, float value, object source)
     {
-        foreach (var modifier in mod)
+        var m = new GAttributeModifier(type, modType, value, source);
+        AddModifier(m);
+        return m;
+    }
+    
+    public void AddModifiers(List<GAttributeModifier> mods)
+    {
+        if (mods == null || mods.Count == 0) return;
+        
+        var dirty = new HashSet<EAttributeType>();
+        
+        for (int i = 0; i < mods.Count; i++)
         {
-            if (!_mods.TryGetValue(modifier.Type, out List<GAttributeModifier> list))
+            GAttributeModifier mod = mods[i];
+
+            if (!_mods.TryGetValue(mod.Type, out List<GAttributeModifier> list))
             {
-                Debug.LogError($"[Attributes] AddModifier on unknown attribute '{modifier.Type}'.");
+                Debug.LogError($"[Attributes] AddModifier on unknown attribute '{mod.Type}'.");
                 continue;
             }
 
-            list.AddRange(mod);
-            RecomputeFinal_NotifyIfChanged(modifier.Type);
+            list.Add(mod);
+            dirty.Add(mod.Type);
         }
-
-
+        
+        foreach (var type in dirty)
+            RecomputeFinal_NotifyIfChanged(type);
     }
 
-    public void RemoveModifier(EAttributeType type, GAttributeModifier mod)
+    public void RemoveModifier(GAttributeModifier mod)
     {
-        if (!_mods.TryGetValue(type, out List<GAttributeModifier> list)) return;
+        if (!_mods.TryGetValue(mod.Type, out List<GAttributeModifier> list)) return;
 
         if (list.Remove(mod))
-            RecomputeFinal_NotifyIfChanged(type);
+            RecomputeFinal_NotifyIfChanged(mod.Type);
     }
     
-    /** Remove all modifiers of a given type from a given source */
-    public void RemoveAllModifiersFromSource(EAttributeType type, object source)
+    /** Remove all modifiersfrom a given source */
+    public void RemoveAllModifiersFromSource(object source)
     {
-        if (!_mods.TryGetValue(type, out List<GAttributeModifier> list)) return;
+        if (source == null) return;
 
-        int removed = list.RemoveAll(attributeMod => attributeMod.Source == source);
-        if (removed > 0)
-            RecomputeFinal_NotifyIfChanged(type);
+        List<EAttributeType> TypeList = new List<EAttributeType>();
+
+        foreach (var mod in _mods)
+        {
+            List<GAttributeModifier> list = mod.Value;
+            if (list == null || list.Count == 0) continue;
+
+            int removed = 0;
+            for (int i = list.Count - 1; i >= 0; i--)
+            {
+                if (list[i].Source == source)
+                {
+                    list.RemoveAt(i);
+                    removed++;
+                }
+            }
+
+            if (removed > 0)
+                TypeList.Add(mod.Key);
+        }
+
+        for (int i = 0; i < TypeList.Count; i++)
+            RecomputeFinal_NotifyIfChanged(TypeList[i]);
     }
 
     /** Clear all modifiers of a given type */
@@ -258,8 +294,13 @@ public class GAttributesController : SerializedMonoBehaviour
         for (int i = 0; i < list.Count; i++)
         {
             var mod = list[i];
-            if (mod.ModifierType == EModifierType.Additive) v += mod.Value;
-            else if (mod.ModifierType == EModifierType.Multiplicative) sumPercent += mod.Value;
+            if (mod.Value == 0f) continue;
+            
+            switch (mod.ModifierType)
+            {
+                case EModifierType.Additive: v += mod.Value; break;
+                case EModifierType.Multiplicative: sumPercent += mod.Value; break;
+            }
         }
 
         v *= (1f + sumPercent);
