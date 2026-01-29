@@ -1015,6 +1015,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 388a52d89b27462b80a5cffe718948af, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  onStep:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!4 &1948542787635150243 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 5f37d33f41e61f8449a2bee6c506a15f, type: 3}
@@ -1144,6 +1147,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 388a52d89b27462b80a5cffe718948af, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  onStep:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!4 &9133533697503877344 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 3b306aaba96cf4149b3abce6b2d20086, type: 3}

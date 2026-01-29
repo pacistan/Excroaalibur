@@ -26,6 +26,9 @@ public class GMoveOutOfHoleAction : GAction
         _moveAction.OverrideTileType(overrideTileType, overrideTileType);
         _moveAction.targetCell = targetCell;
         _moveAction.moveAnimationName = GPawn.GetOutOfHoleAnimationName;
+        _moveAction.MovementMode = EMovementMode.TPAfter;
+        _moveAction.IsAnimationDriven = true;
+        _moveAction.OutAnimBlendTime = 0;
         GTurnBaseManager.Instance.PreProcessReaction(_moveAction, new GActionContext());
     }
 

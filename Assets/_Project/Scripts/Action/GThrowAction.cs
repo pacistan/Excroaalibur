@@ -274,7 +274,7 @@ public class GThrowAction : GAction
         lookAtPosition.y = linkedPawn.transform.position.y;
         linkedPawn.transform.LookAt(lookAtPosition);
 
-        int length = _targetPawn.GetCell().hexCoordinates.DistanceTo(linkedPawn.GetCell().hexCoordinates);
+        int length = targetCell.hexCoordinates.DistanceTo(linkedPawn.GetCell().hexCoordinates);
         string animName = GPawn.ThrowAnimationName;
         if(_targetPawn && _targetPawn.data.isPlayer)
             animName = length == 1
@@ -283,7 +283,7 @@ public class GThrowAction : GAction
         
         linkedPawn.OnAnimationThrow += OnAnimationThrowCallback;
         linkedPawn.visuals.SetAnimationState(animName, .05f);
-        if (length == 1)
+        if (length == 1 && _targetPawn)
         {
             _targetPawn.visuals.SetAnimationState(GPawn.CatchCloseAnimationName);
             _targetPawn.visuals.SetAnimationParameter(GPawn.AnimParam_IsPreparedToCatch, false);
@@ -385,7 +385,7 @@ public class GThrowAction : GAction
         _hitPos    =  _targetPawn ? _targetPawn.equipmentParentTr.position : targetCell.GetTransformPoint(_crown).position;
         _returnPos = _startPos;
 
-        int length = _targetPawn.GetCell().hexCoordinates.DistanceTo(linkedPawn.GetCell().hexCoordinates);
+        int length = targetCell.hexCoordinates.DistanceTo(linkedPawn.GetCell().hexCoordinates);
         
         var direction = linkedPawn.GetHexCoordinate().GetLineDirection(targetCell.hexCoordinates);
         var frontCell  = targetCell.GetNeighbor(direction.Opposite());
