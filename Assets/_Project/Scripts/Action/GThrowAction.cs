@@ -129,8 +129,11 @@ public class GThrowAction : GAction
         base.OnUnselectedAction();
         linkedPawn.visuals.SetAnimationParameter(GPawn.AnimParam_IsPreparedToThrow, false);
         foreach (var validCell in validCells)
+        {
+            if (GGridManager.Instance.GetCell(validCell).GetGridObject<GPawn>() == _targetPawn) continue;
             GGridManager.Instance.GetCell(validCell).GetGridObject<GPawn>()?.visuals.
                 SetAnimationParameter(GPawn.AnimParam_IsPreparedToCatch, false);
+        }
     }
 
     public override List<GCell> Previsualisation(in GActionContext previsuContext)
@@ -271,14 +274,20 @@ public class GThrowAction : GAction
         lookAtPosition.y = linkedPawn.transform.position.y;
         linkedPawn.transform.LookAt(lookAtPosition);
 
+        int length = _targetPawn.GetCell().hexCoordinates.DistanceTo(linkedPawn.GetCell().hexCoordinates);
         string animName = GPawn.ThrowAnimationName;
         if(_targetPawn && _targetPawn.data.isPlayer)
-            animName = _targetPawn.GetCell().hexCoordinates.DistanceTo(linkedPawn.GetCell().hexCoordinates) == 1
+            animName = length == 1
                 ? GPawn.PassCloseAnimationName
                 : GPawn.ThrowAnimationName;
         
         linkedPawn.OnAnimationThrow += OnAnimationThrowCallback;
-        linkedPawn.visuals.SetAnimationState(animName);
+        linkedPawn.visuals.SetAnimationState(animName, .05f);
+        if (length == 1)
+        {
+            _targetPawn.visuals.SetAnimationState(GPawn.CatchCloseAnimationName);
+            _targetPawn.visuals.SetAnimationParameter(GPawn.AnimParam_IsPreparedToCatch, false);
+        }
         linkedPawn.StartCoroutine(StartReactionsCoroutine());
     }
 
@@ -375,6 +384,8 @@ public class GThrowAction : GAction
         _startPos  = linkedPawn.equipmentParentTr.position;
         _hitPos    =  _targetPawn ? _targetPawn.equipmentParentTr.position : targetCell.GetTransformPoint(_crown).position;
         _returnPos = _startPos;
+
+        int length = _targetPawn.GetCell().hexCoordinates.DistanceTo(linkedPawn.GetCell().hexCoordinates);
         
         var direction = linkedPawn.GetHexCoordinate().GetLineDirection(targetCell.hexCoordinates);
         var frontCell  = targetCell.GetNeighbor(direction.Opposite());
@@ -438,12 +449,13 @@ public class GThrowAction : GAction
                     hitEvent.release();
                     if (_targetPawn.IsAlive)
                     {
-                        _targetPawn.visuals.SetAnimationState(GPawn.HitAnimationName);
+                        _targetPawn.visuals.SetAnimationState(GPawn.HitAnimationName, .1f);
                     }
                 }
-                else
+                else if (length > 1)
                 {
-                    _targetPawn.visuals.SetAnimationState(GPawn.CatchAnimationName);
+                    _targetPawn.visuals.SetAnimationParameter(GPawn.AnimParam_IsPreparedToCatch, false);
+                    _targetPawn.visuals.SetAnimationState(GPawn.CatchAnimationName, .1f);
                 }
             }
             _throwSoundInstance.stop(STOP_MODE.ALLOWFADEOUT);

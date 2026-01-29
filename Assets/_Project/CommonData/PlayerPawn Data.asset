@@ -106,27 +106,27 @@ MonoBehaviour:
         - x: 2
           z: 5
         _maxMoveDistance: 2
-        _speed: 3
+        _speed: 4
         _speedCurve:
           serializedVersion: 2
           m_Curve:
           - serializedVersion: 3
             time: 0
             value: 0
-            inSlope: 0
-            outSlope: 0
+            inSlope: 0.45238096
+            outSlope: 0.45238096
             tangentMode: 0
             weightedMode: 0
             inWeight: 0
-            outWeight: 0
+            outWeight: 0.110526316
           - serializedVersion: 3
             time: 1
             value: 1
-            inSlope: 0
-            outSlope: 0
+            inSlope: 0.49350646
+            outSlope: 0.49350646
             tangentMode: 0
             weightedMode: 0
-            inWeight: 0
+            inWeight: 0.11578947
             outWeight: 0
           m_PreInfinity: 2
           m_PostInfinity: 2
@@ -189,7 +189,7 @@ MonoBehaviour:
           z: 9
         _maxThrowDistance: 100
         _throwMidPointHeight: 0
-        _throwCrownSpeed: 30
+        _throwCrownSpeed: 60
         _throwSpeedCurve:
           serializedVersion: 2
           m_Curve:
@@ -363,6 +363,8 @@ MonoBehaviour:
         validCells: []
         _pushForce: 1
         _followDistance: 1
+        _pushDamage: 1
+        _pushStunAmount: 1
         _previsuCurveData: {fileID: 11400000, guid: 11eea60cc8d82364baac63c8cd184f8f, type: 2}
     - rid: 3108424474244939855
       type: {class: GMoveOutOfHoleAction, ns: , asm: Assembly-CSharp}

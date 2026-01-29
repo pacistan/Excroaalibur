@@ -31,6 +31,7 @@ public class GPawn : GGridObject
     public const string PushedStartAnimationName = "Pushed_Start";
     public const string PushedEndAnimationName = "Pushed_End";
     public const string CatchAnimationName = "Catch";
+    public const string CatchCloseAnimationName = "Catch_Close";
     public const string GetOutOfHoleAnimationName = "MoveOutOfHole";
     public const string DieAnimationName = "Die";
     public const string PushedIntoHoleAnimationName = "Pushed_Hole";

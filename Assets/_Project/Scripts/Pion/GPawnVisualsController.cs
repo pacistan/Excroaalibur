@@ -152,7 +152,7 @@ public class GPawnVisualsController : SerializedMonoBehaviour
     }
 
     /** Walking / Idle / Push / Throw */
-    public void SetAnimationState(string animationStateName, float transitionDuration = .3f)
+    public void SetAnimationState(string animationStateName, float transitionDuration = .1f)
     {
         if (!_animator)
         {
