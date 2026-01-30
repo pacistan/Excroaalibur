@@ -11,6 +11,12 @@ using UnityEngine;
 using UnityEngine.Serialization;
 using STOP_MODE = FMOD.Studio.STOP_MODE;
 
+public enum EMovementMode
+{
+    Lerp,
+    TPBefore,
+    TPAfter
+}
 
 public class GMoveAction : GAction
 {
@@ -32,6 +38,15 @@ public class GMoveAction : GAction
     [FormerlySerializedAs("animationName")]
     public string moveAnimationName = GPawn.MoveAnimationName;
     
+    [SerializeField]
+    public bool IsAnimationDriven = false;
+
+    [SerializeField]
+    public float OutAnimBlendTime = .01f;
+    
+    [SerializeField]
+    public EMovementMode MovementMode = EMovementMode.Lerp;
+    
     private ETileType[] _walkingTileType;
     private ETileType[] _endMovementTileType;
     
@@ -39,6 +54,13 @@ public class GMoveAction : GAction
     private Vector3[] _wayPoints = new Vector3[] { };
     float _progress = 0;
     int _currentWayPoint = 0;
+    
+    private bool _animationComplete = false;
+
+    private bool _isWaitingForAnimation = false;
+    private int _animationStateHash = 0;
+    
+    private Animator _animator;
     
     int _EquipementPickUpIndex = -1; // No Equipement to Picked Up
 
@@ -120,23 +142,41 @@ public class GMoveAction : GAction
         base.Start_Action();
         _progress = 0;
         _currentWayPoint = 0;
-
+        _animationComplete = false;
+        
         if (targetCell.GetTileType == ETileType.Hole)
         {
             RuntimeManager.PlayOneShotAttached("event:/Pawn/Fall", linkedPawn.gameObject);
             moveAnimationName = GPawn.PushedIntoHoleAnimationName;
+            
+            MovementMode = EMovementMode.TPAfter;
+            IsAnimationDriven = true;
+            OutAnimBlendTime = 0;
         }
 
         if (moveAnimationName == GPawn.PushedStartAnimationName || moveAnimationName == GPawn.PushedIntoHoleAnimationName)
         {
             Vector3 lookAtPosition = targetCell.transform.position - (2 * (targetCell.transform.position - linkedPawn.transform.position));
             lookAtPosition.y = linkedPawn.transform.position.y;
-            linkedPawn.transform.DOLookAt(lookAtPosition, 0.5f).SetEase(Ease.InOutElastic);
+            linkedPawn.transform.DOLookAt(lookAtPosition, 0.1f).SetEase(Ease.OutBack);
             //linkedPawn.transform.LookAt(lookAtPosition);
+        }
+        
+        if (MovementMode == EMovementMode.TPBefore)
+        {
+            linkedPawn.transform.position = targetCell.transform.position;
         }
 
         
         linkedPawn.visuals.SetAnimationState(moveAnimationName, 0.01f);
+        _animator = linkedPawn.visuals.GetAnimator();
+        
+        if (IsAnimationDriven)
+        {
+            _isWaitingForAnimation = true;
+            _animationStateHash = Animator.StringToHash(moveAnimationName);
+        }
+        
         MoveEventInstance = RuntimeManager.CreateInstance(MoveEvent);
         MoveEventInstance.set3DAttributes(RuntimeUtils.To3DAttributes(linkedPawn.gameObject));
         MoveEventInstance.start();
@@ -147,32 +187,56 @@ public class GMoveAction : GAction
         base.Update_Action(delta);
         _progress += delta * _speed;
 
+        if (IsAnimationDriven && _animator)
+        {
+            if (_isWaitingForAnimation)
+            {
+                AnimatorStateInfo stateInfo = _animator.GetCurrentAnimatorStateInfo(0);
+
+                if (stateInfo.shortNameHash == _animationStateHash && stateInfo.normalizedTime >= .95)
+                {
+                    _animationComplete = true;
+                    _isWaitingForAnimation = false;
+                }
+            }
+        }
+        
         float animatedProgress = _speedCurve.Evaluate(_progress / _wayPoints.Length) * _wayPoints.Length;
 
 
-        if (animatedProgress > _currentWayPoint)
+        if (MovementMode == EMovementMode.Lerp)
         {
-            if (_EquipementPickUpIndex == _currentWayPoint)
-            { 
-                linkedPawn.GiveEquipement(linkedPawn.equipment, true, true);
-            }
-            _currentWayPoint++;
-
-            if (_wayPoints.Length > 0 && moveAnimationName != GPawn.PushedStartAnimationName && moveAnimationName != GPawn.PushedIntoHoleAnimationName)
+            if (animatedProgress > _currentWayPoint)
             {
-                Vector3 lookAtPosition = _wayPoints[Mathf.Min(_currentWayPoint + 1, _wayPoints.Length - 1)];
-                lookAtPosition.y = linkedPawn.transform.position.y;
-                linkedPawn.transform.LookAt(lookAtPosition);
-            }
-        }
+                if (_EquipementPickUpIndex == _currentWayPoint)
+                {
+                    linkedPawn.GiveEquipement(linkedPawn.equipment, true, true);
+                }
+                _currentWayPoint++;
 
-        if (animatedProgress > _wayPoints.Length - 1) 
+                if (_wayPoints.Length > 0 && moveAnimationName != GPawn.PushedStartAnimationName &&
+                    moveAnimationName != GPawn.PushedIntoHoleAnimationName)
+                {
+                    Vector3 lookAtPosition = _wayPoints[Mathf.Min(_currentWayPoint + 1, _wayPoints.Length - 1)];
+                    lookAtPosition.y = linkedPawn.transform.position.y;
+                    linkedPawn.transform.LookAt(lookAtPosition);
+                }
+            }
+
+            if (!IsAnimationDriven && animatedProgress > _wayPoints.Length - 1 || IsAnimationDriven && _animationComplete) 
+            {
+                End_Action();
+                return;
+            }
+            
+            int id = Mathf.FloorToInt(animatedProgress);
+            linkedPawn.transform.position = Vector3.Lerp(_wayPoints[id], _wayPoints[id + 1], Mathf.Repeat(animatedProgress, 1));
+        }
+        else if (!IsAnimationDriven && animatedProgress > _wayPoints.Length - 1 || IsAnimationDriven && _animationComplete) 
         {
             End_Action();
             return;
         }
-        int id = Mathf.FloorToInt(animatedProgress);
-        linkedPawn.transform.position = Vector3.Lerp(_wayPoints[id], _wayPoints[id+1], Mathf.Repeat(animatedProgress, 1));
     }
 
     public override void End_Action()
@@ -207,11 +271,11 @@ public class GMoveAction : GAction
         {
             if (targetCell.GetTileType == ETileType.Hole)
             {
-                linkedPawn.visuals.SetAnimationState("Idle_InHole", 0.01f);
+                linkedPawn.visuals.SetAnimationState("Idle_InHole", OutAnimBlendTime);
             }
             else
             {
-                linkedPawn.visuals.SetAnimationState(GPawn.IdleAnimationName, 0.01f);
+                linkedPawn.visuals.SetAnimationState(GPawn.IdleAnimationName, OutAnimBlendTime);
             }
         }
         base.End_Action();
