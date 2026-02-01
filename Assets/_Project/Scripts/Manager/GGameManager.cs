@@ -45,8 +45,10 @@ public class GGameManager: GSingleton<GGameManager>
     [SerializeField, FoldoutGroup("SceneToLoad")]
     private UnityEditor.SceneAsset[] _tutorialSceneAssets;
 #endif
+    
     [SerializeField, FoldoutGroup("SceneToLoad"), ReadOnly]
     private string _loadableScene;
+    
     [SerializeField, FoldoutGroup("SceneToLoad")] 
     private int _currentSceneToLoadIndex;
 

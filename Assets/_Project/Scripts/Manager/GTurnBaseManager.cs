@@ -1,11 +1,9 @@
 ﻿using _Project.Scripts.Wave;
 using Sirenix.OdinInspector;
-using Sirenix.Serialization;
 using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using Unity.VisualScripting;
 using UnityEngine;
 
 [RequireComponent(typeof(GWaveComponent))]
@@ -47,17 +45,12 @@ public class GTurnBaseManager : GSingleton<GTurnBaseManager>
     
     /** All the Entity in the Scene */
     private List<GController> _controllerList = new List<GController>();
-    
-    //[SerializeField, BoxGroup("Dev Settings"), Tooltip("Time to wait before forcing the end of the turn when action is playing")]
-    //private float _safeTimeHandle = 5f;
 
     [SerializeField, BoxGroup("Dev Settings"), Tooltip("Speed Multiplier of the Action")]
     private float _actionSpeed = 1f;
     
     [SerializeField, HideInEditorMode, ReadOnly, Tooltip("Number of Turn elapsed since the start of the Fight"), BoxGroup("Turn")]
     private int _turnCount = 0;
-    
-    private WaitUntil _waitForTurn = null;
     
     // Wave Management !
     [SerializeField, BoxGroup("WaveManagement"), Tooltip("Data of the Waves to use in the Turn Base Manager")]
@@ -70,12 +63,10 @@ public class GTurnBaseManager : GSingleton<GTurnBaseManager>
     
     /** Get the Current Score (Number of completed waves) */
     public int GetScore() => _waveComponent.GetWaveCount();
-
+    
     public void SetWaveCount(int waveCount) => _waveComponent.SetWaveCount(waveCount);
     
     public WaveData GetCurrentWaveData() => _hasWaves ? _currentWaveData : null;
-
-    public bool HasFutureSpawns() => _waveComponent.HasWave();
 
     /** Register an Controller to the Turn Base Manager */
     public void RegisterController(GController Controller)
@@ -94,7 +85,6 @@ public class GTurnBaseManager : GSingleton<GTurnBaseManager>
     /** Unregister a Controller from the Turn Base Manager */
     public void UnregisterController(GController Controller)
     {
-        
         if (_turnOrderControllerQueue.Contains(Controller) )
             _turnOrderControllerQueue.Remove(Controller);
 
@@ -102,6 +92,11 @@ public class GTurnBaseManager : GSingleton<GTurnBaseManager>
         {
             _controllerList.Remove(Controller);
             OnUnregisterController?.Invoke(Controller);
+        }
+
+        // If No More Enemies, Check Next Wave !
+        if (EnemiesCount == 0) {
+            _waveComponent.CheckNextWave(_turnCount);
         }
     }
     
@@ -184,9 +179,9 @@ public class GTurnBaseManager : GSingleton<GTurnBaseManager>
     /** Start the Turn of the first Entity in the Queue */
     private void StartTurn()
     {
-        if (_turnOrderControllerQueue.Count == 0 && _waveComponent.HasWave())
+        if (_turnOrderControllerQueue.Count == 0 && _waveComponent == null)
         {
-            Debug.LogWarning("Turn Order Queue is empty and WaveManager Has no Wave. Force Disable the Turn Base Manager.");
+            Debug.LogWarning("Turn Order Queue is empty and WaveManager is null. Force Disable the Turn Base Manager.");
             enabled = false;
             return;
         }
@@ -195,6 +190,11 @@ public class GTurnBaseManager : GSingleton<GTurnBaseManager>
         {
             OnPrePlayerTurn?.Invoke(_turnCount);
             _turnCount++;
+            
+            if (EnemiesCount == 0) // Needed for First Wave Preview
+            {
+                _waveComponent.CheckNextWave(_turnCount);
+            }
         }
 
         if (_turnOrderControllerQueue.Count >= 0)  // if Queue Is empty, keep the currentTurnController 
@@ -212,11 +212,12 @@ public class GTurnBaseManager : GSingleton<GTurnBaseManager>
     {
         base.Awake();
         enabled = false;
-        _waitForTurn = new WaitUntil(() => !isActionPlaying);
+        
         _turnOrderControllerQueue.Clear();
         _actionsInProgress.Clear();
         _currentTurnState = ETurnState.NotStarted;
-        gameObject.TryGetComponent(out _waveComponent);
+        
+        TryGetComponent(out _waveComponent);
     }
 
     private void Update()
@@ -267,26 +268,32 @@ public class GTurnBaseManager : GSingleton<GTurnBaseManager>
     
     IEnumerator ProcessEndTurn()
     {
-        yield return _waitForTurn; 
+        GSaveManager.Instance.SerializeToJson(); // Auto Save at the end of each Turn !
+        yield return new WaitUntil(() => !isActionPlaying); 
         
         _currentTurnState = ETurnState.Finished;
         
         currentTurnController?.EndTurn();
-
-        GSaveManager.Instance.SerializeToJson();
         
         if (currentTurnController is GPlayerController) // After Player Turn
         {
             OnPostPlayerTurn?.Invoke(_turnCount);
+            
+            /* --- Spawning Process --- */
+            if (EnemiesCount > 0)  
+                _waveComponent.CheckNextWave(_turnCount); // Safe Check, but should not be needed here !
+
+            if (_waveComponent.HasEnemiesToSpawn())
+                _waveComponent.SpawnNextWave();
+            
             CreateQueue(true);
             
-            // TODO : Find a Way to Avoid this WaitUntil
             yield return new WaitUntil(() => !_waveComponent.IsSpawningInProgress());
-
+            
+            /* --- Upgrade Process --- */
+            GUpgradeManager.Instance.StartUpgradeSequence();
             yield return new WaitUntil(() => !GUpgradeManager.Instance.IsUpgradeSelectionInProgress());
         }
-        
-        
         
         StartTurn();
         yield return null;
