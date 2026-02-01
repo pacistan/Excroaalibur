@@ -1,4 +1,5 @@
 ﻿using Sirenix.OdinInspector;
+using Stanpac.Utilities;
 using System;
 using System.Collections.Generic;
 using UnityEngine;
@@ -6,78 +7,57 @@ using UnityEngine;
 namespace _Project.Scripts.Wave
 {
     /* Scriptable Object to Store Wave Data */
-    [CreateAssetMenu(fileName = "WaveData", menuName = "LeJeu/Wave", order = 0)]
-    
+    [CreateAssetMenu(fileName = "WaveData", menuName = "LeJeu/Wave/WaveData", order = 0)]
     public class WaveData : ScriptableObject
     {
         [Serializable]
-        public enum EWaveType
-        {
-            Finite,
-            Endless
-        }
-        
-        [Serializable]
-        public class EnemySpawnEntry
-        {
-            [Tooltip("Enemy to spawn")]
-            public GAIController enemy;
-
-            [Min(0), Tooltip("Number of enemies to spawn")]
-            public int count;
-        }
-
-        [Serializable] //Je tente des trucs
-        public struct EndlessEnemyEntry
+        public class EnemyEntry
         {
             public GAIController enemyPrefab;
-            [Range(0, 1)] public float spawnWeight; // probabilité
+
+            [Tooltip("Cost of This Enemy for the Wave Budget")]
+            public float Cost = 1f;
         }
+        
+        // [Tooltip("Is This Wave a Tutorial Wave ?")]
+        // public bool bIsTutorialWave = false;
+        
+        [Tooltip("Do We Know Where the Enemies will Spawn ?")]
+        public bool bShowPreviewSpawns = false;
 
-        public List<EndlessEnemyEntry> endlessEnemies;
+        [Tooltip("Curve to Define the Wave Budget over Time (X = Wave Count, Y = Budget)")]
+        [HideIf("bIsTutorialWave")]
+        public AnimationCurve WaveBudgetCurve;
 
-        [Serializable]
-        public class SWave
+        [HideIf("bIsTutorialWave")]
+        public List<EnemyEntry> EnemiesEntries = new List<EnemyEntry>();
+        
+        private int GetWaveBugdet(int waveCount)
         {
-            [Tooltip("At which turn the wave starts")]
-            public int turn = 0;
-        
-            [SerializeField, Tooltip("Enemies to spawn in this wave")]
-            private List<EnemySpawnEntry> enemiesToSpawn = new List<EnemySpawnEntry>();
-        
-            [NonSerialized, Unity.Collections.ReadOnly, Tooltip("Does the Wave Has been preview by the system (Just before the Player Turn)")] 
-            public bool IsPreview = false; 
-        
-            public int GetSpawnCount()
-            {
-                int total = 0;
-                for (int i = 0; i < enemiesToSpawn.Count; i++)
-                    total += Mathf.Max(0, enemiesToSpawn[i].count);
-                return total;
-            }
-        
-            public List<GAIController> GetEnemiesToSpawn()
-            {
-                var list = new List<GAIController>();
-                for (int i = 0; i < enemiesToSpawn.Count; i++)
-                {
-                    var e = enemiesToSpawn[i];
-                    if (e.enemy == null || e.count <= 0) continue;
-                    for (int k = 0; k < e.count; k++)
-                        list.Add(e.enemy);
-                }
-                return list;
-            }
-
+            return (int)WaveBudgetCurve.Evaluate(waveCount);
         }
 
-        [field: SerializeField, ShowIf("@_waveType == EWaveType.Finite"),Tooltip("List of waves to spawn")]
-        public List<SWave> waves { get; private set; } = new List<SWave>();
-    
-        [Tooltip("Type of wave spawning"), PropertyOrder(-1)]
-        public EWaveType _waveType = EWaveType.Finite;
-    
-        [ShowIf("@_waveType == EWaveType.Endless"), Tooltip("Enemy prefab for Endless wave spawning")]
-        public GAIController enemyPrefab; 
+        // Temporary Simple Logic to Get Enemies for the Wave 
+        public void GetEnemiesForWave(int waveCount, int MaxEnemies, in List<GAIController> outEnemies)
+        {
+            int TotalBudget = GetWaveBugdet(waveCount);
+            
+            float currentBudget = 0f;
+            
+            List<EnemyEntry> shuffledEnemies = EnemiesEntries;
+            shuffledEnemies.Shuffle();
+
+            foreach (var enemyEntry in shuffledEnemies)
+            {
+                if (outEnemies.Count >= MaxEnemies)
+                    break;
+
+                if (currentBudget + enemyEntry.Cost <= TotalBudget)
+                {
+                    outEnemies.Add(enemyEntry.enemyPrefab);
+                    currentBudget += enemyEntry.Cost;
+                }
+            }
+        }
     }
 }

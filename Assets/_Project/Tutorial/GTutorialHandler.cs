@@ -51,7 +51,7 @@ public class GTutorialHandler : MonoBehaviour
     {
         if (controller is GPlayerController || GGameManager.Instance.currentState != EMacroStates.Play) return;
         
-        if (GTurnBaseManager.Instance.EnemiesCount > 0 || GTurnBaseManager.Instance.HasFutureSpawns()) return; 
+        if (GTurnBaseManager.Instance.EnemiesCount > 0) return; 
         
         GGameManager.Instance._currentTutorialSceneToLoadIndex++;
         GGameManager.Instance.ChangeState(EMacroStates.LoadingScreen);
