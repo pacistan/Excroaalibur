@@ -53,7 +53,9 @@ public class GCellCommonData : SerializedScriptableObject
     public float maxHeight;
     public float heightStep;
     public int maxRangeOfPullingEffect;
-
+    
+ #if UNITY_EDITOR
+    
     [Button("Rebuild Scene Visuals")]
     private void RebuildSceneVisuals()
     {
@@ -64,8 +66,6 @@ public class GCellCommonData : SerializedScriptableObject
         });
     }
     
-    #if UNITY_EDITOR
-
     [OnInspectorInit]
     public void CreateData()
     {

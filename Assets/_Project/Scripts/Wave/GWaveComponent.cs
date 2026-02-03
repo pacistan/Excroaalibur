@@ -21,25 +21,29 @@ public class GWaveComponent : MonoBehaviour
     private List<GCell> _spawnCells = new List<GCell>();
 
     IntVariable _currentWave;
+    private int _spawningInProcess = 0; 
     
-    private int SpawningInProcess = 0; 
+    private bool bHasCheckedNextWave = false;
     
     /** Current Wave Data Use by the Wave Manager */
     private WaveData _waveData => GTurnBaseManager.Instance.GetCurrentWaveData();
     
     /* Get the Actual wave Count */
     public int GetWaveCount() => _waveCount;
+    
+    /* Has the Wave Manager created Next Wave this Turn */
+    public bool HasCreateNextWave() => bHasCheckedNextWave;
 
     public void SetWaveCount(int waveCount) => _waveCount = waveCount;
     
-    public bool IsSpawningInProgress() => HasEnemiesToSpawn() && SpawningInProcess > 0;
+    public bool IsSpawningInProgress() => HasEnemiesToSpawn() && _spawningInProcess > 0;
     
     public bool HasEnemiesToSpawn() => _SpawningEnemiesQueue.Count > 0;
     
     private void OnEnemySpawned()
     {
-        SpawningInProcess = Mathf.Max(0, SpawningInProcess - 1);
-        if (SpawningInProcess > 0) return;
+        _spawningInProcess = Mathf.Max(0, _spawningInProcess - 1);
+        if (_spawningInProcess > 0) return;
         
         // TODO : Spawning process finish !
     }
@@ -50,7 +54,7 @@ public class GWaveComponent : MonoBehaviour
         
         // TODO : Tutorial Wave logic ! 
         
-        _waveData.GetEnemiesForWave(turnCount, _spawnCells.Count, _SpawningEnemiesQueue);
+        _waveData.GetEnemiesForWave(_waveCount, _spawnCells.Count, _SpawningEnemiesQueue);
 
         if (_SpawningEnemiesQueue.Count > 0)
         {
@@ -69,6 +73,8 @@ public class GWaveComponent : MonoBehaviour
                 _spawnCells[i].PreviewSpawnPawn();
             }
         }
+        
+        bHasCheckedNextWave = true;
     }
 
     /** Spawn the Enemies in _SpawningEnemiesQueue */
@@ -76,7 +82,7 @@ public class GWaveComponent : MonoBehaviour
     {
         if (!HasEnemiesToSpawn()) return;
         
-        SpawningInProcess = 0;
+        _spawningInProcess = 0;
         int spawnable = Mathf.Min(_SpawningEnemiesQueue.Count, _spawnCells.Count);
         Debug.Log($"[WaveManager] Spawning {spawnable} enemies.");
         GHudManager.Instance.playMenu.SetWaveNumberText(_waveCount);
@@ -99,7 +105,7 @@ public class GWaveComponent : MonoBehaviour
                 Debug.LogWarning("[WaveManager] Spawned controller has no GPawn component.");
                 continue;
             }
-            SpawningInProcess++;
+            _spawningInProcess++;
             StartCoroutine(_spawnCells[i].SpawnPawnFinish(pawn, OnEnemySpawned));
             _SpawningEnemiesQueue.RemoveAt(i);
         }
@@ -114,6 +120,12 @@ public class GWaveComponent : MonoBehaviour
     protected void Awake()
     {
         _spawnCells = GGridManager.Instance.GetAllCellsOfType(ETileType.Spawner);
+        GTurnBaseManager.Instance.OnStartControllerTurn += HandleStartControllerTurn;
+    }
+    
+    void HandleStartControllerTurn(GController controller)
+    {
+        bHasCheckedNextWave = false;
     }
 
     void OnDisable()

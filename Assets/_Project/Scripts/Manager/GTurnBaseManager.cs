@@ -279,20 +279,19 @@ public class GTurnBaseManager : GSingleton<GTurnBaseManager>
         {
             OnPostPlayerTurn?.Invoke(_turnCount);
             
-            /* --- Spawning Process --- */
-            if (EnemiesCount > 0)  
+            if (EnemiesCount == 0)  
                 _waveComponent.CheckNextWave(_turnCount); // Safe Check, but should not be needed here !
 
+            if (_waveComponent.HasCreateNextWave())
+                GUpgradeManager.Instance.StartUpgradeSequence();
+            
+            yield return new WaitUntil(() => !GUpgradeManager.Instance.IsUpgradeSelectionInProgress());
+            
             if (_waveComponent.HasEnemiesToSpawn())
                 _waveComponent.SpawnNextWave();
             
             CreateQueue(true);
-            
             yield return new WaitUntil(() => !_waveComponent.IsSpawningInProgress());
-            
-            /* --- Upgrade Process --- */
-            GUpgradeManager.Instance.StartUpgradeSequence();
-            yield return new WaitUntil(() => !GUpgradeManager.Instance.IsUpgradeSelectionInProgress());
         }
         
         StartTurn();

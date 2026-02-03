@@ -88,7 +88,7 @@ public class GMoveAction : GAction
 
     public override List<GCell> Previsualisation(in GActionContext previsuContext)
     {
-        GGridManager.Instance.GenerateStepMap(linkedPawn.GetCell(), _walkingTileType );
+        GGridManager.Instance.GenerateStepMap(linkedPawn.GetCell(), _walkingTileType);
         _path = GGridManager.Instance.GetPath(linkedPawn.GetCell() ,targetCell, _endMovementTileType,false);
         if (_path == null || _path.Length == 0 || _path.Length > GetAttributeOrBaseValue(_maxMoveDistance, EAttributeType.MoveDistance)) return null;
         

@@ -26,10 +26,10 @@ namespace _Project.Scripts.Wave
         public bool bShowPreviewSpawns = false;
 
         [Tooltip("Curve to Define the Wave Budget over Time (X = Wave Count, Y = Budget)")]
-        [HideIf("bIsTutorialWave")]
+        // [HideIf("bIsTutorialWave")]
         public AnimationCurve WaveBudgetCurve;
 
-        [HideIf("bIsTutorialWave")]
+        // [HideIf("bIsTutorialWave")]
         public List<EnemyEntry> EnemiesEntries = new List<EnemyEntry>();
         
         private int GetWaveBugdet(int waveCount)
@@ -46,17 +46,20 @@ namespace _Project.Scripts.Wave
             
             List<EnemyEntry> shuffledEnemies = EnemiesEntries;
             shuffledEnemies.Shuffle();
-
-            foreach (var enemyEntry in shuffledEnemies)
+            
+            int SafeGuard = 0;
+            while (outEnemies.Count < MaxEnemies && currentBudget < TotalBudget && SafeGuard < 100)
             {
-                if (outEnemies.Count >= MaxEnemies)
-                    break;
-
-                if (currentBudget + enemyEntry.Cost <= TotalBudget)
+                foreach (var enemyEntry in shuffledEnemies)
                 {
-                    outEnemies.Add(enemyEntry.enemyPrefab);
-                    currentBudget += enemyEntry.Cost;
+                    if (currentBudget + enemyEntry.Cost <= TotalBudget)
+                    {
+                        outEnemies.Add(enemyEntry.enemyPrefab);
+                        currentBudget += enemyEntry.Cost;
+                    }
                 }
+                
+                SafeGuard++;
             }
         }
     }

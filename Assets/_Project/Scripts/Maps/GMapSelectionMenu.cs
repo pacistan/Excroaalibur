@@ -5,5 +5,4 @@ public class GMapSelectionMenu : MonoBehaviour
 {
     [SerializeField]
     List<GMapCard> _mapCards;
-    
 }
