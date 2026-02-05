@@ -211,10 +211,11 @@ public class GPlayerController : GController
         _targetHud = GHudManager.Instance.TargetHud;
         _leftClickInput = InputSystem.actions.FindAction("Select");
         _rightClickInput = InputSystem.actions.FindAction("Switch");
+        _leftClickInput.Enable();
+        _rightClickInput.Enable();
         GHudManager.Instance.playMenu.endTurnButton.onClick.AddListener(StopTurn);
         GHudManager.Instance.playMenu.endTurnButton.interactable = false;
         GGameManager.Instance.OnChangeMacroStateEvent += OnChangeMacroStateCallback;
-        Cursor.SetCursor(_normalCursor, Vector2.zero, CursorMode.Auto);
         _lineRenderers = new  LineRenderer[_lineRendererNumber];
         for (int i = 0; i < _lineRendererNumber; i++)
         {
@@ -327,6 +328,7 @@ public class GPlayerController : GController
     {
         if (_leftClickInput.WasPressedThisFrame())
         {
+            Debug.Log(1);
             if (!_hoverCell) return;
 
             if (_targetCell != null)
@@ -578,13 +580,6 @@ public class GPlayerController : GController
     public override void EndTurn()
     {
         base.EndTurn();
-        /*foreach (var gHexCoordinate in _validCells)
-        {
-            GCell cell = GGridManager.Instance.GetCell(gHexCoordinate);
-            cell.visuals.isPrevisualized = false;
-            cell.visuals.isPrevisualized = false;
-            cell.visuals.isSelected = false;
-        }*/
     }
 
     private void OnChangeMacroStateCallback(EMacroStates newState, EMacroStates oldState)
@@ -593,9 +588,12 @@ public class GPlayerController : GController
         {
             isFirstAction = true;
         }
-        if (newState == EMacroStates.End)
+
+        if(newState == EMacroStates.Play)
         {
-            Cursor.SetCursor(_normalCursor, Vector2.zero, CursorMode.Auto);
+            // TODO : Replace condition
+            bool isPlayerTurn = GHudManager.Instance.playMenu.endTurnButton.interactable;
+            Cursor.SetCursor(isPlayerTurn ? _normalCursor : _waitCursor, Vector2.zero, CursorMode.Auto);
         }
     }
 

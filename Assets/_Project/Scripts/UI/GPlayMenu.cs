@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Sirenix.OdinInspector;
+using System;
 using TMPro;
 using UnityEngine;
 using UnityEngine.Serialization;
@@ -19,6 +20,10 @@ public class GPlayMenu : MonoBehaviour
 
     [SerializeField]
     TextMeshProUGUI _waveNumberTxt;
+
+    [SerializeField, HideInEditorMode, ReadOnly]
+    Cursor _cursor;
+
 
     public void SetCrownDamageText(int damage) { 
         _crownDamageTxt.text = $"{damage.ToString()}";
