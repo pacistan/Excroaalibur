@@ -1,8 +1,9 @@
-﻿using Unity.Cinemachine;
+﻿using Sirenix.OdinInspector;
 using System.Collections.Generic;
 using TMPro;
+using Unity.Cinemachine;
 using UnityEngine;
-using Sirenix.OdinInspector;
+using UnityEngine.Serialization;
 
 public partial class GMenuManager
 {
@@ -11,7 +12,16 @@ public partial class GMenuManager
     {
         [FoldoutGroup("$menu")]
         public EMacroStates menu;
-        
+
+        [FoldoutGroup("$menu")]
+        [HideIf("menu", EMacroStates.None)]
+        public Texture2D cursor;
+
+        [FoldoutGroup("$menu")]
+        [HideIf("menu", EMacroStates.None)]
+        [ShowIf("cursor")]
+        public Vector2 cursorOffset;
+
         [FoldoutGroup("$menu")]
         [HideIf("menu", EMacroStates.None)] 
         public GameObject menuFolder;

@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _scene: {fileID: 102900000, guid: ea841e6f1e6ad4d439477eb704bc1382, type: 3}
   <SceneName>k__BackingField: LD_JU_Jolie
-  <MapCardSprite>k__BackingField: {fileID: 21300000, guid: 83d2bd1ddb2d3ef44b8a85f2cd2c9bf5, type: 3}
+  <MapCardSprite>k__BackingField: {fileID: 21300000, guid: d87de8399d6678542b01da2d209e6238, type: 3}
   <MapName>k__BackingField:
     m_TableReference:
       m_TableCollectionName: GUID:2eeeb9dd2d3243c4ab0abdde864fb29f
@@ -24,8 +24,8 @@ MonoBehaviour:
     m_FallbackState: 0
     m_WaitForCompletion: 0
     m_LocalVariables: []
-  <NumberOfWavesToUnlock>k__BackingField: 10
-  <ProgressMapToUnlock>k__BackingField: {fileID: 11400000, guid: efc06b5a07257a64fa5e3e250b737e1b, type: 2}
+  <NumberOfWavesToUnlock>k__BackingField: 0
+  <ProgressMapToUnlock>k__BackingField: {fileID: 0}
   <NumberOfWavesOnThisMap>k__BackingField: 0
   references:
     version: 2

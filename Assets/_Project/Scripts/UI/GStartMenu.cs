@@ -41,7 +41,8 @@ public class GStartMenu : MonoBehaviour
 
     void OnEnable()
     {
-        _continueButton.interactable = GSaveManager.Instance.IsSaveFileCreated();
+        // TODO : Reenable the continue button once the save system is updated with all the new features
+        _continueButton.interactable = /*GSaveManager.Instance.IsSaveFileCreated()*/false;
     }
 
     public void ActivateQuitValidationMenu(bool toActivate)
