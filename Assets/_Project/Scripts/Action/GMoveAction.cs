@@ -219,7 +219,7 @@ public class GMoveAction : GAction
 
     public override GHexCoordinate[] GetValidCells()
     {
-        GGridManager.Instance.GenerateStepMap(linkedPawn.GetCell(), true);
+        GGridManager.Instance.GenerateStepMap(linkedPawn.GetCell(), !linkedPawn.data.isPlayer);
         Dictionary<Vector2Int, int> stepMap = GGridManager.Instance._stepMap;
         List<GHexCoordinate> newValidCells = new List<GHexCoordinate>();
 

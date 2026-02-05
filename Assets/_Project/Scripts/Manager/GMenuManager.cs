@@ -33,6 +33,9 @@ public partial class GMenuManager : GSingleton<GMenuManager>
     [field : SerializeField] 
     public GMenuSetting[] menuSettings { get; private set; }
 
+    [SerializeField]
+    Texture2D defaultCursor;
+
     private Dictionary<EMacroStates, GMenuSetting> _menuDictionary;
 
     protected override void Awake()
@@ -77,8 +80,6 @@ public partial class GMenuManager : GSingleton<GMenuManager>
 
         newMenu.menuFolder.transform.SetSiblingIndex(0);
 
-
-
         if (oldMenu.menu != EMacroStates.None && newMenu.menu != EMacroStates.Options) // No closing Transitions when opening Options
         {
             Action action = () => DisableMenu(oldMenu.menuFolder);
@@ -98,6 +99,14 @@ public partial class GMenuManager : GSingleton<GMenuManager>
             StartCoroutine(DoTransitions(newMenu, true, action));
         }
 
+        if (newMenu.cursor)
+        {
+            Cursor.SetCursor(newMenu.cursor, newMenu.cursorOffset, CursorMode.Auto);
+        }
+        else
+        {
+            Cursor.SetCursor(defaultCursor, Vector2.zero, CursorMode.Auto);
+        }
         if (oldMenu.virtualCamera) newMenu.virtualCamera.Priority = 0;
         if (newMenu.virtualCamera) newMenu.virtualCamera.Priority = 0;
 
@@ -127,6 +136,9 @@ public partial class GMenuManager : GSingleton<GMenuManager>
     public IEnumerator DoTransitions(GMenuSetting menuSetting, bool toActive, Action OnTransitionsOver = null)
     {
         int pendingTransitions = 0;
+
+
+
         if (menuSetting.uiTransitions != null)
         {
             foreach(var tr in menuSetting.uiTransitions)
@@ -141,7 +153,12 @@ public partial class GMenuManager : GSingleton<GMenuManager>
             menuSetting.canvasGroup.interactable = toActive;
             menuSetting.canvasGroup.blocksRaycasts = toActive;
         }
-        
+
+        if (menuSetting.waitForTransitionsToEnableClicking)
+        {
+            menuSetting.canvasGroup.interactable = false;
+        }
+
         yield return new WaitUntil(() => pendingTransitions == 0);
 
         if (menuSetting.waitForTransitionsToEnableClicking)
