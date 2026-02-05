@@ -1,4 +1,6 @@
+using System.Collections;
 using UnityEngine;
+using UnityEngine.Localization.Settings;
 using UnityEngine.Serialization;
 using UnityEngine.UI;
 
@@ -21,6 +23,12 @@ public class GOptionsMenu : MonoBehaviour
     
     [SerializeField]
     Button _exitOptionMenuBtn2;
+
+    [SerializeField]
+    Toggle _frToggle;
+
+    [SerializeField]
+    Toggle _enToggle;
     
     FMOD.Studio.Bus _musicBus;
     FMOD.Studio.Bus _masterBus;
@@ -44,6 +52,33 @@ public class GOptionsMenu : MonoBehaviour
     {
         if(!_sfxBus.isValid()) return;
         _sfxBus.setVolume(value);
+    }
+
+    private void OnEnable()
+    {
+        _frToggle.isOn = LocalizationSettings.SelectedLocale.Identifier == "fr";
+        _enToggle.isOn = LocalizationSettings.SelectedLocale.Identifier == "en";
+
+        _frToggle.onValueChanged.AddListener(isOn =>
+        {
+            StartCoroutine(ChangeLocale("fr"));
+        });
+
+        _enToggle.onValueChanged.AddListener(isOn =>
+        {
+            StartCoroutine(ChangeLocale("en"));
+        });
+    }
+
+    IEnumerator ChangeLocale(string localeCode)
+    {
+        yield return LocalizationSettings.InitializationOperation;
+
+        var locale = LocalizationSettings.AvailableLocales.GetLocale(localeCode);
+        if (locale != null)
+        {
+            LocalizationSettings.SelectedLocale = locale;
+        }
     }
 
     void Awake()

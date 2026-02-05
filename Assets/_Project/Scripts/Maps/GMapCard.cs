@@ -39,12 +39,18 @@ public class GMapCard : MonoBehaviour
 
     void OnEnable()
     {
-        _lockImage.enabled = IsMapUnlocked();
-        _progressTxt.text = $"{mapData.ProgressMapToUnlock.NumberOfWavesOnThisMap.ToString()} / {mapData.NumberOfWavesToUnlock.ToString()}";
-        _progressFillBar.fillAmount = (float)mapData.ProgressMapToUnlock.NumberOfWavesOnThisMap / (float)mapData.NumberOfWavesToUnlock;
-        _conditionMapTxt.StringReference["map-name"] = CreateLocalizedStringInstance(mapData.MapName);
+        bool isMapUnlocked = IsMapUnlocked();
+        _lockImage.enabled = isMapUnlocked;
+        if (mapData.ProgressMapToUnlock)
+        {
+            _progressTxt.text = $"{mapData.ProgressMapToUnlock.NumberOfWavesOnThisMap.ToString()} / {mapData.NumberOfWavesToUnlock.ToString()}";
+            _progressFillBar.fillAmount = (float)mapData.ProgressMapToUnlock.NumberOfWavesOnThisMap / (float)mapData.NumberOfWavesToUnlock;
+            _conditionMapTxt.StringReference["map-name"] = CreateLocalizedStringInstance(mapData.MapName);
+            _conditionMapTxt.RefreshString();
+        }
         _mapCoverImage.sprite = mapData.MapCardSprite;
-        _conditionMapTxt.RefreshString();
+        _progressFillBar.gameObject.SetActive(!isMapUnlocked);
+        _conditionMapTxt.gameObject.SetActive(!isMapUnlocked);
     }
 
     LocalizedString CreateLocalizedStringInstance(LocalizedString oldLocalizedString)

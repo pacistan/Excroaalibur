@@ -236,6 +236,7 @@ public class GPlayerController : GController
 
     void HandlePlayerHover()
     {
+        if(!(GGameManager.Instance.currentState == EMacroStates.Play || GGameManager.Instance.currentState == EMacroStates.Upgrade_Select_Character) ) return;
         GCell newCell = GetCellUnderMouse();
         if (newCell && newCell != _hoverCell)
         {
@@ -328,7 +329,6 @@ public class GPlayerController : GController
     {
         if (_leftClickInput.WasPressedThisFrame())
         {
-            Debug.Log(1);
             if (!_hoverCell) return;
 
             if (_targetCell != null)
@@ -534,7 +534,8 @@ public class GPlayerController : GController
         context.TryGet(GActionContext.ACTION_GAIN_STRING, out int actionGain);
         if (hoveredPawn)
         {
-            hoveredPawn.visuals.OnPrevisualisation(damage, stunTurns, 0);
+            // TODO : Not intuitive logic that action gain is defaulted to 1 when there is no action point number change
+            hoveredPawn.visuals.OnPrevisualisation(damage, stunTurns, 1);
         }
         _selectedPlayer.visuals.OnPrevisualisation(0, 0, actionGain);
     }
