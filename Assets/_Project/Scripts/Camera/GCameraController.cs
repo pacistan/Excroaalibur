@@ -48,6 +48,10 @@ public class GCameraController : GSingleton<GCameraController>
         _quartTurnRight = InputSystem.actions.FindAction("QuartTurnRight");
         _horizontalRot = InputSystem.actions.FindAction("HorizontalTurn");
         _height = InputSystem.actions.FindAction("MoveUpDown");
+        _quartTurnLeft.Enable();
+        _quartTurnRight.Enable();
+        _horizontalRot.Enable();
+        _height.Enable();
         _targetPos = _cameraTargetTr.position;
         _currentHeight = follow.FollowOffset.y;
     }
