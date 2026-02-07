@@ -45,7 +45,7 @@ public class GWaveComponent : MonoBehaviour
         _spawningInProcess = Mathf.Max(0, _spawningInProcess - 1);
         if (_spawningInProcess > 0) return;
         
-        // TODO : Spawning process finish !
+        // Spawning process finish !
     }
     
     public void CheckNextWave(int turnCount)
