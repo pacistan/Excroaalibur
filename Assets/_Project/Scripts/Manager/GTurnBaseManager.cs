@@ -1,5 +1,4 @@
-﻿using _Project.Scripts.Wave;
-using Sirenix.OdinInspector;
+﻿using Sirenix.OdinInspector;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -57,7 +56,7 @@ public class GTurnBaseManager : GSingleton<GTurnBaseManager>
     private bool _hasWaves = true;
     
     [SerializeField, BoxGroup("WaveManagement"), ShowIf("_hasWaves"), Tooltip("Current Wave Data to use for this Scene")]
-    private WaveData _currentWaveData;
+    private GWaveData _currentWaveData;
     
     private GWaveComponent _waveComponent;
     
@@ -66,7 +65,7 @@ public class GTurnBaseManager : GSingleton<GTurnBaseManager>
     
     public void SetWaveCount(int waveCount) => _waveComponent.SetWaveCount(waveCount);
     
-    public WaveData GetCurrentWaveData() => _hasWaves ? _currentWaveData : null;
+    public GWaveData GetCurrentWaveData() => _hasWaves ? _currentWaveData : null;
 
     /** Register an Controller to the Turn Base Manager */
     public void RegisterController(GController Controller)

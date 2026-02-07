@@ -1,5 +1,4 @@
-﻿using _Project.Scripts.Wave;
-using Sirenix.OdinInspector;
+﻿using Sirenix.OdinInspector;
 using Stanpac.Utilities;
 using System;
 using System.Collections.Generic;
@@ -26,7 +25,7 @@ public class GWaveComponent : MonoBehaviour
     private bool bHasCheckedNextWave = false;
     
     /** Current Wave Data Use by the Wave Manager */
-    private WaveData _waveData => GTurnBaseManager.Instance.GetCurrentWaveData();
+    private GWaveData _waveData => GTurnBaseManager.Instance.GetCurrentWaveData();
     
     /* Get the Actual wave Count */
     public int GetWaveCount() => _waveCount;
@@ -54,7 +53,8 @@ public class GWaveComponent : MonoBehaviour
         
         // TODO : Tutorial Wave logic ! 
         
-        _waveData.GetEnemiesForWave(_waveCount, _spawnCells.Count, _SpawningEnemiesQueue);
+        // TODO : Calculate Spawn logic ! 
+        //_waveData.GetEnemiesForWave(_waveCount, _spawnCells.Count, _SpawningEnemiesQueue);
 
         if (_SpawningEnemiesQueue.Count > 0)
         {
