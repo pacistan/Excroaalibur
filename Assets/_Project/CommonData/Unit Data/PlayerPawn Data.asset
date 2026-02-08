@@ -142,6 +142,9 @@ MonoBehaviour:
           m_RotationOrder: 4
         _previsuCurveData: {fileID: 11400000, guid: 11eea60cc8d82364baac63c8cd184f8f, type: 2}
         moveAnimationName: Move
+        IsAnimationDriven: 0
+        OutAnimBlendTime: 0.01
+        MovementMode: 0
     - rid: 3108424474244939853
       type: {class: GThrowAction, ns: , asm: Assembly-CSharp}
       data:
@@ -224,7 +227,7 @@ MonoBehaviour:
           m_PostInfinity: 2
           m_RotationOrder: 4
         _passMidPointHeight: 5
-        _passCrownSpeed: 30
+        _passCrownSpeed: 20
         _passSpeedCurve:
           serializedVersion: 2
           m_Curve:
@@ -251,7 +254,7 @@ MonoBehaviour:
           m_RotationOrder: 4
         _returnMidPointHeight: 5
         _impactDelayOnKill: 0.1
-        _returnCrownSpeed: 30
+        _returnCrownSpeed: 20
         _returnSpeedCurve:
           serializedVersion: 2
           m_Curve:
@@ -277,25 +280,25 @@ MonoBehaviour:
           m_PostInfinity: 2
           m_RotationOrder: 4
         _landMidPointHeight: 20
-        _landCrownSpeed: 30
+        _landCrownSpeed: 20
         _landSpeedCurve:
           serializedVersion: 2
           m_Curve:
           - serializedVersion: 3
             time: 0
             value: 0
-            inSlope: 1
-            outSlope: 1
-            tangentMode: 34
+            inSlope: 2
+            outSlope: 2
+            tangentMode: 0
             weightedMode: 0
             inWeight: 0
             outWeight: 0
           - serializedVersion: 3
             time: 1
             value: 1
-            inSlope: 1
-            outSlope: 1
-            tangentMode: 34
+            inSlope: 0
+            outSlope: 0
+            tangentMode: 0
             weightedMode: 0
             inWeight: 0
             outWeight: 0

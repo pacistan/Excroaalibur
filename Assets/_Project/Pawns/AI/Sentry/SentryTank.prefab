@@ -1079,7 +1079,7 @@ PrefabInstance:
     - target: {fileID: -7235764192721918809, guid: 3b306aaba96cf4149b3abce6b2d20086, type: 3}
       propertyPath: 'm_Materials.Array.data[0]'
       value: 
-      objectReference: {fileID: 2100000, guid: 8267c1b2e4319cf45bdf63cc4b894d1e, type: 2}
+      objectReference: {fileID: 2100000, guid: d2f7b868192df0144a129dd8f97dfb61, type: 2}
     - target: {fileID: 919132149155446097, guid: 3b306aaba96cf4149b3abce6b2d20086, type: 3}
       propertyPath: m_Name
       value: EnemiPawnAnim
@@ -1166,7 +1166,7 @@ PrefabInstance:
     - target: {fileID: 20667597376880823, guid: 48d2615fd829feb4a9c7bfb377fa75cc, type: 3}
       propertyPath: data
       value: 
-      objectReference: {fileID: 11400000, guid: 030afbcdc95490940938fc87a7469030, type: 2}
+      objectReference: {fileID: 11400000, guid: c1cbc85761582e54894960785782aa42, type: 2}
     - target: {fileID: 20667597376880823, guid: 48d2615fd829feb4a9c7bfb377fa75cc, type: 3}
       propertyPath: isPlayer
       value: 0
@@ -2765,7 +2765,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5180675197840913930, guid: 48d2615fd829feb4a9c7bfb377fa75cc, type: 3}
       propertyPath: m_Name
-      value: SentryVar1
+      value: SentryTank
       objectReference: {fileID: 0}
     - target: {fileID: 5180675197840913930, guid: 48d2615fd829feb4a9c7bfb377fa75cc, type: 3}
       propertyPath: m_Layer
@@ -2882,7 +2882,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   pawn: {fileID: 0}
-  _aiBehavior: {fileID: 11400000, guid: 80c05bed373fd184c9f4a9faca04e577, type: 2}
+  _aiBehavior: {fileID: 11400000, guid: 7dd64253f43fd1f46adf92cd796a8a0c, type: 2}
 --- !u!224 &4553590095380219751 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 4836179650882642423, guid: 48d2615fd829feb4a9c7bfb377fa75cc, type: 3}
