@@ -63,7 +63,7 @@ public class SerializableType<TBase> : IEquatable<SerializableType<TBase>>
         fullName = null;
     }
     
-    // === ÉGALITÉ / HASH basés sur AQN ===
+    /* ---- ÉGALITÉ / HASH basés sur AQN ----- */
     public bool Equals(SerializableType<TBase> other)
         => other != null && string.Equals(assemblyQualifiedName, other.assemblyQualifiedName, StringComparison.Ordinal);
 

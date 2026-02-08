@@ -4,7 +4,6 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Localization;
 
-public enum EUpgradeType {Statistic}
 public enum ERarity {Common, Rare, Legendary}
 
 [CreateAssetMenu(fileName = "Upgrade", menuName = "Upgrades/Upgrade")]
@@ -12,6 +11,7 @@ public class GSOUpgrade : SerializedScriptableObject
 {
     [field: SerializeField] public LocalizedString Name { get; private set; }
     [field: SerializeField] public LocalizedString Description { get; private set; }
+    
     // TODO : Replace with GEffect once stan is done with them
     [field: SerializeField] public List<GAttributeModifier> Effects { get; private set; } = new List<GAttributeModifier>();
     [field: SerializeField] public Sprite Icon { get; private set; }

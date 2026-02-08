@@ -16,13 +16,18 @@ public class GWaveComponent : MonoBehaviour
     [HideInEditorMode, ReadOnly, Tooltip("Currrent Queue of Ennemies to Spawn")]
     private List<GAIController> _SpawningEnemiesQueue = new List<GAIController>();
     
+    // TODO : Udpate With Buffs Class or Struct When is done ! 
+    [HideInEditorMode, ReadOnly, Tooltip("List of buffs to apply to next Enemies")]
+    private List<GWaveData.BuffEntry> _buffEntriesQueue = new List<GWaveData.BuffEntry>();
+    
     [HideInEditorMode, ReadOnly, Tooltip("List of potential spawn cells for enemies")]
     private List<GCell> _spawnCells = new List<GCell>();
-
-    IntVariable _currentWave;
-    private int _spawningInProcess = 0; 
     
+    private int _spawningInProcess = 0; 
     private bool bHasCheckedNextWave = false;
+    
+    // When true, the Wave Manager can start Buffing Enemies 
+    private bool bCanStartBuffEnemies = false;
     
     /** Current Wave Data Use by the Wave Manager */
     private GWaveData _waveData => GTurnBaseManager.Instance.GetCurrentWaveData();
@@ -53,16 +58,15 @@ public class GWaveComponent : MonoBehaviour
         
         // TODO : Tutorial Wave logic ! 
         
-        // TODO : Calculate Spawn logic ! 
-        //_waveData.GetEnemiesForWave(_waveCount, _spawnCells.Count, _SpawningEnemiesQueue);
+        _waveData.GenerateWave(_waveCount + 1, _spawnCells.Count, _SpawningEnemiesQueue);
 
         if (_SpawningEnemiesQueue.Count > 0)
         {
-            UpdateWaveCount();
-            
             // Ensure Spawn Cells are shuffled if we have less enemies than spawn points ! 
             if (_SpawningEnemiesQueue.Count < _spawnCells.Count)  
                 _spawnCells.Shuffle();
+            else
+                bCanStartBuffEnemies = true; 
         }
 
         if (_waveData.bShowPreviewSpawns) // Show Preview Spawns
@@ -81,6 +85,8 @@ public class GWaveComponent : MonoBehaviour
     public void SpawnNextWave()
     {
         if (!HasEnemiesToSpawn()) return;
+        
+        UpdateWaveCount();
         
         _spawningInProcess = 0;
         int spawnable = Mathf.Min(_SpawningEnemiesQueue.Count, _spawnCells.Count);
