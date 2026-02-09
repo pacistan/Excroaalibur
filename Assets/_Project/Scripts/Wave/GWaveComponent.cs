@@ -19,9 +19,8 @@ public class GWaveComponent : MonoBehaviour
     [HideInEditorMode, ReadOnly, Tooltip("List of upgrade to apply to next Enemies")]
     private List<GSOUpgrade> _upgradeEntriesQueue = new List<GSOUpgrade>();
     
-    // TODO : Udpate With Buffs Class or Struct When is done ! 
-    [HideInEditorMode, ReadOnly, Tooltip("List of buffs to apply to next Enemies")]
-    private List<GWaveData.BuffEntry> _buffEntriesQueue = new List<GWaveData.BuffEntry>();
+    [HideInEditorMode, ReadOnly, Tooltip("List of upgrade to apply to next Enemies")]
+    private List<GSOUpgrade> _upgradeEntriesQueue = new List<GSOUpgrade>();
     
     [HideInEditorMode, ReadOnly, Tooltip("List of potential spawn cells for enemies")]
     private List<GCell> _spawnCells = new List<GCell>();
@@ -123,6 +122,7 @@ public class GWaveComponent : MonoBehaviour
             
             int buffIndex = _waveData._BuffsWeightedSelection.SelectChoiceIndex(UnityEngine.Random.value, AlreadyAddedBuffs);
             var buffEntry = _waveData._BuffsWeightedSelection.GetChoice(buffIndex).item;
+
             _upgradeEntriesQueue.Add(buffEntry.Upgrades);
             
             // Add the selected buff index to the list of already added buffs !

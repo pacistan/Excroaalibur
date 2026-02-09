@@ -55,7 +55,7 @@ public class GWaveData : ScriptableObject
     public bool bShowPreviewSpawns = false;
 
     [Range(0, 1), BoxGroup("ClassicWave"), Tooltip("Probability that the Wave is just one type of Enemy (Only for Non Tutorial Wave)")]
-    public float SameEnemyProbability = 0.15;
+    public float SameEnemyProbability = 0.15f;
         
     [BoxGroup("ClassicWave")]
     public ERounded EnemiesRounded = ERounded.RoundUp;
