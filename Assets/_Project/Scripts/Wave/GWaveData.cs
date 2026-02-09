@@ -1,4 +1,5 @@
-﻿using Sirenix.OdinInspector;
+﻿using JetBrains.Annotations;
+using Sirenix.OdinInspector;
 using Stanpac.Utilities;
 using System;
 using System.Collections.Generic;
@@ -30,7 +31,7 @@ public class GWaveData : ScriptableObject
         private String Name;
         
         [field: SerializeField] 
-        public List<GAttributeModifier> Effects { get; private set; } = new List<GAttributeModifier>();
+        public List<GSOUpgrade> Upgrades { get; private set; } = new List<GSOUpgrade>();
 
         [Min(0)]
         [Tooltip("How many Buffs there is in the deck")]
@@ -94,53 +95,9 @@ public class GWaveData : ScriptableObject
     [BoxGroup("Buffs")]
     public ERounded BuffRounded = ERounded.RoundUp;
     
-    private WeightedSelection<EnemyEntry> _EnemiesWeightedSelection;
-    private WeightedSelection<EnemyEntry> _BossWeightedSelection;
-    private WeightedSelection<BuffEntry> _BuffsWeightedSelection;
-    
-    public List<GAIController> GenerateWave(int WaveIndex, int MaxSpawnCellsCount, List<GAIController> spawningEnemiesQueue)
-    {
-        if (WaveIndex % WaveCountForBoss == 0)  // Boss Wave
-        {
-            int bossCount = Mathf.CeilToInt(WaveIndex / WaveCountForBoss * BossCountMultiplier);
-            for (int i = 0; i < bossCount; i++)
-            {
-                var bossEntry = _BossWeightedSelection.Select(UnityEngine.Random.value);
-                spawningEnemiesQueue.Add(bossEntry.enemyPrefab);
-            }
-            
-            // TODO Calculate Buffs for Bosses !! 
-        }
-        else  // Classic Wave
-        {
-            bool bSpawnSameEnemy = UnityEngine.Random.value < SameEnemyProbability;
-            int enemyCount = EnemiesRounded == ERounded.RoundUp 
-                ? Mathf.CeilToInt(WaveIndex * EnemiesCountMultiplier) 
-                : Mathf.FloorToInt(WaveIndex * EnemiesCountMultiplier);
-
-            if (bSpawnSameEnemy)
-            {
-                var enemyEntry = _EnemiesWeightedSelection.Select(UnityEngine.Random.value);
-                for (int i = 0; i < enemyCount; i++)
-                {
-                    spawningEnemiesQueue.Add(enemyEntry.enemyPrefab);
-                }
-            }
-            else
-            {
-                for (int i = 0; i < enemyCount; i++)
-                {
-                    var enemyEntry = _EnemiesWeightedSelection.Select(UnityEngine.Random.value);
-                    spawningEnemiesQueue.Add(enemyEntry.enemyPrefab);
-                }
-            }
-            
-            // TODO Calculate Buffs for Enemies !! 
-        }
-
-        return spawningEnemiesQueue;
-    }
-    
+    public WeightedSelection<EnemyEntry> _EnemiesWeightedSelection;
+    public WeightedSelection<EnemyEntry> _BossWeightedSelection;
+    public WeightedSelection<BuffEntry> _BuffsWeightedSelection;
     
     void Awake()
     {

@@ -7,12 +7,12 @@ using UnityEngine.Serialization;
 [RequireComponent(typeof(GPawn))]
 public class GAIController : GController
 {
-    [HideInInspector]
-    public  GPawn pawn;
     [SerializeReference]
     [InlineEditor(InlineEditorObjectFieldModes.Boxed)]
     public GAIBehavior _aiBehavior;
     
+    public GPawn pawn => pawns.Count > 0 ? pawns[0] : null;
+
     public override void StartTurn()
     {
         bool isStunned = pawn.stunTurns > 0;
@@ -84,7 +84,7 @@ public class GAIController : GController
 
     void Awake()
     {
-        pawn = GetComponent<GPawn>();
+        RegisterPawn(GetComponent<GPawn>());
         _aiBehavior = ScriptableObject.Instantiate(_aiBehavior);
         _aiBehavior.Init(this);
         pawn.data.actionList = _aiBehavior.actions;
