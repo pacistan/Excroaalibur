@@ -46,10 +46,10 @@ public class GCellVisualsController : MonoBehaviour
     [SerializeField, HideInInspector]
     EGridObjectType _previousObjectSpawnType;
 
-    [SerializeField, HideInInspector, ReadOnly]
+    [SerializeField, ReadOnly]
     public bool isHovered;
 
-    [SerializeField, HideInInspector, ReadOnly]
+    [SerializeField, ReadOnly]
     public bool isSelected;
 
     // TODO : Change later 
@@ -247,7 +247,6 @@ public class GCellVisualsController : MonoBehaviour
     private void UpdateHighlight()
     {
         ETileHighlightType newHighlightType = isSelected ? ETileHighlightType.CellSelect : isHovered ? ETileHighlightType.CellHover : ETileHighlightType.CellBase;
-        
         if (newHighlightType != _currentHighlightType)
         {
             ChangeSprite(newHighlightType);

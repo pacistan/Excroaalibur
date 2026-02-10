@@ -43,9 +43,9 @@ public class GPawn : GGridObject
     public const string AnimParam_IsPreparedToCatch = "IsPrepareCatch";
     public const string AnimParam_IsPreparedToThrow = "isPrepareThrow";
     public const string AnimParam_IsInHole = "IsInHole";
-    
-    [SerializeField, ReadOnly]
-    List<GSOUpgrade> _upgrades = new List<GSOUpgrade>();
+
+    [field: SerializeField, ReadOnly]
+    public List<GSOUpgrade> upgrades { get; private set; } = new List<GSOUpgrade>();
     
     [SerializeReference]
     public GPawnData data;
@@ -109,14 +109,14 @@ public class GPawn : GGridObject
     private void AddTestUpgrade()
     {
         var instance = _testUpgradeToAdd.CreateInstance();
-        _upgrades.Add(instance);
+        upgrades.Add(instance);
         AttributesController.AddModifiers(instance.Effects);
     }
 #endif
     
     public void AddUpgrade(GSOUpgrade upgrade)
     {
-        _upgrades.Add(upgrade);
+        upgrades.Add(upgrade);
         AttributesController.AddModifiers(upgrade.Effects);
     }
 
@@ -124,14 +124,14 @@ public class GPawn : GGridObject
     {
         foreach (GSOUpgrade upgrade in upgrades)
         {
-            _upgrades.Add(upgrade);
+            this.upgrades.Add(upgrade);
             AttributesController.AddModifiers(upgrade.Effects);
         }
     }
 
     public void RemoveUpgrade(GSOUpgrade upgrade)
     {
-        _upgrades.Remove(upgrade);
+        upgrades.Remove(upgrade);
         // TODO Modif Clear of Effects Removal
         foreach (var effect in upgrade.Effects)
         {

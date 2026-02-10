@@ -106,7 +106,7 @@ public class GGameManager: GSingleton<GGameManager>
             Debug.LogWarning("Called to change to already active menu");
             return;
         }
-        GDebug.Log(ELogType.Andre_Channel_2,newState.ToString());
+        //GDebug.Log(ELogType.Andre_Channel_2,newState.ToString());
         previousState = currentState;
         currentState = newState;
         OnMenuExit();

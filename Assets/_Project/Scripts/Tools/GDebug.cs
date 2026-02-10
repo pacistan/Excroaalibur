@@ -17,7 +17,7 @@ public enum ELogType
 
 public static class GDebug 
 {
-    public static ELogType currentLogType = ELogType.Andre_Channel_1;
+    public static ELogType currentLogType = ELogType.None;
     public static void Log(ELogType logType, string msg, Object context = null)
     {
         if (currentLogType.HasFlag(logType)) return;
