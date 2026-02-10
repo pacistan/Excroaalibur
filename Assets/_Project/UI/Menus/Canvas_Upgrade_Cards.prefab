@@ -142,6 +142,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 8473744827568306489}
     m_Modifications:
+    - target: {fileID: 971904047962340543, guid: 5ddef3b69376d684e973ade67b0ab747, type: 3}
+      propertyPath: m_fontSizeBase
+      value: 18
+      objectReference: {fileID: 0}
     - target: {fileID: 2002073711689708238, guid: 5ddef3b69376d684e973ade67b0ab747, type: 3}
       propertyPath: m_Name
       value: Panel_Upgrade_Card_1
@@ -226,6 +230,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 8794625582444867526, guid: 5ddef3b69376d684e973ade67b0ab747, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: 29ae585dd2d994d42a3773611e96f7fa, type: 3}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []

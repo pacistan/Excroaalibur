@@ -8,6 +8,7 @@ using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.InputSystem;
 using UnityEngine.Serialization;
+using UnityEngine.UI;
 
 public class GPlayerController : GController
 {
@@ -54,7 +55,8 @@ public class GPlayerController : GController
 
     [SerializeField]
     int _lineRendererNumber;
-    
+
+
     private GTargetHud _targetHud;
     InputAction _leftClickInput;
     InputAction _rightClickInput;
@@ -65,11 +67,13 @@ public class GPlayerController : GController
     
     List<GCell> previsuCell = new List<GCell>();
     public bool isFirstAction = true;
-    
+
+
+
     public void SetSelectedPlayer(GPawn newSelected)
     {
         if (_selectedPlayer == newSelected) return;
-        if (newSelected == null || !newSelected.data.isPlayer)
+        if (newSelected == null /*|| !newSelected.data.isPlayer*/)
         {
             _selectedPlayer = null;
             SelectAction(null);
@@ -244,7 +248,7 @@ public class GPlayerController : GController
             
             DisablePrevisualisation();
             
-            if (_selectedPlayer && _selectedPlayer.remainingActionToken > 0 && _selectedPlayer.stunTurns == 0 && _selectedAction != null && newCell != _hoverCell && _selectedAction.IsValidCell(newCell.hexCoordinates))
+            if (_selectedPlayer && _selectedPlayer.data.isPlayer && _selectedPlayer.remainingActionToken > 0 && _selectedPlayer.stunTurns == 0 && _selectedAction != null && newCell != _hoverCell && _selectedAction.IsValidCell(newCell.hexCoordinates))
             {
                 ActivatePrevisualisation(newCell, cellPawn);
             }
@@ -352,7 +356,7 @@ public class GPlayerController : GController
                 GUpgradeManager.Instance.OnCharacterSelected(cellPawn);
             }
             
-            if (_selectedPlayer && _selectedAction.IsValidCell(_targetCell.hexCoordinates) && _selectedPlayer.remainingActionToken > 0)
+            if (_selectedPlayer && _selectedPlayer.data.isPlayer && _selectedAction.IsValidCell(_targetCell.hexCoordinates) && _selectedPlayer.remainingActionToken > 0)
             {
                 ResetActionZone();
                 DisablePrevisualisation();
@@ -365,11 +369,11 @@ public class GPlayerController : GController
             {
                 if (cellPawn)
                 {
-                    bool isSelectable = cellPawn.data.isPlayer && cellPawn.remainingActionToken > 0 && cellPawn.stunTurns == 0;
+                    bool isSelectable = /*cellPawn.data.isPlayer && cellPawn.remainingActionToken > 0 && cellPawn.stunTurns == 0*/ true;
                     // No Selected player and Clicked on not Player Pawn
                     if (!_selectedPlayer && !cellPawn.data.isPlayer)
                     {
-                        
+                        SetSelectedPlayer(cellPawn);
                     }
                     // No Selected player and Clicked on Player Pawn
                     else if (!_selectedPlayer && cellPawn.data.isPlayer && isSelectable)
