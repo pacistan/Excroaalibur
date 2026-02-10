@@ -6,6 +6,7 @@ using System;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.Localization.Components;
 using UnityEngine.Serialization;
 using UnityEngine.UI;
 
@@ -89,9 +90,47 @@ public class GTargetHud : MonoBehaviour
     [SerializeField, BoxGroup("Panel Movement")]
     RectTransform _leftPanelRectTransform;
 
-    GGridObject _previousGridObject;
+    [SerializeField]
+    List<GUpgradeIcon> _upgradeIcons;
+
+    [SerializeField]
+    LocalizeStringEvent _upgradeDescriptionText;
     
+    [SerializeField]
+    LocalizeStringEvent _upgradeNameText;
+    
+    [SerializeField]
+    GameObject _upgradeDetailsPanel;
+
+    [SerializeField]
+    float _upgradeDetailsPanelOffsetX;
+
+    GGridObject _previousGridObject;
     private Sequence _tweenSequence;
+    private int _currentUpgradeIconIndex;
+
+
+    private void Start()
+    {
+        for (int i = 0; i < _upgradeIcons.Count; i++)
+        {
+            var upgradeIcon = _upgradeIcons[i];
+            upgradeIcon.index = i;
+            upgradeIcon.OnUpgradeIconHovered += OnUpgradeIconHovered;
+            upgradeIcon.OnUpgradeIconUnhovered += OnUpgradeIconUnhovered;
+        }
+    }
+
+    private void OnApplicationQuit()
+    {
+        for (int i = 0; i < _upgradeIcons.Count; i++)
+        {
+            var upgradeIcon = _upgradeIcons[i];
+            upgradeIcon.index = i;
+            upgradeIcon.OnUpgradeIconHovered -= OnUpgradeIconHovered;
+            upgradeIcon.OnUpgradeIconUnhovered -= OnUpgradeIconUnhovered;
+        }
+    }
 
     public void OnGridObjectHovered(GGridObject gridObject, bool  isFirstAction)
     {
@@ -129,7 +168,9 @@ public class GTargetHud : MonoBehaviour
             {
                 image.gameObject.SetActive(pawn && pawn.data.isPlayer);
             }
-            
+
+            _upgradeIcons.ForEach(i => i.gameObject.SetActive(false));
+
             if (pawn)
             {
                 if (pawn.data.isPlayer)
@@ -151,6 +192,14 @@ public class GTargetHud : MonoBehaviour
                     }
                     _aiHpNumberText.gameObject.SetActive(true);
                     _aiHpNumberText.text = $"{pawn.hp}/{pawn.AttributesController.GetFinal(EAttributeType.MaxHealth)} HPs";
+                }
+
+                var upgrades = pawn.upgrades;
+                int maxUpgradeShown = Math.Min(_upgradeIcons.Count, upgrades.Count);
+                for (int i = 0; i < maxUpgradeShown; i++)
+                {
+                    _upgradeIcons[i].SetUpgradeIcon(upgrades[i].Icon);
+                    _upgradeIcons[i].gameObject.SetActive(true);
                 }
             }
         };
@@ -236,5 +285,27 @@ public class GTargetHud : MonoBehaviour
         
         _tweenSequence.Append(_leftPanelRectTransform.DOAnchorPos(targetPos, duration).SetEase(curve));
         _tweenSequence.Join(_canvasGroup.DOFade(targetFade, duration).SetEase(curve));
+    }
+
+    private void OnUpgradeIconHovered(int index)
+    {
+        if(_currentUpgradeIconIndex == index) return;
+        _upgradeDetailsPanel.SetActive(true);
+        _currentUpgradeIconIndex = index;
+        if(_previousGridObject is GPawn pawn)
+        {
+            var upgrade = pawn.upgrades[index];
+            var upgradeIcon = _upgradeIcons[index].transform;
+            _upgradeNameText.StringReference.SetReference(upgrade.Name.TableReference, upgrade.Name.TableEntryReference);
+            _upgradeDescriptionText.StringReference.SetReference(upgrade.Description.TableReference, upgrade.Description.TableEntryReference);
+            _upgradeDetailsPanel.transform.position = upgradeIcon.position + _upgradeDetailsPanelOffsetX * Vector3.right;
+        }
+    }
+
+    private void OnUpgradeIconUnhovered(int index)
+    {
+        if(_currentUpgradeIconIndex != index) return;
+        _currentUpgradeIconIndex = -1;
+        _upgradeDetailsPanel.SetActive(false);
     }
 }

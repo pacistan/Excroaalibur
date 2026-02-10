@@ -244,6 +244,7 @@ public abstract class GAction
     protected void AddPrevisualisationCurve(in GActionContext context, Vector3[] path,
         GActionPrevisualisationCurveData data)
     {
+        if (data == null) return;
         int resolution = data.previsuCurveResolution;
         Vector3[] curve = new Vector3[resolution];
         Vector3 currentStartPosition = path[0];
