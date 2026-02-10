@@ -19,9 +19,6 @@ public class GWaveComponent : MonoBehaviour
     [HideInEditorMode, ReadOnly, Tooltip("List of upgrade to apply to next Enemies")]
     private List<GSOUpgrade> _upgradeEntriesQueue = new List<GSOUpgrade>();
     
-    [HideInEditorMode, ReadOnly, Tooltip("List of upgrade to apply to next Enemies")]
-    private List<GSOUpgrade> _upgradeEntriesQueue = new List<GSOUpgrade>();
-    
     [HideInEditorMode, ReadOnly, Tooltip("List of potential spawn cells for enemies")]
     private List<GCell> _spawnCells = new List<GCell>();
     
