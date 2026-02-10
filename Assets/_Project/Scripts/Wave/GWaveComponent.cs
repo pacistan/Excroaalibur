@@ -119,7 +119,7 @@ public class GWaveComponent : MonoBehaviour
             
             int buffIndex = _waveData._BuffsWeightedSelection.SelectChoiceIndex(UnityEngine.Random.value, AlreadyAddedBuffs);
             var buffEntry = _waveData._BuffsWeightedSelection.GetChoice(buffIndex).item;
-            _upgradeEntriesQueue.AddRange(buffEntry.Upgrades);
+            _upgradeEntriesQueue.Add(buffEntry.Upgrades);
             
             // Add the selected buff index to the list of already added buffs !
             int index = AlreadyAddedBuffs.Length;
@@ -211,6 +211,7 @@ public class GWaveComponent : MonoBehaviour
     {
         _spawnCells = GGridManager.Instance.GetAllCellsOfType(ETileType.Spawner);
         GTurnBaseManager.Instance.OnStartControllerTurn += HandleStartControllerTurn;
+        _waveData.GenerateWeightedSelection();
     }
     
     void HandleStartControllerTurn(GController controller)

@@ -14,7 +14,8 @@ public class GWaveData : ScriptableObject
     [Serializable]
     public class EnemyEntry
     {
-        public GAIController enemyPrefab;
+        [field: SerializeField] 
+        public GAIController enemyPrefab { get; private set; }
 
         [Range(0, 1)]
         [Tooltip("Weigh of this Enemy in the Wave Generation Process (Higher = More Chance to be Spawn)")]
@@ -31,7 +32,7 @@ public class GWaveData : ScriptableObject
         private String Name;
         
         [field: SerializeField] 
-        public List<GSOUpgrade> Upgrades { get; private set; } = new List<GSOUpgrade>();
+        public GSOUpgrade Upgrades { get; private set; }
 
         [Min(0)]
         [Tooltip("How many Buffs there is in the deck")]
@@ -98,8 +99,9 @@ public class GWaveData : ScriptableObject
     public WeightedSelection<EnemyEntry> _EnemiesWeightedSelection;
     public WeightedSelection<EnemyEntry> _BossWeightedSelection;
     public WeightedSelection<BuffEntry> _BuffsWeightedSelection;
-    
-    void Awake()
+
+    [Button("Generate Weighted Selections", ButtonSizes.Medium), GUIColor(0.4f, 0.8f, 1f), HideInEditorMode]
+    public void GenerateWeightedSelection()
     {
         _EnemiesWeightedSelection = new WeightedSelection<EnemyEntry>();
         foreach (var enemyEntry in EnemiesEntries)
