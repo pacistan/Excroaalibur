@@ -65,7 +65,6 @@ public class GMoveAction : GAction
     int _EquipementPickUpIndex = -1; // No Equipement to Picked Up
 
     String MoveEvent = "event:/Pawn/Move";
-    EventInstance MoveEventInstance = new EventInstance();
     
     public GMoveAction(){}
     
@@ -177,9 +176,6 @@ public class GMoveAction : GAction
             _animationStateHash = Animator.StringToHash(moveAnimationName);
         }
         
-        MoveEventInstance = RuntimeManager.CreateInstance(MoveEvent);
-        MoveEventInstance.set3DAttributes(RuntimeUtils.To3DAttributes(linkedPawn.gameObject));
-        MoveEventInstance.start();
     }
 
     public override void Update_Action(float delta)
@@ -242,7 +238,6 @@ public class GMoveAction : GAction
     public override void End_Action()
     {
         linkedPawn.transform.position = targetCell.transform.position;
-        MoveEventInstance.stop(STOP_MODE.ALLOWFADEOUT);
         if (!linkedPawn.IsAlive)
         {
             if (targetCell.GetTileType == ETileType.Hole)
