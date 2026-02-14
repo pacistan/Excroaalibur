@@ -55,8 +55,7 @@ public class GPlayerController : GController
 
     [SerializeField]
     int _lineRendererNumber;
-
-
+    
     private GTargetHud _targetHud;
     InputAction _leftClickInput;
     InputAction _rightClickInput;
@@ -67,7 +66,6 @@ public class GPlayerController : GController
     
     List<GCell> previsuCell = new List<GCell>();
     public bool isFirstAction = true;
-
 
 
     public void SetSelectedPlayer(GPawn newSelected)
@@ -468,7 +466,7 @@ public class GPlayerController : GController
     {
         if (action.ValidateTargetCellVFXPrefab != null  && action.targetCell != null)
         {
-            ParticleSystem _particleSystem = Instantiate(action.ValidateTargetCellVFXPrefab);
+            GVfxPlayer _particleSystem = Instantiate(action.ValidateTargetCellVFXPrefab);
             _particleSystem.transform.position = action.targetCell.transform.position;
             _particleSystem.Play();
         }

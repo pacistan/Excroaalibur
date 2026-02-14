@@ -64,7 +64,7 @@ public abstract class GAction
     public event Action OnActionFinished; 
     
     [field: SerializeField, FoldoutGroup("VFX"), Tooltip("VFX played on the target cell when the action is validated")] 
-    public ParticleSystem ValidateTargetCellVFXPrefab { get; private set; }
+    public GVfxPlayer ValidateTargetCellVFXPrefab { get; private set; }
     
     [field: SerializeField, FoldoutGroup("Visuals")]
     public string actionLabel { get; private set; }

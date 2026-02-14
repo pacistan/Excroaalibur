@@ -21,7 +21,7 @@ public class GUpgradeCard : MonoBehaviour
     {
         _upgradeBtn.onClick.AddListener(() => GUpgradeManager.Instance.OnUpgradeSelected(upgradeIndex));
     }
-
+    
     public void Build(GSOUpgrade upgrade)
     {
         _nameTxt.StringReference.SetReference(upgrade.Name.TableReference, upgrade.Name.TableEntryReference);

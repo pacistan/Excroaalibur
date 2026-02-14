@@ -28,8 +28,6 @@ public class GPushAction : GAction
     
     GAction _reaction;
     GMoveAction _followAction = null;
-
-    bool _isPushAnimationOver = false;
     
     // TODO : Add What tile types we can push ! (Like walls, holes, Spawner)
     
@@ -132,8 +130,6 @@ public class GPushAction : GAction
         
         linkedPawn.OnAnimationPush += OnAnimationPushCallback;
         linkedPawn.visuals.SetAnimationState(GPawn.PushAnimationName, 0.0f);
-        linkedPawn.StartCoroutine(StartReactionsCoroutine());
-        
     }
 
     public override void Update_Action(float delta)
@@ -187,17 +183,12 @@ public class GPushAction : GAction
         return pushAction;
     }
 
-    IEnumerator StartReactionsCoroutine()
+    private void OnAnimationPushCallback()
     {
-        yield return new WaitUntil(() => _isPushAnimationOver);
         linkedPawn.OnAnimationPush -= OnAnimationPushCallback;
         GTurnBaseManager.Instance.TryStartReaction(_reaction);
         GTurnBaseManager.Instance.TryStartReaction(_followAction);
         RuntimeManager.PlayOneShotAttached("event:/Pawn/Push", linkedPawn.gameObject);
-
     }
-    
-    private void OnAnimationPushCallback() 
-        => _isPushAnimationOver = true;
     
 }

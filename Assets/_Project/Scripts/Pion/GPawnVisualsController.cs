@@ -97,15 +97,26 @@ public class GPawnVisualsController : SerializedMonoBehaviour
     {
         return _pawn ? _pawn.data.isPlayer : true;
     }}
-
-    [SerializeField]
-    UnityEvent OnStunUnityEvent, OnDamagedUnityEvent;
+    
+    [FormerlySerializedAs("OnStunUnityEvent")]
+    [SerializeField, FoldoutGroup("Events")]
+    UnityEvent OnStunStartEvent;
+    
+    [SerializeField, FoldoutGroup("Events")]
+    UnityEvent OnStunStopEvent;
+    
+    [SerializeField, FoldoutGroup("Events")]
+    UnityEvent OnPushEvent;
+    
+    [SerializeField, FoldoutGroup("Events")]
+    UnityEvent OnDamagedUnityEvent;
     
     Material _defaultMaterial;
     
     int _previousHpNumber;
     int _previousStunTurnNumber;
 
+    
     void Start()
     {
         if (!_pawn.data.isPlayer && !(_pawn is GAltar))
@@ -141,6 +152,7 @@ public class GPawnVisualsController : SerializedMonoBehaviour
         _pawn.OnUnstunned += OnUnstunned;
         _pawn.OnHealthChanged += HealthChange;
         _pawn.OnKill += OnKilledVisuals;
+        _pawn.OnAnimationPush += OnPush;
     }
 
     void OnDisable()
@@ -149,6 +161,7 @@ public class GPawnVisualsController : SerializedMonoBehaviour
         _pawn.OnUnstunned -= OnUnstunned;
         _pawn.OnHealthChanged -= HealthChange;
         _pawn.OnKill -= OnKilledVisuals;
+        _pawn.OnAnimationPush -= OnPush;
     }
 
     /** Walking / Idle / Push / Throw */
@@ -190,6 +203,11 @@ public class GPawnVisualsController : SerializedMonoBehaviour
     public void OnUnstunned()
     {
     }
+    
+    public void OnPush()
+    {
+        OnPushEvent?.Invoke();
+    }
 
     public void OnUpdateHealthPoints()
     {
@@ -228,22 +246,22 @@ public class GPawnVisualsController : SerializedMonoBehaviour
             _imgStatusContainer.SetActive(true);
         }
         
-        if (_pawn.stunTurns > 0 && _previousStunTurnNumber != _pawn.stunTurns)
+        if (_pawn.stunTurns > 0 && _previousStunTurnNumber != _pawn.stunTurns) // Start Stun 
         {
             List<Material> materials = _mainRenderer.materials.ToList();
             materials[_stunMaterialIndex] = _stunnedMaterial;
             _mainRenderer.SetMaterials(materials);
             _imgStatus.sprite = _spriteStun;
             _imgStatusContainer.SetActive(true);
-            OnStunUnityEvent?.Invoke();
+            OnStunStartEvent?.Invoke();
             SetAnimationParameter(GPawn.AnimParam_IsStunned, true);
-            //TODO : Start Stun Feedbacks
         }
-        else if (_pawn.stunTurns == 0 && _previousStunTurnNumber != _pawn.stunTurns)
+        else if (_pawn.stunTurns == 0 && _previousStunTurnNumber != _pawn.stunTurns) // Stop Stun 
         {
             List<Material> materials = _mainRenderer.materials.ToList();
             materials[_stunMaterialIndex] = _defaultMaterial;
             _mainRenderer.SetMaterials(materials);
+            OnStunStopEvent?.Invoke();
             SetAnimationParameter(GPawn.AnimParam_IsStunned, false);
         }
 

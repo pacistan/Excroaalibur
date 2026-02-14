@@ -119,6 +119,7 @@ public class GWaveComponent : MonoBehaviour
             
             int buffIndex = _waveData._BuffsWeightedSelection.SelectChoiceIndex(UnityEngine.Random.value, AlreadyAddedBuffs);
             var buffEntry = _waveData._BuffsWeightedSelection.GetChoice(buffIndex).item;
+
             _upgradeEntriesQueue.Add(buffEntry.Upgrades);
             
             // Add the selected buff index to the list of already added buffs !
