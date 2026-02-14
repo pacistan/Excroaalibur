@@ -418,6 +418,7 @@ public class GPawn : GGridObject
     public void OnPushEvent()
     {
         OnAnimationPush?.Invoke();
+        
     }
 
     public void OnThrowEvent()
