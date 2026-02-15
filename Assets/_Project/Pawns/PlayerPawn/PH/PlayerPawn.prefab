@@ -5081,6 +5081,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 3844593680406075547, guid: cdfc55d746ce8da44ad17c633af897d8, type: 3}
       insertIndex: -1
       addedObject: {fileID: 9086522402138267178}
+    - targetCorrespondingSourceObject: {fileID: 3844593680406075547, guid: cdfc55d746ce8da44ad17c633af897d8, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 6352751375730259895}
   m_SourcePrefab: {fileID: 100100000, guid: cdfc55d746ce8da44ad17c633af897d8, type: 3}
 --- !u!4 &646253902562866441 stripped
 Transform:
@@ -5133,6 +5136,19 @@ CapsuleCollider:
   m_Height: 0.03851219
   m_Direction: 1
   m_Center: {x: -0.00019114163, y: -0.0040244786, z: 0.021288676}
+--- !u!114 &6352751375730259895
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 882262270376590276}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fea151eee1305c54cb7939d41c99926f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  fadeDuration: 1
 --- !u!137 &2054771288720347183 stripped
 SkinnedMeshRenderer:
   m_CorrespondingSourceObject: {fileID: 2729413168405115760, guid: cdfc55d746ce8da44ad17c633af897d8, type: 3}
@@ -8202,6 +8218,10 @@ PrefabInstance:
       propertyPath: managedReferences[7723294537050751054]._speedReturnCurve.m_Curve.Array.data[1].weightedMode
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 900099722302238678, guid: 48d2615fd829feb4a9c7bfb377fa75cc, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 4.07
+      objectReference: {fileID: 0}
     - target: {fileID: 1388886239460140924, guid: 48d2615fd829feb4a9c7bfb377fa75cc, type: 3}
       propertyPath: m_Layer
       value: 7
@@ -8400,31 +8420,31 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5047510769810583256, guid: 48d2615fd829feb4a9c7bfb377fa75cc, type: 3}
       propertyPath: OnDamagedUnityEvent.m_PersistentCalls.m_Calls.Array.size
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 5047510769810583256, guid: 48d2615fd829feb4a9c7bfb377fa75cc, type: 3}
       propertyPath: OnDamagedUnityEvent.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
-      value: 2
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 5047510769810583256, guid: 48d2615fd829feb4a9c7bfb377fa75cc, type: 3}
       propertyPath: OnDamagedUnityEvent.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
-      objectReference: {fileID: 2054771288720347183}
+      objectReference: {fileID: 6352751375730259895}
     - target: {fileID: 5047510769810583256, guid: 48d2615fd829feb4a9c7bfb377fa75cc, type: 3}
       propertyPath: OnDamagedUnityEvent.m_PersistentCalls.m_Calls.Array.data[0].m_CallState
       value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 5047510769810583256, guid: 48d2615fd829feb4a9c7bfb377fa75cc, type: 3}
       propertyPath: OnDamagedUnityEvent.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
-      value: set_material
+      value: GetHit
       objectReference: {fileID: 0}
     - target: {fileID: 5047510769810583256, guid: 48d2615fd829feb4a9c7bfb377fa75cc, type: 3}
       propertyPath: OnDamagedUnityEvent.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
-      value: UnityEngine.SkinnedMeshRenderer, UnityEngine
+      value: GChangeColorOnHit, Assembly-CSharp
       objectReference: {fileID: 0}
     - target: {fileID: 5047510769810583256, guid: 48d2615fd829feb4a9c7bfb377fa75cc, type: 3}
       propertyPath: OnDamagedUnityEvent.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
-      value: UnityEngine.Material, UnityEngine
+      value: UnityEngine.Object, UnityEngine
       objectReference: {fileID: 0}
     - target: {fileID: 5180675197840913930, guid: 48d2615fd829feb4a9c7bfb377fa75cc, type: 3}
       propertyPath: m_Name
@@ -8433,6 +8453,14 @@ PrefabInstance:
     - target: {fileID: 5180675197840913930, guid: 48d2615fd829feb4a9c7bfb377fa75cc, type: 3}
       propertyPath: m_Layer
       value: 7
+      objectReference: {fileID: 0}
+    - target: {fileID: 5227924265608703628, guid: 48d2615fd829feb4a9c7bfb377fa75cc, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 2.47
+      objectReference: {fileID: 0}
+    - target: {fileID: 5227924265608703628, guid: 48d2615fd829feb4a9c7bfb377fa75cc, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 1.48
       objectReference: {fileID: 0}
     - target: {fileID: 5266738516767918478, guid: 48d2615fd829feb4a9c7bfb377fa75cc, type: 3}
       propertyPath: m_Layer

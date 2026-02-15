@@ -162,9 +162,6 @@
     ],
     "m_GroupDatas": [
         {
-            "m_Id": "9289c7fbccec46adb299de89becd3136"
-        },
-        {
             "m_Id": "6d2776bd933549ee8c1c321fc41840f6"
         },
         {
@@ -172,6 +169,9 @@
         },
         {
             "m_Id": "4aa6576c4c65465d86147d20f81bfc90"
+        },
+        {
+            "m_Id": "e80cb402a13f4b218588eae8edb26e60"
         }
     ],
     "m_StickyNoteDatas": [],
@@ -1204,7 +1204,7 @@
     "m_Type": "UnityEditor.ShaderGraph.PropertyNode",
     "m_ObjectId": "17679afe6f1e4475854469a219dcaf66",
     "m_Group": {
-        "m_Id": "9289c7fbccec46adb299de89becd3136"
+        "m_Id": "e80cb402a13f4b218588eae8edb26e60"
     },
     "m_Name": "Property",
     "m_DrawState": {
@@ -1914,8 +1914,8 @@
     "m_ObjectId": "4aa6576c4c65465d86147d20f81bfc90",
     "m_Title": "ToonLighting",
     "m_Position": {
-        "x": -2397.000244140625,
-        "y": -479.0000305175781
+        "x": -2397.0,
+        "y": -479.0
     }
 }
 
@@ -2251,7 +2251,7 @@
     "m_Type": "UnityEditor.ShaderGraph.SampleTexture2DNode",
     "m_ObjectId": "5a632ec083a54beaa4f6d163a195000a",
     "m_Group": {
-        "m_Id": "9289c7fbccec46adb299de89becd3136"
+        "m_Id": "e80cb402a13f4b218588eae8edb26e60"
     },
     "m_Name": "Sample Texture 2D",
     "m_DrawState": {
@@ -2610,7 +2610,7 @@
     "m_Title": "Mask",
     "m_Position": {
         "x": 136.0,
-        "y": -950.0000610351563
+        "y": -950.0
     }
 }
 
@@ -2831,7 +2831,7 @@
     "m_Type": "UnityEditor.ShaderGraph.MultiplyNode",
     "m_ObjectId": "841c0bb066d74e1dba6522734245c435",
     "m_Group": {
-        "m_Id": "9289c7fbccec46adb299de89becd3136"
+        "m_Id": "e80cb402a13f4b218588eae8edb26e60"
     },
     "m_Name": "Multiply",
     "m_DrawState": {
@@ -3310,17 +3310,6 @@
     "m_RangeValues": {
         "x": 0.0,
         "y": 1.0
-    }
-}
-
-{
-    "m_SGVersion": 0,
-    "m_Type": "UnityEditor.ShaderGraph.GroupData",
-    "m_ObjectId": "9289c7fbccec46adb299de89becd3136",
-    "m_Title": "Texture",
-    "m_Position": {
-        "x": -1547.0001220703125,
-        "y": -1555.0001220703125
     }
 }
 
@@ -4893,6 +4882,17 @@
 
 {
     "m_SGVersion": 0,
+    "m_Type": "UnityEditor.ShaderGraph.GroupData",
+    "m_ObjectId": "e80cb402a13f4b218588eae8edb26e60",
+    "m_Title": "Textures",
+    "m_Position": {
+        "x": -1547.0,
+        "y": -1555.0
+    }
+}
+
+{
+    "m_SGVersion": 0,
     "m_Type": "UnityEditor.ShaderGraph.AddNode",
     "m_ObjectId": "e9066678904e4fd590e41227b2822728",
     "m_Group": {
@@ -4936,8 +4936,8 @@
     "m_ObjectId": "ea79bb2fb03845db8aeb1b2c7547ddde",
     "m_Title": "RimLight",
     "m_Position": {
-        "x": -1717.0001220703125,
-        "y": -1009.0000610351563
+        "x": -1717.0,
+        "y": -1009.0
     }
 }
 
@@ -5170,7 +5170,7 @@
     "m_Type": "UnityEditor.ShaderGraph.PropertyNode",
     "m_ObjectId": "fdab52b7937644c6bd147c5450c3f251",
     "m_Group": {
-        "m_Id": "9289c7fbccec46adb299de89becd3136"
+        "m_Id": "e80cb402a13f4b218588eae8edb26e60"
     },
     "m_Name": "Property",
     "m_DrawState": {

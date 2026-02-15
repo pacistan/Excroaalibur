@@ -4,6 +4,7 @@ public class GSwordVFX : MonoBehaviour
 {
     public GCrown GCrown;
     public ParticleSystem[] ring;
+    public float IncreaseSizeFloat;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
 
     private void OnEnable()
@@ -20,6 +21,8 @@ public class GSwordVFX : MonoBehaviour
 
     void OnUpdateCrownDamage(int damage)
     {
+        Vector3 IncreaseSize = new Vector3(IncreaseSizeFloat, IncreaseSizeFloat, IncreaseSizeFloat);
+        transform.localScale += damage*IncreaseSize;
         if (damage == 1)
         {
             for (int i = 0; i < ring.Length; i++)
