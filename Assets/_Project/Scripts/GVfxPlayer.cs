@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
+using static UnityEngine.ParticleSystem;
 
 
 public class GVfxPlayer : MonoBehaviour
@@ -9,17 +10,24 @@ public class GVfxPlayer : MonoBehaviour
     
     public void Play()
     {
+        if (particles.Count <= 0) return;
         foreach (var particle in particles)
         {
+            if (particle == null) continue;
             particle.Play();
         }
     }
 
     public void Stop()
     {
+        if (particles.Count <= 0) return;
         foreach (var particle in particles)
         {
+            if (particle == null) continue;
+
+            particle.Clear();
             particle.Stop();
+            
         }
     }
 }
