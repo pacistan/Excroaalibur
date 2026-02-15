@@ -125,10 +125,12 @@ public class GCell : SerializedMonoBehaviour
         
         RuntimeManager.PlayOneShotAttached("event:/Pawn/Enemy/Spawn", pawn.gameObject);
         // TODO : Call When the Spawn Process is finished (Animation, VFX, etc.) !!
-        yield return new WaitForSeconds(1);/*() =>
-            !pawn.visuals.GetAnimator().GetCurrentAnimatorStateInfo(0).IsName(GPawn.SpawnAnimationName));*/
+         // yield return new WaitForSeconds(1);/*() =>
+            // !pawn.visuals.GetAnimator().GetCurrentAnimatorStateInfo(0).IsName(GPawn.SpawnAnimationName));*/
         _OnSpawnedPawnFinished?.Invoke();
         OnSpawnFinishCallback?.Invoke();
+        
+        yield return null;
     }
 
     public bool IsWalkable(bool ignorePawn = false, bool ignoreOnlyPlayerPawn = false)

@@ -49,6 +49,7 @@ public class GWaveComponent : MonoBehaviour
         if (_spawningInProcess > 0) return;
         
         // Spawning process finish !
+        Debug.Log("[WaveManager] Spawning process finished.");
     }
     
     public void CheckNextWave(int turnCount)
