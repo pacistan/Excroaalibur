@@ -26,7 +26,7 @@ public class GMoveAction : GAction
     
     [Tooltip("Speed of the movement")]
     [SerializeField]
-    public float _speed = 1f;
+    public float _speed = 4f;
     
     [SerializeField]
     protected AnimationCurve _speedCurve = AnimationCurve.EaseInOut(0, 0, 1, 1);

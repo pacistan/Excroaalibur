@@ -24,6 +24,12 @@ public class GPawnAnimatorController : MonoBehaviour
         _pawn.OnPushEvent();
     }
     
+    public void PushEndEvent()
+    {
+        _pawn.OnPushEndEvent();
+    }
+
+    
     public void ThrowEvent()
     {
         _pawn.OnThrowEvent();

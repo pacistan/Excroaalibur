@@ -10,32 +10,32 @@ public class GPushAction : GAction
 {
     [SerializeField, Min(0), Tooltip("Number of cells the pushed pawn will be moved away")]
     private int _pushForce = 2;
-    
+
     [SerializeField, Min(0), Tooltip("Distance Of the pawn following the pushed pawn, if possible")]
     private int _followDistance = 1;
 
     [SerializeField, Min(0), Tooltip("Damage taken by the pushed pawn if pushed into a wall or pawn")]
     int _pushDamage = 1;
-    
+
     [SerializeField, Min(0), Tooltip("Stun turns taken by the pushed pawn if pushed into a wall or pawn")]
     int _pushStunAmount = 1;
-    
+
     [SerializeField]
     GActionPrevisualisationCurveData _previsuCurveData;
-    
+
     EHexDirection _direction = EHexDirection.NE;
     GPawn _targetPawn;
-    
+
     GAction _reaction;
     GMoveAction _followAction = null;
-    
+
     // TODO : Add What tile types we can push ! (Like walls, holes, Spawner)
-    
+
     public override List<GCell> Previsualisation(in GActionContext previsuContext)
     {
         _direction = linkedPawn.GetHexCoordinate().GetLineDirection(targetCell.hexCoordinates);
         _targetPawn = targetCell.GetGridObject<GPawn>();
-        if (!_targetPawn) return null; 
+        if (!_targetPawn) return null;
 
         List<GCell> previewCells = new List<GCell>();
         _reaction = _targetPawn.GetReaction(this);
@@ -52,21 +52,21 @@ public class GPushAction : GAction
         GCell pathCell = linkedPawn.GetCell();
 
         if (previewCells.Contains(_targetPawn.GetCell())) return previewCells; // No valid cell to follow !
-        
+
         if (!(_targetPawn is GAltar))
         {
             for (int i = 0; i < _followDistance; i++)
             {
                 GCell neighbor = pathCell.GetNeighbor(_direction);
-                
+
                 if (!neighbor || previewCells.Contains(neighbor)) break;
 
                 pathCell = neighbor;
             }
-            
+
             previewCells.Add(pathCell);
-            
-            AddPrevisualisationCurve(previsuContext, linkedPawn.GetPrevisuPosition(), 
+
+            AddPrevisualisationCurve(previsuContext, linkedPawn.GetPrevisuPosition(),
                 pathCell.transform.position, _previsuCurveData);
 
             int actionPointAddNum = linkedPawn.data.isPlayer && !_targetPawn.data.isPlayer ? 1 : 0;
@@ -75,7 +75,7 @@ public class GPushAction : GAction
 
         return previewCells;
     }
-   
+
     public override void PreProcess(GActionContext context = null)
     {
         base.PreProcess(context);
@@ -102,7 +102,7 @@ public class GPushAction : GAction
             for (int i = 0; i < _followDistance; i++)
             {
                 GCell neighbor = pathCell.GetNeighbor(_direction);
-                
+
                 if (!neighbor || neighbor.GetGridObject<GPawn>() || !linkedPawn.data._walkingTileType.Contains(neighbor.GetTileType)) break;
 
                 pathCell = neighbor;
@@ -110,9 +110,9 @@ public class GPushAction : GAction
             }
 
         }
-        
+
         if (pathCell == linkedPawn.GetCell())  return; // No valid cell to follow
-        
+
         _followAction = new GMoveAction();
         _followAction.InitAction(linkedPawn);
         _followAction.targetCell = pathCell;
@@ -127,15 +127,17 @@ public class GPushAction : GAction
         Vector3 lookAtPosition = targetCell.transform.position;
         lookAtPosition.y = linkedPawn.transform.position.y;
         linkedPawn.transform.LookAt(lookAtPosition);
-        
+
+        RuntimeManager.PlayOneShotAttached("event:/Pawn/Push Prepare", linkedPawn.gameObject);
         linkedPawn.OnAnimationPush += OnAnimationPushCallback;
+        linkedPawn.OnAnimationPushEnd += OnAnimationPushEndCallback;
         linkedPawn.visuals.SetAnimationState(GPawn.PushAnimationName, 0.0f);
     }
 
     public override void Update_Action(float delta)
     {
         base.Update_Action(delta);
-        if ((_followAction == null || _followAction.CurrentState == GAction.EActionState.Finished) 
+        if ((_followAction == null || _followAction.CurrentState == GAction.EActionState.Finished)
              && (_reaction == null ||_reaction.CurrentState == GAction.EActionState.Finished))
         {
             End_Action();
@@ -148,14 +150,14 @@ public class GPushAction : GAction
         linkedPawn.visuals.SetAnimationState(GPawn.IdleAnimationName);
         linkedPawn.visuals.OnUpdateActionsToken();
     }
-    
+
     public override GHexCoordinate[] GetValidCells()
-    { 
+    {
         if (linkedPawn.equipment || linkedPawn.equipment is GCrown)
             return validCells = new GHexCoordinate[]{};
-        
+
         List<GHexCoordinate> newValidCells = new List<GHexCoordinate>();
-        
+
         foreach (GCell cell in linkedPawn.GetCell().neighbors)
         {
             if (!cell
@@ -166,10 +168,10 @@ public class GPushAction : GAction
             {
                 continue;
             }
-            
+
             newValidCells.Add(cell.hexCoordinates);
         }
-        
+
         return validCells = newValidCells.ToArray();
     }
 
@@ -185,10 +187,16 @@ public class GPushAction : GAction
 
     private void OnAnimationPushCallback()
     {
+        RuntimeManager.PlayOneShotAttached("event:/Pawn/Push", linkedPawn.gameObject);
         linkedPawn.OnAnimationPush -= OnAnimationPushCallback;
         GTurnBaseManager.Instance.TryStartReaction(_reaction);
-        GTurnBaseManager.Instance.TryStartReaction(_followAction);
-        RuntimeManager.PlayOneShotAttached("event:/Pawn/Push", linkedPawn.gameObject);
     }
+    
+    private void OnAnimationPushEndCallback()
+    {
+        linkedPawn.OnAnimationPushEnd -= OnAnimationPushEndCallback;
+        GTurnBaseManager.Instance.TryStartReaction(_followAction);
+    }
+    
     
 }
