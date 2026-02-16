@@ -21,6 +21,7 @@ public class GPawn : GGridObject
     public event Action OnUnstunned;
     public event Action<float, float> OnHealthChanged;
     public event Action OnAnimationPush;
+    public event Action OnAnimationPushEnd;
     public event Action OnAnimationThrow;
 
     public const string MoveAnimationName = "Move";
@@ -418,7 +419,11 @@ public class GPawn : GGridObject
     public void OnPushEvent()
     {
         OnAnimationPush?.Invoke();
-        
+    }
+    
+    public void OnPushEndEvent()
+    {
+        OnAnimationPushEnd?.Invoke();
     }
 
     public void OnThrowEvent()
