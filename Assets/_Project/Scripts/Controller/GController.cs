@@ -8,9 +8,6 @@ public abstract class GController : MonoBehaviour
 {
     public event Action OnStartTurn;
     
-    [SerializeField, FoldoutGroup("Events"), Tooltip("Event triggered when an action starts")]
-    protected UnityEvent OnStartActionEvent;
-    
     public event Action OnEndTurn;
     public event Action OnStartAction;
     
@@ -47,7 +44,6 @@ public abstract class GController : MonoBehaviour
     public virtual void StartAction()
     {
         OnStartAction?.Invoke();
-        OnStartActionEvent?.Invoke();
     }
     
     public virtual void OnActionOver() {}

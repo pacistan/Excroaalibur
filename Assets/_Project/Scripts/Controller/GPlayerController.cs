@@ -12,13 +12,10 @@ using UnityEngine.UI;
 
 public class GPlayerController : GController
 {
-    public static Action<GPawn> OnPlayerActioOverEvent;
+    public static Action<GPawn> OnPlayerActionOverEvent;
     
-    [SerializeField, FoldoutGroup("Events"), Tooltip("Event triggered when a player is selected.")]
-    private UnityEvent OnPawnSelected;
-    
-    [SerializeField, FoldoutGroup("Events"), Tooltip("Event triggered when a player is hovered.")]
-    private UnityEvent OnPawnHover;
+    [Tooltip("Event Triggered When Player Try To Play An Action but Cannot du to No Action Token")]
+    public UnityEvent<GPawn> onLaunchActionFailed;
     
     public GAction[] availableActions = new GAction[] { };
 
@@ -69,19 +66,20 @@ public class GPlayerController : GController
     List<GCell> previsuCell = new List<GCell>();
     public bool isFirstAction = true;
 
-
     public void SetSelectedPlayer(GPawn newSelected)
     {
         if (_selectedPlayer == newSelected) return;
         if (newSelected == null /*|| !newSelected.data.isPlayer*/)
         {
+            _selectedPlayer?.OnDeactivateOutline?.Invoke();
             _selectedPlayer = null;
             SelectAction(null);
             return;
         }
+        
+        _selectedPlayer?.OnDeactivateOutline?.Invoke();
         _selectedPlayer = newSelected;
-        OnPawnSelected?.Invoke();
-        _selectedPlayer?.OnPawnSelected?.Invoke();
+        _selectedPlayer.OnActivateOutline?.Invoke();
         
         availableActions = GetAvailableActions();
         foreach (var action in availableActions)
@@ -257,6 +255,10 @@ public class GPlayerController : GController
             if (_hoverCell != null)
             {
                 _hoverCell.visuals.isHovered = false;
+                
+                GPawn PreviousCellPawn = _hoverCell.GetGridObject<GPawn>();
+                if (PreviousCellPawn && PreviousCellPawn != _selectedPlayer)
+                    PreviousCellPawn.OnDeactivateOutline?.Invoke();
             }
             
             // Hover New Tile with no Selection
@@ -278,9 +280,9 @@ public class GPlayerController : GController
                 {
                     RuntimeManager.PlayOneShotAttached(cellPawn.data.hoverSound, cellPawn.gameObject);
                 }
-                
-                OnPawnHover?.Invoke(); // Trigger Hover Event 
-                _selectedPlayer?.OnPawnHover?.Invoke(); // Trigger Selected Pawn Hover Event
+
+                if (cellPawn != _selectedPlayer) // Trigger Only if Hovered Pawn is not the Selected one (Because Selected Pawn already Trigger Hover Event on Selection)
+                    cellPawn.OnActivateOutline?.Invoke();
             } 
             else 
             {
@@ -318,8 +320,13 @@ public class GPlayerController : GController
         {
             if (_hoverCell != null)
             {
-                _hoverCell.visuals.isHovered = false;
                 DisablePrevisualisation();
+                
+                _hoverCell.visuals.isHovered = false;
+                
+                GPawn PreviousCellPawn = _hoverCell.GetGridObject<GPawn>();
+                if (PreviousCellPawn && PreviousCellPawn != _selectedPlayer)
+                    PreviousCellPawn.OnDeactivateOutline?.Invoke();
             }
             _hoverCell = null;
             if (!_selectedPlayer)
@@ -438,7 +445,15 @@ public class GPlayerController : GController
     
     public override void StartAction()
     {
-        if (!_validCells.Contains(_targetCell.hexCoordinates) &&  _selectedPlayer.remainingActionToken <= 0) return;
+        if (!_validCells.Contains(_targetCell.hexCoordinates)) return;
+
+        // Merge with Stun Check in Condition if GD want to Trigger it ! 
+        if (_selectedPlayer.remainingActionToken <= 0) 
+        {
+            onLaunchActionFailed?.Invoke(_selectedPlayer);
+            return;
+        }
+        
         if(_selectedPlayer.stunTurns > 0) return;
         _selectedAction.targetCell = _targetCell;
         if (_selectedPlayer.RequestAction(_selectedAction))
@@ -479,7 +494,7 @@ public class GPlayerController : GController
         base.OnActionOver();
         if (_endTurnWhenNoActionsLeft)
         {
-            OnPlayerActioOverEvent?.Invoke(currentPawn);
+            OnPlayerActionOverEvent?.Invoke(currentPawn);
             bool isTurnOver = true;
             pawns.ForEach(p =>
             {
