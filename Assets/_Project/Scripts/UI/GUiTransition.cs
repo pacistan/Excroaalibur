@@ -4,12 +4,13 @@ using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.UI;
 
 [System.Serializable]
 public class GUiTransition 
 {
-    public enum ETransitionType { Disable, Fade, Move};
+    public enum ETransitionType { Disable, Fade, Move, Event};
     [FoldoutGroup("$transitionType")] public ETransitionType transitionType;
     [FoldoutGroup("$transitionType"), ShowIf("transitionType", ETransitionType.Move)] public RectTransform rectTransform;
     [FoldoutGroup("$transitionType"), ShowIf("transitionType", ETransitionType.Move)] public Vector2 offsetDistance;
@@ -19,6 +20,9 @@ public class GUiTransition
     [FoldoutGroup("$transitionType"), ShowIf("transitionType", ETransitionType.Fade)] public CanvasGroup fadeCanvas;
     [FoldoutGroup("$transitionType"), ShowIf("transitionType", ETransitionType.Fade)] public AnimationCurve fadeCurve;
     [FoldoutGroup("$transitionType"), ShowIf("transitionType", ETransitionType.Disable)] public GameObject target;
+    [FoldoutGroup("$transitionType"), ShowIf("transitionType", ETransitionType.Event)] [SerializeField] public UnityEvent onEnter;
+    [FoldoutGroup("$transitionType"), ShowIf("transitionType", ETransitionType.Event)] [SerializeField] public UnityEvent onExit;
+    [FoldoutGroup("$transitionType"), ShowIf("transitionType", ETransitionType.Event)] public GameObject eventTarget;
     [FoldoutGroup("$transitionType"), HideIf("transitionType", ETransitionType.Disable)]public float duration;
     [FoldoutGroup("$transitionType")] public float delayOnActivation;
     [FoldoutGroup("$transitionType")] public float delayOnDeactivation;
@@ -49,13 +53,17 @@ public class GUiTransition
         if (_enumInstance != null)
             objRef.StopCoroutine(_enumInstance);
 
-        if(transitionType == ETransitionType.Fade)
+        switch (transitionType)
         {
-            _enumInstance = toActivated ? FadeInCoroutine(endAction) : FadeOutCoroutine(endAction);
-        }
-        else
-        {
-            _enumInstance = toActivated ? MoveInCoroutine(endAction) : MoveOutCoroutine(endAction);
+            case ETransitionType.Fade:
+                _enumInstance = toActivated ? FadeInCoroutine(endAction) : FadeOutCoroutine(endAction);
+                break;
+            case ETransitionType.Move:
+                _enumInstance = toActivated ? MoveInCoroutine(endAction) : MoveOutCoroutine(endAction);
+                break;
+            case ETransitionType.Event:
+                _enumInstance = toActivated ? EventInCoroutine(endAction) : EventOutCoroutine(endAction);
+                break;
         }
         objRef.StartCoroutine(_enumInstance);
     }
@@ -166,6 +174,27 @@ public class GUiTransition
         _enumInstance = null;
     }
 
+    private IEnumerator EventInCoroutine(Action action)
+    {
+        eventTarget.SetActive(true);
+        yield return new WaitForSecondsRealtime(delayOnActivation);
+        onEnter?.Invoke();
+        yield return new WaitForSecondsRealtime(duration);
+        action?.Invoke();
+        _enumInstance = null;
+    }
+
+    
+    private IEnumerator EventOutCoroutine(Action action)
+    {
+        yield return new WaitForSecondsRealtime(delayOnDeactivation);
+        onExit?.Invoke();
+        yield return new WaitForSecondsRealtime(duration);
+        action?.Invoke();
+        eventTarget.SetActive(false);
+        _enumInstance = null;
+    }
+    
     public static float LerpWithoutClamp(float  A, float B, float t)
     {
         return A + (B - A) * t;
