@@ -119,6 +119,11 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
+--- !u!225 &477645224 stripped
+CanvasGroup:
+  m_CorrespondingSourceObject: {fileID: 6920963330946843264, guid: 7b0d25a7cfbbfd447a8d772e3ddfe79b, type: 3}
+  m_PrefabInstance: {fileID: 497584929}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &497584929
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -202,6 +207,70 @@ PrefabInstance:
     - target: {fileID: 276917255038702462, guid: 7b0d25a7cfbbfd447a8d772e3ddfe79b, type: 3}
       propertyPath: <menuSettings>k__BackingField.Array.data[0].uiTransitions.Array.size
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 276917255038702462, guid: 7b0d25a7cfbbfd447a8d772e3ddfe79b, type: 3}
+      propertyPath: <menuSettings>k__BackingField.Array.data[8].uiTransitions.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 276917255038702462, guid: 7b0d25a7cfbbfd447a8d772e3ddfe79b, type: 3}
+      propertyPath: <menuSettings>k__BackingField.Array.data[5].uiTransitions.Array.data[0].duration
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 276917255038702462, guid: 7b0d25a7cfbbfd447a8d772e3ddfe79b, type: 3}
+      propertyPath: <menuSettings>k__BackingField.Array.data[8].uiTransitions.Array.data[0].fadeCanvas
+      value: 
+      objectReference: {fileID: 477645224}
+    - target: {fileID: 276917255038702462, guid: 7b0d25a7cfbbfd447a8d772e3ddfe79b, type: 3}
+      propertyPath: <menuSettings>k__BackingField.Array.data[8].uiTransitions.Array.data[0].gizmosColor.a
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 276917255038702462, guid: 7b0d25a7cfbbfd447a8d772e3ddfe79b, type: 3}
+      propertyPath: <menuSettings>k__BackingField.Array.data[8].uiTransitions.Array.data[0].gizmosColor.r
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 276917255038702462, guid: 7b0d25a7cfbbfd447a8d772e3ddfe79b, type: 3}
+      propertyPath: <menuSettings>k__BackingField.Array.data[8].uiTransitions.Array.data[0].transitionType
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 276917255038702462, guid: 7b0d25a7cfbbfd447a8d772e3ddfe79b, type: 3}
+      propertyPath: <menuSettings>k__BackingField.Array.data[8].uiTransitions.Array.data[0].delayOnDeactivation
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 276917255038702462, guid: 7b0d25a7cfbbfd447a8d772e3ddfe79b, type: 3}
+      propertyPath: <menuSettings>k__BackingField.Array.data[8].uiTransitions.Array.data[0].xCurve.m_PreInfinity
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 276917255038702462, guid: 7b0d25a7cfbbfd447a8d772e3ddfe79b, type: 3}
+      propertyPath: <menuSettings>k__BackingField.Array.data[8].uiTransitions.Array.data[0].yCurve.m_PreInfinity
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 276917255038702462, guid: 7b0d25a7cfbbfd447a8d772e3ddfe79b, type: 3}
+      propertyPath: <menuSettings>k__BackingField.Array.data[8].uiTransitions.Array.data[0].xCurve.m_PostInfinity
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 276917255038702462, guid: 7b0d25a7cfbbfd447a8d772e3ddfe79b, type: 3}
+      propertyPath: <menuSettings>k__BackingField.Array.data[8].uiTransitions.Array.data[0].yCurve.m_PostInfinity
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 276917255038702462, guid: 7b0d25a7cfbbfd447a8d772e3ddfe79b, type: 3}
+      propertyPath: <menuSettings>k__BackingField.Array.data[8].uiTransitions.Array.data[0].xCurve.m_RotationOrder
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 276917255038702462, guid: 7b0d25a7cfbbfd447a8d772e3ddfe79b, type: 3}
+      propertyPath: <menuSettings>k__BackingField.Array.data[8].uiTransitions.Array.data[0].yCurve.m_RotationOrder
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 276917255038702462, guid: 7b0d25a7cfbbfd447a8d772e3ddfe79b, type: 3}
+      propertyPath: <menuSettings>k__BackingField.Array.data[8].uiTransitions.Array.data[0].fadeCurve.m_PreInfinity
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 276917255038702462, guid: 7b0d25a7cfbbfd447a8d772e3ddfe79b, type: 3}
+      propertyPath: <menuSettings>k__BackingField.Array.data[8].uiTransitions.Array.data[0].fadeCurve.m_PostInfinity
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 276917255038702462, guid: 7b0d25a7cfbbfd447a8d772e3ddfe79b, type: 3}
+      propertyPath: <menuSettings>k__BackingField.Array.data[8].uiTransitions.Array.data[0].fadeCurve.m_RotationOrder
+      value: 4
       objectReference: {fileID: 0}
     - target: {fileID: 276976495324991674, guid: 7b0d25a7cfbbfd447a8d772e3ddfe79b, type: 3}
       propertyPath: m_AnchorMax.y
@@ -721,12 +790,20 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4061291694686089728, guid: 7b0d25a7cfbbfd447a8d772e3ddfe79b, type: 3}
       propertyPath: _mapStatesSaveHandler.<_mapData>k__BackingField.Array.size
-      value: 1
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 4061291694686089728, guid: 7b0d25a7cfbbfd447a8d772e3ddfe79b, type: 3}
       propertyPath: '_mapStatesSaveHandler.<_mapData>k__BackingField.Array.data[0]'
       value: 
       objectReference: {fileID: 11400000, guid: 92428f8ff6cd31940a23e7584de2cde2, type: 2}
+    - target: {fileID: 4061291694686089728, guid: 7b0d25a7cfbbfd447a8d772e3ddfe79b, type: 3}
+      propertyPath: '_mapStatesSaveHandler.<_mapData>k__BackingField.Array.data[1]'
+      value: 
+      objectReference: {fileID: 11400000, guid: 529da5551dca60a47921475a0c272723, type: 2}
+    - target: {fileID: 4061291694686089728, guid: 7b0d25a7cfbbfd447a8d772e3ddfe79b, type: 3}
+      propertyPath: '_mapStatesSaveHandler.<_mapData>k__BackingField.Array.data[2]'
+      value: 
+      objectReference: {fileID: 11400000, guid: 95817c9c4b0045d46a15b4cd433089c3, type: 2}
     - target: {fileID: 4104970570419683413, guid: 7b0d25a7cfbbfd447a8d772e3ddfe79b, type: 3}
       propertyPath: m_AnchorMax.y
       value: 1
