@@ -15,7 +15,7 @@ public abstract class GAIBehavior : ScriptableObject
         _controller = controller;
         foreach (GAction action in actions)
         {
-            action.InitAction(_controller.pawn);
+            action.InitAction(_controller.currentPawn);
         }
     }
     
@@ -50,7 +50,7 @@ public abstract class GAIBehavior : ScriptableObject
     {
         GetAction<GMoveAction>(out GMoveAction action);
         GMoveAction moveAction = action.CloneAction() as GMoveAction;
-        moveAction.targetCell = GetClosestCellToTargetCell(_controller.pawn.GetCell(), targetCell, moveAction._maxMoveDistance);
+        moveAction.targetCell = GetClosestCellToTargetCell(_controller.currentPawn.GetCell(), targetCell, moveAction._maxMoveDistance);
         moveAction.OnActionFinished += OnActionOver;
         moveAction.OnActionFinished += inOnActionFinished;
         return moveAction;
@@ -78,7 +78,7 @@ public abstract class GAIBehavior : ScriptableObject
 
     protected GCell GetClosestCellToTargetCell(GCell startCell, GCell endCell, int distance)
     {
-        var path = GGridManager.Instance.GetPath(startCell,GGridManager.Instance.GetLowestAdjacentCell(endCell), _controller.pawn.data._walkingTileType,false, distance);
+        var path = GGridManager.Instance.GetPath(startCell,GGridManager.Instance.GetLowestAdjacentCell(endCell), _controller.currentPawn.data._walkingTileType,false, distance);
         GCell cell = startCell;
         foreach (EHexDirection direction in path)
         {
@@ -92,7 +92,7 @@ public abstract class GAIBehavior : ScriptableObject
     protected GPawn GetPotentialTargetPlayer(out int distance)
     {
         return GGridObjectRegistry.GetClosestObjectOfTypeWithPredicate<GPawn>
-                (startCell: _controller.pawn.GetCell(), 
+                (startCell: _controller.currentPawn.GetCell(), 
                 out distance, 
                 predicate: player => player.data.isPlayer && player.GetCell().data.tileType != ETileType.Hole);
     }

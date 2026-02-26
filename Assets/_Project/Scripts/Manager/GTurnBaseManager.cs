@@ -104,7 +104,7 @@ public class GTurnBaseManager : GSingleton<GTurnBaseManager>
      */
     public void RequestEndTurn(GController Controller ,bool reenterQueue = true)
     {
-        Debug.Log("RequestEndTurn of " + currentTurnController + " by " + Controller?.ToString());
+//        Debug.Log("RequestEndTurn of " + currentTurnController + " by " + Controller?.ToString());
         
         if (Controller != null && Controller != currentTurnController)
         {
@@ -155,6 +155,10 @@ public class GTurnBaseManager : GSingleton<GTurnBaseManager>
         OnActionPlayed?.Invoke(ReactionToStart, currentTurnController);
     }
     
+    public int GetCurrentWaveEnemyCapReached() => _waveComponent.GetWaveEnemyCapReached();
+
+    public void SetCurrentWaveEnemyCapReached(int cap) => _waveComponent.SetWaveEnemyCapReached(cap);
+
     /** Create the Queue based on Rule (Actually : player is first, then IA) */
     private void CreateQueue(bool playerLast = false)
     {
@@ -267,7 +271,6 @@ public class GTurnBaseManager : GSingleton<GTurnBaseManager>
     
     IEnumerator ProcessEndTurn()
     {
-        GSaveManager.Instance.SerializeToJson(); // Auto Save at the end of each Turn !
         yield return new WaitUntil(() => !isActionPlaying); 
         
         _currentTurnState = ETurnState.Finished;
@@ -296,7 +299,6 @@ public class GTurnBaseManager : GSingleton<GTurnBaseManager>
         StartTurn();
         yield return null;
     }
-    
     
     private void OnChangeMacroStateCallback(EMacroStates newState, EMacroStates oldState)
     {

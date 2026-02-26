@@ -23,27 +23,7 @@ public enum EModifierType
     Multiplicative = 2, // ex : +10% = 0.1, Each Multiplicative modifier is summed before being applied
 }
 
-/** Represents a modifier that can be applied to an attribute */
-[Serializable]
-public class GAttributeModifier
-{
-    [field : SerializeField] 
-    public EAttributeType Type { get; private set; }
-    [field : SerializeField] 
-    public EModifierType ModifierType { get; private set; }
-    [field : SerializeField] 
-    public float Value { get; private set; }
 
-    public object Source;
-    
-    public GAttributeModifier(EAttributeType type, EModifierType modifierType, float value, object source)
-    {
-        this.Type = type;
-        this.ModifierType = modifierType;
-        this.Value = value;
-        this.Source = source;
-    }
-}
 
 /** Controller responsible for managing a collection of attributes for a game entity. */
 public class GAttributesController : SerializedMonoBehaviour
@@ -124,7 +104,7 @@ public class GAttributesController : SerializedMonoBehaviour
         if (_onAttributeChangedCallback.ContainsKey(type))
             _onAttributeChangedCallback.Remove(type);
     }
-    
+
     public bool Has(EAttributeType type) => _attributes.ContainsKey(type);
 
     // TODO : Transform in TryGet pattern ! 

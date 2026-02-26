@@ -32,7 +32,7 @@ public class GMapCard : MonoBehaviour
         _button = GetComponent<Button>();
         _button.onClick.AddListener(() =>
         {
-            GGameManager.Instance.SetSceneToLoad(mapData.SceneName);
+            GGameManager.Instance.SetSceneToLoad(mapData);
             GGameManager.Instance.ChangeState(EMacroStates.LoadingScreen);
         });
     }

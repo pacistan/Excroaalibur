@@ -1302,7 +1302,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 20667597376880823, guid: 48d2615fd829feb4a9c7bfb377fa75cc, type: 3}
       propertyPath: serializationData.SerializationNodes.Array.size
-      value: 0
+      value: 4
       objectReference: {fileID: 0}
     - target: {fileID: 20667597376880823, guid: 48d2615fd829feb4a9c7bfb377fa75cc, type: 3}
       propertyPath: 'serializationData.SerializedBytes.Array.data[0]'
@@ -2701,6 +2701,10 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 21300000, guid: a849045f256c1164987cb63ea408e43c, type: 3}
     - target: {fileID: 5047510769810583256, guid: 48d2615fd829feb4a9c7bfb377fa75cc, type: 3}
+      propertyPath: _hpContainer
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 5047510769810583256, guid: 48d2615fd829feb4a9c7bfb377fa75cc, type: 3}
       propertyPath: _spriteDeath
       value: 
       objectReference: {fileID: 21300000, guid: 733cf69d53b206e4788629535e6b9d21, type: 3}
@@ -2946,6 +2950,7 @@ MonoBehaviour:
   OnStartActionEvent:
     m_PersistentCalls:
       m_Calls: []
+  currentPawn: {fileID: 0}
   _aiBehavior: {fileID: 11400000, guid: 7dd64253f43fd1f46adf92cd796a8a0c, type: 2}
 --- !u!224 &4553590095380219751 stripped
 RectTransform:

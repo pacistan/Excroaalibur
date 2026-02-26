@@ -474,7 +474,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 20667597376880823, guid: 48d2615fd829feb4a9c7bfb377fa75cc, type: 3}
       propertyPath: serializationData.SerializationNodes.Array.size
-      value: 0
+      value: 4
       objectReference: {fileID: 0}
     - target: {fileID: 20667597376880823, guid: 48d2615fd829feb4a9c7bfb377fa75cc, type: 3}
       propertyPath: 'serializationData.SerializedBytes.Array.data[0]'
@@ -2148,6 +2148,7 @@ MonoBehaviour:
   OnStartActionEvent:
     m_PersistentCalls:
       m_Calls: []
+  currentPawn: {fileID: 0}
   _aiBehavior: {fileID: 11400000, guid: 6a0476ad347235d4f9396f9fae556a50, type: 2}
 --- !u!4 &6506729825089119590 stripped
 Transform:

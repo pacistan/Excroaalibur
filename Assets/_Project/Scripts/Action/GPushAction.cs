@@ -1,6 +1,7 @@
 ﻿using FMODUnity;
 using Sirenix.OdinInspector;
 using Sirenix.Utilities;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,6 +9,8 @@ using UnityEngine;
 
 public class GPushAction : GAction
 {
+    public static Action<GPawn, GPawn> OnPushEvent;
+    
     [SerializeField, Min(0), Tooltip("Number of cells the pushed pawn will be moved away")]
     private int _pushForce = 2;
 
@@ -84,6 +87,7 @@ public class GPushAction : GAction
         if (!_targetPawn) return;
 
         _reaction = _targetPawn.GetReaction(this);
+        bool isPushable = true;
         if (_reaction != null)
         {
             GActionContext pushContext = new GActionContext();
@@ -91,13 +95,15 @@ public class GPushAction : GAction
             pushContext.Set(GActionContext.FORCE_STRING, GetAttributeOrBaseValue(_pushForce, EAttributeType.PushStrength));
             pushContext.Set(GActionContext.DAMAGE_STRING, GetAttributeOrBaseValue(_pushDamage, EAttributeType.PushDamage));
             pushContext.Set(GActionContext.STUN_STRING, GetAttributeOrBaseValue(_pushStunAmount, EAttributeType.PushStunAmount));
+            if (_reaction is GPushedReaction)
+                isPushable = ((GPushedReaction)_reaction).IsPushable;
             _reaction.InitAction(_targetPawn);
             GTurnBaseManager.Instance.PreProcessReaction(_reaction, pushContext);
         }
 
         GCell pathCell = linkedPawn.GetCell();
 
-        if (!(_targetPawn is GAltar))
+        if (!(_targetPawn is GAltar) && isPushable)
         {
             for (int i = 0; i < _followDistance; i++)
             {
@@ -147,8 +153,11 @@ public class GPushAction : GAction
     public override void End_Action()
     {
         base.End_Action();
+        
         linkedPawn.visuals.SetAnimationState(GPawn.IdleAnimationName);
         linkedPawn.visuals.OnUpdateActionsToken();
+        
+        OnPushEvent?.Invoke(linkedPawn, _targetPawn);
     }
 
     public override GHexCoordinate[] GetValidCells()

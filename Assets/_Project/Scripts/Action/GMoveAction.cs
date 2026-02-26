@@ -20,6 +20,8 @@ public enum EMovementMode
 
 public class GMoveAction : GAction
 {
+    public static Action<GPawn, bool> OnMoveEvent;
+    
     [Tooltip("Maximum number of cells the pawn can move")]
     [SerializeField, Min(0), HideIf("_useAttribute")]
     public int _maxMoveDistance = 2;
@@ -61,6 +63,7 @@ public class GMoveAction : GAction
     private int _animationStateHash = 0;
     
     private Animator _animator;
+    bool _isReaction = false;
     
     int _EquipementPickUpIndex = -1; // No Equipement to Picked Up
 
@@ -70,6 +73,7 @@ public class GMoveAction : GAction
     
     public GMoveAction(GPawn inLinkedPawn, GCell inTargetCell, Action inOnActionStarted = null, Action inOnActionFinished = null) : base(inLinkedPawn, inTargetCell, inOnActionStarted, inOnActionFinished)
     {
+        _isReaction = true;
     }
 
     public void OverrideTileType(ETileType[] inWalkingTileType, ETileType[] inEndMovementTileType)
@@ -273,6 +277,8 @@ public class GMoveAction : GAction
                 linkedPawn.visuals.SetAnimationState(GPawn.IdleAnimationName, OutAnimBlendTime);
             }
         }
+        OnMoveEvent?.Invoke(linkedPawn, _isReaction);
+        
         base.End_Action();
     }
 
@@ -304,6 +310,7 @@ public class GMoveAction : GAction
         moveAction._speedCurve = _speedCurve;
         moveAction._walkingTileType = _walkingTileType;
         moveAction._endMovementTileType = _endMovementTileType;
+        moveAction._isReaction = _isReaction;
         return moveAction;
     }
 }

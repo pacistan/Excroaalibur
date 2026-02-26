@@ -11,6 +11,8 @@ using STOP_MODE = FMOD.Studio.STOP_MODE;
 
 public class GThrowAction : GAction
 {
+    public static Action<GPawn> OnThrowEvent;
+    
     [SerializeField, Min(0)]
     [Tooltip("Maximum distance the Crown can be thrown")]
     private int _maxThrowDistance = 10;
@@ -262,7 +264,7 @@ public class GThrowAction : GAction
             int damagetoeToIncrement = 1;
             if (_targetPawn.AttributesController.Has(EAttributeType.PassDMGUpgrade)) 
                 damagetoeToIncrement = (int)_targetPawn.AttributesController.GetFinal(EAttributeType.PassDMGUpgrade);
-            _crown.IncrementDamage(damagetoeToIncrement);
+            _crown.IncrementDamage(linkedPawn, _targetPawn,damagetoeToIncrement);
         }
     }
 
@@ -309,6 +311,7 @@ public class GThrowAction : GAction
         _seq = null;
         linkedPawn.visuals.SetAnimationState(GPawn.IdleAnimationName);
         base.End_Action();
+        OnThrowEvent?.Invoke(linkedPawn);
     }
 
     public override GHexCoordinate[] GetValidCells()
@@ -423,7 +426,7 @@ public class GThrowAction : GAction
                 .SetOptions(false)
         );
 
-        Vector3 angleAxisRotation = Vector3.right * _crownRotationAmountByTileOnThrowToTarget * ThrowPath.Length;
+        Vector3 angleAxisRotation = Vector3.right * (_crownRotationAmountByTileOnThrowToTarget * ThrowPath.Length);
         
         _seq.Join(_crown.transform.DORotate(angleAxisRotation, outDur, RotateMode.LocalAxisAdd))
             .SetEase(_playerCatch ?_passSpeedCurve : _throwSpeedCurve);
@@ -480,7 +483,7 @@ public class GThrowAction : GAction
                 .SetEase(_returnSpeedCurve)
                 .SetOptions(false)
             );
-            Vector3 angleAxisRotationReturn = Vector3.right * _crownRotationAmountByTileOnThrowToTarget * ThrowPath.Length;
+            Vector3 angleAxisRotationReturn = Vector3.right * (_crownRotationAmountByTileOnThrowToTarget * ThrowPath.Length);
         
             _seq.Join(_crown.transform.DORotate(angleAxisRotation, outDur, RotateMode.LocalAxisAdd))
                 .SetEase(_playerCatch ?_passSpeedCurve : _throwSpeedCurve);

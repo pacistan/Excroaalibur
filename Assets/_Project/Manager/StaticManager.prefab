@@ -302,6 +302,7 @@ MonoBehaviour:
   OnStartActionEvent:
     m_PersistentCalls:
       m_Calls: []
+  currentPawn: {fileID: 0}
   OnPawnSelected:
     m_PersistentCalls:
       m_Calls: []
@@ -378,9 +379,19 @@ MonoBehaviour:
   isLoadingTutorial: 0
   isLoadingNewSave: 1
   _localizationId: 0
+  <gameStateSaveData>k__BackingField:
+    mapIndex: 0
+    waveNumber: 0
+    waveEnemyCapReach: 0
+    ennemies: []
+    players: []
+    xCrownCoordinate: 0
+    yCrownCoordinate: 0
+    crownDamage: 0
+    isFirstAction: 0
   _tutorialSceneAssets: []
-  _loadableScene: 
-  _currentSceneToLoadIndex: 0
+  _commonInstantiationData: {fileID: 0}
+  <loadableMapData>k__BackingField: {fileID: 0}
   _loadableTutorialScenes: []
   _currentTutorialSceneToLoadIndex: 0
   duration: 0.5
@@ -420,8 +431,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3496ce60673eec24aa1af6a56ca1d401, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _saveFileName: SaveData
-  _commonInstantiationData: {fileID: 11400000, guid: 4b4fcf36089c3bb4eba6e330bdef62cf, type: 2}
+  _gameStateSaveHandler:
+    _filePath: GameData/GameStateSaveFile
+    _commonInstantiationData: {fileID: 11400000, guid: 4b4fcf36089c3bb4eba6e330bdef62cf, type: 2}
+  _mapStatesSaveHandler:
+    _filePath: GameData/MapSaveFile
+    <_mapData>k__BackingField: []
 --- !u!1001 &314779951404519824
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -578,6 +593,10 @@ PrefabInstance:
       propertyPath: <menuSettings>k__BackingField.Array.data[3].cursor
       value: 
       objectReference: {fileID: 0}
+    - target: {fileID: 543137252291871470, guid: 58b1f68da21fe824c92ae3c8a58fd682, type: 3}
+      propertyPath: <menuSettings>k__BackingField.Array.data[5].uiTransitions.Array.data[0].eventTarget
+      value: 
+      objectReference: {fileID: 7706026678311020921}
     - target: {fileID: 592145277175554953, guid: 58b1f68da21fe824c92ae3c8a58fd682, type: 3}
       propertyPath: m_AnchorMax.x
       value: 0
@@ -1952,6 +1971,11 @@ MonoBehaviour:
 --- !u!4 &7135898609587484998 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 7447158594183358678, guid: 58b1f68da21fe824c92ae3c8a58fd682, type: 3}
+  m_PrefabInstance: {fileID: 314779951404519824}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &7706026678311020921 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 7975625201541511401, guid: 58b1f68da21fe824c92ae3c8a58fd682, type: 3}
   m_PrefabInstance: {fileID: 314779951404519824}
   m_PrefabAsset: {fileID: 0}
 --- !u!114 &8219088691602395751 stripped

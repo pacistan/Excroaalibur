@@ -15,6 +15,8 @@ public abstract class GController : MonoBehaviour
     public event Action OnStartAction;
     
     protected List<GPawn> pawns = new List<GPawn>();
+
+    public GPawn currentPawn;
     
     public void RegisterPawn(GPawn pawn)
     {
