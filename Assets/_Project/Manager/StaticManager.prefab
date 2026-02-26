@@ -302,6 +302,7 @@ MonoBehaviour:
   OnStartActionEvent:
     m_PersistentCalls:
       m_Calls: []
+  currentPawn: {fileID: 0}
   OnPawnSelected:
     m_PersistentCalls:
       m_Calls: []
@@ -378,9 +379,19 @@ MonoBehaviour:
   isLoadingTutorial: 0
   isLoadingNewSave: 1
   _localizationId: 0
+  <gameStateSaveData>k__BackingField:
+    mapIndex: 0
+    waveNumber: 0
+    waveEnemyCapReach: 0
+    ennemies: []
+    players: []
+    xCrownCoordinate: 0
+    yCrownCoordinate: 0
+    crownDamage: 0
+    isFirstAction: 0
   _tutorialSceneAssets: []
-  _loadableScene: 
-  _currentSceneToLoadIndex: 0
+  _commonInstantiationData: {fileID: 0}
+  <loadableMapData>k__BackingField: {fileID: 0}
   _loadableTutorialScenes: []
   _currentTutorialSceneToLoadIndex: 0
   duration: 0.5
@@ -420,8 +431,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3496ce60673eec24aa1af6a56ca1d401, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _saveFileName: SaveData
-  _commonInstantiationData: {fileID: 11400000, guid: 4b4fcf36089c3bb4eba6e330bdef62cf, type: 2}
+  _gameStateSaveHandler:
+    _filePath: GameData/GameStateSaveFile
+    _commonInstantiationData: {fileID: 11400000, guid: 4b4fcf36089c3bb4eba6e330bdef62cf, type: 2}
+  _mapStatesSaveHandler:
+    _filePath: GameData/MapSaveFile
+    <_mapData>k__BackingField: []
 --- !u!1001 &314779951404519824
 PrefabInstance:
   m_ObjectHideFlags: 0

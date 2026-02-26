@@ -27,13 +27,16 @@ public class GPushedReaction : GAction
     GActionPrevisualisationCurveData _previsuCurveData;
     
     int _distance;
-    
+
+    bool _localIsPushable;
     bool _inflictDamage;
     EHexDirection _direction;
     GMoveAction _moveAction = null;
     
     GEquipment CachedEquipment;
 
+    public bool IsPushable { get { return _isPushable; } }
+    
     public override List<GCell> Previsualisation(in GActionContext previsuContext)
     {
         if (previsuContext == null)
@@ -51,18 +54,19 @@ public class GPushedReaction : GAction
             _damage = previsuContext.Get<int>(GActionContext.DAMAGE_STRING);
         if (previsuContext.Has(GActionContext.STUN_STRING))
             _stunTurns = previsuContext.Get<int>(GActionContext.STUN_STRING);
-        
+
+        _localIsPushable = _isPushable;
         if (_isPushable) // Check initial param
         {
             if (!_pushedTileType.Contains(linkedPawn.GetCell().GetNeighbor(_direction).GetTileType)
                 || linkedPawn.GetCell().GetNeighbor(_direction).GetGridObject<GPawn>())
             {
-                _isPushable = false;
+                _localIsPushable = false;
                 _inflictDamage = true;
             }
         }
 
-        if (!_isPushable) // do not put in else !
+        if (!_localIsPushable) // do not put in else !
         {
             if (linkedPawn is GAltar) _inflictDamage = false;
             PreviewCells.Add(linkedPawn.GetCell());
@@ -123,18 +127,19 @@ public class GPushedReaction : GAction
             _damage = context.Get<int>(GActionContext.DAMAGE_STRING);
         if (context.Has(GActionContext.STUN_STRING))
             _stunTurns = context.Get<int>(GActionContext.STUN_STRING);
-        
+
+        _localIsPushable = _isPushable;
         if (_isPushable) // Check initial param
         {
             if (!_pushedTileType.Contains(linkedPawn.GetCell().GetNeighbor(_direction).GetTileType)
                 || linkedPawn.GetCell().GetNeighbor(_direction).GetGridObject<GPawn>())
             {
-                _isPushable = false;
+                _localIsPushable = false;
                 _inflictDamage = true;
             }
         }
 
-        if (!_isPushable) // do not put in else !
+        if (!_localIsPushable) // do not put in else !
         {
             GPawn Instigitator = linkedPawn.GetCell().GetNeighbor(_direction.Opposite()).GetGridObject<GPawn>();
             if (Instigitator) 

@@ -7,7 +7,7 @@ public class GBrawlerBehavior : GSentryBehavior
     {
         if (_isTurnOver) return null;
         
-        GPawn linkedPawn = _controller.pawn;
+        GPawn linkedPawn = _controller.currentPawn;
         GCell pawnCell = linkedPawn.GetCell();
         bool hasCrown = linkedPawn.equipment && linkedPawn.equipment is GCrown;
         GGridManager.Instance.GenerateStepMap(pawnCell);

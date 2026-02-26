@@ -5,6 +5,8 @@ using Sirenix.OdinInspector;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
+using UnityEditor.Localization.Plugins.XLIFF.V20;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.Localization;
@@ -40,18 +42,21 @@ public class GGameManager: GSingleton<GGameManager>
     
     [SerializeField]
     public int _localizationId;
-    
+
+    [field : SerializeField, FoldoutGroup("SceneToLoad"), ReadOnly, HideInEditorMode]
+    public GGameStateSaveData gameStateSaveData { get; private set; }
+
 #if UNITY_EDITOR
     [SerializeField, FoldoutGroup("SceneToLoad")]
     private UnityEditor.SceneAsset[] _tutorialSceneAssets;
 #endif
-    
-    [SerializeField, FoldoutGroup("SceneToLoad"), ReadOnly]
-    private string _loadableScene;
-    
-    [SerializeField, FoldoutGroup("SceneToLoad")] 
-    private int _currentSceneToLoadIndex;
 
+    [SerializeField]
+    GCommonInstantiationData _commonInstantiationData;
+
+    [field : SerializeField, FoldoutGroup("SceneToLoad"), ReadOnly, HideInEditorMode]
+    public  GSOMapData loadableMapData { get; private set; }
+    
     [Space(10), LabelText("Tutorial")]
     [SerializeField, FoldoutGroup("SceneToLoad"), ReadOnly]
     private string[] _loadableTutorialScenes;
@@ -92,9 +97,9 @@ public class GGameManager: GSingleton<GGameManager>
     
     Coroutine _SlongMoCoroutine;
     
-    public void SetSceneToLoad(string sceneToLoadName)
+    public void SetSceneToLoad(GSOMapData mapToLoad)
     {
-        _loadableScene = sceneToLoadName;
+        loadableMapData = mapToLoad;
     }    
     
     public bool IsMenuActive(EMacroStates menu) => menu == currentState;
@@ -128,7 +133,7 @@ public class GGameManager: GSingleton<GGameManager>
         }
         else
         {
-            sceneName = _loadableScene;
+            sceneName = loadableMapData.SceneName;
         }
         
         StartCoroutine(LoadSceneCoroutine(sceneName));
@@ -150,7 +155,110 @@ public class GGameManager: GSingleton<GGameManager>
 
             yield return null;
         }
+        yield return null;
+        if (!isLoadingNewSave)
+        {
+            UpdateGameStateWithSavedData();
+        }
+        yield return null;
         ChangeState(EMacroStates.Play);
+    }
+
+    private void UpdateGameStateWithSavedData()
+    {
+        var data = gameStateSaveData;
+        GCrown crown = GGridObjectRegistry.GetItems<GCrown>()[0];
+        GPawn[] players = GGridObjectRegistry.GetItemsByPredicate<GPawn>(pawn => pawn.data.isPlayer).ToArray();
+
+        GTurnBaseManager.Instance.SetWaveCount(data.waveNumber);
+        GTurnBaseManager.Instance.SetCurrentWaveEnemyCapReached(data.waveEnemyCapReach);
+
+        // Player Stuff
+        {
+            for (var i = 0; i < players.Length; i++)
+            {
+                GPawn player = players.ElementAt(i);
+                var playerData = data.players.ElementAt(i);
+
+                if (playerData.stunTurnNumber > 0) player.Stun(playerData.stunTurnNumber);
+
+                GCell playerCell = GGridManager.Instance.GetCell(new Vector2Int(playerData.xCoordinate, playerData.yCoordinate));
+                if (playerCell != player.GetCell())
+                {
+                    playerCell.SetGridObject(player, true);
+                }
+
+                if (playerData.upgradeGuids != null)
+                {
+                    foreach (var upgradeGuid in playerData.upgradeGuids)
+                    {
+                        GSOUpgrade upgrade = GUpgradeManager.Instance.GetUpgradeWithGuid(upgradeGuid);
+                        if (upgrade != null)
+                        {
+                            player.AddUpgrade(upgrade);
+                        }
+                    }
+                }
+
+            }
+        }
+
+        // Ennemy Stuff
+        {
+            for (int i = 0; i < data.ennemies.Length; i++)
+            {
+                var enemyData = data.ennemies.ElementAt(i);
+                EGridObjectType objectType = (EGridObjectType)Enum.Parse(typeof(EGridObjectType), enemyData.ennemyType);
+                GGridObject gridObjectPrefab = _commonInstantiationData.objectTypeData[objectType];
+                GPawn pawnPrefab = gridObjectPrefab as GPawn;
+                if (pawnPrefab == null)
+                {
+                    Debug.LogError($"Could not find pawn for type {enemyData.ennemyType}");
+                    continue;
+                }
+
+                GPawn pawn = GameObject.Instantiate(pawnPrefab);
+                GCell ennemyCell = GGridManager.Instance.GetCell(new Vector2Int(enemyData.xCoordinate, enemyData.yCoordinate));
+                ennemyCell.SetGridObject(pawn, true);
+                if (enemyData.stunTurnNumber > 0) pawn.Stun(enemyData.stunTurnNumber);
+
+                if(enemyData.upgradeGuids != null) 
+                { 
+                    foreach (var upgradeGuid in enemyData.upgradeGuids) 
+                    { 
+                        GSOUpgrade upgrade = GTurnBaseManager.Instance.GetCurrentWaveData().GetUpgradeWithGuid(upgradeGuid); 
+                        if (upgrade != null) 
+                        { 
+                            pawn.AddUpgrade(upgrade);
+                        } 
+                    } 
+                }
+
+                pawn.SetHp(enemyData.hp);
+            }
+        }
+
+        // Crown Stuff
+        {
+            crown.SetCurrentDamage(data.crownDamage);
+            GHudManager.Instance.playMenu.SetCrownDamageText(crown.currentDamage);
+
+            GCell crownCell =
+                GGridManager.Instance.GetCell(new Vector2Int(data.xCrownCoordinate, data.yCrownCoordinate));
+            GPawn crownPawn = crownCell.gridObject as GPawn;
+
+            if (crown.owner != null)
+                crown.owner.ReleaseEquipement(false, false);
+
+            if (crownPawn)
+                crownPawn.GiveEquipement(crown, true, false);
+            else
+                crownCell.SetGridObject(crown);
+        }
+
+        GPlayerController playerController = GameObject.FindFirstObjectByType<GPlayerController>();
+        playerController.isFirstAction = data.isFirstAction;
+        GHudManager.Instance.playMenu.SetWaveNumberText(data.waveNumber);
     }
 
     private void OnMenuEnter()
@@ -269,6 +377,13 @@ public class GGameManager: GSingleton<GGameManager>
         _SlongMoCoroutine = StartCoroutine(SlowMoCoroutine(duration, timeScale));
     }
     
+    public void SetGameStateData(GGameStateSaveData gameStateSaveData)
+    {
+        this.gameStateSaveData = gameStateSaveData;
+        GSOMapData mapData = GSaveManager.Instance.GetMapData(gameStateSaveData.mapIndex);
+        loadableMapData = mapData;
+    }
+
     IEnumerator SlowMoCoroutine(float duration, float timeScale)
     {
         float originalTimeScale = Time.timeScale;
@@ -287,6 +402,7 @@ public class GGameManager: GSingleton<GGameManager>
     IEnumerator Start()
     {
         yield return LocalizationSettings.InitializationOperation;
+        yield return null;
         
         Locale currentLocal = LocalizationSettings.AvailableLocales.Locales[_localizationId];
         LocalizationSettings.SelectedLocale = currentLocal;

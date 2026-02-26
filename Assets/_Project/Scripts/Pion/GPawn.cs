@@ -1,9 +1,11 @@
 using FMODUnity;
 using Sirenix.OdinInspector;
+using Sirenix.Utilities;
 using UnityEngine.Serialization;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.Events;
@@ -13,6 +15,8 @@ using UnityEngine.Events;
 [RequireComponent(typeof(GAttributesController))]
 public class GPawn : GGridObject
 {
+    public static Action<GPawn, GPawn> OnKillEvent;
+    
     public enum EDeathType { Pushed, Hole, Throw }
     public event Action<GEquipment> OnEquip;
     public event Action<GEquipment> OnUnequip;
@@ -48,6 +52,9 @@ public class GPawn : GGridObject
     [field: SerializeField, ReadOnly]
     public List<GSOUpgrade> upgrades { get; private set; } = new List<GSOUpgrade>();
     
+    [SerializeField, ReadOnly]
+    public List<GAttributeModifier> temporaryUpgrades { get; private set; } = new List<GAttributeModifier>();
+    
     [SerializeReference]
     public GPawnData data;
 
@@ -80,6 +87,9 @@ public class GPawn : GGridObject
     public int hp { get; protected set; } = -1;
     
     public bool IsAlive => !(hp == 0);
+
+    [SerializeField]
+    bool _canRotate = true;
     
     [FoldoutGroup("Other", false)]
     [SerializeField, FoldoutGroup("Other/Events"), HideIf("@hp < 0")]
@@ -110,23 +120,29 @@ public class GPawn : GGridObject
     private void AddTestUpgrade()
     {
         var instance = _testUpgradeToAdd.CreateInstance();
-        upgrades.Add(instance);
-        AttributesController.AddModifiers(instance.Effects);
+        AddUpgrade(instance);
     }
 #endif
     
     public void AddUpgrade(GSOUpgrade upgrade)
     {
         upgrades.Add(upgrade);
-        AttributesController.AddModifiers(upgrade.Effects);
+        if (upgrade.Conditions != null)
+        {
+            upgrade.Conditions.Init(AttributesController, upgrade.Effects);
+        }
+        else
+        {
+            AttributesController.AddModifiers(upgrade.Effects);
+        }
     }
+    
 
     public void AddUpgrades(List<GSOUpgrade> upgrades)
     {
         foreach (GSOUpgrade upgrade in upgrades)
         {
-            this.upgrades.Add(upgrade);
-            AttributesController.AddModifiers(upgrade.Effects);
+            AddUpgrade(upgrade);
         }
     }
 
@@ -144,6 +160,7 @@ public class GPawn : GGridObject
     // TODO : move with Timer Utils !
     public void RotateTowards(Vector3 Position, float duration)
     {
+        if (!_canRotate) return;
         Vector3 directionToLook = (Position - transform.position).normalized;
         directionToLook.y = 0; // Keep only horizontal direction
         Quaternion targetRotation = Quaternion.LookRotation(directionToLook, Vector3.up);
@@ -250,7 +267,7 @@ public class GPawn : GGridObject
     public bool RequestAction(GAction action)
     {
         if (action == null) return false;
-        print($"Request {action} by {action.linkedPawn}");
+//        print($"Request {action} by {action.linkedPawn}");
         if (!GTurnBaseManager.Instance.TryPlayAction(action))
         {
             print("Action Failed");
@@ -357,10 +374,14 @@ public class GPawn : GGridObject
     public void Kill(EDeathType deathType = EDeathType.Throw)
     {
         OnKill?.Invoke();
+        OnKillEvent?.Invoke(GTurnBaseManager.Instance.currentTurnController.currentPawn, this);
         _OnDeath?.Invoke();
         if (deathType == EDeathType.Throw)
         {
-            visuals.SetAnimationState(DieAnimationName);
+            if(visuals.HasAnimations())
+                visuals.SetAnimationState(DieAnimationName);
+            else
+                Destroy(gameObject);
         }
         else 
         {
@@ -479,6 +500,11 @@ public class GPawn : GGridObject
         hp = (int)AttributesController.GetFinal(EAttributeType.MaxHealth);
     }
 
+    void OnDestroy()
+    {
+        upgrades.ForEach(u => u.WhenDestroyed());
+    }
+
     void OnMaxHealthChanged(float oldValue, float NewValue)
     {
         UpdateHpNumber();
@@ -501,10 +527,10 @@ public class GPawn : GGridObject
             {
                 remainingActionToken += Mathf.Max(0, (int)newValue - (int)oldValue);
             });
-        
     }
 
     protected override void OnEnable()
+    
     {
         base.OnEnable();
         if (!data.isPlayer && TryGetComponent(out GController aiController))

@@ -122,5 +122,16 @@ public class GUpgradeManager : GSerializedSingleton<GUpgradeManager>
 
         upgradeCardSelectMenu = FindFirstObjectByType<GUpgradeCardSelectMenu>(FindObjectsInactive.Include);
     }
+
+    public GSOUpgrade GetUpgradeWithGuid(string guid)
+    {
+        foreach (var upgradeList in _runTimeUpgrades.Values) 
+        { 
+            var upgrade = upgradeList.FirstOrDefault(a => a.ItemID == guid); 
+            if (upgrade != null) 
+                return upgrade.CreateInstance(); 
+        } 
+        return null;
+    }
 }
 

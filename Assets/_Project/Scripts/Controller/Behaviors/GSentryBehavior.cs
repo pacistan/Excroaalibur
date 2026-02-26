@@ -32,7 +32,7 @@ public class GSentryBehavior : GAIBehavior
         };
         base.Init(controller);
 
-        controller.pawn.OnEquip += OnReceivedEquipment;
+        controller.currentPawn.OnEquip += OnReceivedEquipment;
     }
 
     public override void OnTurnStart()
@@ -47,9 +47,9 @@ public class GSentryBehavior : GAIBehavior
         if (_isTurnOver)
             return null;
         
-        GCell pawnCell = _controller.pawn.GetCell();
-        GGridManager.Instance.GenerateStepMap(pawnCell, _controller.pawn.data._walkingTileType);
-        bool hasCrown = _controller.pawn.equipment && _controller.pawn.equipment is GCrown;
+        GCell pawnCell = _controller.currentPawn.GetCell();
+        GGridManager.Instance.GenerateStepMap(pawnCell, _controller.currentPawn.data._walkingTileType);
+        bool hasCrown = _controller.currentPawn.equipment && _controller.currentPawn.equipment is GCrown;
 
         if (hasCrown)
         {

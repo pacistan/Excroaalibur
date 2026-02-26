@@ -12,13 +12,25 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 899181a38a0c468887fe84cb55432d63, type: 3}
   m_Name: WD_Endless
   m_EditorClassIdentifier: 
-  endlessEnemies: []
-  <waves>k__BackingField:
-  - turn: 0
-    enemiesToSpawn:
-    - enemy: {fileID: 0}
-      count: 0
-    - enemy: {fileID: 0}
-      count: 0
-  _waveType: 1
-  enemyPrefab: {fileID: 3539483301687403083, guid: 334a564be184ec94eb15ccde7dfe83cc, type: 3}
+  bShowPreviewSpawns: 0
+  SameEnemyProbability: 0.15
+  EnemiesRounded: 0
+  EnemiesCountMultiplier: 0.5
+  EnemiesEntries:
+  - <enemyPrefab>k__BackingField: {fileID: 3539483301687403083, guid: 05d949de3c2a4aa4eb1df7f5d5a2e8ac, type: 3}
+    Weigh: 1
+    Probability: 100
+  WaveCountForBoss: 5
+  BossCountMultiplier: 0.5
+  BossBuffMultiplier: 0.5
+  BossEntries:
+  - <enemyPrefab>k__BackingField: {fileID: 3539483301687403083, guid: 05d949de3c2a4aa4eb1df7f5d5a2e8ac, type: 3}
+    Weigh: 1
+    Probability: 100
+  BuffsEntries:
+  - Name: 
+    <Upgrade>k__BackingField: {fileID: 11400000, guid: 333a8c43c9aa58a4286e7dd30b16029c, type: 2}
+    Count: 1
+    Percentage: 100
+  BuffMultiplier: 0.5
+  BuffRounded: 0

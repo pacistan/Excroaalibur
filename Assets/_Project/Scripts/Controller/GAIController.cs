@@ -11,25 +11,24 @@ public class GAIController : GController
     [InlineEditor(InlineEditorObjectFieldModes.Boxed)]
     public GAIBehavior _aiBehavior;
     
-    public GPawn pawn => pawns.Count > 0 ? pawns[0] : null;
 
     public override void StartTurn()
     {
-        bool isStunned = pawn.stunTurns > 0;
+        bool isStunned = currentPawn.stunTurns > 0;
         base.StartTurn();
         if (isStunned)
         {
             StopTurn();
             return;
         }
-        pawn.remainingActionToken = (int)pawn.AttributesController.GetFinal(EAttributeType.MaxAction);
+        currentPawn.remainingActionToken = (int)currentPawn.AttributesController.GetFinal(EAttributeType.MaxAction);
         _aiBehavior.OnTurnStart();
         StartAction();
     }
 
     public void ResetTurn()
     {
-        pawn.remainingActionToken = (int)pawn.AttributesController.GetFinal(EAttributeType.MaxAction);
+        currentPawn.remainingActionToken = (int)currentPawn.AttributesController.GetFinal(EAttributeType.MaxAction);
     }
 
     public override void StartAction()
@@ -41,15 +40,15 @@ public class GAIController : GController
             return;
         }
         base.StartAction();
-        pawn.remainingActionToken--;
+        currentPawn.remainingActionToken--;
         action.OnActionFinished += OnActionOver;
-        bool isValid = pawn.RequestAction(action);
+        bool isValid = currentPawn.RequestAction(action);
     }
 
     public override void OnActionOver()
     {
         base.OnActionOver();
-        if (pawn.remainingActionToken == 0)
+        if (currentPawn.remainingActionToken == 0)
         {
             StopTurn();
         }
@@ -85,10 +84,11 @@ public class GAIController : GController
     void Awake()
     {
         RegisterPawn(GetComponent<GPawn>());
+        currentPawn = pawns.Count > 0 ? pawns[0] : null;
         _aiBehavior = ScriptableObject.Instantiate(_aiBehavior);
         _aiBehavior.Init(this);
-        pawn.data.actionList = _aiBehavior.actions;
-        pawn.OnKill += OnKilled;
+        currentPawn.data.actionList = _aiBehavior.actions;
+        currentPawn.OnKill += OnKilled;
     }
     
 }

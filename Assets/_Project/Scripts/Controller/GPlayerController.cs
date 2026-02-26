@@ -12,6 +12,8 @@ using UnityEngine.UI;
 
 public class GPlayerController : GController
 {
+    public static Action<GPawn> OnPlayerActioOverEvent;
+    
     [SerializeField, FoldoutGroup("Events"), Tooltip("Event triggered when a player is selected.")]
     private UnityEvent OnPawnSelected;
     
@@ -442,6 +444,7 @@ public class GPlayerController : GController
         if (_selectedPlayer.RequestAction(_selectedAction))
         {
             base.StartAction();
+            currentPawn = _selectedPlayer;
             
             if (isFirstAction)
             {
@@ -450,7 +453,6 @@ public class GPlayerController : GController
             }
             
             PlayActionVFX(_selectedAction);
-            
             _selectedPlayer.remainingActionToken--;
             _selectedPlayer.visuals.OnUpdateActionsToken();
             _targetHud.UpdateGridObjectHoveredInfo(_selectedPlayer, isFirstAction);
@@ -477,6 +479,7 @@ public class GPlayerController : GController
         base.OnActionOver();
         if (_endTurnWhenNoActionsLeft)
         {
+            OnPlayerActioOverEvent?.Invoke(currentPawn);
             bool isTurnOver = true;
             pawns.ForEach(p =>
             {

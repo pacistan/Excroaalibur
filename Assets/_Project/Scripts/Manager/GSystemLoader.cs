@@ -9,6 +9,9 @@ public class GSystemLoader : MonoBehaviour
     [FormerlySerializedAs("_pawnPrefab")]
     [SerializeField]
     private GameObject _systemPrefab;
+    [SerializeField]
+    GSOMapData _mapDataToLoad;
+    
     bool _hasLoaded = false;
     
     void Awake()
@@ -20,13 +23,19 @@ public class GSystemLoader : MonoBehaviour
         }
     }
 
-    IEnumerator Start()
+    void Start()
     {
-        yield return new WaitForEndOfFrame();
-        if (_hasLoaded)
+        StartCoroutine(OnStart());
+    }
+
+    IEnumerator OnStart()
+    {
+        yield return new WaitForSecondsRealtime(1);
+        if (_hasLoaded && _mapDataToLoad != null)
         {
-            GGameManager.Instance.SetSceneToLoad(SceneManager.GetActiveScene().name);
-            GGameManager.Instance.ChangeState(EMacroStates.Play);
+            GGameManager.Instance.isLoadingTutorial = false;
+            GGameManager.Instance.SetSceneToLoad(_mapDataToLoad);
+            GGameManager.Instance.ChangeState(EMacroStates.LoadingScreen);
         }
     }
 }

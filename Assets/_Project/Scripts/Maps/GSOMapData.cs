@@ -15,7 +15,7 @@ public class GSOMapData : ScriptableObject
     [field: SerializeField, BoxGroup("Map Data")] public LocalizedString MapName {get; private set;}
     [field: SerializeField, BoxGroup("Unlock Data")] public int NumberOfWavesToUnlock { get; private set; } = 5;
     [field: SerializeField, BoxGroup("Unlock Data")] public GSOMapData ProgressMapToUnlock { get; private set; }
-    [field: SerializeField, BoxGroup("Unlock Data")] public int NumberOfWavesOnThisMap { get; private set; } = 0;
+    [field: SerializeField, BoxGroup("Unlock Data")] public int NumberOfWavesOnThisMap { get; set; } = 0;
     
     #if UNITY_EDITOR
     private void OnValidate()

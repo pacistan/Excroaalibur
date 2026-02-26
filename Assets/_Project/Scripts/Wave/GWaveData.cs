@@ -2,6 +2,7 @@ using Sirenix.OdinInspector;
 using Stanpac.Utilities;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Unity.Mathematics;
 using UnityEngine;
 
@@ -31,7 +32,7 @@ public class GWaveData : ScriptableObject
         private String Name;
         
         [field: SerializeField] 
-        public GSOUpgrade Upgrades { get; private set; }
+        public GSOUpgrade Upgrade { get; private set; }
 
         [Min(0)]
         [Tooltip("How many Buffs there is in the deck")]
@@ -120,7 +121,15 @@ public class GWaveData : ScriptableObject
             _BuffsWeightedSelection.AddChoice(buffEntry, buffEntry.Count);
         }
     }
-    
+
+    public GSOUpgrade GetUpgradeWithGuid(string guid)
+    {
+        var upgrade = BuffsEntries.FirstOrDefault(a => a != null && a.Upgrade.ItemID == guid);
+        if (upgrade != null)
+            return upgrade.Upgrade.CreateInstance();
+        return null;
+    }
+
 #if UNITY_EDITOR
     void OnValidate()
     {

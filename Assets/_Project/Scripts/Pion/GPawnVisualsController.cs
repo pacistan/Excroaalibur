@@ -21,55 +21,59 @@ public class GPawnVisualsController : SerializedMonoBehaviour
     Canvas _worldCanvas;
     
     [SerializeField, FoldoutGroup("Components")]
-    [BoxGroup("Components/World Canvas"), HideIf("isPlayerAccessor")]
+    [BoxGroup("Components/World Canvas/HP"), HideIf("isPlayerAccessor")]
+    GameObject _hpContainer;
+    
+    [SerializeField, FoldoutGroup("Components")]
+    [BoxGroup("Components/World Canvas/HP"), HideIf("isPlayerAccessor")]
     TextMeshProUGUI _txtCurrentHp;
     
     [SerializeField, FoldoutGroup("Components")]
-    [BoxGroup("Components/World Canvas"), HideIf("isPlayerAccessor")]
+    [BoxGroup("Components/World Canvas/HP"), HideIf("isPlayerAccessor")]
     TextMeshProUGUI _txtMaxHp;
     
     [SerializeField, FoldoutGroup("Components")]
-    [BoxGroup("Components/World Canvas"), HideIf("isPlayerAccessor")]
+    [BoxGroup("Components/World Canvas/HP"), HideIf("isPlayerAccessor")]
     Color _txtHpNormalColor;
     
     [SerializeField, FoldoutGroup("Components")]
-    [BoxGroup("Components/World Canvas"), HideIf("isPlayerAccessor")]
+    [BoxGroup("Components/World Canvas/HP"), HideIf("isPlayerAccessor")]
     Color _txtHpPrevisualisationColor;
     
     [SerializeField, FoldoutGroup("Components")]
-    [BoxGroup("Components/World Canvas"), HideIf("isPlayerAccessor")]
+    [BoxGroup("Components/World Canvas/HP"), HideIf("isPlayerAccessor")]
     Image _imgHpBarForeground;
     
     [SerializeField, FoldoutGroup("Components")]
-    [BoxGroup("Components/World Canvas"), HideIf("isPlayerAccessor")]
+    [BoxGroup("Components/World Canvas/HP"), HideIf("isPlayerAccessor")]
     Image _imgHpBarPrevisualisation;
     
     [SerializeField, FoldoutGroup("Components")]
-    [BoxGroup("Components/World Canvas")]
+    [BoxGroup("Components/World Canvas/Status")]
     Image _imgStatus;
     
     [SerializeField, FoldoutGroup("Components")]
-    [BoxGroup("Components/World Canvas")]
+    [BoxGroup("Components/World Canvas/Status")]
     GameObject _imgStatusContainer;
     
     [SerializeField, FoldoutGroup("Components")]
-    [BoxGroup("Components/World Canvas")]
+    [BoxGroup("Components/World Canvas/Status")]
     Sprite _spriteStun;
     
     [SerializeField, FoldoutGroup("Components")]
-    [BoxGroup("Components/World Canvas")]
+    [BoxGroup("Components/World Canvas/Status")]
     Sprite _spriteStunProtected;
     
     [SerializeField, FoldoutGroup("Components")]
-    [BoxGroup("Components/World Canvas"), HideIf("isPlayerAccessor")]
+    [BoxGroup("Components/World Canvas/Status"), HideIf("isPlayerAccessor")]
     Sprite _spriteDeath;
     
     [SerializeField, FoldoutGroup("Components")]
-    [BoxGroup("Components/World Canvas"), ShowIf("isPlayerAccessor")]
+    [BoxGroup("Components/World Canvas/ActionTokens"), ShowIf("isPlayerAccessor")]
     List<Image> _imgListActionTokens;
     
     [SerializeField, FoldoutGroup("Components")]
-    [BoxGroup("Components/World Canvas"), ShowIf("isPlayerAccessor")]
+    [BoxGroup("Components/World Canvas/ActionTokens"), ShowIf("isPlayerAccessor")]
     Sprite _spriteActionTokenOn, _spriteActionTokenOff;
     
     [SerializeField, FoldoutGroup("Components") ]
@@ -121,10 +125,17 @@ public class GPawnVisualsController : SerializedMonoBehaviour
     {
         if (!_pawn.data.isPlayer && !(_pawn is GAltar))
         {
-            _txtCurrentHp.text = $"{_pawn.hp}";
-            _txtMaxHp.text = $"/{_pawn.AttributesController.GetFinal(EAttributeType.MaxHealth)}";
-            _imgHpBarForeground.fillAmount = 1;
-            _imgHpBarPrevisualisation.fillAmount = 1;
+            if (_pawn.AttributesController.Has(EAttributeType.MaxHealth))
+            {
+                _txtCurrentHp.text = $"{_pawn.hp}";
+                _txtMaxHp.text = $"/{_pawn.AttributesController.GetFinal(EAttributeType.MaxHealth)}";
+                _imgHpBarForeground.fillAmount = 1;
+                _imgHpBarPrevisualisation.fillAmount = 1;
+            }
+            else
+            {
+                _hpContainer.SetActive(false);
+            }
         }
         else if(_pawn.data.isPlayer)
         {
@@ -164,6 +175,11 @@ public class GPawnVisualsController : SerializedMonoBehaviour
         _pawn.OnAnimationPush -= OnPush;
     }
 
+    public bool HasAnimations()
+    {
+        return _animator != null;
+    }
+    
     /** Walking / Idle / Push / Throw */
     public void SetAnimationState(string animationStateName, float transitionDuration = .1f)
     {

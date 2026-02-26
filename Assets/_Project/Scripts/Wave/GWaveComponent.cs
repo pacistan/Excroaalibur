@@ -120,8 +120,7 @@ public class GWaveComponent : MonoBehaviour
             
             int buffIndex = _waveData._BuffsWeightedSelection.SelectChoiceIndex(UnityEngine.Random.value, AlreadyAddedBuffs);
             var buffEntry = _waveData._BuffsWeightedSelection.GetChoice(buffIndex).item;
-
-            _upgradeEntriesQueue.Add(buffEntry.Upgrades);
+            _upgradeEntriesQueue.Add(buffEntry.Upgrade);
             
             // Add the selected buff index to the list of already added buffs !
             int index = AlreadyAddedBuffs.Length;
@@ -180,14 +179,14 @@ public class GWaveComponent : MonoBehaviour
                 if (_upgradeEntriesQueue.Count == 0) break;
                 GSOUpgrade upgrade = _upgradeEntriesQueue[0].CreateInstance();
                 _upgradeEntriesQueue.RemoveAt(0);
-                controller.pawn.AddUpgrade(upgrade);
+                controller.currentPawn.AddUpgrade(upgrade);
             }
 
             if (remainder != 0)
             {
                 GSOUpgrade upgrade = _upgradeEntriesQueue[0].CreateInstance();
                 _upgradeEntriesQueue.RemoveAt(0);
-                controller.pawn.AddUpgrade(upgrade);
+                controller.currentPawn.AddUpgrade(upgrade);
                 remainder--;
             }
             
@@ -225,6 +224,10 @@ public class GWaveComponent : MonoBehaviour
     {
         GGameManager.Instance.UpdateIntensity(0); // Reset Intensity
     }
+
+    internal int GetWaveEnemyCapReached() => _waveEnemyCapReach;
+
+    internal void SetWaveEnemyCapReached(int cap) => _waveEnemyCapReach = cap;
 }
 
 

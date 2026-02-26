@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
     public enum ETileType { Normal, Wall, Hole, Spawner}
-    public enum EGridObjectType { None, Sentry, PlayerPawn, Altar, Brawler, Speedy, Crown }
+    public enum EGridObjectType { None, Sentry, PlayerPawn, Altar, Brawler, Speedy, Crown, PushableWall, DestroyableWall }
     public enum ETileHighlightType { CellBase, CellHover, CellSelect  }
     public enum EZoneActionType { Default, Move, Push, Throw, EnnemyAction }
 
