@@ -79,7 +79,7 @@ public class GModifierProvider_OnFirstMove : GModifierProvider
     {
         base.Init(attributesController, modifiers);
         GTurnBaseManager.Instance.OnPrePlayerTurn += OnPlayerTurnStart;
-        GPlayerController.OnPlayerActioOverEvent += OnActionOver;
+        GPlayerController.OnPlayerActionOverEvent += OnActionOver;
     }
 
     void OnPlayerTurnStart(int fo)
@@ -102,7 +102,7 @@ public class GModifierProvider_OnFirstMove : GModifierProvider
     {
         base.Dispose();
         GTurnBaseManager.Instance.OnPrePlayerTurn -= OnPlayerTurnStart;
-        GPlayerController.OnPlayerActioOverEvent -= OnActionOver;
+        GPlayerController.OnPlayerActionOverEvent -= OnActionOver;
     }
 }
 
