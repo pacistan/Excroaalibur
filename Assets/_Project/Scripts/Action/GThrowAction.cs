@@ -60,14 +60,14 @@ public class GThrowAction : GAction
     [SerializeField, BoxGroup("Animation/Throw"), Tooltip("Rotation Amount by each tile crossed while moving towards its initial target")]
     float _crownRotationAmountByTileOnThrowToTarget;
 
-    [SerializeField, BoxGroup("Animation/Throw"), Tooltip("Rotation AnimationCruve while moving towards its initial target")]
-    AnimationCurve _crownRotationAnimationCurveOnThrowToTarget;
+    // [SerializeField, BoxGroup("Animation/Throw"), Tooltip("Rotation AnimationCruve while moving towards its initial target")]
+    // AnimationCurve _crownRotationAnimationCurveOnThrowToTarget;
     
     [SerializeField, BoxGroup("Animation/Throw"), Tooltip("Rotation Amount by each tile crossed while moving back toward the thrower")]
     float _crownRotationAmountByTileOnReturnToOrigin;
 
-    [SerializeField, BoxGroup("Animation/Throw"), Tooltip("Rotation AnimationCruve while moving back toward the thrower")]
-    AnimationCurve _crownRotationAnimationCurveOnThrowToOrigin;
+    // [SerializeField, BoxGroup("Animation/Throw"), Tooltip("Rotation AnimationCruve while moving back toward the thrower")]
+    // AnimationCurve _crownRotationAnimationCurveOnThrowToOrigin;
 
     [SerializeField, BoxGroup("Previsualisation"),
      Tooltip("Previsualisation Curve data for the throw on the way to the target ennemy Pawn")]
@@ -486,7 +486,7 @@ public class GThrowAction : GAction
             Vector3 angleAxisRotationReturn = Vector3.right * (_crownRotationAmountByTileOnThrowToTarget * ThrowPath.Length);
         
             _seq.Join(_crown.transform.DORotate(angleAxisRotation, outDur, RotateMode.LocalAxisAdd))
-                .SetEase(_playerCatch ?_passSpeedCurve : _throwSpeedCurve);
+                .SetEase(_returnSpeedCurve);
             _seq.AppendCallback(() => linkedPawn.GiveEquipement(_crown, true, true));
         }
         else if (_playerCatch)

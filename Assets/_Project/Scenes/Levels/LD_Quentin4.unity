@@ -50925,6 +50925,14 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 1539912345692984439, guid: 6ea0fe4d56232ef4287e15f18573ef24, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 39
+      objectReference: {fileID: 0}
+    - target: {fileID: 1539912345692984439, guid: 6ea0fe4d56232ef4287e15f18573ef24, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 31.4
+      objectReference: {fileID: 0}
     - target: {fileID: 3274910628591863012, guid: 6ea0fe4d56232ef4287e15f18573ef24, type: 3}
       propertyPath: _currentWaveData
       value: 
@@ -68147,7 +68155,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3034185526485682438, guid: 935e692062472cf40a2e2e532e0d3025, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 8.68
+      value: 8.2
       objectReference: {fileID: 0}
     - target: {fileID: 3034185526485682438, guid: 935e692062472cf40a2e2e532e0d3025, type: 3}
       propertyPath: m_LocalPosition.z

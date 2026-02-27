@@ -25,6 +25,8 @@ public class GGameManager: GSingleton<GGameManager>
     public event Action<EMacroStates, EMacroStates> OnChangeMacroStateEvent;
     public event Action<bool> OnPauseEvent;
     
+    public event Action OnNewSceneLoaded;
+    
     [SerializeField, HideInPlayMode]
     private EMacroStates _startState;
 
@@ -135,7 +137,6 @@ public class GGameManager: GSingleton<GGameManager>
         {
             sceneName = loadableMapData.SceneName;
         }
-        
         StartCoroutine(LoadSceneCoroutine(sceneName));
     }
 
@@ -155,12 +156,16 @@ public class GGameManager: GSingleton<GGameManager>
 
             yield return null;
         }
+
         yield return null;
         if (!isLoadingNewSave)
         {
             UpdateGameStateWithSavedData();
         }
         yield return null;
+        
+        OnNewSceneLoaded?.Invoke();
+        
         ChangeState(EMacroStates.Play);
     }
 

@@ -98,11 +98,11 @@ public class GPawn : GGridObject
     [SerializeField, FoldoutGroup("Other/Events"), Tooltip("Event triggered when this pawn starts an action")]
     protected UnityEvent _OnStartActionEvent;
     
-    [SerializeField, FoldoutGroup("Other/Events"), Tooltip("Event triggered when this pawn is selected.")]
-    public UnityEvent OnPawnSelected;
+    [SerializeField, FoldoutGroup("Other/Events"), Tooltip("Event triggered when this pawn is no longer hovered.")]
+    public UnityEvent OnActivateOutline;
     
-    [SerializeField, FoldoutGroup("Other/Events"), Tooltip("Event triggered when this pawn is hovered.")]
-    public UnityEvent OnPawnHover;
+    [SerializeField, FoldoutGroup("Other/Events"), Tooltip("Event triggered when this pawn is no longer hovered.")]
+    public UnityEvent OnDeactivateOutline;
     
     // Cache for quick look-up of override reactions
     private Dictionary<Type, GAction> _overrideCache;
@@ -149,11 +149,7 @@ public class GPawn : GGridObject
     public void RemoveUpgrade(GSOUpgrade upgrade)
     {
         upgrades.Remove(upgrade);
-        // TODO Modif Clear of Effects Removal
-        foreach (var effect in upgrade.Effects)
-        {
-            AttributesController.RemoveAllModifiersFromSource(upgrade);
-        }
+        AttributesController.RemoveAllModifiersFromSource(upgrade);
     }
     
     
@@ -294,7 +290,7 @@ public class GPawn : GGridObject
         if (!AttributesController.Has(EAttributeType.MaxHealth))
             return 1f;
         
-        return (float)hp / AttributesController.GetFinal(EAttributeType.MaxHealth);
+        return hp / AttributesController.GetFinal(EAttributeType.MaxHealth);
     }
     
     public void TakeDamage(int damage = 1)

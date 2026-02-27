@@ -128,6 +128,26 @@ public class GCameraController : GSingleton<GCameraController>
         _horizontalRotationOffset = targetRotation;
         _rotationEnum = null;
     }
+    
+    void OnNewSceneLoaded()
+    {
+        GameObject GridCenter = GameObject.FindGameObjectWithTag("GridCenter");
+         if (GridCenter)
+         {
+             _cameraTargetTr.position = GridCenter.transform.position;
+             _targetPos = GridCenter.transform.position;
+         }
+    }
+
+    void OnEnable()
+    {
+        GGameManager.Instance.OnNewSceneLoaded += OnNewSceneLoaded;
+    }
+    
+    void OnDisable()
+    {
+        GGameManager.Instance.OnNewSceneLoaded -= OnNewSceneLoaded;
+    }
 }
 
 public static class CinemachineExtensions
