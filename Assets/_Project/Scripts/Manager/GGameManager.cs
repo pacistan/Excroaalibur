@@ -4,15 +4,12 @@ using FMODUnity;
 using Sirenix.OdinInspector;
 using System;
 using System.Collections;
-using System.Collections.Generic;
 using System.Linq;
-using UnityEditor.Localization.Plugins.XLIFF.V20;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.Localization;
 using UnityEngine.Localization.Settings;
 using UnityEngine.SceneManagement;
-using UnityEngine.Serialization;
 
 public enum EMacroStates { Start, Options, Upgrade_Select_Card, Upgrade_Select_Character, Pause, Play, End, LoadingScreen, Map_Select, None }
 
