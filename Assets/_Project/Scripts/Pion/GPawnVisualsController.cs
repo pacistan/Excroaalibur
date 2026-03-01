@@ -99,7 +99,7 @@ public class GPawnVisualsController : SerializedMonoBehaviour
     bool isPlayerAccessor {
     get
     {
-        return _pawn ? _pawn.data.isPlayer : true;
+        return _pawn && _pawn.data ? _pawn.data.isPlayer : true;
     }}
     
     [FormerlySerializedAs("OnStunUnityEvent")]

@@ -552,6 +552,7 @@ public class GPawn : GGridObject
 
     protected override void OnDisable()
     {
+        base.OnDisable();
         if (!data.isPlayer && TryGetComponent(out GController aiController))
         {
             aiController.UnregisterPawn(this);
