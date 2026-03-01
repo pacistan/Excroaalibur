@@ -444,6 +444,10 @@ public class GPlayerController : GController
         if (_hoverCell != null)
         {
             _hoverCell.visuals.isHovered = false;
+            
+            GPawn previousCellPawn = _hoverCell.GetGridObject<GPawn>();
+            if(previousCellPawn && previousCellPawn != _selectedPlayer)
+                previousCellPawn.OnDeactivateOutline?.Invoke();
         }
         
         // Hover New Tile with no Selection
@@ -465,6 +469,9 @@ public class GPlayerController : GController
             {
                 RuntimeManager.PlayOneShotAttached(cellPawn.data.hoverSound, cellPawn.gameObject);
             }
+            
+            if(cellPawn != _selectedPlayer) // Trigger Only if hovered pawn is not the selected one (because selected pawn already trigger hover event on selection)
+                cellPawn.OnActivateOutline?.Invoke();
         } 
         else 
         {
