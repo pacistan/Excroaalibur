@@ -13,6 +13,10 @@ public class GMapStatesSaveHandler : GSaveHandler<GMapStatesSaveData>
     protected override GMapStatesSaveData GenerateSaveData()
     {
         GMapStatesSaveData saveData = new GMapStatesSaveData();
+        int currentScore = GTurnBaseManager.Instance.GetScore();
+        GSOMapData currentMapData = GGameManager.Instance.loadableMapData;
+        if(currentMapData.NumberOfWavesOnThisMap < currentScore)
+            currentMapData.NumberOfWavesOnThisMap = currentScore;
         saveData.mapScore = _mapData.Select(map => map.NumberOfWavesOnThisMap).ToArray();
         return saveData;
     }
