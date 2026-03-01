@@ -39,7 +39,7 @@ public class GGridObjectRegistry : GSingleton<GGridObjectRegistry>
         }
         else
         {
-            _registry[gridObjectType].Add(gridObject);
+            _registry[gridObjectType].Remove(gridObject);
         }
     }
 

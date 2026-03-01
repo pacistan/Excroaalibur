@@ -12,35 +12,39 @@ public class GSaveManager : GSingleton<GSaveManager>
     public int GetMapIndex(GSOMapData mapData) => Array.IndexOf(_mapStatesSaveHandler._mapData, mapData);
 
     public GSOMapData  GetMapData(int index) => _mapStatesSaveHandler._mapData.Length >= index ? null : _mapStatesSaveHandler._mapData[index];
+
     
     private void OnStateChange(EMacroStates currentState, EMacroStates previousState)
     {
         if (currentState == EMacroStates.Play)
         {
-            GTurnBaseManager.Instance.OnPostPlayerTurn += OnPlayerTurnEnd;
+            GTurnBaseManager.Instance.OnPrePlayerTurn += OnPlayerTurnStart;
         }
         else if(previousState == EMacroStates.Play)
         {
-            GTurnBaseManager.Instance.OnPostPlayerTurn -= OnPlayerTurnEnd;
+            GTurnBaseManager.Instance.OnPrePlayerTurn -= OnPlayerTurnStart;
         }
 
 
         if (currentState == EMacroStates.Start)
         {
+            var mapData = _mapStatesSaveHandler.DeserializeFromJson();
             var data = _gameStateSaveHandler.DeserializeFromJson();
             GGameManager.Instance.SetGameStateData(data);
+            _mapStatesSaveHandler.UpdateGameStateFromData(mapData);
         }
 
         if (currentState == EMacroStates.End)
         {
             _gameStateSaveHandler.DeleteSaveFile();
             GGameManager.Instance.loadableMapData.NumberOfWavesOnThisMap = Mathf.Max(GGameManager.Instance.loadableMapData.NumberOfWavesOnThisMap, GTurnBaseManager.Instance.GetScore());
-            //_mapStatesSaveHandler.SerializeToJson();
+            _mapStatesSaveHandler.SerializeToJson();
         }
     }
 
-    private void OnPlayerTurnEnd(int i)
+    private void OnPlayerTurnStart(int i)
     {
+        _mapStatesSaveHandler.SerializeToJson();
         _gameStateSaveHandler.SerializeToJson();
     }
 
