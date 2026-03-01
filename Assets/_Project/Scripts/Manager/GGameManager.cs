@@ -165,6 +165,8 @@ public class GGameManager: GSingleton<GGameManager>
         yield return null;
         
         OnNewSceneLoaded?.Invoke();
+
+        GTurnBaseManager.Instance.enabled = true;
         
         ChangeState(EMacroStates.Play);
     }
@@ -386,7 +388,10 @@ public class GGameManager: GSingleton<GGameManager>
     {
         this.gameStateSaveData = gameStateSaveData;
         GSOMapData mapData = GSaveManager.Instance.GetMapData(gameStateSaveData.mapIndex);
-        loadableMapData = mapData;
+        if (mapData != null)
+        {
+            loadableMapData = mapData;
+        }
     }
 
     IEnumerator SlowMoCoroutine(float duration, float timeScale)

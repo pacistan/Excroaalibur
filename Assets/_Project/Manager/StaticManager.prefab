@@ -299,14 +299,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 424295aca862424e8e5bd97658e071b1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  OnStartActionEvent:
-    m_PersistentCalls:
-      m_Calls: []
   currentPawn: {fileID: 0}
-  OnPawnSelected:
-    m_PersistentCalls:
-      m_Calls: []
-  OnPawnHover:
+  onLaunchActionFailed:
     m_PersistentCalls:
       m_Calls: []
   _endTurnWhenNoActionsLeft: 1
@@ -594,9 +588,69 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 0}
     - target: {fileID: 543137252291871470, guid: 58b1f68da21fe824c92ae3c8a58fd682, type: 3}
+      propertyPath: <menuSettings>k__BackingField.Array.data[5].uiTransitions.Array.data[0].duration
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 543137252291871470, guid: 58b1f68da21fe824c92ae3c8a58fd682, type: 3}
       propertyPath: <menuSettings>k__BackingField.Array.data[5].uiTransitions.Array.data[0].eventTarget
       value: 
       objectReference: {fileID: 7706026678311020921}
+    - target: {fileID: 543137252291871470, guid: 58b1f68da21fe824c92ae3c8a58fd682, type: 3}
+      propertyPath: <menuSettings>k__BackingField.Array.data[5].<_onExitTransitionEvent>k__BackingField.m_PersistentCalls.m_Calls.Array.size
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 543137252291871470, guid: 58b1f68da21fe824c92ae3c8a58fd682, type: 3}
+      propertyPath: <menuSettings>k__BackingField.Array.data[5].<_onEnterTransitionEvent>k__BackingField.m_PersistentCalls.m_Calls.Array.size
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 543137252291871470, guid: 58b1f68da21fe824c92ae3c8a58fd682, type: 3}
+      propertyPath: <menuSettings>k__BackingField.Array.data[5].<_onExitTransitionEvent>k__BackingField.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 543137252291871470, guid: 58b1f68da21fe824c92ae3c8a58fd682, type: 3}
+      propertyPath: <menuSettings>k__BackingField.Array.data[5].<_onEnterTransitionEvent>k__BackingField.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 543137252291871470, guid: 58b1f68da21fe824c92ae3c8a58fd682, type: 3}
+      propertyPath: <menuSettings>k__BackingField.Array.data[5].<_onExitTransitionEvent>k__BackingField.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 7355456315757104975}
+    - target: {fileID: 543137252291871470, guid: 58b1f68da21fe824c92ae3c8a58fd682, type: 3}
+      propertyPath: <menuSettings>k__BackingField.Array.data[5].<_onEnterTransitionEvent>k__BackingField.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 7355456315757104975}
+    - target: {fileID: 543137252291871470, guid: 58b1f68da21fe824c92ae3c8a58fd682, type: 3}
+      propertyPath: <menuSettings>k__BackingField.Array.data[5].<_onExitTransitionEvent>k__BackingField.m_PersistentCalls.m_Calls.Array.data[0].m_CallState
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 543137252291871470, guid: 58b1f68da21fe824c92ae3c8a58fd682, type: 3}
+      propertyPath: <menuSettings>k__BackingField.Array.data[5].<_onEnterTransitionEvent>k__BackingField.m_PersistentCalls.m_Calls.Array.data[0].m_CallState
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 543137252291871470, guid: 58b1f68da21fe824c92ae3c8a58fd682, type: 3}
+      propertyPath: <menuSettings>k__BackingField.Array.data[5].<_onExitTransitionEvent>k__BackingField.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: Hide
+      objectReference: {fileID: 0}
+    - target: {fileID: 543137252291871470, guid: 58b1f68da21fe824c92ae3c8a58fd682, type: 3}
+      propertyPath: <menuSettings>k__BackingField.Array.data[5].<_onEnterTransitionEvent>k__BackingField.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: Show
+      objectReference: {fileID: 0}
+    - target: {fileID: 543137252291871470, guid: 58b1f68da21fe824c92ae3c8a58fd682, type: 3}
+      propertyPath: <menuSettings>k__BackingField.Array.data[5].<_onExitTransitionEvent>k__BackingField.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
+      value: GLoadingScreenMenu, Assembly-CSharp
+      objectReference: {fileID: 0}
+    - target: {fileID: 543137252291871470, guid: 58b1f68da21fe824c92ae3c8a58fd682, type: 3}
+      propertyPath: <menuSettings>k__BackingField.Array.data[5].<_onEnterTransitionEvent>k__BackingField.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
+      value: GLoadingScreenMenu, Assembly-CSharp
+      objectReference: {fileID: 0}
+    - target: {fileID: 543137252291871470, guid: 58b1f68da21fe824c92ae3c8a58fd682, type: 3}
+      propertyPath: <menuSettings>k__BackingField.Array.data[5].<_onExitTransitionEvent>k__BackingField.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
+      value: UnityEngine.Object, UnityEngine
+      objectReference: {fileID: 0}
+    - target: {fileID: 543137252291871470, guid: 58b1f68da21fe824c92ae3c8a58fd682, type: 3}
+      propertyPath: <menuSettings>k__BackingField.Array.data[5].<_onEnterTransitionEvent>k__BackingField.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
+      value: UnityEngine.Object, UnityEngine
+      objectReference: {fileID: 0}
     - target: {fileID: 592145277175554953, guid: 58b1f68da21fe824c92ae3c8a58fd682, type: 3}
       propertyPath: m_AnchorMax.x
       value: 0
@@ -1973,6 +2027,17 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 7447158594183358678, guid: 58b1f68da21fe824c92ae3c8a58fd682, type: 3}
   m_PrefabInstance: {fileID: 314779951404519824}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &7355456315757104975 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 7083465393737211615, guid: 58b1f68da21fe824c92ae3c8a58fd682, type: 3}
+  m_PrefabInstance: {fileID: 314779951404519824}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7706026678311020921}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e289de71eb9998e4b893d481a42b3d25, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &7706026678311020921 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 7975625201541511401, guid: 58b1f68da21fe824c92ae3c8a58fd682, type: 3}

@@ -260,21 +260,21 @@ MonoBehaviour:
           m_Curve:
           - serializedVersion: 3
             time: 0
-            value: 1
-            inSlope: 0
-            outSlope: 0
+            value: 0
+            inSlope: 1
+            outSlope: 1
             tangentMode: 34
             weightedMode: 0
             inWeight: 0
-            outWeight: 0
+            outWeight: 0.33333334
           - serializedVersion: 3
             time: 1
             value: 1
-            inSlope: 0
-            outSlope: 0
+            inSlope: 1
+            outSlope: 1
             tangentMode: 34
             weightedMode: 0
-            inWeight: 0
+            inWeight: 0.33333334
             outWeight: 0
           m_PreInfinity: 2
           m_PostInfinity: 2
@@ -306,55 +306,7 @@ MonoBehaviour:
           m_PostInfinity: 2
           m_RotationOrder: 4
         _crownRotationAmountByTileOnThrowToTarget: 100
-        _crownRotationAnimationCurveOnThrowToTarget:
-          serializedVersion: 2
-          m_Curve:
-          - serializedVersion: 3
-            time: 0
-            value: 0
-            inSlope: 0
-            outSlope: 0
-            tangentMode: 0
-            weightedMode: 0
-            inWeight: 0
-            outWeight: 0
-          - serializedVersion: 3
-            time: 1
-            value: 1
-            inSlope: 0
-            outSlope: 0
-            tangentMode: 0
-            weightedMode: 0
-            inWeight: 0
-            outWeight: 0
-          m_PreInfinity: 2
-          m_PostInfinity: 2
-          m_RotationOrder: 4
         _crownRotationAmountByTileOnReturnToOrigin: 50
-        _crownRotationAnimationCurveOnThrowToOrigin:
-          serializedVersion: 2
-          m_Curve:
-          - serializedVersion: 3
-            time: 0
-            value: 0
-            inSlope: 0
-            outSlope: 0
-            tangentMode: 0
-            weightedMode: 0
-            inWeight: 0
-            outWeight: 0
-          - serializedVersion: 3
-            time: 1
-            value: 1
-            inSlope: 0
-            outSlope: 0
-            tangentMode: 0
-            weightedMode: 0
-            inWeight: 0
-            outWeight: 0
-          m_PreInfinity: 2
-          m_PostInfinity: 2
-          m_RotationOrder: 4
         _previsuCurveDataToTargetCell: {fileID: 11400000, guid: 11eea60cc8d82364baac63c8cd184f8f, type: 2}
         _previsuCurveDataToTargetEnnemyPawn: {fileID: 11400000, guid: 11eea60cc8d82364baac63c8cd184f8f, type: 2}
         _previsuCurveDataToTargetPlayer: {fileID: 11400000, guid: 11eea60cc8d82364baac63c8cd184f8f, type: 2}

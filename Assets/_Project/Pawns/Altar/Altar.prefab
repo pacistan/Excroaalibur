@@ -1,86 +1,5 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!1001 &-4327861106685133395
-PrefabInstance:
-  m_ObjectHideFlags: 0
-  serializedVersion: 2
-  m_Modification:
-    serializedVersion: 3
-    m_TransformParent: {fileID: 6677674562615435608}
-    m_Modifications:
-    - target: {fileID: 5310644068583351492, guid: 0815a3426a8b9794d8a8c03db7f47ef3, type: 3}
-      propertyPath: m_LocalPosition.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 5310644068583351492, guid: 0815a3426a8b9794d8a8c03db7f47ef3, type: 3}
-      propertyPath: m_LocalPosition.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 5310644068583351492, guid: 0815a3426a8b9794d8a8c03db7f47ef3, type: 3}
-      propertyPath: m_LocalPosition.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 5310644068583351492, guid: 0815a3426a8b9794d8a8c03db7f47ef3, type: 3}
-      propertyPath: m_LocalRotation.w
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 5310644068583351492, guid: 0815a3426a8b9794d8a8c03db7f47ef3, type: 3}
-      propertyPath: m_LocalRotation.x
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: 5310644068583351492, guid: 0815a3426a8b9794d8a8c03db7f47ef3, type: 3}
-      propertyPath: m_LocalRotation.y
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: 5310644068583351492, guid: 0815a3426a8b9794d8a8c03db7f47ef3, type: 3}
-      propertyPath: m_LocalRotation.z
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: 5310644068583351492, guid: 0815a3426a8b9794d8a8c03db7f47ef3, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 5310644068583351492, guid: 0815a3426a8b9794d8a8c03db7f47ef3, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 5310644068583351492, guid: 0815a3426a8b9794d8a8c03db7f47ef3, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6162868908992254692, guid: 0815a3426a8b9794d8a8c03db7f47ef3, type: 3}
-      propertyPath: m_Name
-      value: Crown
-      objectReference: {fileID: 0}
-    - target: {fileID: 6256318796334292864, guid: 0815a3426a8b9794d8a8c03db7f47ef3, type: 3}
-      propertyPath: owner
-      value: 
-      objectReference: {fileID: 1741723611902861267}
-    - target: {fileID: 6256318796334292864, guid: 0815a3426a8b9794d8a8c03db7f47ef3, type: 3}
-      propertyPath: serializationData.Prefab
-      value: 
-      objectReference: {fileID: 6256318796334292864, guid: 0815a3426a8b9794d8a8c03db7f47ef3, type: 3}
-    m_RemovedComponents: []
-    m_RemovedGameObjects: []
-    m_AddedGameObjects: []
-    m_AddedComponents: []
-  m_SourcePrefab: {fileID: 100100000, guid: 0815a3426a8b9794d8a8c03db7f47ef3, type: 3}
---- !u!4 &739553392271006057 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 5310644068583351492, guid: 0815a3426a8b9794d8a8c03db7f47ef3, type: 3}
-  m_PrefabInstance: {fileID: -4327861106685133395}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &1522974841606988333 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 6256318796334292864, guid: 0815a3426a8b9794d8a8c03db7f47ef3, type: 3}
-  m_PrefabInstance: {fileID: -4327861106685133395}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5f2648375c874c8f84a81f49ff3b8b6f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1001 &5284744307998429346
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -437,9 +356,6 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 2765379055339783158, guid: 48d2615fd829feb4a9c7bfb377fa75cc, type: 3}
       insertIndex: -1
       addedObject: {fileID: 8406143831510461483}
-    - targetCorrespondingSourceObject: {fileID: 1121485079055703402, guid: 48d2615fd829feb4a9c7bfb377fa75cc, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 739553392271006057}
     m_AddedComponents:
     - targetCorrespondingSourceObject: {fileID: 5180675197840913930, guid: 48d2615fd829feb4a9c7bfb377fa75cc, type: 3}
       insertIndex: 1
@@ -494,7 +410,7 @@ MonoBehaviour:
   <upgrades>k__BackingField: []
   data: {fileID: 11400000, guid: 71c5007204ff57d4d8ee99c87565e661, type: 2}
   <hasCrown>k__BackingField: 0
-  equipment: {fileID: 1522974841606988333}
+  equipment: {fileID: 0}
   <visuals>k__BackingField: {fileID: 1528920753647014634}
   <equipmentParentTr>k__BackingField: {fileID: 6677674562615435608}
   <AttributesController>k__BackingField: {fileID: 0}

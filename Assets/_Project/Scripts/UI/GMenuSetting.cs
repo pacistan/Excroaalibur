@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using TMPro;
 using Unity.Cinemachine;
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.Serialization;
 
 public partial class GMenuManager
@@ -41,5 +42,8 @@ public partial class GMenuManager
         [FoldoutGroup("$menu")]
         public CinemachineCamera virtualCamera;
         private bool _hideParameterForUiTransitions {get => uiTransitions != null && uiTransitions.Count > 0;}
+
+        [FoldoutGroup("$menu")]
+        public bool _disableMenuOnHide;
     }
 }

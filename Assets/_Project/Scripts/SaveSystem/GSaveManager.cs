@@ -11,7 +11,7 @@ public class GSaveManager : GSingleton<GSaveManager>
 
     public int GetMapIndex(GSOMapData mapData) => Array.IndexOf(_mapStatesSaveHandler._mapData, mapData);
 
-    public GSOMapData  GetMapData(int index) => _mapStatesSaveHandler._mapData[index];
+    public GSOMapData  GetMapData(int index) => _mapStatesSaveHandler._mapData.Length >= index ? null : _mapStatesSaveHandler._mapData[index];
     
     private void OnStateChange(EMacroStates currentState, EMacroStates previousState)
     {

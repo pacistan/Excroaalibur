@@ -2,35 +2,30 @@ using Sirenix.OdinInspector;
 using System;
 using UnityEngine;
 
-[SelectionBase]
+[SelectionBase, FoldoutGroup("Other")]
 public class GGridObject : SerializedMonoBehaviour
 {
     [SerializeField, ReadOnly, BoxGroup("Important Info")]
     protected GCell _currentCell;
     
+    [FoldoutGroup("Other", false)]
     public bool isMarkedForDestruction { get; set; } = false;
 
-    [FoldoutGroup("Other", false)]
     [field: SerializeField, FoldoutGroup("Other/Persistant Data")]
     public Sprite headerSprite { get; private set; }
 
-    [FoldoutGroup("Other", false)]
     [field: SerializeField, FoldoutGroup("Other/Persistant Data")]
     public Sprite cadreSprite { get; private set; }
 
-    [FoldoutGroup("Other", false)] 
     [field: SerializeField, FoldoutGroup("Other/Persistant Data")]
     public Sprite headerObjectIconSprite { get; private set; }
 
-    [FoldoutGroup("Other", false)]
     [field: SerializeField, FoldoutGroup("Other/Persistant Data")]
     public Color pawnColor { get; private set; }
 
-    [FoldoutGroup("Other", false)]
     [field: SerializeField, FoldoutGroup("Other/Persistant Data")]
     public string headerName { get; private set; }
 
-    [FoldoutGroup("Other", false)]
     [field: SerializeField, FoldoutGroup("Other/Persistant Data")]
     public string className { get; private set; }
 

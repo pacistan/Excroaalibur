@@ -6,6 +6,7 @@ using Sirenix.Utilities;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using UnityEditor;
 using UnityEngine;
 using STOP_MODE = FMOD.Studio.STOP_MODE;
 

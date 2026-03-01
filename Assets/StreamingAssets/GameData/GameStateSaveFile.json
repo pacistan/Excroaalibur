@@ -1,52 +1,18 @@
 {
-    "mapIndex": -1,
-    "waveNumber": 0,
+    "mapIndex": 0,
+    "waveNumber": 1,
     "waveEnemyCapReach": 0,
     "ennemies": [
         {
-            "ennemyType": "PushableWall",
-            "xCoordinate": 6,
-            "yCoordinate": 9,
-            "stunTurnNumber": 0,
-            "hp": -1,
-            "upgradeGuids": []
-        },
-        {
             "ennemyType": "Sentry",
-            "xCoordinate": 9,
-            "yCoordinate": 9,
+            "xCoordinate": 10,
+            "yCoordinate": 10,
             "stunTurnNumber": 0,
-            "hp": 3,
+            "hp": 5,
             "upgradeGuids": []
-        },
-        {
-            "ennemyType": "DestroyableWall",
-            "xCoordinate": 8,
-            "yCoordinate": 11,
-            "stunTurnNumber": 0,
-            "hp": 1,
-            "upgradeGuids": []
-        },
-        {
-            "ennemyType": "Sentry",
-            "xCoordinate": 9,
-            "yCoordinate": 7,
-            "stunTurnNumber": 0,
-            "hp": 3,
-            "upgradeGuids": [
-                "c01c8ef3-7b9b-46f4-becf-b77c5e0c727e",
-                "34ab2117-7e4c-4be1-b7f0-9a289b22575b",
-                "ee902442-dd7e-4d44-acc7-fcadd43892b5"
-            ]
         }
     ],
     "players": [
-        {
-            "xCoordinate": 5,
-            "yCoordinate": 7,
-            "stunTurnNumber": 0,
-            "upgradeGuids": []
-        },
         {
             "xCoordinate": 6,
             "yCoordinate": 8,
@@ -54,16 +20,20 @@
             "upgradeGuids": []
         },
         {
-            "xCoordinate": 8,
-            "yCoordinate": 7,
+            "xCoordinate": 7,
+            "yCoordinate": 6,
             "stunTurnNumber": 0,
-            "upgradeGuids": [
-                "e225cebb-ecd1-455a-9ae3-9965b5416719"
-            ]
+            "upgradeGuids": []
+        },
+        {
+            "xCoordinate": 10,
+            "yCoordinate": 6,
+            "stunTurnNumber": 0,
+            "upgradeGuids": []
         }
     ],
-    "xCrownCoordinate": 5,
-    "yCrownCoordinate": 7,
-    "crownDamage": 2,
+    "xCrownCoordinate": 6,
+    "yCrownCoordinate": 8,
+    "crownDamage": 5,
     "isFirstAction": false
 }

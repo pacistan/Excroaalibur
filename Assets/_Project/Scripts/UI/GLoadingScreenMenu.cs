@@ -135,7 +135,6 @@ public class GLoadingScreenMenu : MonoBehaviour
         _progressBar.rect.SetSize(0, _progressBar.rect.y);
     }
     
-    
     void Awake()
     {
         Setup();
