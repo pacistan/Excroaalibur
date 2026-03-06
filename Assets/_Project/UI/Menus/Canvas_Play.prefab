@@ -34,7 +34,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: 50.5}
+  m_AnchoredPosition: {x: 0, y: 60}
   m_SizeDelta: {x: 200, y: 200}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &3484366697319686647
@@ -386,6 +386,8 @@ MonoBehaviour:
   <endTurnButton>k__BackingField: {fileID: 3234176573228228041}
   _pauseButton: {fileID: 5588801899268467359}
   _waveNumberTxt: {fileID: 6133395725636412837}
+  _flameImage: {fileID: 4335486807622360703}
+  _maxFlameDamage: 15
 --- !u!1 &4120019188825383052
 GameObject:
   m_ObjectHideFlags: 0
