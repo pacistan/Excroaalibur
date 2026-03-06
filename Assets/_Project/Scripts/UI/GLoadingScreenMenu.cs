@@ -28,6 +28,21 @@ public class GLoadingScreenMenu : MonoBehaviour
 
     [SerializeField]
     float[] _loadingDiscRotationSpeed;
+
+    [SerializeField]
+    Image _sittingFrog;
+    
+    [SerializeField]
+    Image _jumpingFrog;
+    
+    [SerializeField]
+    RectTransform _startJumpPosition;
+    
+    [SerializeField]
+    RectTransform _endJumpPosition;
+    
+    [SerializeField]
+    AnimationCurve _jumpCurve;
     
     RectTransform[]  _loadingDiscs = Array.Empty<RectTransform>();
     
@@ -37,6 +52,7 @@ public class GLoadingScreenMenu : MonoBehaviour
 
     float _baseBarWidth = 500f;
     Sequence seq;
+
     
     public void ResetProgress()
     {
@@ -64,6 +80,7 @@ public class GLoadingScreenMenu : MonoBehaviour
     public void Show()
     {
         _back_mat.SetFloat("_Rotation", -135f);
+        _jumpingFrog.rectTransform.anchoredPosition = _startJumpPosition.anchoredPosition;
     
         if (seq is { active: true }) seq.Kill(true);
         seq = DOTween.Sequence();
@@ -71,6 +88,13 @@ public class GLoadingScreenMenu : MonoBehaviour
         seq.Append(_back_mat.DOFloat(1f, "_Progress", 1f).SetEase(Ease.OutQuad));
         seq.Insert(.35f, _progressBar.DOSizeDelta(new Vector2(_baseBarWidth, _progressBar.sizeDelta.y), 0.25f).From(new Vector2(0, _progressBar.rect.height)).SetEase(Ease.OutCirc));
         seq.Join(_progressGroup.DOFade(1f, .25f).SetEase(Ease.OutCirc));
+
+        seq.Append(_jumpingFrog.rectTransform.DOJump(_sittingFrog.rectTransform.position, 150f, 1, .85f).SetEase(Ease.Linear));
+        seq.AppendCallback(() =>
+        {
+            _jumpingFrog.enabled = false;
+            _sittingFrog.enabled = true;
+        });
         
         float delay = .45f;
         foreach (RectTransform disc in _loadingDiscs)
@@ -89,7 +113,14 @@ public class GLoadingScreenMenu : MonoBehaviour
         seq = DOTween.Sequence();
         seq.SetUpdate(true);
         RectTransform[] discs = _loadingDiscs;
-        seq.Join(_back_mat.DOFloat(0f, "_Progress", 1f).SetEase(Ease.InSine));
+        
+        seq.Join(_jumpingFrog.rectTransform.DOJump(_endJumpPosition.position, 550f, 1, 1.15f).SetEase(_jumpCurve));
+        seq.JoinCallback(() =>
+        {
+            _jumpingFrog.enabled = true;
+            _sittingFrog.enabled = false;
+        });
+        seq.Insert( .15f,_back_mat.DOFloat(0f, "_Progress", 1f).SetEase(Ease.InSine));
         seq.Join(_progressBar.DOSizeDelta(new Vector2(50f, _progressBar.sizeDelta.y), 0.25f).SetEase(Ease.OutCubic));
         seq.Join(_progressGroup.DOFade(0, .25f).SetEase(Ease.OutCubic));
 

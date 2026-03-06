@@ -1,39 +1,30 @@
 {
     "mapIndex": -1,
-    "waveNumber": 1,
+    "waveNumber": 0,
     "waveEnemyCapReach": 0,
-    "ennemies": [
-        {
-            "ennemyType": "Sentry",
-            "xCoordinate": 2,
-            "yCoordinate": 6,
-            "stunTurnNumber": 0,
-            "hp": 3,
-            "upgradeGuids": []
-        }
-    ],
+    "ennemies": [],
     "players": [
         {
-            "xCoordinate": 5,
-            "yCoordinate": 5,
+            "xCoordinate": 7,
+            "yCoordinate": 8,
+            "stunTurnNumber": 0,
+            "upgradeGuids": []
+        },
+        {
+            "xCoordinate": 7,
+            "yCoordinate": 6,
             "stunTurnNumber": 0,
             "upgradeGuids": []
         },
         {
             "xCoordinate": 8,
-            "yCoordinate": 5,
-            "stunTurnNumber": 0,
-            "upgradeGuids": []
-        },
-        {
-            "xCoordinate": 9,
-            "yCoordinate": 9,
+            "yCoordinate": 7,
             "stunTurnNumber": 0,
             "upgradeGuids": []
         }
     ],
-    "xCrownCoordinate": 8,
-    "yCrownCoordinate": 5,
+    "xCrownCoordinate": 7,
+    "yCrownCoordinate": 7,
     "crownDamage": 1,
-    "isFirstAction": false
+    "isFirstAction": true
 }
