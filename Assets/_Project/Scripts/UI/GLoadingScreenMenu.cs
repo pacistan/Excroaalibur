@@ -114,7 +114,7 @@ public class GLoadingScreenMenu : MonoBehaviour
         seq.SetUpdate(true);
         RectTransform[] discs = _loadingDiscs;
         
-        seq.Join(_jumpingFrog.rectTransform.DOJump(_endJumpPosition.position, 550f, 1, 1.15f).SetEase(_jumpCurve));
+        seq.Join(_jumpingFrog.rectTransform.DOJump(_endJumpPosition.position, 700f, 1, 1.15f).SetEase(_jumpCurve));
         seq.JoinCallback(() =>
         {
             _jumpingFrog.enabled = true;
