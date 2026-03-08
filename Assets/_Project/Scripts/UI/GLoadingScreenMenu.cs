@@ -40,6 +40,12 @@ public class GLoadingScreenMenu : MonoBehaviour
     
     [SerializeField]
     RectTransform _endJumpPosition;
+
+    [SerializeField]
+    float _Jump_1_power;
+
+    [SerializeField]
+    float _jump_2_power;
     
     [SerializeField]
     AnimationCurve _jumpCurve;
@@ -52,6 +58,8 @@ public class GLoadingScreenMenu : MonoBehaviour
 
     float _baseBarWidth = 500f;
     Sequence seq;
+    
+    CanvasScaler _canvasScaler;
 
     
     public void ResetProgress()
@@ -89,7 +97,7 @@ public class GLoadingScreenMenu : MonoBehaviour
         seq.Insert(.35f, _progressBar.DOSizeDelta(new Vector2(_baseBarWidth, _progressBar.sizeDelta.y), 0.25f).From(new Vector2(0, _progressBar.rect.height)).SetEase(Ease.OutCirc));
         seq.Join(_progressGroup.DOFade(1f, .25f).SetEase(Ease.OutCirc));
 
-        seq.Append(_jumpingFrog.rectTransform.DOJump(_sittingFrog.rectTransform.position, 150f, 1, .85f).SetEase(Ease.Linear));
+        seq.Append(_jumpingFrog.rectTransform.DOJump(_sittingFrog.rectTransform.position, _Jump_1_power + Mathf.Abs(_startJumpPosition.position.y - _sittingFrog.rectTransform.position.y), 1, .85f).SetEase(Ease.Linear));
         seq.AppendCallback(() =>
         {
             _jumpingFrog.enabled = false;
@@ -114,7 +122,7 @@ public class GLoadingScreenMenu : MonoBehaviour
         seq.SetUpdate(true);
         RectTransform[] discs = _loadingDiscs;
         
-        seq.Join(_jumpingFrog.rectTransform.DOJump(_endJumpPosition.position, 700f, 1, 1.15f).SetEase(_jumpCurve));
+        seq.Join(_jumpingFrog.rectTransform.DOJump(_endJumpPosition.position, _jump_2_power + Mathf.Abs(_sittingFrog.rectTransform.position.y - _endJumpPosition.position.y), 1, 1.15f).SetEase(_jumpCurve));
         seq.JoinCallback(() =>
         {
             _jumpingFrog.enabled = true;
@@ -167,6 +175,8 @@ public class GLoadingScreenMenu : MonoBehaviour
     
     void Awake()
     {
+        _canvasScaler = GetComponent<CanvasScaler>();
+        
         Setup();
     }
 }

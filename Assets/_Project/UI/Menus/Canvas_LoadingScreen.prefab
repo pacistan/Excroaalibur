@@ -222,6 +222,8 @@ MonoBehaviour:
   _jumpingFrog: {fileID: 532219810614678055}
   _startJumpPosition: {fileID: 3285460266121859371}
   _endJumpPosition: {fileID: 6267761123467656810}
+  _Jump_1_power: 20
+  _jump_2_power: 50
   _jumpCurve:
     serializedVersion: 2
     m_Curve:
@@ -246,11 +248,11 @@ MonoBehaviour:
     - serializedVersion: 3
       time: 1
       value: 1
-      inSlope: 1.1506402
-      outSlope: 1.1506402
-      tangentMode: 34
+      inSlope: 1.2278914
+      outSlope: 1.2278914
+      tangentMode: 0
       weightedMode: 0
-      inWeight: 0.33333334
+      inWeight: 0.17000532
       outWeight: 0
     m_PreInfinity: 2
     m_PostInfinity: 2
@@ -514,7 +516,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 440.7907, y: 108.50056}
+  m_AnchoredPosition: {x: 440.7907, y: 150}
   m_SizeDelta: {x: 60, y: 37}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &2312426387421539581
@@ -818,7 +820,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -341.61, y: -277.2576}
+  m_AnchoredPosition: {x: -288.66, y: -277.2576}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &4221760215481559014
