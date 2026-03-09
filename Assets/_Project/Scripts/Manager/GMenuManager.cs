@@ -107,8 +107,8 @@ public partial class GMenuManager : GSingleton<GMenuManager>
         {
             Cursor.SetCursor(defaultCursor, Vector2.zero, CursorMode.Auto);
         }
-        if (oldMenu.virtualCamera) newMenu.virtualCamera.Priority = 0;
-        if (newMenu.virtualCamera) newMenu.virtualCamera.Priority = 0;
+        if (oldMenu.virtualCamera) oldMenu.virtualCamera.Priority = 0;
+        if (newMenu.virtualCamera) newMenu.virtualCamera.Priority = 15;
 
         switch (oldState)
         {
