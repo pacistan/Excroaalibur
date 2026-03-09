@@ -35,6 +35,7 @@ public partial class GMenuManager : GSingleton<GMenuManager>
 
     [SerializeField]
     Texture2D defaultCursor;
+    
 
     private Dictionary<EMacroStates, GMenuSetting> _menuDictionary;
     
@@ -157,9 +158,12 @@ public partial class GMenuManager : GSingleton<GMenuManager>
 
         yield return new WaitUntil(() => pendingTransitions == 0);
 
-        if (_currentMenu.virtualCamera) _currentMenu.virtualCamera.Priority = 0;
-        _currentMenu = menuSetting;
-        if (_currentMenu.virtualCamera) _currentMenu.virtualCamera.Priority = 15;
+        if (menuSetting.virtualCamera)
+        {
+            if (_currentMenu.virtualCamera) _currentMenu.virtualCamera.Priority = 0;
+            _currentMenu = menuSetting;
+            if (_currentMenu.virtualCamera) _currentMenu.virtualCamera.Priority = 15;
+        }
         
         if (menuSetting.waitForTransitionsToEnableClicking)
         {

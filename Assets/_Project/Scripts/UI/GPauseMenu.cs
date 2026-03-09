@@ -8,11 +8,15 @@ public class GPauseMenu : MonoBehaviour
     [SerializeField]
     Button _continueBtn, _optionsBtn, _restartBtn, _mainMenuBtn;
 
+    
     void Start()
     {
         _continueBtn.onClick.AddListener(()=> GGameManager.Instance.ChangeState(EMacroStates.Play));
         _optionsBtn.onClick.AddListener(()=> GGameManager.Instance.ChangeState(EMacroStates.Options));
         _restartBtn.onClick.AddListener(()=> GGameManager.Instance.ChangeState(EMacroStates.LoadingScreen));
-        _mainMenuBtn.onClick.AddListener(()=> GGameManager.Instance.ChangeState(EMacroStates.Start));
+        _mainMenuBtn.onClick.AddListener(()=>
+        {
+            GHudManager.Instance.QuickTransition(() => GGameManager.Instance.ChangeState(EMacroStates.Start));
+        });
     }
 }
