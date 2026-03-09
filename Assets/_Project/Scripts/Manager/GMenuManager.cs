@@ -37,6 +37,8 @@ public partial class GMenuManager : GSingleton<GMenuManager>
     Texture2D defaultCursor;
 
     private Dictionary<EMacroStates, GMenuSetting> _menuDictionary;
+    
+    GMenuSetting _currentMenu;
 
     protected override void Awake()
     {
@@ -56,6 +58,7 @@ public partial class GMenuManager : GSingleton<GMenuManager>
                 if(_menuDictionary[menuSetting.menu].menuFolder)
                 {
                     _menuDictionary[menuSetting.menu].menuFolder.SetActive(menuSetting.menu == GGameManager.Instance.currentState);
+                    _currentMenu = menuSetting;
                 }
             }
         }
@@ -107,8 +110,6 @@ public partial class GMenuManager : GSingleton<GMenuManager>
         {
             Cursor.SetCursor(defaultCursor, Vector2.zero, CursorMode.Auto);
         }
-        if (oldMenu.virtualCamera) oldMenu.virtualCamera.Priority = 0;
-        if (newMenu.virtualCamera) newMenu.virtualCamera.Priority = 15;
 
         switch (oldState)
         {
@@ -156,6 +157,10 @@ public partial class GMenuManager : GSingleton<GMenuManager>
 
         yield return new WaitUntil(() => pendingTransitions == 0);
 
+        if (_currentMenu.virtualCamera) _currentMenu.virtualCamera.Priority = 0;
+        _currentMenu = menuSetting;
+        if (_currentMenu.virtualCamera) _currentMenu.virtualCamera.Priority = 15;
+        
         if (menuSetting.waitForTransitionsToEnableClicking)
         {
             menuSetting.canvasGroup.interactable = toActive;

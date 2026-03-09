@@ -41,6 +41,7 @@ public partial class GMenuManager
         
         [FoldoutGroup("$menu")]
         public CinemachineCamera virtualCamera;
+        
         private bool _hideParameterForUiTransitions {get => uiTransitions != null && uiTransitions.Count > 0;}
 
         [FoldoutGroup("$menu")]

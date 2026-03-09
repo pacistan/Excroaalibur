@@ -427,12 +427,20 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 198030405}
     - target: {fileID: 276917255038702462, guid: 7b0d25a7cfbbfd447a8d772e3ddfe79b, type: 3}
+      propertyPath: <menuSettings>k__BackingField.Array.data[8].virtualCamera
+      value: 
+      objectReference: {fileID: 925600873}
+    - target: {fileID: 276917255038702462, guid: 7b0d25a7cfbbfd447a8d772e3ddfe79b, type: 3}
       propertyPath: <menuSettings>k__BackingField.Array.data[0].uiTransitions.Array.size
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 276917255038702462, guid: 7b0d25a7cfbbfd447a8d772e3ddfe79b, type: 3}
       propertyPath: <menuSettings>k__BackingField.Array.data[8].uiTransitions.Array.size
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 276917255038702462, guid: 7b0d25a7cfbbfd447a8d772e3ddfe79b, type: 3}
+      propertyPath: <menuSettings>k__BackingField.Array.data[8].waitForTransitionsToEnableClicking
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 276917255038702462, guid: 7b0d25a7cfbbfd447a8d772e3ddfe79b, type: 3}
       propertyPath: <menuSettings>k__BackingField.Array.data[5].uiTransitions.Array.data[0].duration
