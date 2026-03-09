@@ -1827,6 +1827,7 @@ GameObject:
   - component: {fileID: 925600869}
   - component: {fileID: 925600873}
   - component: {fileID: 925600875}
+  - component: {fileID: 925600876}
   m_Layer: 0
   m_Name: Menu_Cam
   m_TagString: Untagged
@@ -1908,6 +1909,23 @@ MonoBehaviour:
   CustomTarget: {fileID: 83674397}
   FocusDepthOffset: 0
   Damping: 0.2
+--- !u!114 &925600876
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 925600868}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 449ef5ebbe24720439ec31d15f7b6f3d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Weight: 1
+  FocusTracking: 0
+  FocusTarget: {fileID: 0}
+  FocusOffset: 0
+  Profile: {fileID: 11400000, guid: 10871a06518609d4f9a8ca7014681857, type: 2}
 --- !u!1 &935255428
 GameObject:
   m_ObjectHideFlags: 0
