@@ -1,4 +1,5 @@
-﻿using FMODUnity;
+﻿using DG.Tweening;
+using FMODUnity;
 using Sirenix.OdinInspector;
 using System;
 using System.Collections.Generic;
@@ -67,6 +68,10 @@ public class GPawnVisualsController : SerializedMonoBehaviour
     [SerializeField, FoldoutGroup("Components")]
     [BoxGroup("Components/World Canvas/Status"), HideIf("isPlayerAccessor")]
     Sprite _spriteDeath;
+    
+    [SerializeField, FoldoutGroup("Components")]
+    [BoxGroup("Components/World Canvas/ActionTokens"), ShowIf("isPlayerAccessor")]
+    ActionToken_Container _actionTokenContainer;
     
     [SerializeField, FoldoutGroup("Components")]
     [BoxGroup("Components/World Canvas/ActionTokens"), ShowIf("isPlayerAccessor")]
@@ -149,12 +154,7 @@ public class GPawnVisualsController : SerializedMonoBehaviour
 
     void UpdateActionPointUI(float oldAttributeValue, float newAttributeValue)
     {
-        _imgListActionTokens.ForEach(img => img.gameObject.SetActive(false));
-        for (int i = 0; i < newAttributeValue; i++)
-        {
-            if (_imgListActionTokens.Count <= i) continue;
-            _imgListActionTokens[i].gameObject.SetActive(true);
-        }
+        _actionTokenContainer.SetMaxTokenAmount(Mathf.FloorToInt(newAttributeValue));
     }
     
     void OnEnable()
@@ -243,15 +243,18 @@ public class GPawnVisualsController : SerializedMonoBehaviour
         _txtCurrentHp.text = text;
         _imgHpBarForeground.fillAmount = _pawn.GetHpRatio();
         _imgHpBarPrevisualisation.fillAmount = _pawn.GetHpRatio();
+        _hpContainer.transform.DOShakePosition(1f).SetEase(Ease.InCubic);
+        _hpContainer.transform.DOShakeRotation(1f).SetEase(Ease.InCubic);
     }
 
     public void OnUpdateActionsToken()
     {
-        for (int i = 0; i < _pawn.AttributesController.GetFinal(EAttributeType.MaxAction); i++)
-        {
-            _imgListActionTokens[i].sprite = _pawn.remainingActionToken > i ? 
-                _spriteActionTokenOn : _spriteActionTokenOff;
-        }
+        _actionTokenContainer.SetTokenAmount(Mathf.FloorToInt(_pawn.remainingActionToken));
+    }
+
+    public void OnInitActionsToken()
+    {
+        _actionTokenContainer.initTokens(Mathf.FloorToInt(_pawn.AttributesController.GetFinal(EAttributeType.MaxAction)),Mathf.FloorToInt(_pawn.remainingActionToken));
     }
     
     public void OnUpdateStunTurn()
@@ -313,11 +316,7 @@ public class GPawnVisualsController : SerializedMonoBehaviour
         else
         {
             int tempActionPoints = actionGain + _pawn.remainingActionToken - 1;
-            for (int i = 0; i < _pawn.AttributesController.GetFinal(EAttributeType.MaxAction); i++)
-            {
-                _imgListActionTokens[i].sprite = tempActionPoints > i ? 
-                    _spriteActionTokenOn : _spriteActionTokenOff;
-            }
+            _actionTokenContainer.PrevisToken(1);
         }
         if (tempStun > 0 && !isDead)
         {
@@ -337,7 +336,7 @@ public class GPawnVisualsController : SerializedMonoBehaviour
         }
         else
         {
-            OnUpdateActionsToken();
+            _actionTokenContainer.StopPrevisToken();
         }
         
         if (_pawn.stunTurns > 0)
