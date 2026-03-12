@@ -69,7 +69,7 @@ public class GMapCard : MonoBehaviour
     {
         if (_clickSeq.IsActive() && _clickSeq.IsPlaying()) return;
         _SelectorImage.gameObject.SetActive(true);
-       _selectorLoop.Play();
+       _selectorLoop.Restart();
     }
     
     public void OnUnselected()
