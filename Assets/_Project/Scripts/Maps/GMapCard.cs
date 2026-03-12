@@ -1,3 +1,4 @@
+using DG.Tweening;
 using System;
 using TMPro;
 using UnityEngine;
@@ -19,6 +20,9 @@ public class GMapCard : MonoBehaviour
     Image _lockImage;
 
     [SerializeField]
+    RectTransform _SelectorImage;
+    
+    [SerializeField]
     TextMeshProUGUI _progressTxt;
 
     [SerializeField]
@@ -26,21 +30,29 @@ public class GMapCard : MonoBehaviour
     
     [SerializeField]
     LocalizeStringEvent _conditionMapTxt;
+
+    Sequence _selectorLoop;
+
+    Sequence _clickSeq;
     
     void Start()
     {
         _button = GetComponent<Button>();
-        _button.onClick.AddListener(() =>
-        {
-            GGameManager.Instance.SetSceneToLoad(mapData);
-            GGameManager.Instance.ChangeState(EMacroStates.LoadingScreen);
-        });
+        _button.onClick.AddListener(OnClick);
+
+        _selectorLoop = DOTween.Sequence();
+        Vector3 maxSize = new Vector3(1.15f, 1.3f, 1f);
+        _selectorLoop.SetUpdate(true);
+        _selectorLoop.Append(_SelectorImage.DOScale(maxSize, .5f).From(1f).SetEase(Ease.OutCubic));
+        _selectorLoop.Append(_SelectorImage.DOScale(1f, .5f).From(maxSize).SetEase(Ease.InQuint));
+        _selectorLoop.SetLoops(-1);
+        OnUnselected();
     }
 
     void OnEnable()
     {
         bool isMapUnlocked = IsMapUnlocked();
-        _lockImage.enabled = isMapUnlocked;
+        _lockImage.enabled = !isMapUnlocked;
         if (mapData.ProgressMapToUnlock)
         {
             _progressTxt.text = $"{mapData.ProgressMapToUnlock.NumberOfWavesOnThisMap.ToString()} / {mapData.NumberOfWavesToUnlock.ToString()}";
@@ -53,6 +65,38 @@ public class GMapCard : MonoBehaviour
         _conditionMapTxt.gameObject.SetActive(!isMapUnlocked);
     }
 
+    public void OnSelected()
+    {
+        if (_clickSeq.IsActive() && _clickSeq.IsPlaying()) return;
+        _SelectorImage.gameObject.SetActive(true);
+       _selectorLoop.Play();
+    }
+    
+    public void OnUnselected()
+    {
+        if (_clickSeq.IsActive() && _clickSeq.IsPlaying()) return;
+        _SelectorImage.gameObject.SetActive(false);
+        _selectorLoop.Pause();
+    }
+
+    public void OnClick()
+    {
+        _clickSeq = DOTween.Sequence();
+        _clickSeq.SetUpdate(true);
+        _SelectorImage.gameObject.SetActive(true);
+        _selectorLoop.Pause();
+        _clickSeq.Append(_SelectorImage.DOScale(1f, .25f).SetEase(Ease.OutCubic));
+        _clickSeq.Join(GetComponent<RectTransform>().DOScale(.75f, .15f).SetEase(Ease.OutCubic).SetDelay(.05f));
+        _clickSeq.JoinCallback(() =>
+        {
+            GGameManager.Instance.SetSceneToLoad(mapData);
+            GGameManager.Instance.ChangeState(EMacroStates.LoadingScreen);
+        }).SetDelay(.15f);
+        _clickSeq.AppendInterval(.25f);
+        _clickSeq.Append(GetComponent<RectTransform>().DOScale(1f, .35f).SetEase(Ease.InQuart));
+        _clickSeq.AppendCallback(OnUnselected);
+    }
+    
     LocalizedString CreateLocalizedStringInstance(LocalizedString oldLocalizedString)
     {
         var localizedString = new LocalizedString();
