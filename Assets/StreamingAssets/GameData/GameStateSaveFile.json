@@ -1,21 +1,18 @@
 {
     "mapIndex": 0,
-    "waveNumber": 1,
+    "waveNumber": 0,
     "waveEnemyCapReach": 0,
-    "ennemies": [
-        {
-            "ennemyType": "Speedy",
-            "xCoordinate": 10,
-            "yCoordinate": 6,
-            "stunTurnNumber": 0,
-            "hp": 1,
-            "upgradeGuids": []
-        }
-    ],
+    "ennemies": [],
     "players": [
         {
             "xCoordinate": 7,
-            "yCoordinate": 10,
+            "yCoordinate": 8,
+            "stunTurnNumber": 0,
+            "upgradeGuids": []
+        },
+        {
+            "xCoordinate": 7,
+            "yCoordinate": 6,
             "stunTurnNumber": 0,
             "upgradeGuids": []
         },
@@ -24,16 +21,10 @@
             "yCoordinate": 7,
             "stunTurnNumber": 0,
             "upgradeGuids": []
-        },
-        {
-            "xCoordinate": 10,
-            "yCoordinate": 3,
-            "stunTurnNumber": 0,
-            "upgradeGuids": []
         }
     ],
     "xCrownCoordinate": 7,
-    "yCrownCoordinate": 10,
-    "crownDamage": 5,
-    "isFirstAction": false
+    "yCrownCoordinate": 7,
+    "crownDamage": 1,
+    "isFirstAction": true
 }
