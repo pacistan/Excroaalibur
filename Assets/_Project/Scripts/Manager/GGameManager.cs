@@ -313,20 +313,21 @@ public class GGameManager: GSingleton<GGameManager>
     {
         isGamePaused = toPause;
         OnPauseEvent?.Invoke(toPause);
-        if (isLerp)
-        {
-            if (toPause)
-                DOTween.To(() => Time.timeScale, x => Time.timeScale = x, 0, time).SetEase(Ease.InQuad).SetUpdate(true);
-            else
-                DOTween.To(() => Time.timeScale, x => Time.timeScale = x, 1, time).SetEase(Ease.InQuad).SetUpdate(true);
-        }
-        else
-        {
-            if (toPause)
-                Time.timeScale = 0f;
-            else
-                Time.timeScale = 1f;
-        }
+        // TODO Clean if necessary
+        // if (isLerp)
+        // {
+        //     if (toPause)
+        //         DOTween.To(() => Time.timeScale, x => Time.timeScale = x, 0, time).SetEase(Ease.InQuad).SetUpdate(true);
+        //     else
+        //         DOTween.To(() => Time.timeScale, x => Time.timeScale = x, 1, time).SetEase(Ease.InQuad).SetUpdate(true);
+        // }
+        // else
+        // {
+        //     if (toPause)
+        //         Time.timeScale = 0f;
+        //     else
+        //         Time.timeScale = 1f;
+        // }
     }
 
     void StartMusic()

@@ -86,7 +86,7 @@ public class GMapCard : MonoBehaviour
         _SelectorImage.gameObject.SetActive(true);
         _selectorLoop.Pause();
         _clickSeq.Append(_SelectorImage.DOScale(1f, .25f).SetEase(Ease.OutCubic));
-        _clickSeq.Join(GetComponent<RectTransform>().DOScale(.75f, .15f).SetEase(Ease.OutCubic).SetDelay(.05f));
+        _clickSeq.Join(GetComponent<RectTransform>().DOScale(.75f, .15f).SetEase(Ease.OutCubic));
         _clickSeq.JoinCallback(() =>
         {
             GGameManager.Instance.SetSceneToLoad(mapData);

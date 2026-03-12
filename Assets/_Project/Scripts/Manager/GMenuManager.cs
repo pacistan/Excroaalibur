@@ -156,14 +156,14 @@ public partial class GMenuManager : GSingleton<GMenuManager>
             menuSetting.canvasGroup.interactable = false;
         }
 
-        yield return new WaitUntil(() => pendingTransitions == 0);
-
         if (menuSetting.virtualCamera)
         {
             if (_currentMenu.virtualCamera) _currentMenu.virtualCamera.Priority = 0;
             _currentMenu = menuSetting;
             if (_currentMenu.virtualCamera) _currentMenu.virtualCamera.Priority = 15;
         }
+
+        yield return new WaitUntil(() => pendingTransitions == 0);
         
         if (menuSetting.waitForTransitionsToEnableClicking)
         {
