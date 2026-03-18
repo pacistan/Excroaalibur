@@ -243,8 +243,8 @@ public class GPawnVisualsController : SerializedMonoBehaviour
         _txtCurrentHp.text = text;
         _imgHpBarForeground.fillAmount = _pawn.GetHpRatio();
         _imgHpBarPrevisualisation.fillAmount = _pawn.GetHpRatio();
-        _hpContainer.transform.DOShakePosition(1f).SetEase(Ease.InCubic);
-        _hpContainer.transform.DOShakeRotation(1f).SetEase(Ease.InCubic);
+        _hpContainer.transform.DOShakePosition(.5f, .5f).SetEase(Ease.InCubic);
+        _hpContainer.transform.DOShakeRotation(.5f, .5f).SetEase(Ease.InCubic);
     }
 
     public void OnUpdateActionsToken()

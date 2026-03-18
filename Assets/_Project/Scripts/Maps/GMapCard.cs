@@ -14,6 +14,9 @@ public class GMapCard : MonoBehaviour
     Button _button;
 
     [SerializeField]
+    LocalizeStringEvent _nameTxt;
+        
+    [SerializeField]
     Image _mapCoverImage;
     
     [SerializeField]
@@ -27,7 +30,7 @@ public class GMapCard : MonoBehaviour
 
     [SerializeField]
     Image _progressFillBar;
-    
+
     [SerializeField]
     LocalizeStringEvent _conditionMapTxt;
 
@@ -53,6 +56,8 @@ public class GMapCard : MonoBehaviour
     {
         bool isMapUnlocked = IsMapUnlocked();
         _lockImage.enabled = !isMapUnlocked;
+        _nameTxt.StringReference = mapData.MapName;
+        _nameTxt.RefreshString();
         if (mapData.ProgressMapToUnlock)
         {
             _progressTxt.text = $"{mapData.ProgressMapToUnlock.NumberOfWavesOnThisMap.ToString()} / {mapData.NumberOfWavesToUnlock.ToString()}";
