@@ -38,8 +38,8 @@ public class GUpgradeCharacterSelectMenu : MonoBehaviour
         _sequence.Join(_frameImage.DOFade(1f, .5f).SetEase(Ease.OutSine));
         _sequence.Join(_btnReturnRect.DOAnchorPosY(30f, .5f).SetEase(Ease.OutSine));
 
-        _sequence.AppendInterval(1f);
-        _sequence.Append(_title.DOMove(_topTitle.position, .5f).SetEase(Ease.InOutSine));
+        _sequence.AppendInterval(.75f);
+        _sequence.Append(_title.DOMove(_topTitle.position, .5f).SetEase(Ease.InOutExpo));
     }
 
     public void Hide()
