@@ -274,7 +274,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: -0.00000047683716}
+  m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: -0.0000009536743}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &221647319845096002
@@ -401,7 +401,7 @@ MonoBehaviour:
   m_UpdateString:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1313681547679757857}
+      - m_Target: {fileID: 650575495880543101}
         m_TargetAssemblyTypeName: TMPro.TextMeshProUGUI, Unity.TextMeshPro
         m_MethodName: set_text
         m_Mode: 0
@@ -576,6 +576,14 @@ PrefabInstance:
     - target: {fileID: 3706976330566220503, guid: e5df82b56249aac40932a2822f342490, type: 3}
       propertyPath: m_StringReference.m_TableReference.m_TableCollectionName
       value: GUID:5846447bda5b96c44b5df967bea897d9
+      objectReference: {fileID: 0}
+    - target: {fileID: 3706976330566220503, guid: e5df82b56249aac40932a2822f342490, type: 3}
+      propertyPath: m_UpdateString.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 1313681547679757857}
+    - target: {fileID: 3706976330566220503, guid: e5df82b56249aac40932a2822f342490, type: 3}
+      propertyPath: m_UpdateString.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: set_text
       objectReference: {fileID: 0}
     - target: {fileID: 5475515404434334975, guid: e5df82b56249aac40932a2822f342490, type: 3}
       propertyPath: m_PreserveAspect
