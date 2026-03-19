@@ -4,36 +4,36 @@
     "waveEnemyCapReach": 0,
     "ennemies": [
         {
-            "ennemyType": "Speedy",
+            "ennemyType": "Brawler",
             "xCoordinate": 3,
             "yCoordinate": 7,
             "stunTurnNumber": 0,
-            "hp": 1,
+            "hp": 5,
             "upgradeGuids": []
         }
     ],
     "players": [
         {
-            "xCoordinate": 7,
+            "xCoordinate": 8,
+            "yCoordinate": 1,
+            "stunTurnNumber": 0,
+            "upgradeGuids": []
+        },
+        {
+            "xCoordinate": 5,
             "yCoordinate": 5,
             "stunTurnNumber": 0,
             "upgradeGuids": []
         },
         {
-            "xCoordinate": 9,
-            "yCoordinate": 3,
-            "stunTurnNumber": 0,
-            "upgradeGuids": []
-        },
-        {
-            "xCoordinate": 4,
-            "yCoordinate": 10,
+            "xCoordinate": 5,
+            "yCoordinate": 8,
             "stunTurnNumber": 0,
             "upgradeGuids": []
         }
     ],
-    "xCrownCoordinate": 9,
-    "yCrownCoordinate": 3,
+    "xCrownCoordinate": 8,
+    "yCrownCoordinate": 1,
     "crownDamage": 1,
     "isFirstAction": false
 }
