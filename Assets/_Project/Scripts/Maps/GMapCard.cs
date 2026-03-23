@@ -90,16 +90,13 @@ public class GMapCard : MonoBehaviour
         _clickSeq.SetUpdate(true);
         _SelectorImage.gameObject.SetActive(true);
         _selectorLoop.Pause();
-        _clickSeq.Append(_SelectorImage.DOScale(1f, .25f).SetEase(Ease.OutCubic));
+        _clickSeq.Join(_SelectorImage.DOScale(1f, .25f).SetEase(Ease.OutCubic));
         _clickSeq.Join(GetComponent<RectTransform>().DOScale(.75f, .15f).SetEase(Ease.OutCubic));
         _clickSeq.JoinCallback(() =>
         {
             GGameManager.Instance.SetSceneToLoad(mapData);
             GGameManager.Instance.ChangeState(EMacroStates.LoadingScreen);
-        }).SetDelay(.15f);
-        _clickSeq.AppendInterval(.25f);
-        _clickSeq.Append(GetComponent<RectTransform>().DOScale(1f, .35f).SetEase(Ease.InQuart));
-        _clickSeq.AppendCallback(OnUnselected);
+        });
     }
     
     LocalizedString CreateLocalizedStringInstance(LocalizedString oldLocalizedString)

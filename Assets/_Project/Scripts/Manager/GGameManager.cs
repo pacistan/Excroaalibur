@@ -11,7 +11,7 @@ using UnityEngine.Localization;
 using UnityEngine.Localization.Settings;
 using UnityEngine.SceneManagement;
 
-public enum EMacroStates { Start, Options, Upgrade_Select_Card, Upgrade_Select_Character, Pause, Play, End, LoadingScreen, Map_Select, None }
+public enum EMacroStates { Start, Options, Upgrade_Select_Card, Upgrade_Select_Character, Pause, Play, End, LoadingScreen, Map_Select, Credits, None }
 
 /* Responsable de la gestion globale du Jeu, de l'activation de potentiel Manager etc...*/
 public class GGameManager: GSingleton<GGameManager>
