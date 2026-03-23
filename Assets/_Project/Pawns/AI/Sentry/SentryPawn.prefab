@@ -172,6 +172,11 @@ Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 25572b3ab18ee164183aaeb98240df7f, type: 3}
   m_PrefabInstance: {fileID: 843678489738389773}
   m_PrefabAsset: {fileID: 0}
+--- !u!4 &6417302337837675526 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: -3261855844997292789, guid: 25572b3ab18ee164183aaeb98240df7f, type: 3}
+  m_PrefabInstance: {fileID: 843678489738389773}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &2053681193158253128
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -573,7 +578,7 @@ PrefabInstance:
     - target: {fileID: 20667597376880823, guid: 48d2615fd829feb4a9c7bfb377fa75cc, type: 3}
       propertyPath: <equipmentParentTr>k__BackingField
       value: 
-      objectReference: {fileID: 2130100164140962551}
+      objectReference: {fileID: 6417302337837675526}
     - target: {fileID: 20667597376880823, guid: 48d2615fd829feb4a9c7bfb377fa75cc, type: 3}
       propertyPath: serializationData.SerializedFormat
       value: 2

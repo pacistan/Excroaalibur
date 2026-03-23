@@ -1091,6 +1091,11 @@ PrefabInstance:
       insertIndex: -1
       addedObject: {fileID: 3858540290448529745}
   m_SourcePrefab: {fileID: 100100000, guid: 677aa7cd40510f443a7e335f0cbaa13f, type: 3}
+--- !u!4 &2454054377709397697 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: -3261855844997292789, guid: 677aa7cd40510f443a7e335f0cbaa13f, type: 3}
+  m_PrefabInstance: {fileID: 8121399771995569098}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &8592792691778427937 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 677aa7cd40510f443a7e335f0cbaa13f, type: 3}
@@ -1401,7 +1406,7 @@ PrefabInstance:
     - target: {fileID: 20667597376880823, guid: 48d2615fd829feb4a9c7bfb377fa75cc, type: 3}
       propertyPath: <equipmentParentTr>k__BackingField
       value: 
-      objectReference: {fileID: 2130100164140962551}
+      objectReference: {fileID: 2454054377709397697}
     - target: {fileID: 20667597376880823, guid: 48d2615fd829feb4a9c7bfb377fa75cc, type: 3}
       propertyPath: serializationData.SerializedFormat
       value: 2
