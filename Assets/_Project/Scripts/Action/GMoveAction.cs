@@ -66,8 +66,6 @@ public class GMoveAction : GAction
     bool _isReaction = false;
     
     int _EquipementPickUpIndex = -1; // No Equipement to Picked Up
-
-    String MoveEvent = "event:/Pawn/Move";
     
     public GMoveAction(){}
     
