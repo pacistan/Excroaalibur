@@ -63,6 +63,16 @@ public class GSaveManager : GSingleton<GSaveManager>
     {
         return _gameStateSaveHandler.IsSaveFileCreated();
     }
+    
+    public bool HasValidSaveFile()
+    {
+        bool isValid = _gameStateSaveHandler.IsSaveFileCreated();
+        if (!isValid) return false;
+        
+        isValid = GGameManager.Instance.loadableMapData != null;
+        
+        return isValid;
+    }
 }
 
 

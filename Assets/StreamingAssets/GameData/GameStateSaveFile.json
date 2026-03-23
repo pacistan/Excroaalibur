@@ -1,39 +1,30 @@
 {
-    "mapIndex": 2,
-    "waveNumber": 1,
+    "mapIndex": 1,
+    "waveNumber": 0,
     "waveEnemyCapReach": 0,
-    "ennemies": [
-        {
-            "ennemyType": "Brawler",
-            "xCoordinate": 3,
-            "yCoordinate": 7,
-            "stunTurnNumber": 0,
-            "hp": 5,
-            "upgradeGuids": []
-        }
-    ],
+    "ennemies": [],
     "players": [
         {
-            "xCoordinate": 8,
-            "yCoordinate": 1,
+            "xCoordinate": 4,
+            "yCoordinate": 7,
             "stunTurnNumber": 0,
             "upgradeGuids": []
         },
         {
-            "xCoordinate": 5,
-            "yCoordinate": 5,
-            "stunTurnNumber": 0,
-            "upgradeGuids": []
-        },
-        {
-            "xCoordinate": 5,
+            "xCoordinate": 6,
             "yCoordinate": 8,
             "stunTurnNumber": 0,
             "upgradeGuids": []
+        },
+        {
+            "xCoordinate": 6,
+            "yCoordinate": 6,
+            "stunTurnNumber": 0,
+            "upgradeGuids": []
         }
     ],
-    "xCrownCoordinate": 8,
-    "yCrownCoordinate": 1,
+    "xCrownCoordinate": 5,
+    "yCrownCoordinate": 7,
     "crownDamage": 1,
-    "isFirstAction": false
+    "isFirstAction": true
 }
