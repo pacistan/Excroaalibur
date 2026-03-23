@@ -37,9 +37,10 @@ public class GGeneralButton : Button
     bool _isHover = false;
     
     Sequence _sequence;
-    
-    private void Start()
+
+    protected override void Start()
     {
+        base.Start();
         _buttonTransform = _buttonBack.GetComponent<RectTransform>();
         _textTransform = _text.GetComponent<RectTransform>();
     }
