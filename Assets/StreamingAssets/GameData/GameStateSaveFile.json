@@ -1,127 +1,89 @@
 {
     "mapIndex": -1,
-    "waveNumber": 0,
+    "waveNumber": 2,
     "waveEnemyCapReach": 0,
     "ennemies": [
         {
-            "ennemyType": "DestroyableWall",
-            "xCoordinate": 2,
-            "yCoordinate": 4,
-            "stunTurnNumber": 0,
-            "hp": 1,
-            "upgradeGuids": []
-        },
-        {
-            "ennemyType": "DestroyableWall",
-            "xCoordinate": 3,
-            "yCoordinate": 4,
-            "stunTurnNumber": 0,
-            "hp": 1,
-            "upgradeGuids": []
-        },
-        {
-            "ennemyType": "DestroyableWall",
-            "xCoordinate": 11,
-            "yCoordinate": 7,
-            "stunTurnNumber": 0,
-            "hp": 1,
-            "upgradeGuids": []
-        },
-        {
-            "ennemyType": "DestroyableWall",
-            "xCoordinate": 12,
-            "yCoordinate": 6,
-            "stunTurnNumber": 0,
-            "hp": 1,
-            "upgradeGuids": []
-        },
-        {
-            "ennemyType": "DestroyableWall",
-            "xCoordinate": 12,
-            "yCoordinate": 5,
-            "stunTurnNumber": 0,
-            "hp": 1,
-            "upgradeGuids": []
-        },
-        {
-            "ennemyType": "DestroyableWall",
-            "xCoordinate": 3,
-            "yCoordinate": 10,
-            "stunTurnNumber": 0,
-            "hp": 1,
-            "upgradeGuids": []
-        },
-        {
-            "ennemyType": "DestroyableWall",
-            "xCoordinate": 2,
-            "yCoordinate": 10,
-            "stunTurnNumber": 0,
-            "hp": 1,
-            "upgradeGuids": []
-        },
-        {
-            "ennemyType": "DestroyableWall",
-            "xCoordinate": 13,
-            "yCoordinate": 10,
-            "stunTurnNumber": 0,
-            "hp": 1,
-            "upgradeGuids": []
-        },
-        {
-            "ennemyType": "DestroyableWall",
-            "xCoordinate": 12,
-            "yCoordinate": 9,
-            "stunTurnNumber": 0,
-            "hp": 1,
-            "upgradeGuids": []
-        },
-        {
             "ennemyType": "PushableWall",
-            "xCoordinate": 12,
-            "yCoordinate": 7,
+            "xCoordinate": 6,
+            "yCoordinate": 12,
             "stunTurnNumber": 0,
             "hp": -1,
             "upgradeGuids": []
         },
         {
-            "ennemyType": "DestroyableWall",
-            "xCoordinate": 13,
+            "ennemyType": "PushableWall",
+            "xCoordinate": 12,
             "yCoordinate": 4,
             "stunTurnNumber": 0,
-            "hp": 1,
+            "hp": -1,
             "upgradeGuids": []
         },
         {
-            "ennemyType": "DestroyableWall",
-            "xCoordinate": 12,
+            "ennemyType": "PushableWall",
+            "xCoordinate": 4,
+            "yCoordinate": 9,
+            "stunTurnNumber": 0,
+            "hp": -1,
+            "upgradeGuids": []
+        },
+        {
+            "ennemyType": "PushableWall",
+            "xCoordinate": 10,
             "yCoordinate": 8,
             "stunTurnNumber": 0,
-            "hp": 1,
+            "hp": -1,
+            "upgradeGuids": []
+        },
+        {
+            "ennemyType": "PushableWall",
+            "xCoordinate": 8,
+            "yCoordinate": 5,
+            "stunTurnNumber": 0,
+            "hp": -1,
+            "upgradeGuids": []
+        },
+        {
+            "ennemyType": "PushableWall",
+            "xCoordinate": 6,
+            "yCoordinate": 6,
+            "stunTurnNumber": 0,
+            "hp": -1,
+            "upgradeGuids": []
+        },
+        {
+            "ennemyType": "Brawler",
+            "xCoordinate": 3,
+            "yCoordinate": 9,
+            "stunTurnNumber": 0,
+            "hp": 5,
             "upgradeGuids": []
         }
     ],
     "players": [
         {
-            "xCoordinate": 3,
-            "yCoordinate": 6,
+            "xCoordinate": 2,
+            "yCoordinate": 9,
+            "stunTurnNumber": 1,
+            "upgradeGuids": [
+                "f929d5cf-45f6-40a9-822b-575fee303f6f"
+            ]
+        },
+        {
+            "xCoordinate": 7,
+            "yCoordinate": 5,
             "stunTurnNumber": 0,
             "upgradeGuids": []
         },
         {
-            "xCoordinate": 4,
-            "yCoordinate": 7,
-            "stunTurnNumber": 0,
-            "upgradeGuids": []
-        },
-        {
-            "xCoordinate": 3,
-            "yCoordinate": 8,
+            "xCoordinate": 10,
+            "yCoordinate": 2,
             "stunTurnNumber": 0,
             "upgradeGuids": []
         }
     ],
     "xCrownCoordinate": 3,
-    "yCrownCoordinate": 7,
+    "yCrownCoordinate": 9,
     "crownDamage": 1,
-    "isFirstAction": true
+    "isFirstAction": false
 }
