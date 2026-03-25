@@ -1,15 +1,23 @@
 ﻿using DG.Tweening;
 using System;
 using UnityEngine;
+using UnityEngine.Serialization;
 using UnityEngine.UI;
 
 [DefaultExecutionOrder(200)]
 public class GStartMenu : MonoBehaviour
 {
     [SerializeField]
-    private Button _startButton, _continueButton, _tutorialButton, _optionsButton, _quitMenuOpenButton, _quitButton, _cancelQuitMenuButtton;
+    private Button _startButton, _continueButton;
 
-    private RectTransform _tutoRect, _startRect, _continueRect, _optionsRect, _quitRect;
+    [FormerlySerializedAs("_tutorialButton")]
+    [SerializeField]
+    private Button _creditsButton;
+
+    [SerializeField]
+    private Button _optionsButton, _quitMenuOpenButton, _quitButton, _cancelQuitMenuButtton;
+
+    private RectTransform _creditsRect, _startRect, _continueRect, _optionsRect, _quitRect;
 
     float _baseButtonY, _hideButtonY;
     
@@ -25,7 +33,7 @@ public class GStartMenu : MonoBehaviour
     
     private void Start()
     {
-        _tutoRect = _tutorialButton.GetComponent<RectTransform>();
+        _creditsRect = _creditsButton.GetComponent<RectTransform>();
         _startRect = _startButton.GetComponent<RectTransform>();
         _continueRect = _continueButton.GetComponent<RectTransform>();
         _optionsRect = _optionsButton.GetComponent<RectTransform>();
@@ -51,10 +59,10 @@ public class GStartMenu : MonoBehaviour
             GGameManager.Instance.ChangeState(EMacroStates.LoadingScreen);
         });
 
-        _tutorialButton.onClick.AddListener(() =>
+        _creditsButton.onClick.AddListener(() =>
         {
             GGameManager.Instance.isLoadingTutorial = true;
-            GGameManager.Instance.ChangeState(EMacroStates.LoadingScreen);
+            GGameManager.Instance.ChangeState(EMacroStates.Credits);
         });
 
         _optionsButton.onClick.AddListener(()=>GGameManager.Instance.ChangeState(EMacroStates.Options));
@@ -80,7 +88,7 @@ public class GStartMenu : MonoBehaviour
         _sequence = DOTween.Sequence();
         
         
-        _tutoRect.anchoredPosition = new Vector2(_tutoRect.anchoredPosition.x, _hideButtonY);
+        _creditsRect.anchoredPosition = new Vector2(_creditsRect.anchoredPosition.x, _hideButtonY);
         _startRect.anchoredPosition = new Vector2(_startRect.anchoredPosition.x, _hideButtonY);
         _continueRect.anchoredPosition = new Vector2(_continueRect.anchoredPosition.x, _hideButtonY);
         _optionsRect.anchoredPosition = new Vector2(_optionsRect.anchoredPosition.x, _hideButtonY);
@@ -90,10 +98,10 @@ public class GStartMenu : MonoBehaviour
         _canvasGroup.alpha = 1;
         _sequence.Join(_logoRect.DOAnchorPosY(-20, .5f).SetEase(Ease.OutCirc));
         _sequence.Join(_continueRect.DOAnchorPosY(_baseButtonY, .25f).SetEase(Ease.OutCirc));
-        _sequence.Join(_startRect.DOAnchorPosY(_baseButtonY, .25f).SetEase(Ease.OutCirc).SetDelay(.1f));
-        _sequence.Join(_optionsRect.DOAnchorPosY(_baseButtonY, .25f).SetEase(Ease.OutCirc));
-        _sequence.Join(_tutoRect.DOAnchorPosY(_baseButtonY, .25f).SetEase(Ease.OutCirc).SetDelay(.1f));
+        _sequence.Join(_optionsRect.DOAnchorPosY(_baseButtonY, .25f).SetEase(Ease.OutCirc).SetDelay(.1f));
         _sequence.Join(_quitRect.DOAnchorPosY(_baseButtonY, .25f).SetEase(Ease.OutCirc));
+        _sequence.Join(_startRect.DOAnchorPosY(_baseButtonY, .25f).SetEase(Ease.OutCirc).SetDelay(.1f));
+        _sequence.Join(_creditsRect.DOAnchorPosY(_baseButtonY, .25f).SetEase(Ease.OutCirc));
         
     }
 
@@ -104,10 +112,10 @@ public class GStartMenu : MonoBehaviour
         
         _sequence.Join(_logoRect.DOAnchorPosY(200, .5f).SetEase(Ease.InCirc));
         _sequence.Join(_continueRect.DOAnchorPosY(_hideButtonY, .25f).SetEase(Ease.InCirc));
-        _sequence.Join(_startRect.DOAnchorPosY(_hideButtonY, .25f).SetEase(Ease.InCirc).SetDelay(.1f));
-        _sequence.Join(_optionsRect.DOAnchorPosY(_hideButtonY, .25f).SetEase(Ease.InCirc));
-        _sequence.Join(_tutoRect.DOAnchorPosY(_hideButtonY, .25f).SetEase(Ease.InCirc).SetDelay(.1f));
+        _sequence.Join(_optionsRect.DOAnchorPosY(_hideButtonY, .25f).SetEase(Ease.InCirc).SetDelay(.1f));
         _sequence.Join(_quitRect.DOAnchorPosY(_hideButtonY, .25f).SetEase(Ease.InCirc));
+        _sequence.Join(_creditsRect.DOAnchorPosY(_hideButtonY, .25f).SetEase(Ease.InCirc).SetDelay(.1f));
+        _sequence.Join(_startRect.DOAnchorPosY(_hideButtonY, .25f).SetEase(Ease.InCirc));
         _sequence.AppendCallback(() => _canvasGroup.alpha = 0);
     }
 }

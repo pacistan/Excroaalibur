@@ -225,7 +225,7 @@ public class GPawn : GGridObject
             equipment.transformOwner = this;
             // possessorTransform.OnReleaseVisuals
             // possessortransofmr = newPosssessorTransform
-            equipment.transform.parent = equipmentParentTr;
+            equipment.transform.SetParent(equipmentParentTr, true);
             equipment.transform.localPosition = Vector3.zero; 
             equipment.transform.localRotation = Quaternion.identity;
             if (equipment is GCrown && this is not GAltar)

@@ -249,6 +249,7 @@ public class GPawnVisualsController : SerializedMonoBehaviour
 
     public void OnUpdateActionsToken()
     {
+        if (!_pawn || !_actionTokenContainer) return;
         _actionTokenContainer.SetTokenAmount(Mathf.FloorToInt(_pawn.remainingActionToken));
     }
 
@@ -392,7 +393,7 @@ public class GPawnVisualsController : SerializedMonoBehaviour
                 {
                     // TODO Check ! 
                     _pawn.equipment = PrefabUtility.InstantiatePrefab(equipmentPrefab) as GEquipment;
-                    _pawn.equipment.transform.parent = _pawn.equipmentParentTr;
+                    _pawn.equipment.transform.SetParent(_pawn.equipmentParentTr, true);
                     _pawn.equipment.transform.localPosition = Vector3.zero;
                     _pawn.equipment.owner = _pawn;
                     EditorUtility.SetDirty(_pawn.equipment);

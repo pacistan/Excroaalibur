@@ -66,7 +66,7 @@ public class GCell : SerializedMonoBehaviour
         if (!updateTransform || !inGridObject) return;
         
         Transform parent = GetTransformPoint(gridObject);
-        gridObject.transform.parent = parent;
+        gridObject.transform.SetParent(parent, true);
         gridObject.transform.localPosition = Vector3.zero; 
         gridObject.transform.localRotation = Quaternion.identity;
     }

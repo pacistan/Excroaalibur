@@ -1,4 +1,5 @@
 ﻿using Sirenix.OdinInspector;
+using Sirenix.Utilities;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -182,7 +183,7 @@ public class GTurnBaseManager : GSingleton<GTurnBaseManager>
     /** Start the Turn of the first Entity in the Queue */
     private void StartTurn()
     {
-        if (_turnOrderControllerQueue.Count == 0 && _waveComponent == null)
+        if (_turnOrderControllerQueue.IsNullOrEmpty() && _waveComponent == null)
         {
             Debug.LogWarning("Turn Order Queue is empty and WaveManager is null. Force Disable the Turn Base Manager.");
             enabled = false;
