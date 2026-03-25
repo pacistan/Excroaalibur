@@ -211,6 +211,7 @@ public class GWaveComponent : MonoBehaviour
     protected void Awake()
     {
         _spawnCells = GGridManager.Instance.GetAllCellsOfType(ETileType.Spawner);
+        Debug.Log(_spawnCells.Count);
         GTurnBaseManager.Instance.OnStartControllerTurn += HandleStartControllerTurn;
         _waveData.GenerateWeightedSelection();
     }
