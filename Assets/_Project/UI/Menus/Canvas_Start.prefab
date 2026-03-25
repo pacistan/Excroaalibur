@@ -459,11 +459,11 @@ RectTransform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 8259731466464648536}
   - {fileID: 4928517334857028514}
   - {fileID: 7154137933662150246}
   - {fileID: 1599691476400079806}
   - {fileID: 2886165524225442865}
+  - {fileID: 8259731466464648536}
   m_Father: {fileID: 1672034496076856059}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
@@ -770,7 +770,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _startButton: {fileID: 324922227582366977}
   _continueButton: {fileID: 2571377162548066501}
-  _tutorialButton: {fileID: 3623059509260532731}
+  _creditsButton: {fileID: 3623059509260532731}
   _optionsButton: {fileID: 6256900111249630493}
   _quitMenuOpenButton: {fileID: 7485673185023246936}
   _quitButton: {fileID: 7559994753685725842}
@@ -940,7 +940,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 2347187854751585233, guid: e5df82b56249aac40932a2822f342490, type: 3}
       propertyPath: m_text
-      value: Tutorial
+      value: Credits
       objectReference: {fileID: 0}
     - target: {fileID: 2798713618236230756, guid: e5df82b56249aac40932a2822f342490, type: 3}
       propertyPath: m_Interactable
@@ -948,7 +948,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3684417180795458192, guid: e5df82b56249aac40932a2822f342490, type: 3}
       propertyPath: m_Name
-      value: Btn_Tuto
+      value: Btn_Credits
+      objectReference: {fileID: 0}
+    - target: {fileID: 3706976330566220503, guid: e5df82b56249aac40932a2822f342490, type: 3}
+      propertyPath: m_StringReference.m_TableEntryReference.m_KeyId
+      value: 45416540030361600
+      objectReference: {fileID: 0}
+    - target: {fileID: 3706976330566220503, guid: e5df82b56249aac40932a2822f342490, type: 3}
+      propertyPath: m_StringReference.m_TableReference.m_TableCollectionName
+      value: GUID:cdcbf3cb95d2e0343ade322e82905af6
       objectReference: {fileID: 0}
     - target: {fileID: 5475515404434334975, guid: e5df82b56249aac40932a2822f342490, type: 3}
       propertyPath: m_PreserveAspect

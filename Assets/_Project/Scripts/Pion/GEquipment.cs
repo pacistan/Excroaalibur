@@ -24,7 +24,8 @@ public class GEquipment : GGridObject
         {
             transformOwner.OnReleaseTransformEquipment();
             transformOwner = null;
-            transform.parent = null;
+            transform.SetParent(null, true);
+            transform.localScale = Vector3.one;
         }
     }
     
