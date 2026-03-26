@@ -14,8 +14,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   bShowPreviewSpawns: 1
   SameEnemyProbability: 0.15
-  EnemiesRounded: 0
-  EnemiesCountMultiplier: 0.5
+  EnemiesRounded: 1
+  EnemiesCountMultiplier: 1.4
   EnemiesEntries:
   - <enemyPrefab>k__BackingField: {fileID: 3539483301687403083, guid: 05d949de3c2a4aa4eb1df7f5d5a2e8ac, type: 3}
     Weigh: 1
@@ -41,15 +41,15 @@ MonoBehaviour:
     Probability: 33.333332
   BuffsEntries:
   - Name: 
-    <Upgrades>k__BackingField: {fileID: 11400000, guid: e70afd8c8a18ed24595ff6d0051f7220, type: 2}
+    <Upgrade>k__BackingField: {fileID: 0}
     Count: 1
     Percentage: 33.333332
   - Name: 
-    <Upgrades>k__BackingField: {fileID: 11400000, guid: 4ee18ad3766f6e84695ceadfae6af6b5, type: 2}
+    <Upgrade>k__BackingField: {fileID: 0}
     Count: 1
     Percentage: 33.333332
   - Name: 
-    <Upgrades>k__BackingField: {fileID: 11400000, guid: 333a8c43c9aa58a4286e7dd30b16029c, type: 2}
+    <Upgrade>k__BackingField: {fileID: 0}
     Count: 1
     Percentage: 33.333332
   BuffMultiplier: 1

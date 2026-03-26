@@ -25,6 +25,7 @@ public class GSwordVFX : MonoBehaviour
         transform.localScale += damage*IncreaseSize;
         if (damage == 1)
         {
+            transform.localScale = Vector3.one;
             for (int i = 0; i < ring.Length; i++)
             {
                 ring[i].gameObject.SetActive(false);
