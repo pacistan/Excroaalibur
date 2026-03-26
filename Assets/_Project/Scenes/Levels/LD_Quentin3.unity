@@ -43067,9 +43067,21 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 1917922449}
     - target: {fileID: 1145590984523022131, guid: edc0a7c3a80f73446846b77cdf8eee88, type: 3}
+      propertyPath: _testUpgradeToAdd
+      value: 
+      objectReference: {fileID: 11400000, guid: 380bf0141306b3941a24ea379c0ff594, type: 2}
+    - target: {fileID: 1145590984523022131, guid: edc0a7c3a80f73446846b77cdf8eee88, type: 3}
       propertyPath: serializationData.Prefab
       value: 
       objectReference: {fileID: 1145590984523022131, guid: edc0a7c3a80f73446846b77cdf8eee88, type: 3}
+    - target: {fileID: 1145590984523022131, guid: edc0a7c3a80f73446846b77cdf8eee88, type: 3}
+      propertyPath: <upgrades>k__BackingField.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1145590984523022131, guid: edc0a7c3a80f73446846b77cdf8eee88, type: 3}
+      propertyPath: '<upgrades>k__BackingField.Array.data[0]'
+      value: 
+      objectReference: {fileID: 951470979}
     - target: {fileID: 2361375246927633402, guid: edc0a7c3a80f73446846b77cdf8eee88, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -46557,6 +46569,60 @@ PrefabInstance:
       addedObject: {fileID: 327981454}
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 75ca6e3d635e6e34da901c9f88a74d6b, type: 3}
+--- !u!114 &951470979
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bf85b9d0649440d88375f5f31a0ef1db, type: 3}
+  m_Name: _Upgrade_TestOnFirstAction(Clone)
+  m_EditorClassIdentifier: 
+  serializationData:
+    SerializedFormat: 2
+    SerializedBytes: 
+    ReferencedUnityObjects: []
+    SerializedBytesString: 
+    Prefab: {fileID: 0}
+    PrefabModificationsReferencedUnityObjects: []
+    PrefabModifications: []
+    SerializationNodes:
+    - Name: <Conditions>k__BackingField
+      Entry: 7
+      Data: 0|GModifierProvider_OnThrow, Assembly-CSharp
+    - Name: 
+      Entry: 8
+      Data: 
+  <Name>k__BackingField:
+    m_TableReference:
+      m_TableCollectionName: 
+    m_TableEntryReference:
+      m_KeyId: 0
+      m_Key: 
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
+  <Description>k__BackingField:
+    m_TableReference:
+      m_TableCollectionName: 
+    m_TableEntryReference:
+      m_KeyId: 0
+      m_Key: 
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
+  <Icon>k__BackingField: {fileID: 0}
+  <Effects>k__BackingField:
+  - <Type>k__BackingField: 1
+    <ModifierType>k__BackingField: 1
+    <Value>k__BackingField: 1
+  <ItemID>k__BackingField: e225cebb-ecd1-455a-9ae3-9965b5416719
+  references:
+    version: 2
+    RefIds: []
 --- !u!1001 &952500963
 PrefabInstance:
   m_ObjectHideFlags: 0

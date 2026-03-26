@@ -1,30 +1,41 @@
 {
     "mapIndex": 0,
-    "waveNumber": 0,
+    "waveNumber": 2,
     "waveEnemyCapReach": 0,
-    "ennemies": [],
+    "ennemies": [
+        {
+            "ennemyType": "PlayerWoke",
+            "xCoordinate": 10,
+            "yCoordinate": 7,
+            "stunTurnNumber": 0,
+            "hp": 5,
+            "upgradeGuids": []
+        }
+    ],
     "players": [
         {
-            "xCoordinate": 7,
+            "xCoordinate": 5,
             "yCoordinate": 8,
             "stunTurnNumber": 0,
-            "upgradeGuids": []
+            "upgradeGuids": [
+                "c7f5eb08-121a-4cef-b5cd-25a61ee6294b"
+            ]
         },
         {
-            "xCoordinate": 7,
-            "yCoordinate": 6,
+            "xCoordinate": 5,
+            "yCoordinate": 5,
             "stunTurnNumber": 0,
             "upgradeGuids": []
         },
         {
-            "xCoordinate": 8,
-            "yCoordinate": 7,
+            "xCoordinate": 10,
+            "yCoordinate": 8,
             "stunTurnNumber": 0,
             "upgradeGuids": []
         }
     ],
-    "xCrownCoordinate": 7,
-    "yCrownCoordinate": 7,
+    "xCrownCoordinate": 5,
+    "yCrownCoordinate": 8,
     "crownDamage": 1,
-    "isFirstAction": true
+    "isFirstAction": false
 }
