@@ -88,7 +88,7 @@ public class GWaveComponent : MonoBehaviour
             int bossCount = Mathf.CeilToInt(WaveIndex / _waveData.WaveCountForBoss * _waveData.BossCountMultiplier);
             GenerateEnemies(bossCount, false, _waveData._BossWeightedSelection);
             
-            int buffsCount = Mathf.CeilToInt(WaveIndex / _waveData.WaveCountForBoss * _waveData.BuffMultiplier);
+            int buffsCount = Mathf.CeilToInt(WaveIndex / _waveData.WaveCountForBoss * _waveData.BossBuffMultiplier);
             GenerateBuffs(buffsCount);
         }
         else  // Classic Wave
@@ -162,6 +162,7 @@ public class GWaveComponent : MonoBehaviour
         GHudManager.Instance.playMenu.SetWaveNumberText(_waveCount);
         
         int upgradePerEnemy = Math.DivRem(_upgradeEntriesQueue.Count, spawnable, out int remainder);
+        
         for (int i = spawnable - 1; i >= 0; i--)
         {
             var controllerPrefab = _spawningEnemiesQueue[i];

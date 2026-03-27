@@ -1,41 +1,78 @@
 {
     "mapIndex": 0,
-    "waveNumber": 2,
+    "waveNumber": 4,
     "waveEnemyCapReach": 0,
     "ennemies": [
         {
             "ennemyType": "PlayerWoke",
-            "xCoordinate": 10,
-            "yCoordinate": 7,
+            "xCoordinate": 9,
+            "yCoordinate": 8,
             "stunTurnNumber": 0,
-            "hp": 5,
-            "upgradeGuids": []
+            "hp": 8,
+            "upgradeGuids": [
+                "a4f9ed58-9271-424d-af1b-7b19502126aa",
+                "a4f9ed58-9271-424d-af1b-7b19502126aa",
+                "a4f9ed58-9271-424d-af1b-7b19502126aa",
+                "a4f9ed58-9271-424d-af1b-7b19502126aa",
+                "a4f9ed58-9271-424d-af1b-7b19502126aa"
+            ]
+        },
+        {
+            "ennemyType": "PlayerWoke",
+            "xCoordinate": 5,
+            "yCoordinate": 9,
+            "stunTurnNumber": 0,
+            "hp": 8,
+            "upgradeGuids": [
+                "a4f9ed58-9271-424d-af1b-7b19502126aa",
+                "a4f9ed58-9271-424d-af1b-7b19502126aa",
+                "a4f9ed58-9271-424d-af1b-7b19502126aa",
+                "a4f9ed58-9271-424d-af1b-7b19502126aa",
+                "a4f9ed58-9271-424d-af1b-7b19502126aa"
+            ]
+        },
+        {
+            "ennemyType": "Sentry",
+            "xCoordinate": 8,
+            "yCoordinate": 6,
+            "stunTurnNumber": 0,
+            "hp": 3,
+            "upgradeGuids": [
+                "a4f9ed58-9271-424d-af1b-7b19502126aa",
+                "a4f9ed58-9271-424d-af1b-7b19502126aa",
+                "a4f9ed58-9271-424d-af1b-7b19502126aa",
+                "a4f9ed58-9271-424d-af1b-7b19502126aa"
+            ]
         }
     ],
     "players": [
         {
-            "xCoordinate": 5,
-            "yCoordinate": 8,
+            "xCoordinate": 11,
+            "yCoordinate": 7,
             "stunTurnNumber": 0,
             "upgradeGuids": [
-                "c7f5eb08-121a-4cef-b5cd-25a61ee6294b"
+                "f929d5cf-45f6-40a9-822b-575fee303f6f"
             ]
         },
         {
-            "xCoordinate": 5,
-            "yCoordinate": 5,
+            "xCoordinate": 10,
+            "yCoordinate": 4,
             "stunTurnNumber": 0,
-            "upgradeGuids": []
+            "upgradeGuids": [
+                "c01c8ef3-7b9b-46f4-becf-b77c5e0c727e"
+            ]
         },
         {
-            "xCoordinate": 10,
-            "yCoordinate": 8,
+            "xCoordinate": 8,
+            "yCoordinate": 7,
             "stunTurnNumber": 0,
-            "upgradeGuids": []
+            "upgradeGuids": [
+                "c01c8ef3-7b9b-46f4-becf-b77c5e0c727e"
+            ]
         }
     ],
-    "xCrownCoordinate": 5,
-    "yCrownCoordinate": 8,
+    "xCrownCoordinate": 11,
+    "yCrownCoordinate": 7,
     "crownDamage": 1,
     "isFirstAction": false
 }

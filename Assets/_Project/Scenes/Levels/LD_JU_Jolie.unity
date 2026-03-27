@@ -52074,7 +52074,7 @@ PrefabInstance:
     - target: {fileID: 3274910628591863012, guid: 6ea0fe4d56232ef4287e15f18573ef24, type: 3}
       propertyPath: _currentWaveData
       value: 
-      objectReference: {fileID: 11400000, guid: 898aef9750b69be4cb5f4491b0c6d3d3, type: 2}
+      objectReference: {fileID: 11400000, guid: 3d41590e1f435f64e874b454ed5af156, type: 2}
     - target: {fileID: 4055392255285988590, guid: 6ea0fe4d56232ef4287e15f18573ef24, type: 3}
       propertyPath: m_Name
       value: Grid
@@ -54377,12 +54377,22 @@ PrefabInstance:
       objectReference: {fileID: 7233382955096834987, guid: 6ea0fe4d56232ef4287e15f18573ef24, type: 3}
     - target: {fileID: 7233382955096834987, guid: 6ea0fe4d56232ef4287e15f18573ef24, type: 3}
       propertyPath: serializationData.PrefabModifications.Array.size
-      value: 1
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 7233382955096834987, guid: 6ea0fe4d56232ef4287e15f18573ef24, type: 3}
       propertyPath: 'serializationData.PrefabModifications.Array.data[0]'
+      value: '"path":"<weigthtDictionary>k__BackingField.{0es}","value":{"$id":0,"$type":"System.Single,
+        mscorlib",0.7}'
+      objectReference: {fileID: 0}
+    - target: {fileID: 7233382955096834987, guid: 6ea0fe4d56232ef4287e15f18573ef24, type: 3}
+      propertyPath: 'serializationData.PrefabModifications.Array.data[1]'
+      value: '"path":"<weigthtDictionary>k__BackingField.{1es}","value":{"$id":0,"$type":"System.Single,
+        mscorlib",0.2}'
+      objectReference: {fileID: 0}
+    - target: {fileID: 7233382955096834987, guid: 6ea0fe4d56232ef4287e15f18573ef24, type: 3}
+      propertyPath: 'serializationData.PrefabModifications.Array.data[2]'
       value: '"path":"<weigthtDictionary>k__BackingField.{2es}","value":{"$id":0,"$type":"System.Single,
-        mscorlib",0}'
+        mscorlib",0.1}'
       objectReference: {fileID: 0}
     - target: {fileID: 7233382955096834987, guid: 6ea0fe4d56232ef4287e15f18573ef24, type: 3}
       propertyPath: serializationData.PrefabModificationsReferencedUnityObjects.Array.size

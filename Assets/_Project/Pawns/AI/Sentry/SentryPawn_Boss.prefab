@@ -1980,8 +1980,24 @@ PrefabInstance:
       value: -1.48375
       objectReference: {fileID: 0}
     - target: {fileID: 2765379055339783158, guid: 48d2615fd829feb4a9c7bfb377fa75cc, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 1.2
+      objectReference: {fileID: 0}
+    - target: {fileID: 2765379055339783158, guid: 48d2615fd829feb4a9c7bfb377fa75cc, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 1.2
+      objectReference: {fileID: 0}
+    - target: {fileID: 2765379055339783158, guid: 48d2615fd829feb4a9c7bfb377fa75cc, type: 3}
+      propertyPath: m_LocalScale.z
+      value: 1.2
+      objectReference: {fileID: 0}
+    - target: {fileID: 2765379055339783158, guid: 48d2615fd829feb4a9c7bfb377fa75cc, type: 3}
       propertyPath: m_LocalPosition.y
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2765379055339783158, guid: 48d2615fd829feb4a9c7bfb377fa75cc, type: 3}
+      propertyPath: m_ConstrainProportionsScale
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 3416494592129066110, guid: 48d2615fd829feb4a9c7bfb377fa75cc, type: 3}
       propertyPath: m_LocalPosition.x
@@ -2164,14 +2180,6 @@ PrefabInstance:
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 5047510769810583256, guid: 48d2615fd829feb4a9c7bfb377fa75cc, type: 3}
-      propertyPath: OnStunStopEvent.m_PersistentCalls.m_Calls.Array.data[0].m_Target
-      value: 
-      objectReference: {fileID: 6511822729167415809}
-    - target: {fileID: 5047510769810583256, guid: 48d2615fd829feb4a9c7bfb377fa75cc, type: 3}
-      propertyPath: OnStunStartEvent.m_PersistentCalls.m_Calls.Array.data[0].m_Target
-      value: 
-      objectReference: {fileID: 6511822729167415809}
-    - target: {fileID: 5047510769810583256, guid: 48d2615fd829feb4a9c7bfb377fa75cc, type: 3}
       propertyPath: OnDamagedUnityEvent.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
       value: 1
       objectReference: {fileID: 0}
@@ -2179,14 +2187,6 @@ PrefabInstance:
       propertyPath: OnDamagedUnityEvent.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
       objectReference: {fileID: 4432374996271535194}
-    - target: {fileID: 5047510769810583256, guid: 48d2615fd829feb4a9c7bfb377fa75cc, type: 3}
-      propertyPath: OnStunStopEvent.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
-      value: Stop
-      objectReference: {fileID: 0}
-    - target: {fileID: 5047510769810583256, guid: 48d2615fd829feb4a9c7bfb377fa75cc, type: 3}
-      propertyPath: OnStunStartEvent.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
-      value: Play
-      objectReference: {fileID: 0}
     - target: {fileID: 5047510769810583256, guid: 48d2615fd829feb4a9c7bfb377fa75cc, type: 3}
       propertyPath: OnDamagedUnityEvent.m_PersistentCalls.m_Calls.Array.data[0].m_CallState
       value: 2
@@ -2205,7 +2205,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5180675197840913930, guid: 48d2615fd829feb4a9c7bfb377fa75cc, type: 3}
       propertyPath: m_Name
-      value: SentryPawn
+      value: SentryPawn_Boss
       objectReference: {fileID: 0}
     - target: {fileID: 5180675197840913930, guid: 48d2615fd829feb4a9c7bfb377fa75cc, type: 3}
       propertyPath: m_Layer
@@ -4177,23 +4177,23 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7436758368751592740, guid: 48d2615fd829feb4a9c7bfb377fa75cc, type: 3}
       propertyPath: m_AnchorMax.y
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7436758368751592740, guid: 48d2615fd829feb4a9c7bfb377fa75cc, type: 3}
       propertyPath: m_AnchorMin.y
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7436758368751592740, guid: 48d2615fd829feb4a9c7bfb377fa75cc, type: 3}
       propertyPath: m_SizeDelta.x
-      value: 11.801818
+      value: 2.8681202
       objectReference: {fileID: 0}
     - target: {fileID: 7436758368751592740, guid: 48d2615fd829feb4a9c7bfb377fa75cc, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 1.9473001
+      value: 3.42136
       objectReference: {fileID: 0}
     - target: {fileID: 7436758368751592740, guid: 48d2615fd829feb4a9c7bfb377fa75cc, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -0.3
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8162783211155401085, guid: 48d2615fd829feb4a9c7bfb377fa75cc, type: 3}
       propertyPath: serializationData.Prefab
@@ -4362,17 +4362,6 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 2765379055339783158, guid: 48d2615fd829feb4a9c7bfb377fa75cc, type: 3}
   m_PrefabInstance: {fileID: 8947550560613377680}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &6511822729167415809 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 2770471958245248145, guid: 48d2615fd829feb4a9c7bfb377fa75cc, type: 3}
-  m_PrefabInstance: {fileID: 8947550560613377680}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fe1ac8b1a8754388a00c5ec174151f68, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &7510455537197728047 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 1447461226291161023, guid: 48d2615fd829feb4a9c7bfb377fa75cc, type: 3}
