@@ -81,7 +81,7 @@ public class GAIController : GController
         GTurnBaseManager.Instance.UnregisterController(this);
     }
 
-    void Awake()
+    void Start()
     {
         RegisterPawn(GetComponent<GPawn>());
         currentPawn = pawns.Count > 0 ? pawns[0] : null;

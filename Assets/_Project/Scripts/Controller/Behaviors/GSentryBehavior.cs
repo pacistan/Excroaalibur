@@ -30,9 +30,17 @@ public class GSentryBehavior : GAIBehavior
             _pushAction,
             _placeOnAltarAction
         };
+        _attributesController = controller.currentPawn.AttributesController;
+        _moveAction._maxMoveDistance = (int)_attributesController.GetFinal(EAttributeType.MoveDistance);
+        _attributesController.SubscribeCallBack(EAttributeType.MoveDistance, OnMoveAttributeChanged);
+        
         base.Init(controller);
-
         controller.currentPawn.OnEquip += OnReceivedEquipment;
+    }
+
+    private void OnMoveAttributeChanged(float oldValue, float newValue)
+    {
+        _moveAction._maxMoveDistance = (int)newValue;
     }
 
     public override void OnTurnStart()
