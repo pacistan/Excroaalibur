@@ -1,11 +1,25 @@
 using System.Collections;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Splines.Interpolators;
 
 public class GChangeColorOnHit : MonoBehaviour
 {
-    
+    public SkinnedMeshRenderer skinnedMeshRenderer;
     public float fadeDuration;
+    Material[] mats;
+
+    private void Start()
+    {
+        if (skinnedMeshRenderer != null)
+        {
+            mats = new Material[skinnedMeshRenderer.materials.Length];
+            for (int i = 0; i < mats.Length; i++)
+            {
+                mats[i] = skinnedMeshRenderer.materials[i];
+            }
+        }      
+    }
 
     /*private void Update()
     {
@@ -18,17 +32,33 @@ public class GChangeColorOnHit : MonoBehaviour
     {
         StartCoroutine(Fade());
     }
+    public void GetStun()
+    {
+        for (int i = 0; i < mats.Length; i++)
+        {
+            mats[i].SetColor("_Color",Color.red);
+        }   
+    }
+    public void EndStun()
+    {
+        for (int i = 0; i < mats.Length; i++)
+        {
+            mats[i].SetColor("_Color", Color.white);
+        }
+    }
     IEnumerator Fade()
     {
-        Material mat = GetComponent<SkinnedMeshRenderer>().material;
         float elapsedTime = 0f;
         Color color = Color.white;
         while (elapsedTime < fadeDuration/2)
         {
             elapsedTime += Time.deltaTime;
 
-            color = Color.Lerp(color, Color.red, elapsedTime);
-            mat.SetColor("_Color",color);
+            color = Color.Lerp(color, Color.red, elapsedTime);              
+            for ( int i = 0; i < mats.Length; i++)
+            {
+                mats[i].SetColor("_Color",color);
+            }
             yield return null;
         }
         while (elapsedTime > fadeDuration/2 && elapsedTime<fadeDuration)
@@ -36,7 +66,10 @@ public class GChangeColorOnHit : MonoBehaviour
             elapsedTime += Time.deltaTime;
 
             color = Color.Lerp(color, Color.white, elapsedTime);
-            mat.SetColor("_Color", color);
+            for (int i = 0; i < mats.Length; i++)
+            {
+                mats[i].SetColor("_Color", color);
+            }
             yield return null;
         }
     }

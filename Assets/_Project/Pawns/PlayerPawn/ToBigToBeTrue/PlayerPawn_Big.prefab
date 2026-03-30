@@ -5845,9 +5845,21 @@ MonoBehaviour:
   OnStunStartEvent:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
+      - m_Target: {fileID: 3016893249152578325}
         m_TargetAssemblyTypeName: GVfxPlayer, Assembly-CSharp
         m_MethodName: Play
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 4775153701305837214}
+        m_TargetAssemblyTypeName: GChangeColorOnHit, Assembly-CSharp
+        m_MethodName: GetStun
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -5860,9 +5872,21 @@ MonoBehaviour:
   OnStunStopEvent:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
+      - m_Target: {fileID: 3016893249152578325}
         m_TargetAssemblyTypeName: GVfxPlayer, Assembly-CSharp
         m_MethodName: Stop
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 4775153701305837214}
+        m_TargetAssemblyTypeName: GChangeColorOnHit, Assembly-CSharp
+        m_MethodName: EndStun
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -5889,7 +5913,19 @@ MonoBehaviour:
         m_CallState: 2
   OnDamagedUnityEvent:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 4775153701305837214}
+        m_TargetAssemblyTypeName: GChangeColorOnHit, Assembly-CSharp
+        m_MethodName: GetHit
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &6870266224330039272
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6514,6 +6550,17 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 1303657178068260819, guid: 87d9a1e610f6f5f41b7d1a8a28585e99, type: 3}
   m_PrefabInstance: {fileID: 1280947926243592065}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &3016893249152578325 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 4042261278033884308, guid: 87d9a1e610f6f5f41b7d1a8a28585e99, type: 3}
+  m_PrefabInstance: {fileID: 1280947926243592065}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe1ac8b1a8754388a00c5ec174151f68, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &1557499223101806885
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -6896,6 +6943,12 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 3e5036694d99c014ab4c9b30bf4ae724, type: 3}
       insertIndex: -1
       addedObject: {fileID: 1152854383750172002}
+    - targetCorrespondingSourceObject: {fileID: -259972160606440404, guid: 3e5036694d99c014ab4c9b30bf4ae724, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 4775153701305837214}
+    - targetCorrespondingSourceObject: {fileID: -259972160606440404, guid: 3e5036694d99c014ab4c9b30bf4ae724, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 975484440245255417}
   m_SourcePrefab: {fileID: 100100000, guid: 3e5036694d99c014ab4c9b30bf4ae724, type: 3}
 --- !u!4 &2753207705801805557 stripped
 Transform:
@@ -6999,6 +7052,43 @@ MonoBehaviour:
   OverrideAttenuation: 0
   OverrideMinDistance: 0
   OverrideMaxDistance: 750
+--- !u!1 &6763146727695179058 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: -259972160606440404, guid: 3e5036694d99c014ab4c9b30bf4ae724, type: 3}
+  m_PrefabInstance: {fileID: 2431911566117054750}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &4775153701305837214
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6763146727695179058}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fea151eee1305c54cb7939d41c99926f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  skinnedMeshRenderer: {fileID: 7152876835131305809}
+  fadeDuration: 1
+--- !u!114 &975484440245255417
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6763146727695179058}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5fea29bb7c508c244a1f805a5fd3fc4d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  outlineMode: 0
+  outlineColor: {r: 1, g: 1, b: 1, a: 1}
+  outlineWidth: 2
+  precomputeOutline: 0
+  bakeKeys: []
+  bakeValues: []
 --- !u!137 &7152876835131305809 stripped
 SkinnedMeshRenderer:
   m_CorrespondingSourceObject: {fileID: -4396642182433536433, guid: 3e5036694d99c014ab4c9b30bf4ae724, type: 3}

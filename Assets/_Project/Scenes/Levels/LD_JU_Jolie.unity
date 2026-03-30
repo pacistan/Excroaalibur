@@ -22116,6 +22116,10 @@ PrefabInstance:
       propertyPath: m_LocalScale.z
       value: 3
       objectReference: {fileID: 0}
+    - target: {fileID: 3486410158183014658, guid: ea08067a6a7f16e46a2a7007c2355b2e, type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 3577346378785680272, guid: ea08067a6a7f16e46a2a7007c2355b2e, type: 3}
       propertyPath: _highlight
       value: 
@@ -22152,6 +22156,66 @@ PrefabInstance:
       propertyPath: 'm_Materials.Array.data[0]'
       value: 
       objectReference: {fileID: 2100000, guid: 6a9d7091e6e9d8643ad1c676da616796, type: 2}
+    - target: {fileID: 8898372369038805688, guid: ea08067a6a7f16e46a2a7007c2355b2e, type: 3}
+      propertyPath: ColorModule.enabled
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8898372369038805688, guid: ea08067a6a7f16e46a2a7007c2355b2e, type: 3}
+      propertyPath: InitialModule.startColor.maxColor.b
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8898372369038805688, guid: ea08067a6a7f16e46a2a7007c2355b2e, type: 3}
+      propertyPath: InitialModule.startColor.maxColor.g
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8898372369038805688, guid: ea08067a6a7f16e46a2a7007c2355b2e, type: 3}
+      propertyPath: InitialModule.startColor.maxColor.r
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8898372369038805688, guid: ea08067a6a7f16e46a2a7007c2355b2e, type: 3}
+      propertyPath: ColorModule.gradient.maxGradient.ctime1
+      value: 29491
+      objectReference: {fileID: 0}
+    - target: {fileID: 8898372369038805688, guid: ea08067a6a7f16e46a2a7007c2355b2e, type: 3}
+      propertyPath: ColorModule.gradient.maxGradient.ctime2
+      value: 65535
+      objectReference: {fileID: 0}
+    - target: {fileID: 8898372369038805688, guid: ea08067a6a7f16e46a2a7007c2355b2e, type: 3}
+      propertyPath: ColorModule.gradient.maxGradient.key1.a
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8898372369038805688, guid: ea08067a6a7f16e46a2a7007c2355b2e, type: 3}
+      propertyPath: ColorModule.gradient.maxGradient.key1.b
+      value: 0.10181467
+      objectReference: {fileID: 0}
+    - target: {fileID: 8898372369038805688, guid: ea08067a6a7f16e46a2a7007c2355b2e, type: 3}
+      propertyPath: ColorModule.gradient.maxGradient.key1.g
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8898372369038805688, guid: ea08067a6a7f16e46a2a7007c2355b2e, type: 3}
+      propertyPath: ColorModule.gradient.maxGradient.key1.r
+      value: 0.06132078
+      objectReference: {fileID: 0}
+    - target: {fileID: 8898372369038805688, guid: ea08067a6a7f16e46a2a7007c2355b2e, type: 3}
+      propertyPath: ColorModule.gradient.maxGradient.key2.b
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8898372369038805688, guid: ea08067a6a7f16e46a2a7007c2355b2e, type: 3}
+      propertyPath: ColorModule.gradient.maxGradient.key2.g
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8898372369038805688, guid: ea08067a6a7f16e46a2a7007c2355b2e, type: 3}
+      propertyPath: ColorModule.gradient.maxGradient.key2.r
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8898372369038805688, guid: ea08067a6a7f16e46a2a7007c2355b2e, type: 3}
+      propertyPath: ColorModule.gradient.maxGradient.m_ColorSpace
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8898372369038805688, guid: ea08067a6a7f16e46a2a7007c2355b2e, type: 3}
+      propertyPath: ColorModule.gradient.maxGradient.m_NumColorKeys
+      value: 3
+      objectReference: {fileID: 0}
     - target: {fileID: 8962405803899580738, guid: ea08067a6a7f16e46a2a7007c2355b2e, type: 3}
       propertyPath: ui
       value: 
@@ -54377,7 +54441,7 @@ PrefabInstance:
       objectReference: {fileID: 7233382955096834987, guid: 6ea0fe4d56232ef4287e15f18573ef24, type: 3}
     - target: {fileID: 7233382955096834987, guid: 6ea0fe4d56232ef4287e15f18573ef24, type: 3}
       propertyPath: serializationData.PrefabModifications.Array.size
-      value: 3
+      value: 6
       objectReference: {fileID: 0}
     - target: {fileID: 7233382955096834987, guid: 6ea0fe4d56232ef4287e15f18573ef24, type: 3}
       propertyPath: 'serializationData.PrefabModifications.Array.data[0]'
@@ -54391,13 +54455,30 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7233382955096834987, guid: 6ea0fe4d56232ef4287e15f18573ef24, type: 3}
       propertyPath: 'serializationData.PrefabModifications.Array.data[2]'
-      value: '"path":"<weigthtDictionary>k__BackingField.{2es}","value":{"$id":0,"$type":"System.Single,
-        mscorlib",0.1}'
+      value: '"path":"upgrades","add_keys":{"$id":0,"$type":"System.Object[], mscorlib","$rlength":2,"$rcontent":[{"$id":1,"$type":"ERarity,
+        Assembly-CSharp",2},{"$id":2,"$type":"ERarity, Assembly-CSharp",2}]},"remove_keys":null'
+      objectReference: {fileID: 0}
+    - target: {fileID: 7233382955096834987, guid: 6ea0fe4d56232ef4287e15f18573ef24, type: 3}
+      propertyPath: 'serializationData.PrefabModifications.Array.data[3]'
+      value: '"path":"upgrades.{0es}","length":3'
+      objectReference: {fileID: 0}
+    - target: {fileID: 7233382955096834987, guid: 6ea0fe4d56232ef4287e15f18573ef24, type: 3}
+      propertyPath: 'serializationData.PrefabModifications.Array.data[4]'
+      value: '"path":"upgrades.{2es}","value":{"$id":0,"$type":"System.Collections.Generic.List`1[[GSOUpgrade,
+        Assembly-CSharp]], mscorlib","$rlength":1,"$rcontent":[$eref:0]}'
+      objectReference: {fileID: 0}
+    - target: {fileID: 7233382955096834987, guid: 6ea0fe4d56232ef4287e15f18573ef24, type: 3}
+      propertyPath: 'serializationData.PrefabModifications.Array.data[5]'
+      value: '"path":"upgrades.{2es}.[0]","value":$eref:0'
       objectReference: {fileID: 0}
     - target: {fileID: 7233382955096834987, guid: 6ea0fe4d56232ef4287e15f18573ef24, type: 3}
       propertyPath: serializationData.PrefabModificationsReferencedUnityObjects.Array.size
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 7233382955096834987, guid: 6ea0fe4d56232ef4287e15f18573ef24, type: 3}
+      propertyPath: 'serializationData.PrefabModificationsReferencedUnityObjects.Array.data[0]'
+      value: 
+      objectReference: {fileID: 11400000, guid: 333a8c43c9aa58a4286e7dd30b16029c, type: 2}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects:

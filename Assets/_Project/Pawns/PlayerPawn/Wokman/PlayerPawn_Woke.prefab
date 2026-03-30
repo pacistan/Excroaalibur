@@ -5469,9 +5469,21 @@ MonoBehaviour:
   OnStunStartEvent:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
+      - m_Target: {fileID: 5742188218494745078}
         m_TargetAssemblyTypeName: GVfxPlayer, Assembly-CSharp
         m_MethodName: Play
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 4936887749276404625}
+        m_TargetAssemblyTypeName: GChangeColorOnHit, Assembly-CSharp
+        m_MethodName: GetStun
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -5484,9 +5496,21 @@ MonoBehaviour:
   OnStunStopEvent:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
+      - m_Target: {fileID: 5742188218494745078}
         m_TargetAssemblyTypeName: GVfxPlayer, Assembly-CSharp
         m_MethodName: Stop
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 4936887749276404625}
+        m_TargetAssemblyTypeName: GChangeColorOnHit, Assembly-CSharp
+        m_MethodName: EndStun
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -5513,7 +5537,19 @@ MonoBehaviour:
         m_CallState: 2
   OnDamagedUnityEvent:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 4936887749276404625}
+        m_TargetAssemblyTypeName: GChangeColorOnHit, Assembly-CSharp
+        m_MethodName: GetHit
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &4122595848666404107
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6608,6 +6644,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 9d725691cf10b494abf1347e353c7192, type: 3}
       insertIndex: -1
       addedObject: {fileID: 446336307116508251}
+    - targetCorrespondingSourceObject: {fileID: 635547659545568360, guid: 9d725691cf10b494abf1347e353c7192, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 4936887749276404625}
   m_SourcePrefab: {fileID: 100100000, guid: 9d725691cf10b494abf1347e353c7192, type: 3}
 --- !u!1 &2530366422285426903 stripped
 GameObject:
@@ -6706,6 +6745,25 @@ MonoBehaviour:
   OverrideAttenuation: 0
   OverrideMinDistance: 0
   OverrideMaxDistance: 750
+--- !u!1 &2813949535357794798 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 635547659545568360, guid: 9d725691cf10b494abf1347e353c7192, type: 3}
+  m_PrefabInstance: {fileID: 3448845867273624966}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &4936887749276404625
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2813949535357794798}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fea151eee1305c54cb7939d41c99926f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  skinnedMeshRenderer: {fileID: 4142604018589221076}
+  fadeDuration: 1
 --- !u!4 &2906645258304911981 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 9d725691cf10b494abf1347e353c7192, type: 3}
@@ -7292,6 +7350,17 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 87d9a1e610f6f5f41b7d1a8a28585e99, type: 3}
+--- !u!114 &5742188218494745078 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 4042261278033884308, guid: 87d9a1e610f6f5f41b7d1a8a28585e99, type: 3}
+  m_PrefabInstance: {fileID: 8622325061191814498}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe1ac8b1a8754388a00c5ec174151f68, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!4 &7331618017701059249 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 1303657178068260819, guid: 87d9a1e610f6f5f41b7d1a8a28585e99, type: 3}
