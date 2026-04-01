@@ -19,19 +19,19 @@ MonoBehaviour:
     m_Items: []
   m_TableData:
   - m_Id: 9632456704
-    m_Localized: Swift
-    m_Metadata:
-      m_Items: []
-  - m_Id: 183918370816
-    m_Localized: Gives +1 movement point to the targetted pawn
-    m_Metadata:
-      m_Items: []
-  - m_Id: 1110364626591744
     m_Localized: Flash
     m_Metadata:
       m_Items: []
+  - m_Id: 183918370816
+    m_Localized: Give +1 Move Distance to the targeted frog
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1110364626591744
+    m_Localized: Flash +
+    m_Metadata:
+      m_Items: []
   - m_Id: 1110788649754624
-    m_Localized: Give +3 movement points to the targetted pawn
+    m_Localized: Give +3 Move Distance to the targeted frog
     m_Metadata:
       m_Items: []
   - m_Id: 1111308630204416
@@ -39,15 +39,15 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 1111477371248640
-    m_Localized: Give +1 push strength to the targetted pawn
+    m_Localized: Give +1 Push Strength to the targeted frog
     m_Metadata:
       m_Items: []
   - m_Id: 1112009938804736
-    m_Localized: Hercules
+    m_Localized: Hercule
     m_Metadata:
       m_Items: []
   - m_Id: 1112926100627456
-    m_Localized: Give +2 push strength to the targetted pawn
+    m_Localized: Give +2 Push Strength and Damage to the targeted frog
     m_Metadata:
       m_Items: []
   - m_Id: 1113717418991616
@@ -55,17 +55,15 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 1113963628830720
-    m_Localized: Give +1 damage boost to the sword when the targetted pawn gives
-      the sword to another friendly pawn
+    m_Localized: Give +1 Move Distance and +1 Pass Damage at the targeted frog
     m_Metadata:
       m_Items: []
   - m_Id: 1114620834324480
-    m_Localized: Quaterback
+    m_Localized: Quarterback
     m_Metadata:
       m_Items: []
   - m_Id: 1114753638572032
-    m_Localized: Give +3 damage boost to the sword when the targetted pawn gives
-      the sword to another friendly pawn
+    m_Localized: Give +1 Pass Damage to the targeted frog
     m_Metadata:
       m_Items: []
   - m_Id: 1115209861406720
@@ -73,16 +71,15 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 1115413981405184
-    m_Localized: Give +1 action point every turn to the targetted pawn
+    m_Localized: Give +1 Action to the targeted frog
     m_Metadata:
       m_Items: []
   - m_Id: 1116294940434432
-    m_Localized: Wallbash
+    m_Localized: Pusher
     m_Metadata:
       m_Items: []
   - m_Id: 1116423051255808
-    m_Localized: The targetted pawn deals +1 damage to an ennemy pawn when it pushes
-      it against another pawn or wall
+    m_Localized: Give +3 Push Strength to the targeted frog
     m_Metadata:
       m_Items: []
   - m_Id: 1116971993374720
@@ -90,16 +87,15 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 1117113345613824
-    m_Localized: The targetted pawn deals +3 damage to an ennemy pawn when it pushes
-      it against another pawn or wall
+    m_Localized: Give +1 Push Damage to the targeted frog
     m_Metadata:
       m_Items: []
   - m_Id: 1126583425540096
-    m_Localized: Wall Stun
+    m_Localized: Wall Stun +
     m_Metadata:
       m_Items: []
   - m_Id: 1126724026998784
-    m_Localized: Pawns stunned by the targetted pawn are stunned for 1 more turn
+    m_Localized: Give +3 Stun Duration to the targeted frog
     m_Metadata:
       m_Items: []
   - m_Id: 25013445584740352
@@ -108,6 +104,290 @@ MonoBehaviour:
       m_Items: []
   - m_Id: 27570634618994688
     m_Localized: Giant
+    m_Metadata:
+      m_Items: []
+  - m_Id: 29661664709345280
+    m_Localized: Trade
+    m_Metadata:
+      m_Items: []
+  - m_Id: 29662513154129920
+    m_Localized: Give +1 Action but lose -2 Pass Damage at the targeted frog
+    m_Metadata:
+      m_Items: []
+  - m_Id: 29663301075107840
+    m_Localized: Trade
+    m_Metadata:
+      m_Items: []
+  - m_Id: 29663764625391616
+    m_Localized: Give +1 Action but lose -6 Push Strength
+    m_Metadata:
+      m_Items: []
+  - m_Id: 29664282122813440
+    m_Localized: Trade
+    m_Metadata:
+      m_Items: []
+  - m_Id: 29664689721081856
+    m_Localized: Gain +1 Action -4 Move Distance at the targeted frog
+    m_Metadata:
+      m_Items: []
+  - m_Id: 29665241347555328
+    m_Localized: Trade
+    m_Metadata:
+      m_Items: []
+  - m_Id: 29665452446875648
+    m_Localized: Gain +1 Action but lose -5 Push Damage
+    m_Metadata:
+      m_Items: []
+  - m_Id: 29665940835827712
+    m_Localized: Trade
+    m_Metadata:
+      m_Items: []
+  - m_Id: 29666214027624448
+    m_Localized: Gain +1 Action but lose -20 Stun Duration
+    m_Metadata:
+      m_Items: []
+  - m_Id: 29666799183364096
+    m_Localized: Trade
+    m_Metadata:
+      m_Items: []
+  - m_Id: 29667768889671680
+    m_Localized: Gain +2 Pass Damage but lose -1 Action
+    m_Metadata:
+      m_Items: []
+  - m_Id: 29668484748312576
+    m_Localized: Trade
+    m_Metadata:
+      m_Items: []
+  - m_Id: 29668766420992000
+    m_Localized: Gain +2 pass damage but lose -3 Push Strength
+    m_Metadata:
+      m_Items: []
+  - m_Id: 29669521659953152
+    m_Localized: Gain +1 pass damage but lose -2 Move Distance
+    m_Metadata:
+      m_Items: []
+  - m_Id: 29669877072691200
+    m_Localized: Trade
+    m_Metadata:
+      m_Items: []
+  - m_Id: 29670100150943744
+    m_Localized: Gain +2 pass damage but lose -5 Push Damage
+    m_Metadata:
+      m_Items: []
+  - m_Id: 29670520038522880
+    m_Localized: Trade
+    m_Metadata:
+      m_Items: []
+  - m_Id: 29671000059838464
+    m_Localized: Gain +2 pass damage but lose -10 Stun Duration
+    m_Metadata:
+      m_Items: []
+  - m_Id: 29671565426851840
+    m_Localized: Trade
+    m_Metadata:
+      m_Items: []
+  - m_Id: 29671918838906880
+    m_Localized: Gain +6 Push Strength but lose -1 Max Action
+    m_Metadata:
+      m_Items: []
+  - m_Id: 29672539176468480
+    m_Localized: Trade
+    m_Metadata:
+      m_Items: []
+  - m_Id: 29672770945318912
+    m_Localized: Gain +3 Push Strength but lose -1 Pass Damage
+    m_Metadata:
+      m_Items: []
+  - m_Id: 29673220662788096
+    m_Localized: Trade
+    m_Metadata:
+      m_Items: []
+  - m_Id: 29673411461677056
+    m_Localized: Gain +2 Push Strength but lose -1 Move Distance
+    m_Metadata:
+      m_Items: []
+  - m_Id: 29673770976444416
+    m_Localized: Trade
+    m_Metadata:
+      m_Items: []
+  - m_Id: 29673950417158144
+    m_Localized: Gain +1 Push Strength but lose -1 Push Damage
+    m_Metadata:
+      m_Items: []
+  - m_Id: 29674443025580032
+    m_Localized: Trade
+    m_Metadata:
+      m_Items: []
+  - m_Id: 29674638752776192
+    m_Localized: Gain +1 Push Strength but lose -3 Stun Duration
+    m_Metadata:
+      m_Items: []
+  - m_Id: 29675088977756160
+    m_Localized: Trade
+    m_Metadata:
+      m_Items: []
+  - m_Id: 29675393945600000
+    m_Localized: Gain +8 Move Distance but lose -2 Actions
+    m_Metadata:
+      m_Items: []
+  - m_Id: 29675955835535360
+    m_Localized: Trade
+    m_Metadata:
+      m_Items: []
+  - m_Id: 29676254532894720
+    m_Localized: Gain +2 Move Distance but lose -1 Pass Damage
+    m_Metadata:
+      m_Items: []
+  - m_Id: 29676702509727744
+    m_Localized: Trade
+    m_Metadata:
+      m_Items: []
+  - m_Id: 29676899650404352
+    m_Localized: Gain +1 Move Distance but lose -1 Push Strength
+    m_Metadata:
+      m_Items: []
+  - m_Id: 29677399187816448
+    m_Localized: Trade
+    m_Metadata:
+      m_Items: []
+  - m_Id: 29677551868870656
+    m_Localized: Gain +1 Move Distance but lose -1 Push Damage
+    m_Metadata:
+      m_Items: []
+  - m_Id: 29678127956525056
+    m_Localized: Gain +1 Move Distance but lose -5 Stun Duration
+    m_Metadata:
+      m_Items: []
+  - m_Id: 29678570518511616
+    m_Localized: Trade
+    m_Metadata:
+      m_Items: []
+  - m_Id: 29678899934953472
+    m_Localized: Gain +10 Push Damage but lose -2 MaxAction
+    m_Metadata:
+      m_Items: []
+  - m_Id: 29679552061145088
+    m_Localized: Trade
+    m_Metadata:
+      m_Items: []
+  - m_Id: 29679772291465216
+    m_Localized: Gain +3 Push Damage but lose -1 Pass Damage
+    m_Metadata:
+      m_Items: []
+  - m_Id: 29680414607179776
+    m_Localized: Trade
+    m_Metadata:
+      m_Items: []
+  - m_Id: 29680625521950720
+    m_Localized: Gain +1 Push Damage but lose -1 Push Strength
+    m_Metadata:
+      m_Items: []
+  - m_Id: 29681035993317376
+    m_Localized: Trade
+    m_Metadata:
+      m_Items: []
+  - m_Id: 29681193359409152
+    m_Localized: Gain +1 Push Damage but lose -1 MoveDistance
+    m_Metadata:
+      m_Items: []
+  - m_Id: 29681826737061888
+    m_Localized: Trade
+    m_Metadata:
+      m_Items: []
+  - m_Id: 29682014788681728
+    m_Localized: Gain +1 Push Damage but lose -4 Stun Duration
+    m_Metadata:
+      m_Items: []
+  - m_Id: 29682876709765120
+    m_Localized: Gain +40 Stun Duration but lose -2 Action
+    m_Metadata:
+      m_Items: []
+  - m_Id: 29682649399459840
+    m_Localized: Trade
+    m_Metadata:
+      m_Items: []
+  - m_Id: 29683834843987968
+    m_Localized: Trade
+    m_Metadata:
+      m_Items: []
+  - m_Id: 29684036116054016
+    m_Localized: Gain +10 Stun Duration but lose -1 Pass Damage
+    m_Metadata:
+      m_Items: []
+  - m_Id: 29684505123127296
+    m_Localized: Trade
+    m_Metadata:
+      m_Items: []
+  - m_Id: 29684745087647744
+    m_Localized: Gain +6 Stun Duration but lose -2 Push Strength
+    m_Metadata:
+      m_Items: []
+  - m_Id: 29685228476989440
+    m_Localized: Trade
+    m_Metadata:
+      m_Items: []
+  - m_Id: 29685410161655808
+    m_Localized: Gain +5 Stun Duration but lose -1 Move Distance
+    m_Metadata:
+      m_Items: []
+  - m_Id: 29685958785007616
+    m_Localized: Trade
+    m_Metadata:
+      m_Items: []
+  - m_Id: 29686122014736384
+    m_Localized: Gain +4 Stun Duration but lose -1 Push Damage
+    m_Metadata:
+      m_Items: []
+  - m_Id: 29686784396001280
+    m_Localized: Again !!!
+    m_Metadata:
+      m_Items: []
+  - m_Id: 29686974725128192
+    m_Localized: On kill, refresh 1 Action
+    m_Metadata:
+      m_Items: []
+  - m_Id: 29687813023891456
+    m_Localized: Giant
+    m_Metadata:
+      m_Items: []
+  - m_Id: 29687999364235264
+    m_Localized: Give +1 HP
+    m_Metadata:
+      m_Items: []
+  - m_Id: 29688387094085632
+    m_Localized: Skate
+    m_Metadata:
+      m_Items: []
+  - m_Id: 29688616904196096
+    m_Localized: Give +1 Move Distance
+    m_Metadata:
+      m_Items: []
+  - m_Id: 29688859481767936
+    m_Localized: Sumo
+    m_Metadata:
+      m_Items: []
+  - m_Id: 29689004373999616
+    m_Localized: Give +1 Push Strength
+    m_Metadata:
+      m_Items: []
+  - m_Id: 29693839081111552
+    m_Localized: Strong Man +
+    m_Metadata:
+      m_Items: []
+  - m_Id: 29694298210598912
+    m_Localized: Give +3 Push Strength to the targeted frog
+    m_Metadata:
+      m_Items: []
+  - m_Id: 29700076694831104
+    m_Localized: Trade
+    m_Metadata:
+      m_Items: []
+  - m_Id: 29703323505557504
+    m_Localized: Wall Stun
+    m_Metadata:
+      m_Items: []
+  - m_Id: 29703762665963520
+    m_Localized: Give +1 Stun Duration to the targeted frog
     m_Metadata:
       m_Items: []
   references:
