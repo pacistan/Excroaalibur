@@ -1,0 +1,56 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bf85b9d0649440d88375f5f31a0ef1db, type: 3}
+  m_Name: Upgrade_TradeMaxAction_PushStun
+  m_EditorClassIdentifier: 
+  serializationData:
+    SerializedFormat: 2
+    SerializedBytes: 
+    ReferencedUnityObjects: []
+    SerializedBytesString: 
+    Prefab: {fileID: 0}
+    PrefabModificationsReferencedUnityObjects: []
+    PrefabModifications: []
+    SerializationNodes:
+    - Name: <Conditions>k__BackingField
+      Entry: 6
+      Data: 
+  <Name>k__BackingField:
+    m_TableReference:
+      m_TableCollectionName: GUID:d7b2642baeca96e4786f04bec68eb480
+    m_TableEntryReference:
+      m_KeyId: 29665940835827712
+      m_Key: 
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
+  <Description>k__BackingField:
+    m_TableReference:
+      m_TableCollectionName: GUID:d7b2642baeca96e4786f04bec68eb480
+    m_TableEntryReference:
+      m_KeyId: 29666214027624448
+      m_Key: 
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
+  <Icon>k__BackingField: {fileID: 21300000, guid: 943974f1770832e4087373cf659a25d6, type: 3}
+  <Effects>k__BackingField:
+  - <Type>k__BackingField: 1
+    <ModifierType>k__BackingField: 1
+    <Value>k__BackingField: 1
+  - <Type>k__BackingField: 7
+    <ModifierType>k__BackingField: 1
+    <Value>k__BackingField: -20
+  <ItemID>k__BackingField: c7f5eb08-121a-4cef-b5cd-25a61ee6294b
+  references:
+    version: 2
+    RefIds: []

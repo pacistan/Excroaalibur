@@ -1,8 +1,17 @@
 {
     "mapIndex": 0,
-    "waveNumber": 0,
+    "waveNumber": 1,
     "waveEnemyCapReach": 0,
-    "ennemies": [],
+    "ennemies": [
+        {
+            "ennemyType": "Altar",
+            "xCoordinate": 3,
+            "yCoordinate": 8,
+            "stunTurnNumber": 0,
+            "hp": 1,
+            "upgradeGuids": []
+        }
+    ],
     "players": [
         {
             "xCoordinate": 7,
@@ -24,7 +33,7 @@
         }
     ],
     "xCrownCoordinate": 7,
-    "yCrownCoordinate": 7,
+    "yCrownCoordinate": 8,
     "crownDamage": 1,
-    "isFirstAction": true
+    "isFirstAction": false
 }
