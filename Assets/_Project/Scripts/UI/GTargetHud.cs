@@ -108,10 +108,25 @@ public class GTargetHud : MonoBehaviour
     GGridObject _previousGridObject;
     private Sequence _tweenSequence;
     private int _currentUpgradeIconIndex;
+    
+    // Reparenting fields for canvas switching
+    private Transform _originalParent;
+    private Canvas _originalCanvas;
+    private bool _isReparented = false;
+    
+    // Track subscribed pawns to avoid duplicate subscriptions
+    private HashSet<GPawn> _subscribedPawns = new HashSet<GPawn>();
+    
+    // Track if this is the first action for hover display
+    public bool isFirstAction = true;
 
 
     private void Start()
     {
+        // Store original parent and canvas references
+        _originalParent = transform.parent;
+        _originalCanvas = GetComponentInParent<Canvas>();
+        
         for (int i = 0; i < _upgradeIcons.Count; i++)
         {
             var upgradeIcon = _upgradeIcons[i];
@@ -119,6 +134,12 @@ public class GTargetHud : MonoBehaviour
             upgradeIcon.OnUpgradeIconHovered += OnUpgradeIconHovered;
             upgradeIcon.OnUpgradeIconUnhovered += OnUpgradeIconUnhovered;
         }
+        
+        // Subscribe to game state changes
+        GGameManager.Instance.OnChangeMacroStateEvent += OnGameStateChanged;
+        
+        // Subscribe to upgrade changes for all existing pawns
+        RefreshPawnUpgradeSubscriptions();
     }
 
     private void OnApplicationQuit()
@@ -130,6 +151,141 @@ public class GTargetHud : MonoBehaviour
             upgradeIcon.OnUpgradeIconHovered -= OnUpgradeIconHovered;
             upgradeIcon.OnUpgradeIconUnhovered -= OnUpgradeIconUnhovered;
         }
+        
+        // Unsubscribe from game state changes
+        if (GGameManager.Instance != null)
+        {
+            GGameManager.Instance.OnChangeMacroStateEvent -= OnGameStateChanged;
+        }
+        
+        // Unsubscribe from all pawn upgrade changes
+        UnsubscribeFromAllPawnUpgradeChanges();
+    }
+    
+    private void RefreshPawnUpgradeSubscriptions()
+    {
+        Debug.Log("GTargetHud: Refreshing pawn upgrade subscriptions");
+        
+        // Subscribe to all current pawns
+        GPawn[] allPawns = FindObjectsOfType<GPawn>();
+        Debug.Log($"GTargetHud: Found {allPawns.Length} pawns");
+        
+        foreach (GPawn pawn in allPawns)
+        {
+            if (!_subscribedPawns.Contains(pawn))
+            {
+                pawn.OnUpgradeChanged += OnPawnUpgradeChanged;
+                _subscribedPawns.Add(pawn);
+                Debug.Log($"GTargetHud: Subscribed to upgrade changes for pawn {pawn.name}");
+            }
+        }
+    }
+    
+    private void UnsubscribeFromAllPawnUpgradeChanges()
+    {
+        foreach (GPawn pawn in _subscribedPawns)
+        {
+            if (pawn != null)
+            {
+                pawn.OnUpgradeChanged -= OnPawnUpgradeChanged;
+            }
+        }
+        _subscribedPawns.Clear();
+    }
+    
+    private void OnPawnUpgradeChanged()
+    {
+        Debug.Log($"GTargetHud: OnPawnUpgradeChanged called. Previous grid object: {_previousGridObject}");
+        
+        // Refresh the hover display if we're currently showing a pawn
+        if (_previousGridObject is GPawn currentPawn)
+        {
+            Debug.Log($"GTargetHud: Refreshing upgrade display for pawn {currentPawn.name}");
+            // Only update the upgrade info without triggering full tween rebuild
+            UpdateGridObjectHoveredInfo(currentPawn, isFirstAction);
+        }
+        else
+        {
+            Debug.Log("GTargetHud: No pawn currently being displayed");
+        }
+    }
+    
+    // Public method to manually refresh display for a specific pawn
+    public void RefreshPawnDisplay(GPawn pawn)
+    {
+        Debug.Log($"GTargetHud: Manual refresh requested for pawn {pawn.name}");
+        if (pawn == _previousGridObject)
+        {
+            Debug.Log($"GTargetHud: Pawn matches current display, refreshing info only");
+            UpdateGridObjectHoveredInfo(pawn, isFirstAction);
+        }
+        else
+        {
+            Debug.Log($"GTargetHud: Pawn doesn't match current display, setting as new display");
+            OnGridObjectHovered(pawn, isFirstAction);
+        }
+    }
+    
+    // Called when a new pawn is registered in the game
+    private void OnPawnRegistered(GPawn pawn)
+    {
+        if (!_subscribedPawns.Contains(pawn))
+        {
+            pawn.OnUpgradeChanged += OnPawnUpgradeChanged;
+            _subscribedPawns.Add(pawn);
+        }
+    }
+    
+    // Called when a pawn is unregistered from the game
+    private void OnPawnUnregistered(GPawn pawn)
+    {
+        if (_subscribedPawns.Contains(pawn))
+        {
+            pawn.OnUpgradeChanged -= OnPawnUpgradeChanged;
+            _subscribedPawns.Remove(pawn);
+        }
+    }
+    
+    private void OnGameStateChanged(EMacroStates newState, EMacroStates oldState)
+    {
+        if (newState == EMacroStates.Upgrade_Select_Character)
+        {
+            ReparentToActiveCanvas();
+        }
+        else if (oldState == EMacroStates.Upgrade_Select_Character)
+        {
+            RestoreOriginalParent();
+        }
+    }
+    
+    private void ReparentToActiveCanvas()
+    {
+        if (_isReparented) return;
+        
+        // Find the active menu canvas for upgrade character selection
+        var menuManager = GMenuManager.Instance;
+        if (menuManager != null)
+        {
+            // Try to find the upgrade character select menu directly
+            var upgradeCharacterMenu = FindObjectOfType<GUpgradeCharacterSelectMenu>();
+            if (upgradeCharacterMenu != null)
+            {
+                var activeCanvas = upgradeCharacterMenu.GetComponentInParent<Canvas>();
+                if (activeCanvas != null && activeCanvas != _originalCanvas)
+                {
+                    transform.SetParent(activeCanvas.transform, false);
+                    _isReparented = true;
+                }
+            }
+        }
+    }
+    
+    private void RestoreOriginalParent()
+    {
+        if (!_isReparented) return;
+        
+        transform.SetParent(_originalParent, false);
+        _isReparented = false;
     }
 
     public void OnGridObjectHovered(GGridObject gridObject, bool  isFirstAction)
@@ -263,10 +419,27 @@ public class GTargetHud : MonoBehaviour
                     _actionTokenImgArray[i].color = isActionTokenOn ?
                         _actionTokenOnColor : _actionTokenOffColor;
                 }
+                _aiHpNumberText.gameObject.SetActive(false);
             }
             else
             {
+                foreach (var image in _actionTokenImgArray)
+                {
+                    image.gameObject.SetActive(false);
+                }
+                _aiHpNumberText.gameObject.SetActive(true);
                 _aiHpNumberText.text = $"{pawn.hp}/{pawn.AttributesController.GetFinal(EAttributeType.MaxHealth)} HPs";
+            }
+
+            // Update upgrade icons
+            _upgradeIcons.ForEach(i => i.gameObject.SetActive(false));
+            
+            var upgrades = pawn.upgrades;
+            int maxUpgradeShown = Math.Min(_upgradeIcons.Count, upgrades.Count);
+            for (int i = 0; i < maxUpgradeShown; i++)
+            {
+                _upgradeIcons[i].SetUpgradeIcon(upgrades[i].Icon);
+                _upgradeIcons[i].gameObject.SetActive(true);
             }
         }
     }

@@ -1,4 +1,4 @@
-﻿using FMODUnity;
+using FMODUnity;
 using Sirenix.OdinInspector;
 using Sirenix.Utilities;
 using System;
@@ -460,6 +460,12 @@ public class GPlayerController : GController
         else if (!_selectedPlayer && !newCell.gridObject)
         {
             _targetHud.OnGridObjectHovered(null, isFirstAction);
+        }
+        
+        // During upgrade character selection, always show hover details for player pawns
+        else if (GGameManager.Instance.currentState == EMacroStates.Upgrade_Select_Character && cellPawn && cellPawn.data.isPlayer)
+        {
+            _targetHud.OnGridObjectHovered(cellPawn, isFirstAction);
         }
 
         // Handle Hover New Pawn

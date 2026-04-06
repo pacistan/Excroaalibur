@@ -58,12 +58,33 @@ public class GUpgradeManager : GSerializedSingleton<GUpgradeManager>
     public void OnCharacterSelected(GPawn selectedCharacter)
     {
         Debug.Log("OnCharacterSelected");
-        GGameManager.Instance.ChangeState(EMacroStates.Play);
         var selectedUpgrade = _pendingUpgrades[_selectedCardIndex];
         var clonedUpgrade = selectedUpgrade.CreateInstance();
+        
+        // Add upgrade first
         selectedCharacter.AddUpgrade(clonedUpgrade);
+        
+        // Start coroutine to handle refresh after a small delay
+        StartCoroutine(RefreshAfterUpgradeCoroutine(selectedCharacter));
+    }
+
+    private IEnumerator RefreshAfterUpgradeCoroutine(GPawn selectedCharacter)
+    {
+        // Wait a frame to ensure the upgrade is fully processed
+        yield return null;
+        
+        // Manually refresh the hover display for this character
+        var targetHud = GHudManager.Instance.TargetHud;
+        if (targetHud != null)
+        {
+            Debug.Log($"GUpgradeManager: Manually refreshing display for {selectedCharacter.name}");
+            targetHud.RefreshPawnDisplay(selectedCharacter);
+        }
+        
         _pendingUpgrades = null;
-        // Resume
+        
+        // Change state after refresh
+        GGameManager.Instance.ChangeState(EMacroStates.Play);
     }
     
     private ERarity GetRandomRarity()
