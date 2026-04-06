@@ -9,10 +9,12 @@ public abstract class GAIBehavior : ScriptableObject
     [HideInInspector]
     public List<GAction> actions;
     protected GAIController _controller;
+    protected GAttributesController _attributesController;
 
     public virtual void Init(GAIController controller)
     {
         _controller = controller;
+        
         foreach (GAction action in actions)
         {
             action.InitAction(_controller.currentPawn);

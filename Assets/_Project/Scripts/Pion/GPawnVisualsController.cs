@@ -238,7 +238,8 @@ public class GPawnVisualsController : SerializedMonoBehaviour
 
             RuntimeManager.PlayOneShotAttached("event:/Pawn/Damaged", gameObject);
         }
-        
+
+        _txtMaxHp.text = $"/{_pawn.AttributesController.GetFinal(EAttributeType.MaxHealth)}";
         _previousHpNumber = _pawn.hp;
         _txtCurrentHp.text = text;
         _imgHpBarForeground.fillAmount = _pawn.GetHpRatio();

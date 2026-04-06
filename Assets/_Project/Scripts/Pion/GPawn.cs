@@ -106,6 +106,8 @@ public class GPawn : GGridObject
     
     // Cache for quick look-up of override reactions
     private Dictionary<Type, GAction> _overrideCache;
+
+    private bool _isInitialized;
     
     Coroutine RotateTowardsCouroutineHandle;
     
@@ -124,8 +126,11 @@ public class GPawn : GGridObject
     }
 #endif
     
-    public void AddUpgrade(GSOUpgrade upgrade)
+    public void AddUpgrade(GSOUpgrade upgrade) => StartCoroutine(AddUpgradeAsync(upgrade));
+
+    IEnumerator AddUpgradeAsync(GSOUpgrade upgrade)
     {
+        yield return new WaitUntil(() => _isInitialized);
         upgrades.Add(upgrade);
         if (upgrade.Conditions != null)
         {
@@ -137,7 +142,6 @@ public class GPawn : GGridObject
         }
     }
     
-
     public void AddUpgrades(List<GSOUpgrade> upgrades)
     {
         foreach (GSOUpgrade upgrade in upgrades)
@@ -492,8 +496,19 @@ public class GPawn : GGridObject
             AttributesController = GetComponent<GAttributesController>();
         
         AttributesController.LoadProfile(data.attributeProfile);
-        AttributesController.SubscribeCallBack(EAttributeType.MaxHealth, OnMaxHealthChanged);
-        hp = (int)AttributesController.GetFinal(EAttributeType.MaxHealth);
+        if (data.isPlayer)
+        {
+            AttributesController.SubscribeCallBack(EAttributeType.MaxAction,
+                (oldValue, newValue) =>
+                {
+                    remainingActionToken += Mathf.Max(0, (int)newValue - (int)oldValue);
+                });
+        }
+        else
+        {
+            AttributesController.SubscribeCallBack(EAttributeType.MaxHealth, OnMaxHealthChanged);
+        }
+
     }
 
     void OnDestroy()
@@ -503,26 +518,21 @@ public class GPawn : GGridObject
 
     void OnMaxHealthChanged(float oldValue, float NewValue)
     {
+        hp += (int)NewValue - (int)oldValue;
         UpdateHpNumber();
     }
 
     protected virtual void Start()
     {
-        
         #if UNITY_EDITOR
         AddUpgrades(_preloadTestUpgradesToAdd);
         #endif
         
         _currentCell.SetGridObject(this);
         remainingActionToken = (int)AttributesController.GetFinal(EAttributeType.MaxAction);
+        hp = (int)AttributesController.GetFinal(EAttributeType.MaxHealth);
         
-        
-        
-        AttributesController.SubscribeCallBack(EAttributeType.MaxAction,
-            (oldValue, newValue) =>
-            {
-                remainingActionToken += Mathf.Max(0, (int)newValue - (int)oldValue);
-            });
+        _isInitialized = true;     
     }
 
     protected override void OnEnable()

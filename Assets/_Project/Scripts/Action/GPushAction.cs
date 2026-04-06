@@ -12,7 +12,7 @@ public class GPushAction : GAction
     public static Action<GPawn, GPawn> OnPushEvent;
     
     [SerializeField, Min(0), Tooltip("Number of cells the pushed pawn will be moved away")]
-    private int _pushForce = 2;
+    public int _pushForce = 2;
 
     [SerializeField, Min(0), Tooltip("Distance Of the pawn following the pushed pawn, if possible")]
     private int _followDistance = 1;
