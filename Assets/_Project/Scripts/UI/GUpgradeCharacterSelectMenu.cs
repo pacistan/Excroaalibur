@@ -21,10 +21,10 @@ public class GUpgradeCharacterSelectMenu : MonoBehaviour
     
     void Start()
     {
-        _btnReturn.onClick.AddListener(()=> GGameManager.Instance.ChangeState(EMacroStates.Upgrade_Select_Card));
+        _btnReturn?.onClick.AddListener(()=> GGameManager.Instance.ChangeState(EMacroStates.Upgrade_Select_Card));
         _canvasGroup = GetComponent<CanvasGroup>();
         _frameImage = _frame.GetComponent<Image>();
-        _btnReturnRect = _btnReturn.GetComponent<RectTransform>();
+        _btnReturnRect = _btnReturn?.GetComponent<RectTransform>();
     }
 
     public void Show()

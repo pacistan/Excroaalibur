@@ -27,6 +27,7 @@ public class GPawn : GGridObject
     public event Action OnAnimationPush;
     public event Action OnAnimationPushEnd;
     public event Action OnAnimationThrow;
+    public event Action OnUpgradeChanged;
 
     public const string MoveAnimationName = "Move";
     public const string IdleAnimationName = "Idle";
@@ -132,6 +133,8 @@ public class GPawn : GGridObject
     {
         yield return new WaitUntil(() => _isInitialized);
         upgrades.Add(upgrade);
+        Debug.Log($"GPawn {name}: Added upgrade {upgrade.name}. Total upgrades: {upgrades.Count}");
+        
         if (upgrade.Conditions != null)
         {
             upgrade.Conditions.Init(AttributesController, upgrade.Effects);
@@ -140,6 +143,10 @@ public class GPawn : GGridObject
         {
             AttributesController.AddModifiers(upgrade.Effects);
         }
+        
+        // Notify that upgrades have changed
+        Debug.Log($"GPawn {name}: Triggering OnUpgradeChanged event");
+        OnUpgradeChanged?.Invoke();
     }
     
     public void AddUpgrades(List<GSOUpgrade> upgrades)
@@ -154,6 +161,9 @@ public class GPawn : GGridObject
     {
         upgrades.Remove(upgrade);
         AttributesController.RemoveAllModifiersFromSource(upgrade);
+        
+        // Notify that upgrades have changed
+        OnUpgradeChanged?.Invoke();
     }
     
     
