@@ -22,7 +22,7 @@ public class GCredit_Screen : MonoBehaviour
     {
         if(_sequence.IsActive()) _sequence.Kill(true);
         _sequence = DOTween.Sequence();
-        _buttonRect.position = new Vector3(10, -_buttonRect.sizeDelta.y, 0);
+        _buttonRect.position = new Vector3(_buttonRect.position.x, -_buttonRect.sizeDelta.y, 0);
 
         _sequence.Append(_canvasGroup.DOFade(1, 0.25f).From(0f).SetEase(Ease.OutQuad));
         

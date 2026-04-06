@@ -23,6 +23,8 @@ public class GCredit_Slot : MonoBehaviour, IPointerEnterHandler
     CanvasGroup _canvasGroup;
     RectTransform _rect;
     RectTransform _childRect;
+
+    Vector2 _startPos;
     
     Sequence _sequence;
     Sequence _floatShake;
@@ -33,13 +35,15 @@ public class GCredit_Slot : MonoBehaviour, IPointerEnterHandler
         _rect = GetComponent<RectTransform>();
         _canvasGroup.alpha = 0;
         _childRect = GetComponentInChildren<RectTransform>();
+        _startPos = _childRect.anchoredPosition;
     }
 
     public void OnPointerEnter(PointerEventData eventData)
     {
-        if (_floatShake.IsActive()) _floatShake.Kill(true);
+        if (_floatShake.IsActive()) _floatShake.Kill();
         _floatShake = DOTween.Sequence();
-        _floatShake.Append(_childRect.DOShakePosition(1f, 10f, 3, 50f, false, true, ShakeRandomnessMode.Harmonic));
+         _floatShake.Append(_childRect.DOAnchorPos(eventData.delta + _childRect.anchoredPosition, .35f).SetEase(Ease.OutQuad));
+         _floatShake.Append(_childRect.DOAnchorPos(_startPos, .5f).SetEase(Ease.InOutQuad));
     }
 
     private void OnEnable()
