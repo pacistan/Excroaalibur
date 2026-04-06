@@ -687,6 +687,7 @@ GameObject:
   - component: {fileID: 8454482089644411132}
   - component: {fileID: 8783088632821856305}
   - component: {fileID: 2397052425157306404}
+  - component: {fileID: 7123266265766219840}
   m_Layer: 5
   m_Name: Credit_Slot
   m_TagString: Untagged
@@ -772,3 +773,15 @@ MonoBehaviour:
   _roleText: {fileID: 5043458927183555341}
   _skillsText: {fileID: 7002114997801505363}
   _portraitImage: {fileID: 8567527275251423837}
+--- !u!225 &7123266265766219840
+CanvasGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8699057429846721818}
+  m_Enabled: 1
+  m_Alpha: 1
+  m_Interactable: 1
+  m_BlocksRaycasts: 1
+  m_IgnoreParentGroups: 0

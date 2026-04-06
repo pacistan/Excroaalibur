@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 8258200902176045645}
   - component: {fileID: 6792340847044539780}
   - component: {fileID: 5250773922169647886}
+  - component: {fileID: 7308736675039074576}
   m_Layer: 5
   m_Name: Canvas_Credit
   m_TagString: Untagged
@@ -127,6 +128,19 @@ CanvasGroup:
   m_Interactable: 1
   m_BlocksRaycasts: 1
   m_IgnoreParentGroups: 0
+--- !u!114 &7308736675039074576
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1420457907801223937}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0a7c09788a84e8947820dca9b71268d8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _buttonRect: {fileID: 1764410896220702677}
 --- !u!1 &2340076062713177926
 GameObject:
   m_ObjectHideFlags: 0
@@ -857,7 +871,65 @@ MonoBehaviour:
     cursorOffset: {x: 0, y: 0}
     menuFolder: {fileID: 1420457907801223937}
     canvasGroup: {fileID: 5250773922169647886}
-    uiTransitions: []
+    uiTransitions:
+    - transitionType: 3
+      rectTransform: {fileID: 0}
+      offsetDistance: {x: 0, y: 0}
+      xCurve:
+        serializedVersion: 2
+        m_Curve: []
+        m_PreInfinity: 2
+        m_PostInfinity: 2
+        m_RotationOrder: 4
+      yCurve:
+        serializedVersion: 2
+        m_Curve: []
+        m_PreInfinity: 2
+        m_PostInfinity: 2
+        m_RotationOrder: 4
+      gizmosColor: {r: 1, g: 0, b: 0, a: 1}
+      fadeCanvas: {fileID: 0}
+      fadeCurve:
+        serializedVersion: 2
+        m_Curve: []
+        m_PreInfinity: 2
+        m_PostInfinity: 2
+        m_RotationOrder: 4
+      target: {fileID: 0}
+      onEnter:
+        m_PersistentCalls:
+          m_Calls:
+          - m_Target: {fileID: 7308736675039074576}
+            m_TargetAssemblyTypeName: GCredit_Screen, Assembly-CSharp
+            m_MethodName: Show
+            m_Mode: 1
+            m_Arguments:
+              m_ObjectArgument: {fileID: 0}
+              m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+              m_IntArgument: 0
+              m_FloatArgument: 0
+              m_StringArgument: 
+              m_BoolArgument: 0
+            m_CallState: 2
+      onExit:
+        m_PersistentCalls:
+          m_Calls:
+          - m_Target: {fileID: 7308736675039074576}
+            m_TargetAssemblyTypeName: GCredit_Screen, Assembly-CSharp
+            m_MethodName: Hide
+            m_Mode: 1
+            m_Arguments:
+              m_ObjectArgument: {fileID: 0}
+              m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+              m_IntArgument: 0
+              m_FloatArgument: 0
+              m_StringArgument: 
+              m_BoolArgument: 0
+            m_CallState: 2
+      eventTarget: {fileID: 1420457907801223937}
+      duration: 1.25
+      delayOnActivation: 0
+      delayOnDeactivation: 0
     waitForTransitionsToEnableClicking: 1
     virtualCamera: {fileID: 0}
     _disableMenuOnHide: 0
@@ -1018,7 +1090,7 @@ GameObject:
   - component: {fileID: 3166021364001695767}
   - component: {fileID: 2774234345504906143}
   m_Layer: 5
-  m_Name: Back
+  m_Name: Background
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
