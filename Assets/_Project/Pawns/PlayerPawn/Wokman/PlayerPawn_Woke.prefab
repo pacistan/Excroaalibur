@@ -5387,7 +5387,7 @@ MonoBehaviour:
   OnActivateOutline:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
+      - m_Target: {fileID: 1584841677164557645}
         m_TargetAssemblyTypeName: Outline, Assembly-CSharp
         m_MethodName: set_enabled
         m_Mode: 6
@@ -5402,7 +5402,7 @@ MonoBehaviour:
   OnDeactivateOutline:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
+      - m_Target: {fileID: 1584841677164557645}
         m_TargetAssemblyTypeName: Outline, Assembly-CSharp
         m_MethodName: set_enabled
         m_Mode: 6
@@ -6647,6 +6647,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 635547659545568360, guid: 9d725691cf10b494abf1347e353c7192, type: 3}
       insertIndex: -1
       addedObject: {fileID: 4936887749276404625}
+    - targetCorrespondingSourceObject: {fileID: 635547659545568360, guid: 9d725691cf10b494abf1347e353c7192, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1584841677164557645}
   m_SourcePrefab: {fileID: 100100000, guid: 9d725691cf10b494abf1347e353c7192, type: 3}
 --- !u!1 &2530366422285426903 stripped
 GameObject:
@@ -6764,6 +6767,24 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   skinnedMeshRenderer: {fileID: 4142604018589221076}
   fadeDuration: 1
+--- !u!114 &1584841677164557645
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2813949535357794798}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5fea29bb7c508c244a1f805a5fd3fc4d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  outlineMode: 0
+  outlineColor: {r: 1, g: 1, b: 1, a: 1}
+  outlineWidth: 3
+  precomputeOutline: 0
+  bakeKeys: []
+  bakeValues: []
 --- !u!4 &2906645258304911981 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 9d725691cf10b494abf1347e353c7192, type: 3}
@@ -7303,7 +7324,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1303657178068260819, guid: 87d9a1e610f6f5f41b7d1a8a28585e99, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0
+      value: 4.36
       objectReference: {fileID: 0}
     - target: {fileID: 1303657178068260819, guid: 87d9a1e610f6f5f41b7d1a8a28585e99, type: 3}
       propertyPath: m_LocalPosition.z
