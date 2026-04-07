@@ -1982,6 +1982,10 @@ PrefabInstance:
       value: "\u2022 R\xE9daction de document\n\u2022 Balancing"
       objectReference: {fileID: 0}
     - target: {fileID: 2397052425157306404, guid: c0f61f4207326d74a83147e0d387a8d0, type: 3}
+      propertyPath: _portrait
+      value: 
+      objectReference: {fileID: 21300000, guid: 4442a4f0d6784fc4db027782fea4bda7, type: 3}
+    - target: {fileID: 2397052425157306404, guid: c0f61f4207326d74a83147e0d387a8d0, type: 3}
       propertyPath: _creditName
       value: Nathan
       objectReference: {fileID: 0}
@@ -2169,6 +2173,10 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 8567527275251423837, guid: c0f61f4207326d74a83147e0d387a8d0, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: 4442a4f0d6784fc4db027782fea4bda7, type: 3}
     - target: {fileID: 8699057429846721818, guid: c0f61f4207326d74a83147e0d387a8d0, type: 3}
       propertyPath: m_Name
       value: Nathan
@@ -3004,6 +3012,10 @@ PrefabInstance:
       value: "\u2022 Mod\xE9lisation 3D\n\u2022 Texturing"
       objectReference: {fileID: 0}
     - target: {fileID: 2397052425157306404, guid: c0f61f4207326d74a83147e0d387a8d0, type: 3}
+      propertyPath: _portrait
+      value: 
+      objectReference: {fileID: 21300000, guid: c9711eec815809c4abbca9b2158dc84d, type: 3}
+    - target: {fileID: 2397052425157306404, guid: c0f61f4207326d74a83147e0d387a8d0, type: 3}
       propertyPath: _creditName
       value: "Laur\xE9lyne"
       objectReference: {fileID: 0}
@@ -3190,6 +3202,18 @@ PrefabInstance:
     - target: {fileID: 7570741914365857223, guid: c0f61f4207326d74a83147e0d387a8d0, type: 3}
       propertyPath: m_AnchoredPosition.y
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8567527275251423837, guid: c0f61f4207326d74a83147e0d387a8d0, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: c9711eec815809c4abbca9b2158dc84d, type: 3}
+    - target: {fileID: 8567527275251423837, guid: c0f61f4207326d74a83147e0d387a8d0, type: 3}
+      propertyPath: m_UseSpriteMesh
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8567527275251423837, guid: c0f61f4207326d74a83147e0d387a8d0, type: 3}
+      propertyPath: m_PreserveAspect
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8699057429846721818, guid: c0f61f4207326d74a83147e0d387a8d0, type: 3}
       propertyPath: m_Name
@@ -4443,6 +4467,10 @@ PrefabInstance:
       value: "\u2022 Programmation\n\u2022 Gestion d'outils"
       objectReference: {fileID: 0}
     - target: {fileID: 2397052425157306404, guid: c0f61f4207326d74a83147e0d387a8d0, type: 3}
+      propertyPath: _portrait
+      value: 
+      objectReference: {fileID: 21300000, guid: a6b76159fb7250d4894ff1f2da6c7f74, type: 3}
+    - target: {fileID: 2397052425157306404, guid: c0f61f4207326d74a83147e0d387a8d0, type: 3}
       propertyPath: _creditName
       value: "Andr\xE9"
       objectReference: {fileID: 0}
@@ -4630,6 +4658,14 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 8567527275251423837, guid: c0f61f4207326d74a83147e0d387a8d0, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: a6b76159fb7250d4894ff1f2da6c7f74, type: 3}
+    - target: {fileID: 8567527275251423837, guid: c0f61f4207326d74a83147e0d387a8d0, type: 3}
+      propertyPath: m_PreserveAspect
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 8699057429846721818, guid: c0f61f4207326d74a83147e0d387a8d0, type: 3}
       propertyPath: m_Name
       value: "Andr\xE9"
@@ -4798,6 +4834,10 @@ PrefabInstance:
       propertyPath: _skills
       value: "\u2022 Mod\xE9lisation 3D"
       objectReference: {fileID: 0}
+    - target: {fileID: 2397052425157306404, guid: c0f61f4207326d74a83147e0d387a8d0, type: 3}
+      propertyPath: _portrait
+      value: 
+      objectReference: {fileID: 21300000, guid: d541a30f7da3c0240a74a478ab610aab, type: 3}
     - target: {fileID: 2397052425157306404, guid: c0f61f4207326d74a83147e0d387a8d0, type: 3}
       propertyPath: _creditName
       value: Hugo
@@ -4986,6 +5026,10 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 8567527275251423837, guid: c0f61f4207326d74a83147e0d387a8d0, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: d541a30f7da3c0240a74a478ab610aab, type: 3}
     - target: {fileID: 8699057429846721818, guid: c0f61f4207326d74a83147e0d387a8d0, type: 3}
       propertyPath: m_Name
       value: Hugo
@@ -5039,7 +5083,7 @@ PrefabInstance:
     - target: {fileID: 2397052425157306404, guid: c0f61f4207326d74a83147e0d387a8d0, type: 3}
       propertyPath: _portrait
       value: 
-      objectReference: {fileID: 21300000, guid: 8868f14917ad89a46b0fa1e89dd08b89, type: 3}
+      objectReference: {fileID: 21300000, guid: 4329765099a111843a24c1f7d0ca4f65, type: 3}
     - target: {fileID: 2397052425157306404, guid: c0f61f4207326d74a83147e0d387a8d0, type: 3}
       propertyPath: _creditName
       value: Vincent
@@ -5231,7 +5275,7 @@ PrefabInstance:
     - target: {fileID: 8567527275251423837, guid: c0f61f4207326d74a83147e0d387a8d0, type: 3}
       propertyPath: m_Sprite
       value: 
-      objectReference: {fileID: 21300000, guid: 8868f14917ad89a46b0fa1e89dd08b89, type: 3}
+      objectReference: {fileID: 21300000, guid: 4329765099a111843a24c1f7d0ca4f65, type: 3}
     - target: {fileID: 8567527275251423837, guid: c0f61f4207326d74a83147e0d387a8d0, type: 3}
       propertyPath: m_PreserveAspect
       value: 1
@@ -5640,6 +5684,10 @@ PrefabInstance:
       value: "\u2022 Cr\xE9ation des r\xE9seaux\n\u2022 QA"
       objectReference: {fileID: 0}
     - target: {fileID: 2397052425157306404, guid: c0f61f4207326d74a83147e0d387a8d0, type: 3}
+      propertyPath: _portrait
+      value: 
+      objectReference: {fileID: 21300000, guid: d1b1d16c0f3b3134bb12a322fdfd4ccd, type: 3}
+    - target: {fileID: 2397052425157306404, guid: c0f61f4207326d74a83147e0d387a8d0, type: 3}
       propertyPath: _creditName
       value: Julien
       objectReference: {fileID: 0}
@@ -5826,6 +5874,14 @@ PrefabInstance:
     - target: {fileID: 7570741914365857223, guid: c0f61f4207326d74a83147e0d387a8d0, type: 3}
       propertyPath: m_AnchoredPosition.y
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8567527275251423837, guid: c0f61f4207326d74a83147e0d387a8d0, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: d1b1d16c0f3b3134bb12a322fdfd4ccd, type: 3}
+    - target: {fileID: 8567527275251423837, guid: c0f61f4207326d74a83147e0d387a8d0, type: 3}
+      propertyPath: m_PreserveAspect
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8699057429846721818, guid: c0f61f4207326d74a83147e0d387a8d0, type: 3}
       propertyPath: m_Name
@@ -6216,6 +6272,10 @@ PrefabInstance:
       value: "\u2022 R\xE9daction de documents\n\u2022 QA"
       objectReference: {fileID: 0}
     - target: {fileID: 2397052425157306404, guid: c0f61f4207326d74a83147e0d387a8d0, type: 3}
+      propertyPath: _portrait
+      value: 
+      objectReference: {fileID: 21300000, guid: ed1e670d271a155468d4be4b645ac79b, type: 3}
+    - target: {fileID: 2397052425157306404, guid: c0f61f4207326d74a83147e0d387a8d0, type: 3}
       propertyPath: _creditName
       value: Adrian
       objectReference: {fileID: 0}
@@ -6403,6 +6463,10 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 8567527275251423837, guid: c0f61f4207326d74a83147e0d387a8d0, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: ed1e670d271a155468d4be4b645ac79b, type: 3}
     - target: {fileID: 8699057429846721818, guid: c0f61f4207326d74a83147e0d387a8d0, type: 3}
       propertyPath: m_Name
       value: Adrian
