@@ -8,12 +8,17 @@ public class GPawnAnimatorController : MonoBehaviour
 
     [SerializeField]
     UnityEvent onStep;
+    [SerializeField]
+    UnityEvent onStepFinish;
 
     void Awake()
     {
         _pawn = GetComponentInParent<GPawn>();
     }
-
+    public void StepFinish()
+    {
+        onStepFinish.Invoke();
+    }
     public void Step()
     {
         onStep?.Invoke();
