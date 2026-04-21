@@ -1,30 +1,76 @@
 {
-    "mapIndex": 1,
-    "waveNumber": 0,
+    "mapIndex": 0,
+    "waveNumber": 5,
     "waveEnemyCapReach": 0,
-    "ennemies": [],
+    "ennemies": [
+        {
+            "ennemyType": "Altar",
+            "xCoordinate": 4,
+            "yCoordinate": 10,
+            "stunTurnNumber": 0,
+            "hp": 1,
+            "upgradeGuids": []
+        },
+        {
+            "ennemyType": "Sentry",
+            "xCoordinate": 8,
+            "yCoordinate": 3,
+            "stunTurnNumber": 0,
+            "hp": 3,
+            "upgradeGuids": []
+        },
+        {
+            "ennemyType": "Sentry",
+            "xCoordinate": 10,
+            "yCoordinate": 3,
+            "stunTurnNumber": 0,
+            "hp": 3,
+            "upgradeGuids": []
+        },
+        {
+            "ennemyType": "PlayerWoke",
+            "xCoordinate": 1,
+            "yCoordinate": 7,
+            "stunTurnNumber": 0,
+            "hp": 5,
+            "upgradeGuids": []
+        },
+        {
+            "ennemyType": "Sentry",
+            "xCoordinate": 11,
+            "yCoordinate": 7,
+            "stunTurnNumber": 0,
+            "hp": 3,
+            "upgradeGuids": []
+        }
+    ],
     "players": [
         {
-            "xCoordinate": 6,
+            "xCoordinate": 9,
+            "yCoordinate": 9,
+            "stunTurnNumber": 0,
+            "upgradeGuids": []
+        },
+        {
+            "xCoordinate": 8,
             "yCoordinate": 6,
             "stunTurnNumber": 0,
             "upgradeGuids": []
         },
         {
-            "xCoordinate": 6,
-            "yCoordinate": 8,
+            "xCoordinate": 11,
+            "yCoordinate": 6,
             "stunTurnNumber": 0,
-            "upgradeGuids": []
-        },
-        {
-            "xCoordinate": 4,
-            "yCoordinate": 7,
-            "stunTurnNumber": 0,
-            "upgradeGuids": []
+            "upgradeGuids": [
+                "e225cebb-ecd1-455a-9ae3-9965b5416719",
+                "c7f5eb08-121a-4cef-b5cd-25a61ee6294b",
+                "c7f5eb08-121a-4cef-b5cd-25a61ee6294b",
+                "f929d5cf-45f6-40a9-822b-575fee303f6f"
+            ]
         }
     ],
-    "xCrownCoordinate": 5,
-    "yCrownCoordinate": 7,
-    "crownDamage": 1,
-    "isFirstAction": true
+    "xCrownCoordinate": 8,
+    "yCrownCoordinate": 6,
+    "crownDamage": 3,
+    "isFirstAction": false
 }
